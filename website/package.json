@@ -1,0 +1,56 @@
+{
+  "name": "earthenginelayers-website",
+  "version": "0.0.0",
+  "description": "Website for earthenginelayers module",
+  "license": "MIT",
+  "keywords": [
+    "ocular"
+  ],
+  "main": "gatsby-config.js",
+  "scripts": {
+    "start": "yarn clean && yarn develop",
+    "build": "yarn clean-examples && yarn clean && gatsby build",
+    "clean": "rm -rf ./.cache ./public",
+    "clean-examples": "find ../examples -name node_modules -exec rm -r {} \\; || true",
+    "develop": "yarn clean-examples && gatsby develop",
+    "serve": "gatsby serve",
+    "deploy": "NODE_DEBUG=gh-pages gh-pages -d public"
+  },
+  "dependencies": {
+    "@deck.gl/core": "^8.1.0",
+    "@deck.gl/geo-layers": "^8.1.0",
+    "@deck.gl/layers": "^8.1.0",
+    "@deck.gl/mesh-layers": "^8.1.0",
+    "@deck.gl/react": "^8.1.0",
+    "@loaders.gl/core": "^2.1.1",
+    "@loaders.gl/draco": "^2.1.1",
+    "@loaders.gl/gltf": "^2.1.1",
+    "@loaders.gl/las": "^2.1.1",
+    "@loaders.gl/obj": "^2.1.1",
+    "@loaders.gl/pcd": "^2.1.1",
+    "@loaders.gl/ply": "^2.1.1",
+    "@luma.gl/constants": "^8.1.0",
+    "@luma.gl/core": "^8.1.0",
+    "@luma.gl/experimental": "^8.1.0",
+    "@luma.gl/webgl": "^8.1.0",
+    "@math.gl/culling": "^3.1.3",
+    "@math.gl/geospatial": "^3.1.3",
+    "@probe.gl/stats-widget": "^3.3.0-alpha.8",
+    "@probe.gl/bench": "^3.3.0-alpha.8",
+    "@probe.gl/react-bench": "^3.3.0-alpha.8",
+    "babel-plugin-version-inline": "^1.0.0",
+    "gatsby-plugin-env-variables": "^1.0.1",
+    "marked": "^0.7.0",
+    "math.gl": "^3.1.3",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-map-gl": "^5.1.5",
+    "styled-components": "^4.4.1"
+  },
+  "devDependencies": {
+    "gatsby": "~2.18.25",
+    "gatsby-plugin-no-sourcemaps": "^2.1.2",
+    "gatsby-theme-ocular": "^1.2.0-beta.8",
+    "gh-pages": "^2.2.0"
+  }
+}

@@ -1,0 +1,5 @@
+workers/
+**/dist*/**/*.js
+dist.js
+*.min.js
+*.md
