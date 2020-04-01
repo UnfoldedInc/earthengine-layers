@@ -1,0 +1,22 @@
+{
+  "name": "@unfolded.gl/earthengine-layers",
+  "description": "Earth Engine Integration for Unfolded, Inc.",
+  "version": "0.1.0",
+  "license": "MIT",
+  "_comment": "This module is private for now, should not be published",
+  "private": true,
+  "author": "Unfolded, Inc.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/UnfoldedInc/platform.git"
+  },
+  "main": "src/index.js",
+  "scripts": {
+  },
+  "dependencies": {
+    "@google/earthengine": "^0.1.209",
+    "@math.gl/web-mercator": "3.1.2"
+  },
+  "devDependencies": {
+  }
+}

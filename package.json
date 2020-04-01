@@ -1,0 +1,75 @@
+{
+  "name": "earthengine-layers-monorepo",
+  "description": "deck.gl layers for Google's Earth Engine API",
+  "license": "MIT",
+  "private": true,
+  "keywords": [
+    "deck.gl",
+    "earthengine",
+    "earth engine",
+    "ee",
+    "visualization",
+    "layer"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/UnfoldedInc/earthengine-layers.git"
+  },
+  "workspaces": [
+    "examples/*",
+    "modules/*"
+  ],
+  "scripts": {
+    "bootstrap": "PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true yarn && ocular-bootstrap",
+    "clean": "ocular-clean",
+    "build": "ocular-clean && ocular-build && lerna run build",
+    "version": "ocular-build core",
+    "lint": "ocular-lint",
+    "cover": "ocular-test cover",
+    "publish": "ocular-publish",
+    "test": "ocular-test",
+    "test-fast": "ocular-test fast",
+    "test-node": "ocular-test node",
+    "test-browser": "ocular-test browser",
+    "bench": "ocular-test bench",
+    "bench-browser": "ocular-test bench-browser",
+    "metrics": "ocular-metrics"
+  },
+  "peerDependencies": {
+    "@deck.gl/core": "^8.1.0",
+    "@deck.gl/layers": "^8.1.0",
+    "@deck.gl/geo-layers": "^8.1.0"
+  },
+  "devDependencies": {
+    "@deck.gl/core": "^8.1.0",
+    "@deck.gl/layers": "^8.1.0",
+    "@deck.gl/geo-layers": "^8.1.0",
+    "@deck.gl/test-utils": "^8.1.0",
+    "@luma.gl/engine": "^8.1.0",
+    "@luma.gl/test-utils": "^8.1.0",
+    "@probe.gl/bench": "^3.2.1",
+    "@probe.gl/test-utils": "^3.2.1",
+    "babel-loader": "^8.0.0",
+    "babel-plugin-inline-webgl-constants": "^1.0.2",
+    "babel-plugin-remove-glsl-comments": "^0.1.0",
+    "babel-preset-minify": "^0.5.0",
+    "coveralls": "^3.0.0",
+    "eslint-config-prettier": "^4.1.0",
+    "eslint-config-uber-jsx": "^3.3.3",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-react": "^7.10",
+    "gl": "^4.3.3",
+    "glsl-transpiler": "^1.8.3",
+    "ocular-dev-tools": "^0.1.8",
+    "png.js": "^0.1.1",
+    "pre-commit": "^1.2.2",
+    "pre-push": "^0.1.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-map-gl": "^5.1.0",
+    "reify": "^0.18.1"
+  },
+  "pre-commit": [
+    "test-fast"
+  ]
+}
