@@ -20,9 +20,10 @@ const NarrowButton = styled(BlackButton)`
   padding: 6px 6px;
 `;
 
-export const LoginButton = ({Icon, onLogin, loginButtonColor}) => {
+export const LoginButton = ({Icon, onLogin, loginButtonColor = 'grey'}) => {
   return (
     <Button width="120px" onClick={onLogin} style={{backgroundColor: loginButtonColor}}>
+      <Icon height={42} />
       Login
     </Button>
   );
