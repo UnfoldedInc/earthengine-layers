@@ -50,18 +50,14 @@ class App extends React.Component {
   }
 
   async _onLoginSuccess(user, loginProvider) {
-    // TODO - called twice
+    // TODO - called twice, this should not be needed
     if (this.loggedIn) {
       return;
     }
     this.loggedIn = true;
 
-    console.log('initalizing EE');
-
     this.forceUpdate();
     await this.eeApi.initialize(EE_CLIENT_ID); // Client id to your EE application
-
-    console.log('initalized EE')
 
     const eeImage = ee.Image('CGIAR/SRTM90_V4');
     this.setState({eeImage});

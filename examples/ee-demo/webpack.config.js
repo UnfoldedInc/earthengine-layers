@@ -40,7 +40,7 @@ const CONFIG = {
 
   plugins: [
     new HtmlWebpackPlugin({title: 'earthengine-layer demo'}),
-    new webpack.EnvironmentPlugin(['EE_CLIENT_ID']),
+    new webpack.EnvironmentPlugin(['EE_CLIENT_ID'])
   ]
 };
 
