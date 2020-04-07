@@ -1,34 +1,36 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const StyledLoggedInImage = styled.img.attrs({
-  className: 'logged-in-image',
-  width: 72,
-  height: 72
-})`
-  border-radius: 50%;
-  transform: scale(0.5);
-  /* TODO - hack, figure out why this is needed */
-  margin-left: -22px;
-`;
-
 const StyledLoggedInUser = styled.div.attrs({
   className: 'logged-in-user'
 })`
   display: flex;
   align-items: center;
-  height: 42px;
+
+  .email {
+    transition: width 0.8s ease, margin 0.8s ease;
+    width: 0;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  :hover {
+    .email {
+      width: auto;
+      margin: 0 12px;
+    }
+  }
 `;
 
-const UserIcon = ({user, email, isDark}) => {
+const UserIcon = ({user, email, height = 36}) => {
   if (!user) {
     return null;
   }
 
   return (
-    <StyledLoggedInUser style={isDark ? {color: '#fff'} : {color: '#000'}}>
-      <StyledLoggedInImage src={user.imageUrl} />
-      {email ? user.email : ''}
+    <StyledLoggedInUser>
+      <img src={user.imageUrl} width={height} height={height} style={{borderRadius: '50%'}} />
+      {email ? <div className="email">{user.email}</div> : null}
     </StyledLoggedInUser>
   );
 };

@@ -4,31 +4,28 @@ export const Button = styled.div.attrs({
   className: 'button'
 })`
   align-items: center;
-  background-color: ${props => props.theme.primaryBtnBgd};
+  background-color: white;
   border-radius: 6px;
-  color: ${props => props.theme.primaryBtnColor};
+  color: #000000;
+  font-family: ff-clan-web-pro, 'Helvetica Neue', Helvetica, sans-serif;
   cursor: pointer;
   display: inline-flex;
-  font-size: 14px;
-  font-family: ${props => props.theme.fontFamilySemiBold};
+  font-size: 11px;
   justify-content: center;
   letter-spacing: 0.3px;
-  line-height: 14px;
+  line-height: 12px;
   outline: 0;
-  padding: 14px 32px;
   text-align: center;
-  transition: ${props => props.theme.transition};
+  transition: all 0.4s ease;
   vertical-align: middle;
   width: ${props => props.width || 'auto'};
+  padding: 0;
+  border-radius: ${props => `${props.height / 2}px` || 'auto'};
 
   :hover,
   :focus,
   :active,
   &.active {
-    background-color: ${props => props.theme.primaryBtnBgdHover};
-  }
-
-  svg {
-    margin-right: 8px;
+    background-color: #e2e2e2;
   }
 `;

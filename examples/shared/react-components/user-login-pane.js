@@ -4,37 +4,36 @@ import styled from 'styled-components';
 import {Button} from './components';
 import UserIcon from './user-icon';
 
-const BlackButton = styled(Button)`
-  padding: 6px 32px;
-  color: #fff;
-  /* background-color: #000; */
-  /* :hover,
-  :focus,
-  :active,
-  &.active {
-    background-color: #555;
-  } */
-`;
+const StyledEELogo = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: -6px;
 
-const NarrowButton = styled(BlackButton)`
-  padding: 6px 6px;
+  .login {
+    margin-left: 9px;
+    font-size: 16px;
+  }
 `;
-
-export const LoginButton = ({Icon, onLogin, loginButtonColor = 'grey'}) => {
+export const LoginButton = ({Icon, onLogin, loginButtonColor = 'white'}) => {
   return (
-    <Button width="120px" onClick={onLogin} style={{backgroundColor: loginButtonColor}}>
-      <Icon height={42} />
-      Login
+    <Button height={56} onClick={onLogin} style={{backgroundColor: loginButtonColor}}>
+      <Icon height={56} />
+      <StyledEELogo>
+        <img
+          height={36}
+          src="https://earthengine.google.com/static/images/GoogleEarthEngine_Grey_108.png"
+        />
+        <div className="login">Login</div>
+      </StyledEELogo>
     </Button>
   );
 };
 
 const LoggedInUser = ({user, href, target, iconHeight}) => (
-  <NarrowButton onClick={() => {}}>
-    <a type="button" href={href} value={target} target={target}>
-      <UserIcon user={user} email={true} isDark />
-    </a>
-  </NarrowButton>
+  <Button onClick={() => {}} height={36}>
+    <UserIcon height={36} user={user} email={true} isDark />
+  </Button>
 );
 
 // TODO - move this insane function into the UserAccount class?
