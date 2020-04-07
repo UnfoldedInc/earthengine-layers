@@ -5,27 +5,27 @@ import UserLoginPane from './user-login-pane';
 /**
  * TODO - this is a module, replace with typescript defs
  * @param {object} props
- * @param {any} account
+ * @param {any} loginProvider
  * @param {number} props.iconHeight
  * @param {string} [props.loginButtonColor]
  */
-const UnfoldedUserLoginPane = ({account, iconHeight, loginButtonColor}) => {
+const GoogleLoginPane = ({loginProvider, iconHeight, loginButtonColor}) => {
   const [error, setError] = useState(null);
   const onLogin = useCallback(
     () => {
       try {
-        account.login({prompt: 'login'});
+        loginProvider.login({prompt: 'login'});
         setError(null);
       } catch (err) {
         setError(err);
       }
     },
-    [account]
+    [loginProvider]
   );
 
   return (
     <UserLoginPane
-      user={account.user}
+      user={loginProvider.user}
       onLogin={onLogin}
       iconHeight={iconHeight}
       loginButtonColor={loginButtonColor}
@@ -37,4 +37,4 @@ const UnfoldedUserLoginPane = ({account, iconHeight, loginButtonColor}) => {
   );
 };
 
-export default UnfoldedUserLoginPane;
+export default GoogleLoginPane;

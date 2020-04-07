@@ -164,7 +164,7 @@ export default class GoogleLoginProvider {
     probe('gapi auth2 initialized');
 
     if (user) {
-      probe('Auto signed in detected', user);
+      probe('Auto sign-in detected', user);
       this._setUser(user);
     }
   }
@@ -211,8 +211,7 @@ export default class GoogleLoginProvider {
 
     // console.log('GOOGLE ACCOUNT LOGIN SUCCESS (AUTHORIZE)', authResponse, user); // eslint-disable-line
 
-    probe('gapi user data received');
-
+    probe('gapi user data received', user);
     this._setUser(user);
   }
 

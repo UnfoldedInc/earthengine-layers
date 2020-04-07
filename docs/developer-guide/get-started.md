@@ -7,5 +7,3 @@ $ yarn add @deck.gl/core @deck.gl/layers @deck.gl/geo-layers @google/earthengine
 ```
 
 ## Using
-
-

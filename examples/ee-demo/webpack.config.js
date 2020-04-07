@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MODULE_ALIASES = {}; // require('../aliases');
 const {resolve} = require('path');
@@ -37,7 +38,10 @@ const CONFIG = {
     ]
   },
 
-  plugins: [new HtmlWebpackPlugin({title: 'earthengine-layer demo'})]
+  plugins: [
+    new HtmlWebpackPlugin({title: 'earthengine-layer demo'}),
+    new webpack.EnvironmentPlugin(['EE_CLIENT_ID'])
+  ]
 };
 
 // This line enables bundling against src in this repo rather than installed module
