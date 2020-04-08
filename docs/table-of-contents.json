@@ -21,13 +21,8 @@
     },
     {
       "title": "API Reference",
-      "chapters": [
-        {
-          "title": "@unfolded.gl/earthengine-layers",
-          "entries": [
-            {"entry": "modules/earthengine-layers/docs"}
-          ]
-        }
+      "entries": [
+        {"entry": "modules/earthengine-layers/docs/api-reference/earthengine-layer"}
       ]
     }
   ]

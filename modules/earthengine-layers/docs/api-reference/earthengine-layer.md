@@ -1,11 +1,11 @@
+# EarthEngineLayer
+
 <!-- INJECT:"TileLayerDemo" -->
 
 <p class="badges">
   <img src="https://img.shields.io/badge/@unfolded.gl/earthengine--layers-lightgrey.svg?style=flat-square" alt="@unfolded.gl/earthengine-layers" />
   <img src="https://img.shields.io/badge/lighting-yes-blue.svg?style=flat-square" alt="lighting" />
 </p>
-
-# EarthEngineLayer
 
 The `EarthEngineLayer` is a composite layer that makes it possible to visualize very large datasets. Instead of fetching the entire dataset, it only loads and renders what's visible in the current viewport.
 
