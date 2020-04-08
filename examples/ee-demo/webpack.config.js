@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const MODULE_ALIASES = {}; // require('../aliases');
 const {resolve} = require('path');
 
+// eslint-disable-next-line
 if (!process.env.EE_CLIENT_ID) {
   throw new Error('Environment variable EE_CLIENT_ID not set');
 }
