@@ -1,5 +1,4 @@
 import React from 'react';
-import document from 'global/document';
 import {render} from 'react-dom';
 
 import ee from '@google/earthengine';
