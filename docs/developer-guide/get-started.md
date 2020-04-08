@@ -8,7 +8,13 @@ $ yarn add @unfolded/earthengine-layers
 $ yarn add @deck.gl/core @deck.gl/layers @deck.gl/geo-layers
 ```
 
-## Using
+## Using in Python
+
+The `EarthEngineLayer` can be used as a plugin layer to [`pydeck`](https://pydeck.gl).
+
+For more information see [pydeck integration](docs/developer-guide/pydeck-integration.md).
+
+## Using in JavaScript
 
 To use the `EarthEngineLayer` in your JavaScript application to visualize earthengine API objects (such as `ee.Image` objects):
 
