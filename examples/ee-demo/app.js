@@ -1,5 +1,4 @@
 import React from 'react';
-import document from 'global/document';
 import {render} from 'react-dom';
 
 import ee from '@google/earthengine';
@@ -8,7 +7,7 @@ import DeckGL from '@deck.gl/react';
 import {EEApi, EarthEngineLayer} from '@unfolded.gl/earthengine-layers';
 import {GoogleLoginProvider} from '@unfolded.gl/earthengine-layers';
 
-import {GoogleLoginPane} from '../../shared/react-components';
+import {GoogleLoginPane} from '../shared/react-components';
 // import {GoogleEarthEngineIcon} from '../shared/react-components';
 
 // Add a EE-enabled Google Client id here (or inject it with e.g. a webpack environment plugin)
@@ -28,7 +27,7 @@ const defaultViewState = {
   bearing: 0
 };
 
-class App extends React.Component {
+export default class App extends React.Component {
   constructor(props) {
     super(props);
 
@@ -88,4 +87,6 @@ class App extends React.Component {
   }
 }
 
-render(<App />, document.body.appendChild(document.createElement('div')));
+export function renderToDOM(container) {
+  return render(<App />, container);
+}

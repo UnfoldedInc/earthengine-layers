@@ -1,13 +1,21 @@
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MODULE_ALIASES = {}; // require('../aliases');
 const {resolve} = require('path');
+
+// eslint-disable-next-line
+if (!process.env.EE_CLIENT_ID) {
+  throw new Error('Environment variable EE_CLIENT_ID not set');
+}
 
 const CONFIG = {
   mode: 'development',
 
   entry: {
-    app: './src/app.js'
+    app: './app.js'
+  },
+
+  output: {
+    library: 'App'
   },
 
   resolve: {
@@ -24,7 +32,7 @@ const CONFIG = {
         loader: 'babel-loader',
         exclude: [/node_modules/],
         include: [
-          resolve(__dirname, 'src'),
+          resolve(__dirname, '.'),
           resolve(__dirname, '../shared'),
           /modules\/.*\/src/,
           ...Object.values(MODULE_ALIASES)
@@ -38,10 +46,7 @@ const CONFIG = {
     ]
   },
 
-  plugins: [
-    new HtmlWebpackPlugin({title: 'earthengine-layer demo'}),
-    new webpack.EnvironmentPlugin(['EE_CLIENT_ID'])
-  ]
+  plugins: [new webpack.EnvironmentPlugin(['EE_CLIENT_ID'])]
 };
 
 // This line enables bundling against src in this repo rather than installed module

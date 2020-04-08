@@ -14,20 +14,16 @@
         {
           "title": "Guides",
           "entries": [
-            {"entry": "docs/developer-guide/get-started"}
+            {"entry": "docs/developer-guide/get-started"},
+            {"entry": "docs/developer-guide/pydeck-integration"}
           ]
         }
       ]
     },
     {
       "title": "API Reference",
-      "chapters": [
-        {
-          "title": "@unfolded.gl/earthengine-layers",
-          "entries": [
-            {"entry": "modules/earthengine-layers/docs"}
-          ]
-        }
+      "entries": [
+        {"entry": "modules/earthengine-layers/docs/api-reference/earthengine-layer"}
       ]
     }
   ]

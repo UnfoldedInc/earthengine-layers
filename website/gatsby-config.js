@@ -60,14 +60,8 @@ module.exports = {
 
         EXAMPLES: [
           {
-            title: 'Benchmarks',
-            image: 'images/example-pointcloud.jpg',
-            componentUrl: resolve(__dirname, '../examples/benchmarks/app.js'),
-            path: 'examples/benchmarks'
-          },
-          {
             title: 'EarthEngineLayer',
-            image: 'images/example-pointcloud.jpg', // TODO - replace image
+            image: 'images/example-eelayer.png',
             componentUrl: resolve(__dirname, '../examples/ee-demo/app.js'),
             path: 'examples/earthengine-layer'
           }
