@@ -3,7 +3,7 @@ const MODULE_ALIASES = {}; // require('../aliases');
 const {resolve} = require('path');
 
 if (!process.env.EE_CLIENT_ID) {
-  throw new Error('Environment variable EE_CLIENT_ID not set')
+  throw new Error('Environment variable EE_CLIENT_ID not set');
 }
 
 const CONFIG = {
@@ -45,9 +45,7 @@ const CONFIG = {
     ]
   },
 
-  plugins: [
-    new webpack.EnvironmentPlugin(['EE_CLIENT_ID'])
-  ]
+  plugins: [new webpack.EnvironmentPlugin(['EE_CLIENT_ID'])]
 };
 
 // This line enables bundling against src in this repo rather than installed module
