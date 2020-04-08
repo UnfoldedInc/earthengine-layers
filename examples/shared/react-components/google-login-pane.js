@@ -1,7 +1,16 @@
 import React, {useCallback, useState} from 'react';
+import styled from 'styled-components';
+
 import EarthEngineIcon from './earthengine-icon';
 import UserLoginPane from './user-login-pane';
 
+const StyledPanel = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  padding: 24px;
+`;
 /**
  * TODO - this is a module, replace with typescript defs
  * @param {object} props
@@ -24,16 +33,18 @@ const GoogleLoginPane = ({loginProvider, iconHeight, loginButtonColor}) => {
   );
 
   return (
-    <UserLoginPane
-      user={loginProvider.user}
-      onLogin={onLogin}
-      iconHeight={iconHeight}
-      loginButtonColor={loginButtonColor}
-      Icon={EarthEngineIcon}
-      href="http://www.unfolded.ai/data?login"
-      target="unfolded"
-      error={error}
-    />
+    <StyledPanel>
+      <UserLoginPane
+        user={loginProvider.user}
+        onLogin={onLogin}
+        iconHeight={iconHeight}
+        loginButtonColor={loginButtonColor}
+        Icon={EarthEngineIcon}
+        href="https://earthengine.google.com/"
+        target="_blank"
+        error={error}
+      />
+    </StyledPanel>
   );
 };
 
