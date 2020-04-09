@@ -12,7 +12,7 @@ $ yarn add @deck.gl/core @deck.gl/layers @deck.gl/geo-layers
 
 The `EarthEngineLayer` can be used as a plugin layer to [`pydeck`](https://pydeck.gl).
 
-For more information see [pydeck integration](docs/developer-guide/pydeck-integration.md).
+For more information see [pydeck integration](pydeck-integration.md).
 
 ## Using in JavaScript
 
