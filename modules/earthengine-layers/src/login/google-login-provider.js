@@ -328,6 +328,7 @@ function getAuthOptionsFromProps(props) {
     client_id: props.clientId,
     cookie_policy: props.cookiePolicy,
     login_hint: props.loginHint,
+    scope: props.scope,
     hosted_domain: props.hostedDomain,
     fetch_basic_profile: props.fetchBasicProfile,
     ux_mode: props.uxMode,
