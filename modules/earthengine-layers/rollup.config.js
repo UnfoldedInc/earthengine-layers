@@ -15,7 +15,14 @@ const config = {
     }
   },
   external: ['@deck.gl/core', '@deck.gl/layers', '@luma.gl/core'],
-  plugins: [resolve({preferBuiltins: true}), commonjs(), json()]
+  plugins: [
+    resolve({
+      browser: true,
+      preferBuiltins: true
+    }),
+    commonjs(),
+    json()
+  ]
 };
 
 export default config;
