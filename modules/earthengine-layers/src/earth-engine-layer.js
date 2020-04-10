@@ -67,6 +67,17 @@ export default class EarthEngineLayer extends CompositeLayer {
     this.setState({map, getTileUrl});
   }
 
+  // Get static layer id for image
+  _getLayerId(getTileUrl) {
+    const url = getTileUrl(0, 0, 0);
+
+    // This grabs the full layer id of the URL, e.g.
+    // [0-9a-f]{32}-[0-9a-f]{32}
+    const fullId = url.split('/')[7];
+
+    return fullId.split('-')[0];
+  }
+
   renderLayers() {
     const {getTileUrl} = this.state;
 
@@ -74,7 +85,7 @@ export default class EarthEngineLayer extends CompositeLayer {
       getTileUrl &&
       new EnhancedTileLayer({
         // TODO HACK Get a tile url to trigger refresh on dataset change
-        id: getTileUrl(0, 0, 0),
+        id: this._getLayerId(getTileUrl),
         async getTileData({x, y, z}) {
           const imageUrl = getTileUrl(x, y, z);
           const image = await loadImageBitmap(imageUrl);
