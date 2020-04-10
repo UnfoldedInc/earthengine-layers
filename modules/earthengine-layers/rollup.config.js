@@ -5,7 +5,7 @@ import json from '@rollup/plugin-json';
 const config = {
   input: 'src/bundle.js',
   output: {
-    file: 'dist/rollup.js',
+    file: 'dist/bundle.js',
     format: 'iife',
     name: 'customLayerLibrary',
     globals: {
