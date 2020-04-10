@@ -2,11 +2,7 @@ import {CompositeLayer} from '@deck.gl/core';
 import EnhancedTileLayer from './tile-layer/enhanced-tile-layer';
 import BitmapLayer from './bitmap-layer/bitmap-layer';
 import './ee-api'; // Promisify ee apis
-// import {load} from '@loaders.gl/core';
-// import {ImageLoader, getImageData} from '@loaders.gl/images';
 import {loadImageBitmap} from './image-utils/image-utils';
-// import {createMeshGrid} from './image-utils/image-utils';
-
 import SphericalMercator from '@mapbox/sphericalmercator';
 
 const merc = new SphericalMercator({size: 256});

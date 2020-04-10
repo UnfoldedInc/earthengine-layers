@@ -11,10 +11,16 @@
     "url": "https://github.com/UnfoldedInc/platform.git"
   },
   "main": "src/index.js",
-  "scripts": {},
+  "scripts": {
+    "build-amd": "yarn; webpack; cp dist/bundle.js build/custom-layer-library-es6-amd-require.js"
+  },
   "dependencies": {
     "@google/earthengine": "^0.1.209",
     "@math.gl/web-mercator": "3.1.2",
     "@mapbox/sphericalmercator": "^1.1.0"
+  },
+  "devDependencies": {
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11"
   }
 }
