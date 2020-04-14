@@ -15,7 +15,7 @@
     "build-rollup": "rollup --config"
   },
   "dependencies": {
-    "@google/earthengine": "^0.1.209",
+    "@google/earthengine": "^0.1.217",
     "@mapbox/sphericalmercator": "^1.1.0",
     "@math.gl/web-mercator": "3.1.2"
   },
