@@ -69,7 +69,7 @@ export default class App extends React.Component {
   render() {
     const layers = this.state.eeImage && [
       new EarthEngineLayer({
-        data: this.state.eeImage,
+        eeObject: this.state.eeImage,
         visParams: {min: 0, max: 255}
       })
     ];
