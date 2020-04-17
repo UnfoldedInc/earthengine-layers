@@ -33,7 +33,7 @@ export default class EarthEngineLayer extends CompositeLayer {
   }
 
   async _updateToken(props, oldProps, changeFlags) {
-    if (!props.token || (props.token === oldProps.token)) {
+    if (!props.token || props.token === oldProps.token) {
       return;
     }
 
