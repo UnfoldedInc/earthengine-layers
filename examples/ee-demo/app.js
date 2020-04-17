@@ -1,7 +1,7 @@
 import React from 'react';
 import {render} from 'react-dom';
 
-import ee from '@google/earthengine';
+// import ee from '@google/earthengine';
 
 import DeckGL from '@deck.gl/react';
 import {EEApi, EarthEngineLayer} from '@unfolded.gl/earthengine-layers';
@@ -58,7 +58,9 @@ export default class App extends React.Component {
     this.forceUpdate();
     await this.eeApi.initialize(EE_CLIENT_ID); // Client id to your EE application
 
-    const eeImage = ee.Image('CGIAR/SRTM90_V4');
+    // const eeImage = ee.Image('CGIAR/SRTM90_V4');
+    const eeImage =
+      '{"type":"Invocation","arguments":{"id":"CGIAR/SRTM90_V4"},"functionName":"Image.load"}';
     this.setState({eeImage});
   }
 
