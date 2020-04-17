@@ -1,7 +1,7 @@
 import {CompositeLayer} from '@deck.gl/core';
 import EnhancedTileLayer from './tile-layer/enhanced-tile-layer';
 import {BitmapLayer} from '@deck.gl/layers';
-import './ee-api'; // Promisify ee apis
+import EEApi from './ee-api'; // Promisify ee apis
 // import {load} from '@loaders.gl/core';
 // import {ImageLoader, getImageData} from '@loaders.gl/images';
 import {loadImageBitmap} from './image-utils/image-utils';
@@ -11,9 +11,12 @@ import SphericalMercator from '@mapbox/sphericalmercator';
 
 const merc = new SphericalMercator({size: 256});
 
+const eeApi = new EEApi();
+
 const defaultProps = {
   /*
   data: object,
+  token: string,
   visParams: object
   */
 };
@@ -24,8 +27,19 @@ export default class EarthEngineLayer extends CompositeLayer {
   }
 
   updateState({props, oldProps, changeFlags}) {
+    this._updateToken(props, oldProps, changeFlags);
     this._updateEEObject(props, oldProps, changeFlags);
     this._updateEEVisParams(props, oldProps, changeFlags);
+  }
+
+  async _updateToken(props, oldProps, changeFlags) {
+    if (!props.token || (props.token === oldProps.token)) {
+      return;
+    }
+
+    const {token} = props;
+    await eeApi.initialize({token});
+    this.setState({token});
   }
 
   _updateEEObject(props, oldProps, changeFlags) {
