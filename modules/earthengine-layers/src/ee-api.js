@@ -33,7 +33,7 @@ export default class EEApi {
     });
   }
 
-  // TODO keep? - From github test code
+  // Set short-lived Access Token directly
   setToken(token) {
     if (token) {
       ee.apiclient.setAuthToken('', 'Bearer', token, 3600, [], undefined, false);
