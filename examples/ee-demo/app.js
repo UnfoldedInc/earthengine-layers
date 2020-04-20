@@ -56,7 +56,8 @@ export default class App extends React.Component {
     this.loggedIn = true;
 
     this.forceUpdate();
-    await this.eeApi.initialize(EE_CLIENT_ID); // Client id to your EE application
+    // Client id to your EE application
+    await this.eeApi.initialize({clientId: EE_CLIENT_ID});
 
     const eeImage = ee.Image('CGIAR/SRTM90_V4').serialize();
     this.setState({eeImage});
