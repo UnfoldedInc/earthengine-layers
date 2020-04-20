@@ -13,6 +13,9 @@ import SphericalMercator from '@mapbox/sphericalmercator';
 const merc = new SphericalMercator({size: 256});
 
 const eeApi = new EEApi();
+// Global access token, to allow single EE API initialization if using multiple
+// layers
+let accessToken;
 
 const defaultProps = {
   /*
@@ -35,13 +38,13 @@ export default class EarthEngineLayer extends CompositeLayer {
   }
 
   async _updateToken(props, oldProps, changeFlags) {
-    if (!props.token || props.token === oldProps.token) {
+    if (!props.token || props.token === accessToken) {
       return;
     }
 
     const {token} = props;
     await eeApi.initialize({token});
-    this.setState({token});
+    accessToken = token;
   }
 
   _updateEEObject(props, oldProps, changeFlags) {
