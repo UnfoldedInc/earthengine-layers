@@ -35,6 +35,7 @@ export default class EarthEngineLayer extends CompositeLayer {
     }
 
     let eeObject;
+    // If a string, assume a JSON-serialized EE object.
     if (typeof props.eeObject === 'string') {
       eeObject = ee.Deserializer.fromJSON(props.eeObject);
     } else {
