@@ -58,7 +58,7 @@ export default class App extends React.Component {
     this.forceUpdate();
     await this.eeApi.initialize(EE_CLIENT_ID); // Client id to your EE application
 
-    const eeImage = ee.Image('CGIAR/SRTM90_V4');
+    const eeImage = ee.Image('CGIAR/SRTM90_V4').serialize();
     this.setState({eeImage});
   }
 
@@ -69,7 +69,7 @@ export default class App extends React.Component {
   render() {
     const layers = this.state.eeImage && [
       new EarthEngineLayer({
-        data: this.state.eeImage,
+        eeObject: this.state.eeImage,
         visParams: {min: 0, max: 255}
       })
     ];

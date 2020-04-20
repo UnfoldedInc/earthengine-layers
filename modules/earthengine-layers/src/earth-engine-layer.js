@@ -1,6 +1,7 @@
 import {CompositeLayer} from '@deck.gl/core';
 import EnhancedTileLayer from './tile-layer/enhanced-tile-layer';
 import {BitmapLayer} from '@deck.gl/layers';
+import ee from '@google/earthengine';
 import './ee-api'; // Promisify ee apis
 // import {load} from '@loaders.gl/core';
 // import {ImageLoader, getImageData} from '@loaders.gl/images';
@@ -13,7 +14,7 @@ const merc = new SphericalMercator({size: 256});
 
 const defaultProps = {
   /*
-  data: object,
+  eeObject: String || object,
   visParams: object
   */
 };
@@ -33,9 +34,15 @@ export default class EarthEngineLayer extends CompositeLayer {
       return;
     }
 
-    let eeObject = props.data;
+    let eeObject;
+    // If a string, assume a JSON-serialized EE object.
+    if (typeof props.eeObject === 'string') {
+      eeObject = ee.Deserializer.fromJSON(props.eeObject);
+    } else {
+      eeObject = props.eeObject;
+    }
 
-    if (Array.isArray(props.data) && props.data.length === 0) {
+    if (Array.isArray(props.eeObject) && props.eeObject.length === 0) {
       eeObject = null;
     }
 
