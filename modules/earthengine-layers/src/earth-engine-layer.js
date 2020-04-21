@@ -1,8 +1,8 @@
 import {CompositeLayer} from '@deck.gl/core';
 import EnhancedTileLayer from './tile-layer/enhanced-tile-layer';
 import {BitmapLayer} from '@deck.gl/layers';
+import EEApi from './ee-api'; // Promisify ee apis
 import ee from '@google/earthengine';
-import './ee-api'; // Promisify ee apis
 // import {load} from '@loaders.gl/core';
 // import {ImageLoader, getImageData} from '@loaders.gl/images';
 import {loadImageBitmap} from './image-utils/image-utils';
@@ -12,8 +12,15 @@ import SphericalMercator from '@mapbox/sphericalmercator';
 
 const merc = new SphericalMercator({size: 256});
 
+const eeApi = new EEApi();
+// Global access token, to allow single EE API initialization if using multiple
+// layers
+let accessToken;
+
 const defaultProps = {
   /*
+  data: object,
+  token: string,
   eeObject: String || object,
   visParams: object
   */
@@ -24,9 +31,20 @@ export default class EarthEngineLayer extends CompositeLayer {
     this.state = {};
   }
 
-  updateState({props, oldProps, changeFlags}) {
+  async updateState({props, oldProps, changeFlags}) {
+    await this._updateToken(props, oldProps, changeFlags);
     this._updateEEObject(props, oldProps, changeFlags);
-    this._updateEEVisParams(props, oldProps, changeFlags);
+    await this._updateEEVisParams(props, oldProps, changeFlags);
+  }
+
+  async _updateToken(props, oldProps, changeFlags) {
+    if (!props.token || props.token === accessToken) {
+      return;
+    }
+
+    const {token} = props;
+    await eeApi.initialize({token});
+    accessToken = token;
   }
 
   _updateEEObject(props, oldProps, changeFlags) {

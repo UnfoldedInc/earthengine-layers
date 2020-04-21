@@ -7,13 +7,17 @@ export default class EEApi {
     this.ee = ee;
   }
 
-  async initialize(clientId, token) {
-    await this.authenticateViaOuth(clientId);
+  async initialize({clientId, token}) {
+    if (token) {
+      this.setToken(token);
+    } else {
+      await this.authenticateViaOAuth(clientId);
+    }
     await this._initialize();
   }
 
   // Authenticate using an OAuth pop-up.
-  async authenticateViaOuth(clientId, extraScopes = null) {
+  async authenticateViaOAuth(clientId, extraScopes = null) {
     return await new Promise((resolve, reject) => {
       ee.data.authenticateViaOauth(
         clientId,
@@ -29,7 +33,7 @@ export default class EEApi {
     });
   }
 
-  // TODO keep? - From github test code
+  // Set short-lived Access Token directly
   setToken(token) {
     if (token) {
       ee.apiclient.setAuthToken('', 'Bearer', token, 3600, [], undefined, false);
