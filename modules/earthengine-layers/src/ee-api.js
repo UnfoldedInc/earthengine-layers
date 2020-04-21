@@ -37,9 +37,6 @@ export default class EEApi {
   setToken(token) {
     if (token) {
       ee.apiclient.setAuthToken('', 'Bearer', token, 3600, [], undefined, false);
-      ee.apiclient.setCloudApiEnabled(true);
-    } else {
-      ee.apiclient.setCloudApiEnabled(false);
     }
   }
 
