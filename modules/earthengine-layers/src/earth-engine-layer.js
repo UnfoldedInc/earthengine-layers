@@ -31,10 +31,10 @@ export default class EarthEngineLayer extends CompositeLayer {
     this.state = {};
   }
 
-  updateState({props, oldProps, changeFlags}) {
-    this._updateToken(props, oldProps, changeFlags);
+  async updateState({props, oldProps, changeFlags}) {
+    await this._updateToken(props, oldProps, changeFlags);
     this._updateEEObject(props, oldProps, changeFlags);
-    this._updateEEVisParams(props, oldProps, changeFlags);
+    await this._updateEEVisParams(props, oldProps, changeFlags);
   }
 
   async _updateToken(props, oldProps, changeFlags) {
