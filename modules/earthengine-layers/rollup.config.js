@@ -7,7 +7,7 @@ const config = {
   output: {
     file: 'dist/bundle.js',
     format: 'iife',
-    name: 'customLayerLibrary',
+    name: 'EarthEngineLayerLibrary',
     globals: {
       '@deck.gl/core': 'deck',
       '@deck.gl/layers': 'deck',
