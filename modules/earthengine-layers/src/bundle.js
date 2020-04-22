@@ -1,10 +1,10 @@
 /* global window, global */
 import EarthEngineLayer from './earth-engine-layer';
-const customLayerLibrary = {
+const EarthEngineLayerLibrary = {
   EarthEngineLayer
 };
 
 const _global = typeof window === 'undefined' ? global : window;
-_global.customLayerLibrary = customLayerLibrary;
+_global.EarthEngineLayerLibrary = EarthEngineLayerLibrary;
 
-export default customLayerLibrary;
+export default EarthEngineLayerLibrary;
