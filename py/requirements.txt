@@ -1,0 +1,3 @@
+earthengine-api>=0.1.215
+pydeck>=0.3.0
+requests
