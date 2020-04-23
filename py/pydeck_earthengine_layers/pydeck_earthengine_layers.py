@@ -35,12 +35,16 @@ class EarthEngineLayer(pdk.Layer):
         # Initialize token expiration to the past
         self.access_token = None
         self.token_expiration = datetime.now() - timedelta(seconds=1)
+
+        # Define _token as an attribute, so `token` shows up in `vars(class)`
         self._token = self.token
 
         self.ee_object = ee_object.serialize() if not isinstance(
             ee_object, str) else ee_object
 
-        # This keeps pydeck from
+        # This keeps pydeck from serializing these attributes to JS
+        # Note: this might be global, but other layers shouldn't depend on these
+        # keys
         pdk.bindings.json_tools.IGNORE_KEYS.extend([
             'credentials', 'access_token', 'token_expiration'])
 
