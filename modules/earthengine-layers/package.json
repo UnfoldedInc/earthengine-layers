@@ -24,5 +24,10 @@
     "@rollup/plugin-json": "^4.0.2",
     "@rollup/plugin-node-resolve": "^7.1.1",
     "rollup": "^2.4.0"
+  },
+  "peerDependencies": {
+    "@deck.gl/core": "^8.1.1",	
+    "@deck.gl/geo-layers": "^8.1.1",	
+    "@deck.gl/layers": "^8.1.1"	
   }
 }
