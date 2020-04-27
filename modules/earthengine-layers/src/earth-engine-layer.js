@@ -3,9 +3,8 @@ import EnhancedTileLayer from './tile-layer/enhanced-tile-layer';
 import {BitmapLayer} from '@deck.gl/layers';
 import EEApi from './ee-api'; // Promisify ee apis
 import ee from '@google/earthengine';
-// import {load} from '@loaders.gl/core';
-// import {ImageLoader, getImageData} from '@loaders.gl/images';
-import {loadImageBitmap} from './image-utils/image-utils';
+import {load} from '@loaders.gl/core';
+import {ImageLoader} from '@loaders.gl/images';
 // import {createMeshGrid} from './image-utils/image-utils';
 
 import SphericalMercator from '@mapbox/sphericalmercator';
@@ -113,9 +112,7 @@ export default class EarthEngineLayer extends CompositeLayer {
         id: this._getLayerId(getTileUrl),
         async getTileData({x, y, z}) {
           const imageUrl = getTileUrl(x, y, z);
-          const image = await loadImageBitmap(imageUrl);
-          // const imageData = await getImageData(image);
-
+          const image = await load(imageUrl, ImageLoader);
           const bounds = merc.bbox(x, y, z);
 
           // const meshGrid = createMeshGrid(bounds, imageData);

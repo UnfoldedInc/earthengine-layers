@@ -1,9 +1,6 @@
 // TODO
 /* eslint-disable */
 /* global fetch */
-// import Martini from '@mapbox/martini';
-
-// const martini = new Martini(257);
 
 export function getGrayScaleData(imageData) {
   const width = Math.sqrt(imageData.length / 4);
@@ -70,52 +67,6 @@ export function createMeshGrid(
   }
 
   return output;
-}
-
-export async function loadImageData(imageUrl, options = {}) {
-  const imageBitmap = await loadImageBitmap(imageUrl, options);
-  return getImageData(imageBitmap, true);
-}
-
-export async function loadImage(imageUrl) {
-  const response = await fetch(imageUrl);
-  const buffer = await response.arrayBuffer();
-  const base64Flag = 'data:image/jpeg;base64,';
-  const imageStr = arrayBufferToBase64(buffer);
-  const image = new Image();
-  return await new Promise(resolve => {
-    image.onload = () => resolve(image);
-    image.src = base64Flag + imageStr;
-  });
-}
-
-export async function loadImageBitmap(imageUrl, options = {}) {
-  const response = await fetch(imageUrl);
-  const blob = await response.blob();
-  // const blob = new Blob([new Uint8Array(arrayBuffer)]); // MIME type not needed...
-  const imagebitmapOptions = options && options.imagebitmap;
-  return imagebitmapOptions ? createImageBitmap(blob) : createImageBitmap(blob, imagebitmapOptions);
-}
-
-export function getImageData(image, flipY = false) {
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
-  canvas.width = image.width;
-  canvas.height = image.height;
-
-  if (flipY) {
-    const scaleY = flipY ? -1 : 1; // Set verical scale to -1 if flip vertical
-    const posY = flipY ? image.height * -1 : 0; // Set y position to -100% if flip vertical
-    ctx.save(); // Save the current state
-    ctx.scale(1, scaleY); // Set scale to flip the image
-    ctx.drawImage(image, 0, posY); // draw the image
-    ctx.restore(); // Restore the last saved state
-  } else {
-    ctx.drawImage(image, 0, 0);
-  }
-
-  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  return imageData.data;
 }
 
 /*
