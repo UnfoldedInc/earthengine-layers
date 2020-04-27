@@ -914,6 +914,14 @@
     "@mapbox/tiny-sdf" "^1.1.0"
     earcut "^2.0.6"
 
+"@deck.gl/mesh-layers@^8.1.3":
+  version "8.1.3"
+  resolved "https://registry.yarnpkg.com/@deck.gl/mesh-layers/-/mesh-layers-8.1.3.tgz#4c5d34f0383e7290b536b8ab3b078c37a19bdb49"
+  integrity sha512-xI9J9xVPtBKUHkN6sOVIYTJONwfym/vfifbf4lXe31shwu6GImYS/ZGJgcn9QuYUOqoJuaugUHpGf3l3/MnWNw==
+  dependencies:
+    "@luma.gl/experimental" "^8.1.0"
+    "@luma.gl/shadertools" "^8.1.0"
+
 "@deck.gl/react@^8.1.1":
   version "8.1.1"
   resolved "https://registry.yarnpkg.com/@deck.gl/react/-/react-8.1.1.tgz#d05cc666d6334c9d36d23c7436afc3f8d6167cdc"
@@ -1729,7 +1737,7 @@
     "@math.gl/geospatial" "^3.1.3"
     "@probe.gl/stats" "^3.2.1"
 
-"@loaders.gl/core@2.1.2", "@loaders.gl/core@^2.1.1":
+"@loaders.gl/core@2.1.2", "@loaders.gl/core@^2.1.1", "@loaders.gl/core@^2.1.2":
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/@loaders.gl/core/-/core-2.1.2.tgz#2a4ff61e138bd911ff6586fa47ffffb25d0867aa"
   integrity sha512-3OWOOYk80LnUlhnFS3XEivKJnbB2AJH14BPCEighkCdkkQXFK0TWzQuk1uSCyd2P8fae1MRU1G7j0Bat4gWDxQ==
@@ -1746,7 +1754,7 @@
     "@loaders.gl/images" "2.1.2"
     "@loaders.gl/loader-utils" "2.1.2"
 
-"@loaders.gl/images@2.1.2", "@loaders.gl/images@^2.1.1":
+"@loaders.gl/images@2.1.2", "@loaders.gl/images@^2.1.1", "@loaders.gl/images@^2.1.2":
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/@loaders.gl/images/-/images-2.1.2.tgz#ce931b7f2d3ea755e0c762fbee274ce7dddefeea"
   integrity sha512-BYTf7kajQ1Wir9X5WJLbJinctxi6aX9/QASRSkuJGqhK7gs4msGahW1wxaIXqBx7ECLTkqrQwzZ+KHqUu8Tz8w==
@@ -1806,6 +1814,11 @@
   resolved "https://registry.yarnpkg.com/@luma.gl/constants/-/constants-8.1.0.tgz#ca69f5439ce173c1d8db38e9058612e046e99588"
   integrity sha512-mKd3FKkvr17/MdrFgtVAMddTiBwgAtAtXx3XCx6bpR1nJg39f7j7MnrFB3omu/twISLWLxv9GqIo+yxuO5hnhw==
 
+"@luma.gl/constants@8.1.1":
+  version "8.1.1"
+  resolved "https://registry.yarnpkg.com/@luma.gl/constants/-/constants-8.1.1.tgz#75ad54d9ccbb92e21e12d8b16619f94da6661204"
+  integrity sha512-QasDQorHeggwLCsyaBUZd58hUjWX0785dIjb8YPJto22d/Swcg2j4SAvNOq9aD5c0MUkzXoBWvrhThLIzxn8qA==
+
 "@luma.gl/core@^8.1.0":
   version "8.1.0"
   resolved "https://registry.yarnpkg.com/@luma.gl/core/-/core-8.1.0.tgz#be1e1225ee442cfad1e604e86eb555d049bc5db3"
@@ -1830,6 +1843,16 @@
     math.gl "^3.1.3"
     probe.gl "^3.2.1"
 
+"@luma.gl/experimental@^8.1.0":
+  version "8.1.1"
+  resolved "https://registry.yarnpkg.com/@luma.gl/experimental/-/experimental-8.1.1.tgz#3627018bfaa75287ea5a0cc279896959802daeb3"
+  integrity sha512-mplWHewqzjxjk1rp0ZGrUn35fuQoohaVT38i5qQchg6YgNWqSFwSk6oCfCVIptctVIyS6PVunoHF+QTBRzBZxw==
+  dependencies:
+    "@loaders.gl/images" "^2.1.1"
+    "@luma.gl/constants" "8.1.1"
+    earcut "^2.0.6"
+    math.gl "^3.1.3"
+
 "@luma.gl/gltools@8.1.0":
   version "8.1.0"
   resolved "https://registry.yarnpkg.com/@luma.gl/gltools/-/gltools-8.1.0.tgz#8c5958c22eab7379b90ebf6f8f78bc81b7fe851b"
@@ -1843,6 +1866,14 @@
   version "8.1.0"
   resolved "https://registry.yarnpkg.com/@luma.gl/shadertools/-/shadertools-8.1.0.tgz#4cf11d2349426dbbfdec0fc9e8fba7a20e931193"
   integrity sha512-RCKaAk5tyDdiUQJciMIIuMYH2fGnzvhwbIeQV1/9oLDndkjGZCTFkLgvQnA/roZzy84QvoRoNn1FFc1XEvwwYg==
+  dependencies:
+    "@babel/runtime" "^7.0.0"
+    math.gl "^3.1.3"
+
+"@luma.gl/shadertools@^8.1.0":
+  version "8.1.1"
+  resolved "https://registry.yarnpkg.com/@luma.gl/shadertools/-/shadertools-8.1.1.tgz#a8c503622384ddd1118dddf07760ec5e1bcf4aff"
+  integrity sha512-y7OnRJmGg0qSrLYZQ7rNhRqEEbALOsVK9djCEaWDhbDXn3THJhUjtD8X+f+jGARyVZKiDbStCIFl0cmNjLUC+A==
   dependencies:
     "@babel/runtime" "^7.0.0"
     math.gl "^3.1.3"
