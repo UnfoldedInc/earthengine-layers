@@ -1737,7 +1737,7 @@
     "@math.gl/geospatial" "^3.1.3"
     "@probe.gl/stats" "^3.2.1"
 
-"@loaders.gl/core@2.1.2", "@loaders.gl/core@^2.1.1", "@loaders.gl/core@^2.1.2":
+"@loaders.gl/core@2.1.2", "@loaders.gl/core@^2.1.1":
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/@loaders.gl/core/-/core-2.1.2.tgz#2a4ff61e138bd911ff6586fa47ffffb25d0867aa"
   integrity sha512-3OWOOYk80LnUlhnFS3XEivKJnbB2AJH14BPCEighkCdkkQXFK0TWzQuk1uSCyd2P8fae1MRU1G7j0Bat4gWDxQ==
@@ -1754,7 +1754,7 @@
     "@loaders.gl/images" "2.1.2"
     "@loaders.gl/loader-utils" "2.1.2"
 
-"@loaders.gl/images@2.1.2", "@loaders.gl/images@^2.1.1", "@loaders.gl/images@^2.1.2":
+"@loaders.gl/images@2.1.2", "@loaders.gl/images@^2.1.1":
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/@loaders.gl/images/-/images-2.1.2.tgz#ce931b7f2d3ea755e0c762fbee274ce7dddefeea"
   integrity sha512-BYTf7kajQ1Wir9X5WJLbJinctxi6aX9/QASRSkuJGqhK7gs4msGahW1wxaIXqBx7ECLTkqrQwzZ+KHqUu8Tz8w==
@@ -1936,11 +1936,6 @@
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@mapbox/point-geometry/-/point-geometry-0.1.0.tgz#8a83f9335c7860effa2eeeca254332aa0aeed8f2"
   integrity sha1-ioP5M1x4YO/6Lu7KJUMyqgru2PI=
-
-"@mapbox/sphericalmercator@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@mapbox/sphericalmercator/-/sphericalmercator-1.1.0.tgz#f3b1af042620716a1289fc41e1e97f610823aefe"
-  integrity sha512-pEsfZyG4OMThlfFQbCte4gegvHUjxXCjz0KZ4Xk8NdOYTQBLflj6U8PL05RPAiuRAMAQNUUKJuL6qYZ5Y4kAWA==
 
 "@mapbox/tiny-sdf@^1.1.0":
   version "1.1.1"
