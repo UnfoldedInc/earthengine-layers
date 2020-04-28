@@ -10,7 +10,11 @@ environment, and enable Pydeck with Jupyter Notebook run:
 
 ```bash
 conda create -n pydeck-ee -c conda-forge python jupyter notebook pydeck earthengine-api requests -y
-source activate pydeck-ee
+conda activate pydeck-ee
+
+# Install the pydeck-earthengine-layers package from pip
+pip install pydeck-earthengine-layers
+
 jupyter nbextension install --sys-prefix --symlink --overwrite --py pydeck
 jupyter nbextension enable --sys-prefix --py pydeck
 ```
