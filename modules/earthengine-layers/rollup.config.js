@@ -11,10 +11,20 @@ const config = {
     globals: {
       '@deck.gl/core': 'deck',
       '@deck.gl/layers': 'deck',
-      '@luma.gl/core': 'luma'
+      '@luma.gl/core': 'luma',
+      '@loaders.gl/core': 'loaders'
     }
   },
-  external: ['@deck.gl/core', '@deck.gl/layers', '@luma.gl/core'],
+  external: [
+    '@deck.gl/core',
+    '@deck.gl/layers',
+    '@luma.gl/core',
+    '@luma.gl/engine',
+    '@luma.gl/gltools',
+    '@luma.gl/webgl',
+    '@loaders.gl/core',
+    '@loaders.gl/loader-utils'
+  ],
   plugins: [
     resolve({
       browser: true,
