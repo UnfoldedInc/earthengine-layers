@@ -12,6 +12,7 @@
     "@deck.gl/core": "^8.1.1",
     "@deck.gl/geo-layers": "^8.1.1",
     "@deck.gl/layers": "^8.1.1",
+    "@deck.gl/mesh-layers": "^8.1.3",
     "@deck.gl/react": "^8.1.1",
     "@google/earthengine": "^0.1.217",
     "@unfolded.gl/earthengine-layers": "^0.1.0",

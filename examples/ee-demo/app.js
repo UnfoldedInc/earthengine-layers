@@ -71,7 +71,11 @@ export default class App extends React.Component {
     const layers = this.state.eeImage && [
       new EarthEngineLayer({
         eeObject: this.state.eeImage,
-        visParams: {min: 0, max: 255}
+        visParams: {min: 0, max: 255},
+        opacity: 0.5,
+        // Do not display any tile that is not selected
+        // https://deck.gl/#/documentation/deckgl-api-reference/layers/tile-layer?section=refinementstrategy-enum-optional-
+        refinementStrategy: 'never'
       })
     ];
 

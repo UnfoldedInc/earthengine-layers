@@ -1,72 +1,5 @@
-var EarthEngineLayerLibrary = (function (core, layers) {
+var EarthEngineLayerLibrary = (function (core, layers, core$1) {
   'use strict';
-
-  const TILE_CONTENT_STATE = {
-    UNLOADED: 0, // Has never been requested
-    LOADING: 1, // Is waiting on a pending request
-    PROCESSING: 2, // Request received.  Contents are being processed for rendering.  Depending on the content, it might make its own requests for external data.
-    READY: 3, // Ready to render.
-    EXPIRED: 4, // Is expired and will be unloaded once new content is loaded.
-    FAILED: 5 // Request failed.
-  };
-
-  // https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#Lon..2Flat._to_tile_numbers_2
-
-  function tile2latLng(x, y, z) {
-    const lng = (x / Math.pow(2, z)) * 360 - 180;
-    const n = Math.PI - (2 * Math.PI * y) / Math.pow(2, z);
-    const lat = (180 / Math.PI) * Math.atan(0.5 * (Math.exp(n) - Math.exp(-n)));
-    return [lng, lat];
-  }
-
-  function tile2boundingBox(x, y, z) {
-    const [west, north] = tile2latLng(x, y, z);
-    const [east, south] = tile2latLng(x + 1, y + 1, z);
-    return {west, north, east, south};
-  }
-
-  class Tile2DHeader {
-    constructor({x, y, z, getTileData}) {
-      this.x = x;
-      this.y = y;
-      this.z = z;
-      this.getTileData = getTileData;
-
-      this.bbox = tile2boundingBox(this.x, this.y, this.z);
-      this.isVisible = true;
-      this.data = null;
-      this.state = TILE_CONTENT_STATE.UNLOADED;
-    }
-
-    get isLoaded() {
-      return this.state === TILE_CONTENT_STATE.READY;
-    }
-
-    isOverlapped(tileIndex) {
-      const {x, y, z} = this;
-      const m = Math.pow(2, tileIndex.z - z);
-      return Math.floor(tileIndex.x / m) === x && Math.floor(tileIndex.y / m) === y;
-    }
-
-    async loadContent() {
-      if (this.state !== TILE_CONTENT_STATE.UNLOADED) {
-        return false;
-      }
-
-      try {
-        const {x, y, z, bbox} = this;
-        this.state = TILE_CONTENT_STATE.LOADING;
-        // TODO - use request scheduler
-        this.data = await this.getTileData({x, y, z, bbox});
-        this.state = TILE_CONTENT_STATE.READY;
-        return true;
-      } catch (error) {
-        this.state = TILE_CONTENT_STATE.FAILED;
-        this.data = null;
-        throw error;
-      }
-    }
-  }
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -210,6 +143,92 @@ var EarthEngineLayerLibrary = (function (core, layers) {
   function _slicedToArray(arr, i) {
     return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
   }
+
+  var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+
+  function createCommonjsModule(fn, module) {
+  	return module = { exports: {} }, fn(module, module.exports), module.exports;
+  }
+
+  var Tile2DHeader = function () {
+    function Tile2DHeader(_ref) {
+      var x = _ref.x,
+          y = _ref.y,
+          z = _ref.z,
+          onTileLoad = _ref.onTileLoad,
+          onTileError = _ref.onTileError;
+
+      _classCallCheck(this, Tile2DHeader);
+
+      this.x = x;
+      this.y = y;
+      this.z = z;
+      this.isVisible = false;
+      this.parent = null;
+      this.children = [];
+      this.content = null;
+      this._isLoaded = false;
+      this.onTileLoad = onTileLoad;
+      this.onTileError = onTileError;
+    }
+
+    _createClass(Tile2DHeader, [{
+      key: "loadData",
+      value: function loadData(getTileData) {
+        var _this = this;
+
+        var x = this.x,
+            y = this.y,
+            z = this.z,
+            bbox = this.bbox;
+
+        if (!getTileData) {
+          return;
+        }
+
+        this._loader = Promise.resolve(getTileData({
+          x: x,
+          y: y,
+          z: z,
+          bbox: bbox
+        })).then(function (buffers) {
+          _this.content = buffers;
+          _this._isLoaded = true;
+
+          _this.onTileLoad(_this);
+
+          return buffers;
+        })["catch"](function (err) {
+          _this._isLoaded = true;
+
+          _this.onTileError(err);
+        });
+      }
+    }, {
+      key: "data",
+      get: function get() {
+        return this._isLoaded ? this.content : this._loader;
+      }
+    }, {
+      key: "isLoaded",
+      get: function get() {
+        return this._isLoaded;
+      }
+    }, {
+      key: "byteLength",
+      get: function get() {
+        var result = this.content ? this.content.byteLength : 0;
+
+        if (!Number.isFinite(result)) {
+          core.log.error('byteLength not defined in tile data')();
+        }
+
+        return result;
+      }
+    }]);
+
+    return Tile2DHeader;
+  }();
 
   /**
    * Common utilities
@@ -1416,468 +1435,2263 @@ var EarthEngineLayerLibrary = (function (core, layers) {
     return WebMercatorViewport;
   }(Viewport);
 
-  const TILE_SIZE$1 = 512;
+  var TILE_SIZE$1 = 512;
+  var urlType = {
+    type: 'url',
+    value: '',
+    validate: function validate(value) {
+      return typeof value === 'string' || Array.isArray(value) && value.every(function (url) {
+        return typeof url === 'string';
+      });
+    },
+    equals: function equals(value1, value2) {
+      if (value1 === value2) {
+        return true;
+      }
 
-  function getBoundingBox(viewport) {
-    const corners = [
-      viewport.unproject([0, 0]),
-      viewport.unproject([viewport.width, 0]),
-      viewport.unproject([0, viewport.height]),
-      viewport.unproject([viewport.width, viewport.height])
-    ];
+      if (!Array.isArray(value1) || !Array.isArray(value2)) {
+        return false;
+      }
 
-    return [
-      corners.reduce((minLng, p) => (minLng < p[0] ? minLng : p[0]), 180),
-      corners.reduce((minLat, p) => (minLat < p[1] ? minLat : p[1]), 90),
-      corners.reduce((maxLng, p) => (maxLng > p[0] ? maxLng : p[0]), -180),
-      corners.reduce((maxLat, p) => (maxLat > p[1] ? maxLat : p[1]), -90)
-    ];
+      var len = value1.length;
+
+      if (len !== value2.length) {
+        return false;
+      }
+
+      for (var i = 0; i < len; i++) {
+        if (value1[i] !== value2[i]) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+  };
+  function getURLFromTemplate(template, properties) {
+    if (!template || !template.length) {
+      return null;
+    }
+
+    if (Array.isArray(template)) {
+      var index = Math.abs(properties.x + properties.y) % template.length;
+      template = template[index];
+    }
+
+    return template.replace(/\{ *([\w_-]+) *\}/g, function (_, property) {
+      return properties[property];
+    });
   }
 
-  function getTileIndex(lngLat, scale) {
-    let [x, y] = lngLatToWorld(lngLat);
+  function getBoundingBox(viewport) {
+    var corners = [viewport.unproject([0, 0]), viewport.unproject([viewport.width, 0]), viewport.unproject([0, viewport.height]), viewport.unproject([viewport.width, viewport.height])];
+    return [Math.min(corners[0][0], corners[1][0], corners[2][0], corners[3][0]), Math.min(corners[0][1], corners[1][1], corners[2][1], corners[3][1]), Math.max(corners[0][0], corners[1][0], corners[2][0], corners[3][0]), Math.max(corners[0][1], corners[1][1], corners[2][1], corners[3][1])];
+  }
+
+  function getOSMTileIndex(lngLat, scale) {
+    var _lngLatToWorld = lngLatToWorld(lngLat),
+        _lngLatToWorld2 = _slicedToArray(_lngLatToWorld, 2),
+        x = _lngLatToWorld2[0],
+        y = _lngLatToWorld2[1];
+
     x *= scale / TILE_SIZE$1;
     y = (1 - y / TILE_SIZE$1) * scale;
     return [x, y];
   }
 
-  /**
-   * Returns all tile indices in the current viewport. If the current zoom level is smaller
-   * than minZoom, return an empty array. If the current zoom level is greater than maxZoom,
-   * return tiles that are on maxZoom.
-   */
-  function getTileIndices(viewport, maxZoom, minZoom) {
-    const z = Math.floor(viewport.zoom);
-    if (minZoom && z < minZoom) {
-      return [];
-    }
+  function getTileIndex(_ref, scale) {
+    var _ref2 = _slicedToArray(_ref, 2),
+        x = _ref2[0],
+        y = _ref2[1];
 
-    viewport = new viewport.constructor(
-      Object.assign({}, viewport, {
-        zoom: z
-      })
-    );
-
-    const bbox = getBoundingBox(viewport);
-
-    let [minX, minY] = getTileIndex([bbox[0], bbox[3]], viewport.scale);
-    let [maxX, maxY] = getTileIndex([bbox[2], bbox[1]], viewport.scale);
-
-    /*
-        |  TILE  |  TILE  |  TILE  |
-          |(minPixel)           |(maxPixel)
-        |(minIndex)                |(maxIndex)
-     */
-    minX = Math.max(0, Math.floor(minX));
-    maxX = Math.min(viewport.scale, Math.ceil(maxX));
-    minY = Math.max(0, Math.floor(minY));
-    maxY = Math.min(viewport.scale, Math.ceil(maxY));
-
-    const indices = [];
-
-    for (let x = minX; x < maxX; x++) {
-      for (let y = minY; y < maxY; y++) {
-        if (maxZoom && z > maxZoom) {
-          indices.push(getAdjustedTileIndex({x, y, z}, maxZoom));
-        } else {
-          indices.push({x, y, z});
-        }
-      }
-    }
-    return indices;
+    return [x * scale / TILE_SIZE$1, y * scale / TILE_SIZE$1];
   }
 
-  /**
-   * Calculates and returns a new tile index {x, y, z}, with z being the given adjustedZ.
-   */
-  function getAdjustedTileIndex({x, y, z}, adjustedZ) {
-    const m = Math.pow(2, z - adjustedZ);
-    return {
-      x: Math.floor(x / m),
-      y: Math.floor(y / m),
-      z: adjustedZ
-    };
+  function getScale(z) {
+    var tileSize = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : TILE_SIZE$1;
+    return Math.pow(2, z) * TILE_SIZE$1 / tileSize;
   }
 
-  /**
-   * Manages loading and purging of tiles data. This class caches recently visited tiles
-   * and only create new tiles if they are not present.
-   */
-  class Tileset2D {
-    /**
-     * Takes in a function that returns tile data, a cache size, and a max and a min zoom level.
-     * Cache size defaults to 5 * number of tiles in the current viewport
-     */
-    constructor({maxSize, maxZoom, minZoom, getTileData, onTileLoad, onTileError, onAllTilesLoaded}) {
-      this._getTileData = getTileData;
-      this.onTileError = onTileError;
-      this.onTileLoad = onTileLoad;
-      this.onAllTilesLoaded = onAllTilesLoaded;
-
-      // Maps tile id in string {z}-{x}-{y} to a Tile object
-      this._cache = new Map();
-      this._tiles = [];
-
-      // TODO: Instead of hardcode size, we should calculate how much memory left
-      this._maxSize = maxSize;
-
-      if (Number.isFinite(maxZoom)) {
-        this._maxZoom = Math.floor(maxZoom);
-      }
-      if (Number.isFinite(minZoom)) {
-        this._minZoom = Math.ceil(minZoom);
-      }
-    }
-
-    get tiles() {
-      return this._tiles;
-    }
-
-    /**
-     * Clear the current cache
-     */
-    finalize() {
-      this._cache.clear();
-    }
-
-    /**
-     * Update the cache with the given viewport and triggers callback onUpdate.
-     * @param {*} viewport
-     * @param {*} onUpdate
-     */
-    update(viewport) {
-      const {_getTileData, _maxSize, _maxZoom, _minZoom} = this;
-
-      this._markOldTiles();
-
-      const tileIndices = getTileIndices(viewport, _maxZoom, _minZoom);
-      if (!tileIndices || tileIndices.length === 0) {
-        return;
-      }
-
-      for (const cachedTile of this._cache.values()) {
-        if (tileIndices.some(tileIndex => cachedTile.isOverlapped(tileIndex))) {
-          cachedTile.isVisible = true;
-        }
-      }
-
-      let changed = false;
-
-      for (const tileIndex of tileIndices) {
-        const {x, y, z} = tileIndex;
-        let tile = this._getTile(x, y, z);
-        if (!tile) {
-          tile = new Tile2DHeader({
-            getTileData: _getTileData,
-            x,
-            y,
-            z
-          });
-
-          const tileId = this._getTileId(x, y, z);
-          this._cache.set(tileId, tile);
-          changed = true;
-
-          this._loadTileContent(tile);
-        }
-      }
-
-      if (changed) {
-        // cache size is either the user defined maxSize or 5 * number of current tiles in the viewport.
-        const commonZoomRange = 5;
-        this._resizeCache(_maxSize || commonZoomRange * tileIndices.length);
-        this._tiles = Array.from(this._cache.values())
-          // sort by zoom level so parents tiles don't show up when children tiles are rendered
-          .sort((t1, t2) => t1.z - t2.z);
-      }
-    }
-
-    async _loadTileContent(tile) {
-      try {
-        await tile.loadContent();
-        // console.log('loaded content', tile);
-        this.onTileLoad(tile);
-        tile.isVisible = true;
-      } catch (error) {
-        this.onTileError(error);
-      }
-    }
-
-    /**
-     * Clear tiles that are not visible when the cache is full
-     */
-    _resizeCache(maxSize) {
-      if (this._cache.size > maxSize) {
-        for (const cachedTile of this._cache) {
-          if (this._cache.size <= maxSize) {
-            break;
-          }
-          const tileId = cachedTile[0];
-          const tile = cachedTile[1];
-          if (!tile.isVisible) {
-            this._cache.delete(tileId);
-          }
-        }
-      }
-    }
-
-    _markOldTiles() {
-      for (const cachedTile of this._cache) {
-        cachedTile.isVisible = false;
-      }
-    }
-
-    _getTile(x, y, z) {
-      const tileId = this._getTileId(x, y, z);
-      return this._cache.get(tileId);
-    }
-
-    _getTileId(x, y, z) {
-      return `${z}-${x}-${y}`;
-    }
+  function osmTile2lngLat(x, y, z) {
+    var scale = getScale(z);
+    var lng = x / scale * 360 - 180;
+    var n = Math.PI - 2 * Math.PI * y / scale;
+    var lat = 180 / Math.PI * Math.atan(0.5 * (Math.exp(n) - Math.exp(-n)));
+    return [lng, lat];
   }
 
-  // TODO
+  function tile2XY(x, y, z, tileSize) {
+    var scale = getScale(z, tileSize);
+    return [x / scale * TILE_SIZE$1, y / scale * TILE_SIZE$1];
+  }
 
-  const defaultProps = {
-    renderSubLayers: {type: 'function', value: props => new layers.GeoJsonLayer(props)},
-    getTileData: {type: 'function', value: ({x, y, z}) => Promise.resolve(null)},
-    onTileLoad: {type: 'function', optional: true, value: () => {}},
-    // eslint-disable-next-line
-    onTileError: {type: 'function', value: err => console.error(err)},
-    onViewportLoad: {type: 'function', optional: true, value: () => {}},
-    maxZoom: null,
-    minZoom: 0,
-    maxCacheSize: null
-  };
+  function tileToBoundingBox(viewport, x, y, z) {
+    var tileSize = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : TILE_SIZE$1;
 
-  class TileLayer extends core.CompositeLayer {
-    initializeState() {
-      if ('onViewportLoaded' in this.props) {
-        core.log.removed('onViewportLoaded', 'onViewportLoad')();
-      }
+    if (viewport.isGeospatial) {
+      var _osmTile2lngLat = osmTile2lngLat(x, y, z),
+          _osmTile2lngLat2 = _slicedToArray(_osmTile2lngLat, 2),
+          west = _osmTile2lngLat2[0],
+          north = _osmTile2lngLat2[1];
 
-      this.state = {
-        tileset: null,
-        tiles: [],
-        allTilesLoaded: false
+      var _osmTile2lngLat3 = osmTile2lngLat(x + 1, y + 1, z),
+          _osmTile2lngLat4 = _slicedToArray(_osmTile2lngLat3, 2),
+          east = _osmTile2lngLat4[0],
+          south = _osmTile2lngLat4[1];
+
+      return {
+        west: west,
+        north: north,
+        east: east,
+        south: south
       };
     }
 
-    shouldUpdateState({changeFlags}) {
-      return changeFlags.somethingChanged;
-    }
+    var _tile2XY = tile2XY(x, y, z, tileSize),
+        _tile2XY2 = _slicedToArray(_tile2XY, 2),
+        left = _tile2XY2[0],
+        top = _tile2XY2[1];
 
-    updateState({props, oldProps, context, changeFlags}) {
-      let {tileset} = this.state;
-      if (
-        !tileset ||
-        (changeFlags.updateTriggersChanged &&
-          (changeFlags.updateTriggersChanged.all || changeFlags.updateTriggersChanged.getTileData))
-      ) {
-        const {getTileData, maxZoom, minZoom, maxCacheSize} = props;
-        if (tileset) {
-          tileset.finalize();
-        }
+    var _tile2XY3 = tile2XY(x + 1, y + 1, z, tileSize),
+        _tile2XY4 = _slicedToArray(_tile2XY3, 2),
+        right = _tile2XY4[0],
+        bottom = _tile2XY4[1];
 
-        tileset = new Tileset2D({
-          getTileData,
-          maxSize: maxCacheSize,
-          maxZoom,
-          minZoom,
-          onTileLoad: this._onTileLoad.bind(this),
-          onTileError: this._onTileError.bind(this)
-        });
-
-        this.setState({tileset});
-      } else if (changeFlags.updateTriggersChanged) {
-        // if any updateTriggersChanged (other than getTileData), delete the layer
-        for (const tile of this.state.tileset.tiles) {
-          tile.layer = null;
-        }
-      }
-
-      const {viewport} = context;
-      if (changeFlags.viewportChanged && viewport.id !== 'DEFAULT-INITIAL-VIEWPORT') {
-        this._updateTileset();
-      }
-    }
-
-    _onTileLoad(tile) {
-      const tilesToDisplay = this.state.tiles;
-
-      this._updateTileset();
-
-      // Callback
-      this.props.onTileLoad(tile);
-
-      // Callback to track if layer is completely loaded
-      const allTilesLoaded = tilesToDisplay.every(tile => tile.allTilesLoaded);
-      if (this.state.allTilesLoaded !== allTilesLoaded) {
-        this.setState({allTilesLoaded});
-        // this.props.onLayerLoaded(allTilesLoaded);
-        if (allTilesLoaded) {
-          const {onViewportLoad} = this.props;
-          onViewportLoad(tilesToDisplay.filter(tile => tile._data).map(tile => tile._data));
-        }
-      }
-    }
-
-    _onTileError(error) {
-      this.props.onTileError(error);
-      // errorred tiles should not block rendering, are considered "loaded" with empty data
-      this._onTileLoad();
-    }
-
-    _updateTileset() {
-      const {viewport} = this.context;
-      const {tileset} = this.state;
-      tileset.update(viewport);
-
-      // The tiles that should be displayed at this zoom level
-      const z = this.getZoomLevel();
-      const tiles = tileset.tiles.filter(tile => tile.z === z);
-      this.setState({
-        allTilesLoaded: false,
-        tiles
-      });
-
-      // console.log(tileset._tiles, tiles, z);
-
-      this.setNeedsUpdate();
-      this.setNeedsRedraw();
-    }
-
-    getPickingInfo({info, sourceLayer}) {
-      info.sourceLayer = sourceLayer;
-      info.tile = sourceLayer.props.tile;
-      return info;
-    }
-
-    getZoomLevel() {
-      const {viewport} = this.context;
-      const z = Math.floor(viewport.zoom);
-      const {maxZoom, minZoom} = this.props;
-      if (Number.isFinite(maxZoom) && z > maxZoom) {
-        return Math.floor(maxZoom);
-      } else if (Number.isFinite(minZoom) && z < minZoom) {
-        return Math.ceil(minZoom);
-      }
-      return z;
-    }
-
-    renderLayers() {
-      const {renderSubLayers, visible} = this.props;
-      const z = this.getZoomLevel();
-
-      const layers = [];
-      for (const tile of this.state.tileset.tiles) {
-        if (tile.isLoaded) {
-          // For a tile to be visible:
-          // - parent layer must be visible
-          // - tile must be visible in the current viewport
-          // - if all tiles are loaded, only display the tiles from the current z level
-          const isVisible = visible && tile.isVisible && (!this.state.isLoaded || tile.z === z);
-          // cache the rendered layer in the tile
-          // TODO - layers never update?
-          if (!tile.layer) {
-            const subLayers = renderSubLayers(
-              Object.assign({}, this.props, {
-                id: `${this.id}-${tile.x}-${tile.y}-${tile.z}`,
-                data: tile.data,
-                visible: isVisible,
-                tile
-              })
-            );
-            // eslint-disable-next-line max-depth
-            if (subLayers) {
-              tile.layer = Array.isArray(subLayers) ? subLayers : [subLayers];
-            }
-          } else if (tile.layer.some(layer => layer.props.visible !== isVisible)) {
-            tile.layer = tile.layer.map(layer => layer.clone({visible: isVisible}));
-          }
-        }
-        layers.push(tile.layer);
-      }
-      return layers;
-    }
-
-    /* Original layer code
-    renderLayers() {
-      const {renderSubLayers, visible} = this.props;
-      const z = this.getZoomLevel();
-
-      console.log('renderlayers', tileset._tiles, tiles, z);
-      return this.state.tileset.tiles.map(tile => {
-        // For a tile to be visible:
-        // - parent layer must be visible
-        // - tile must be visible in the current viewport
-        // - if all tiles are loaded, only display the tiles from the current z level
-        const isVisible = visible && tile.isVisible && (!this.state.allTilesLoaded || tile.z === z);
-        // cache the rendered layer in the tile
-        if (!tile.layer) {
-          tile.layer = renderSubLayers(
-            Object.assign({}, this.props, {
-              id: `${this.id}-${tile.x}-${tile.y}-${tile.z}`,
-              data: tile.data,
-              visible: isVisible,
-              tile
-            })
-          );
-        } else if (tile.layer.props.visible !== isVisible) {
-          tile.layer = tile.layer.clone({visible: isVisible});
-        }
-        return tile.layer;
-      });
-    }
-    */
+    return {
+      left: left,
+      top: top,
+      right: right,
+      bottom: bottom
+    };
   }
 
+  function getIdentityTileIndices(viewport, z, tileSize) {
+    var bbox = getBoundingBox(viewport);
+    var scale = getScale(z, tileSize);
+
+    var _getTileIndex = getTileIndex([bbox[0], bbox[1]], scale),
+        _getTileIndex2 = _slicedToArray(_getTileIndex, 2),
+        minX = _getTileIndex2[0],
+        minY = _getTileIndex2[1];
+
+    var _getTileIndex3 = getTileIndex([bbox[2], bbox[3]], scale),
+        _getTileIndex4 = _slicedToArray(_getTileIndex3, 2),
+        maxX = _getTileIndex4[0],
+        maxY = _getTileIndex4[1];
+
+    var indices = [];
+
+    for (var x = Math.floor(minX); x < maxX; x++) {
+      for (var y = Math.floor(minY); y < maxY; y++) {
+        indices.push({
+          x: x,
+          y: y,
+          z: z
+        });
+      }
+    }
+
+    return indices;
+  }
+
+  function getOSMTileIndices(viewport, z) {
+    var bbox = getBoundingBox(viewport);
+    var scale = getScale(z);
+
+    var _getOSMTileIndex = getOSMTileIndex([bbox[0], bbox[3]], scale),
+        _getOSMTileIndex2 = _slicedToArray(_getOSMTileIndex, 2),
+        minX = _getOSMTileIndex2[0],
+        minY = _getOSMTileIndex2[1];
+
+    var _getOSMTileIndex3 = getOSMTileIndex([bbox[2], bbox[1]], scale),
+        _getOSMTileIndex4 = _slicedToArray(_getOSMTileIndex3, 2),
+        maxX = _getOSMTileIndex4[0],
+        maxY = _getOSMTileIndex4[1];
+
+    var indices = [];
+    minX = Math.floor(minX);
+    maxX = Math.min(minX + scale, maxX);
+    minY = Math.max(0, Math.floor(minY));
+    maxY = Math.min(scale, maxY);
+
+    for (var x = minX; x < maxX; x++) {
+      for (var y = minY; y < maxY; y++) {
+        var normalizedX = x - Math.floor(x / scale) * scale;
+        indices.push({
+          x: normalizedX,
+          y: y,
+          z: z
+        });
+      }
+    }
+
+    return indices;
+  }
+
+  function getTileIndices(viewport, maxZoom, minZoom) {
+    var tileSize = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : TILE_SIZE$1;
+    var z = Math.ceil(viewport.zoom);
+
+    if (Number.isFinite(minZoom) && z < minZoom) {
+      return [];
+    }
+
+    if (Number.isFinite(maxZoom) && z > maxZoom) {
+      z = maxZoom;
+    }
+
+    return viewport.isGeospatial ? getOSMTileIndices(viewport, z) : getIdentityTileIndices(viewport, z, tileSize);
+  }
+
+  var TILE_STATE_UNKNOWN = 0;
+  var TILE_STATE_VISIBLE = 1;
+  var TILE_STATE_PLACEHOLDER = 3;
+  var TILE_STATE_HIDDEN = 4;
+  var TILE_STATE_SELECTED = 5;
+  var STRATEGY_NEVER = 'never';
+  var STRATEGY_DEFAULT = 'best-available';
+  var DEFAULT_CACHE_SCALE = 5;
+
+  var Tileset2D = function () {
+    function Tileset2D(opts) {
+      var _this = this;
+
+      _classCallCheck(this, Tileset2D);
+
+      this.opts = opts;
+      this._getTileData = opts.getTileData;
+      this.onTileError = opts.onTileError;
+
+      this.onTileLoad = function (tile) {
+        opts.onTileLoad(tile);
+
+        if (_this.opts.maxCacheByteSize) {
+          _this._cacheByteSize += tile.byteLength;
+
+          _this._resizeCache();
+        }
+      };
+
+      this._cache = new Map();
+      this._tiles = [];
+      this._dirty = false;
+      this._cacheByteSize = 0;
+      this._viewport = null;
+      this._selectedTiles = null;
+      this._frameNumber = 0;
+      this.setOptions(opts);
+    }
+
+    _createClass(Tileset2D, [{
+      key: "setOptions",
+      value: function setOptions(opts) {
+        Object.assign(this.opts, opts);
+
+        if (Number.isFinite(opts.maxZoom)) {
+          this._maxZoom = Math.floor(opts.maxZoom);
+        }
+
+        if (Number.isFinite(opts.minZoom)) {
+          this._minZoom = Math.ceil(opts.minZoom);
+        }
+      }
+    }, {
+      key: "update",
+      value: function update(viewport) {
+        var _this2 = this;
+
+        if (viewport !== this._viewport) {
+          this._viewport = viewport;
+          var tileIndices = this.getTileIndices({
+            viewport: viewport,
+            maxZoom: this._maxZoom,
+            minZoom: this._minZoom
+          });
+          this._selectedTiles = tileIndices.map(function (index) {
+            return _this2._getTile(index, true);
+          });
+
+          if (this._dirty) {
+            this._rebuildTree();
+          }
+        }
+
+        var changed = this.updateTileStates();
+
+        if (this._dirty) {
+          this._resizeCache();
+        }
+
+        if (changed) {
+          this._frameNumber++;
+        }
+
+        return this._frameNumber;
+      }
+    }, {
+      key: "getTileIndices",
+      value: function getTileIndices$1(_ref) {
+        var viewport = _ref.viewport,
+            maxZoom = _ref.maxZoom,
+            minZoom = _ref.minZoom;
+        return getTileIndices(viewport, maxZoom, minZoom, this.opts.tileSize);
+      }
+    }, {
+      key: "getTileMetadata",
+      value: function getTileMetadata(_ref2) {
+        var x = _ref2.x,
+            y = _ref2.y,
+            z = _ref2.z;
+        return {
+          bbox: tileToBoundingBox(this._viewport, x, y, z, this.opts.tileSize)
+        };
+      }
+    }, {
+      key: "getParentIndex",
+      value: function getParentIndex(tileIndex) {
+        tileIndex.x = Math.floor(tileIndex.x / 2);
+        tileIndex.y = Math.floor(tileIndex.y / 2);
+        tileIndex.z -= 1;
+        return tileIndex;
+      }
+    }, {
+      key: "updateTileStates",
+      value: function updateTileStates() {
+        this._updateTileStates(this.selectedTiles);
+
+        var changed = false;
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
+
+        try {
+          for (var _iterator = this._cache.values()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            var tile = _step.value;
+            var isVisible = Boolean(tile.state & TILE_STATE_VISIBLE);
+
+            if (tile.isVisible !== isVisible) {
+              changed = true;
+              tile.isVisible = isVisible;
+            }
+          }
+        } catch (err) {
+          _didIteratorError = true;
+          _iteratorError = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+              _iterator["return"]();
+            }
+          } finally {
+            if (_didIteratorError) {
+              throw _iteratorError;
+            }
+          }
+        }
+
+        return changed;
+      }
+    }, {
+      key: "_rebuildTree",
+      value: function _rebuildTree() {
+        var _cache = this._cache;
+        var _iteratorNormalCompletion2 = true;
+        var _didIteratorError2 = false;
+        var _iteratorError2 = undefined;
+
+        try {
+          for (var _iterator2 = _cache.values()[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+            var tile = _step2.value;
+            tile.parent = null;
+            tile.children.length = 0;
+          }
+        } catch (err) {
+          _didIteratorError2 = true;
+          _iteratorError2 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+              _iterator2["return"]();
+            }
+          } finally {
+            if (_didIteratorError2) {
+              throw _iteratorError2;
+            }
+          }
+        }
+
+        var _iteratorNormalCompletion3 = true;
+        var _didIteratorError3 = false;
+        var _iteratorError3 = undefined;
+
+        try {
+          for (var _iterator3 = _cache.values()[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+            var _tile = _step3.value;
+
+            var parent = this._getNearestAncestor(_tile.x, _tile.y, _tile.z);
+
+            _tile.parent = parent;
+
+            if (parent) {
+              parent.children.push(_tile);
+            }
+          }
+        } catch (err) {
+          _didIteratorError3 = true;
+          _iteratorError3 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion3 && _iterator3["return"] != null) {
+              _iterator3["return"]();
+            }
+          } finally {
+            if (_didIteratorError3) {
+              throw _iteratorError3;
+            }
+          }
+        }
+      }
+    }, {
+      key: "_updateTileStates",
+      value: function _updateTileStates(selectedTiles) {
+        var _cache = this._cache;
+        var refinementStrategy = this.opts.refinementStrategy || STRATEGY_DEFAULT;
+        var _iteratorNormalCompletion4 = true;
+        var _didIteratorError4 = false;
+        var _iteratorError4 = undefined;
+
+        try {
+          for (var _iterator4 = _cache.values()[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+            var tile = _step4.value;
+            tile.state = TILE_STATE_UNKNOWN;
+          }
+        } catch (err) {
+          _didIteratorError4 = true;
+          _iteratorError4 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion4 && _iterator4["return"] != null) {
+              _iterator4["return"]();
+            }
+          } finally {
+            if (_didIteratorError4) {
+              throw _iteratorError4;
+            }
+          }
+        }
+
+        var _iteratorNormalCompletion5 = true;
+        var _didIteratorError5 = false;
+        var _iteratorError5 = undefined;
+
+        try {
+          for (var _iterator5 = selectedTiles[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+            var _tile2 = _step5.value;
+            _tile2.state = TILE_STATE_SELECTED;
+          }
+        } catch (err) {
+          _didIteratorError5 = true;
+          _iteratorError5 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion5 && _iterator5["return"] != null) {
+              _iterator5["return"]();
+            }
+          } finally {
+            if (_didIteratorError5) {
+              throw _iteratorError5;
+            }
+          }
+        }
+
+        if (refinementStrategy === STRATEGY_NEVER) {
+          return;
+        }
+
+        var _iteratorNormalCompletion6 = true;
+        var _didIteratorError6 = false;
+        var _iteratorError6 = undefined;
+
+        try {
+          for (var _iterator6 = selectedTiles[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+            var _tile3 = _step6.value;
+            getPlaceholderInAncestors(_tile3, refinementStrategy);
+          }
+        } catch (err) {
+          _didIteratorError6 = true;
+          _iteratorError6 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion6 && _iterator6["return"] != null) {
+              _iterator6["return"]();
+            }
+          } finally {
+            if (_didIteratorError6) {
+              throw _iteratorError6;
+            }
+          }
+        }
+
+        var _iteratorNormalCompletion7 = true;
+        var _didIteratorError7 = false;
+        var _iteratorError7 = undefined;
+
+        try {
+          for (var _iterator7 = selectedTiles[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+            var _tile4 = _step7.value;
+
+            if (needsPlaceholder(_tile4)) {
+              getPlaceholderInChildren(_tile4);
+            }
+          }
+        } catch (err) {
+          _didIteratorError7 = true;
+          _iteratorError7 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion7 && _iterator7["return"] != null) {
+              _iterator7["return"]();
+            }
+          } finally {
+            if (_didIteratorError7) {
+              throw _iteratorError7;
+            }
+          }
+        }
+      }
+    }, {
+      key: "_resizeCache",
+      value: function _resizeCache() {
+        var _cache = this._cache,
+            opts = this.opts;
+        var maxCacheSize = opts.maxCacheSize || (opts.maxCacheByteSize ? Infinity : DEFAULT_CACHE_SCALE * this.selectedTiles.length);
+        var maxCacheByteSize = opts.maxCacheByteSize || Infinity;
+        var overflown = _cache.size > maxCacheSize || this._cacheByteSize > maxCacheByteSize;
+
+        if (overflown) {
+          var _iteratorNormalCompletion8 = true;
+          var _didIteratorError8 = false;
+          var _iteratorError8 = undefined;
+
+          try {
+            for (var _iterator8 = _cache[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
+              var _step8$value = _slicedToArray(_step8.value, 2),
+                  tileId = _step8$value[0],
+                  tile = _step8$value[1];
+
+              if (!tile.isVisible) {
+                this._cacheByteSize -= opts.maxCacheByteSize ? tile.byteLength : 0;
+
+                _cache["delete"](tileId);
+              }
+
+              if (_cache.size <= maxCacheSize && this._cacheByteSize <= maxCacheByteSize) {
+                break;
+              }
+            }
+          } catch (err) {
+            _didIteratorError8 = true;
+            _iteratorError8 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion8 && _iterator8["return"] != null) {
+                _iterator8["return"]();
+              }
+            } finally {
+              if (_didIteratorError8) {
+                throw _iteratorError8;
+              }
+            }
+          }
+
+          this._rebuildTree();
+
+          this._dirty = true;
+        }
+
+        if (this._dirty) {
+          this._tiles = Array.from(this._cache.values()).sort(function (t1, t2) {
+            return t1.z - t2.z;
+          });
+          this._dirty = false;
+        }
+      }
+    }, {
+      key: "_getTile",
+      value: function _getTile(_ref3, create) {
+        var x = _ref3.x,
+            y = _ref3.y,
+            z = _ref3.z;
+        var tileId = "".concat(x, ",").concat(y, ",").concat(z);
+
+        var tile = this._cache.get(tileId);
+
+        if (!tile && create) {
+          tile = new Tile2DHeader({
+            x: x,
+            y: y,
+            z: z,
+            onTileLoad: this.onTileLoad,
+            onTileError: this.onTileError
+          });
+          Object.assign(tile, this.getTileMetadata(tile));
+          tile.loadData(this._getTileData);
+
+          this._cache.set(tileId, tile);
+
+          this._dirty = true;
+        }
+
+        return tile;
+      }
+    }, {
+      key: "_getNearestAncestor",
+      value: function _getNearestAncestor(x, y, z) {
+        var _this$_minZoom = this._minZoom,
+            _minZoom = _this$_minZoom === void 0 ? 0 : _this$_minZoom;
+
+        var index = {
+          x: x,
+          y: y,
+          z: z
+        };
+
+        while (index.z > _minZoom) {
+          index = this.getParentIndex(index);
+
+          var parent = this._getTile(index);
+
+          if (parent) {
+            return parent;
+          }
+        }
+
+        return null;
+      }
+    }, {
+      key: "tiles",
+      get: function get() {
+        return this._tiles;
+      }
+    }, {
+      key: "selectedTiles",
+      get: function get() {
+        return this._selectedTiles;
+      }
+    }, {
+      key: "isLoaded",
+      get: function get() {
+        return this._selectedTiles.every(function (tile) {
+          return tile.isLoaded;
+        });
+      }
+    }]);
+
+    return Tileset2D;
+  }();
+
+  function needsPlaceholder(tile) {
+    var t = tile;
+
+    while (t) {
+      if (t.state & TILE_STATE_VISIBLE === 0) {
+        return true;
+      }
+
+      if (t.isLoaded) {
+        return false;
+      }
+
+      t = t.parent;
+    }
+
+    return true;
+  }
+
+  function getPlaceholderInAncestors(tile, refinementStrategy) {
+    var parent;
+    var state = TILE_STATE_PLACEHOLDER;
+
+    while (parent = tile.parent) {
+      if (tile.isLoaded) {
+        state = TILE_STATE_HIDDEN;
+
+        if (refinementStrategy === STRATEGY_DEFAULT) {
+          return;
+        }
+      }
+
+      parent.state = Math.max(parent.state, state);
+      tile = parent;
+    }
+  }
+
+  function getPlaceholderInChildren(tile) {
+    var _iteratorNormalCompletion9 = true;
+    var _didIteratorError9 = false;
+    var _iteratorError9 = undefined;
+
+    try {
+      for (var _iterator9 = tile.children[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
+        var child = _step9.value;
+        child.state = Math.max(child.state, TILE_STATE_PLACEHOLDER);
+
+        if (!child.isLoaded) {
+          getPlaceholderInChildren(child);
+        }
+      }
+    } catch (err) {
+      _didIteratorError9 = true;
+      _iteratorError9 = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion9 && _iterator9["return"] != null) {
+          _iterator9["return"]();
+        }
+      } finally {
+        if (_didIteratorError9) {
+          throw _iteratorError9;
+        }
+      }
+    }
+  }
+
+  var defaultProps = {
+    data: [],
+    dataComparator: urlType.equals,
+    renderSubLayers: {
+      type: 'function',
+      value: function value(props) {
+        return new layers.GeoJsonLayer(props);
+      },
+      compare: false
+    },
+    getTileData: {
+      type: 'function',
+      optional: true,
+      value: null,
+      compare: false
+    },
+    onViewportLoad: {
+      type: 'function',
+      optional: true,
+      value: null,
+      compare: false
+    },
+    onTileLoad: {
+      type: 'function',
+      value: function value(tile) {},
+      compare: false
+    },
+    onTileError: {
+      type: 'function',
+      value: function value(err) {
+        return console.error(err);
+      },
+      compare: false
+    },
+    tileSize: 512,
+    maxZoom: null,
+    minZoom: 0,
+    maxCacheSize: null,
+    maxCacheByteSize: null,
+    refinementStrategy: STRATEGY_DEFAULT
+  };
+
+  var TileLayer = function (_CompositeLayer) {
+    _inherits(TileLayer, _CompositeLayer);
+
+    function TileLayer() {
+      _classCallCheck(this, TileLayer);
+
+      return _possibleConstructorReturn(this, _getPrototypeOf(TileLayer).apply(this, arguments));
+    }
+
+    _createClass(TileLayer, [{
+      key: "initializeState",
+      value: function initializeState() {
+        this.state = {
+          tiles: [],
+          isLoaded: false
+        };
+      }
+    }, {
+      key: "shouldUpdateState",
+      value: function shouldUpdateState(_ref) {
+        var changeFlags = _ref.changeFlags;
+        return changeFlags.somethingChanged;
+      }
+    }, {
+      key: "updateState",
+      value: function updateState(_ref2) {
+        var props = _ref2.props,
+            oldProps = _ref2.oldProps,
+            context = _ref2.context,
+            changeFlags = _ref2.changeFlags;
+        var tileset = this.state.tileset;
+        var createTileCache = !tileset || changeFlags.dataChanged || changeFlags.updateTriggersChanged && (changeFlags.updateTriggersChanged.all || changeFlags.updateTriggersChanged.getTileData);
+
+        if (createTileCache) {
+          var maxZoom = props.maxZoom,
+              minZoom = props.minZoom,
+              tileSize = props.tileSize,
+              maxCacheSize = props.maxCacheSize,
+              maxCacheByteSize = props.maxCacheByteSize,
+              refinementStrategy = props.refinementStrategy;
+          tileset = new Tileset2D({
+            getTileData: this.getTileData.bind(this),
+            maxCacheSize: maxCacheSize,
+            maxCacheByteSize: maxCacheByteSize,
+            maxZoom: maxZoom,
+            minZoom: minZoom,
+            tileSize: tileSize,
+            refinementStrategy: refinementStrategy,
+            onTileLoad: this._onTileLoad.bind(this),
+            onTileError: this._onTileError.bind(this)
+          });
+          this.setState({
+            tileset: tileset
+          });
+        } else if (changeFlags.propsChanged) {
+          tileset.setOptions(props);
+          this.state.tileset.tiles.forEach(function (tile) {
+            tile.layers = null;
+          });
+        }
+
+        if (createTileCache || changeFlags.viewportChanged) {
+          this._updateTileset();
+        }
+      }
+    }, {
+      key: "_updateTileset",
+      value: function _updateTileset() {
+        var tileset = this.state.tileset;
+        var onViewportLoad = this.props.onViewportLoad;
+        var frameNumber = tileset.update(this.context.viewport);
+        var isLoaded = tileset.isLoaded;
+        var loadingStateChanged = this.state.isLoaded !== isLoaded;
+        var tilesetChanged = this.state.frameNumber !== frameNumber;
+
+        if (isLoaded && onViewportLoad && (loadingStateChanged || tilesetChanged)) {
+          onViewportLoad(tileset.selectedTiles.map(function (tile) {
+            return tile.data;
+          }));
+        }
+
+        if (tilesetChanged) {
+          this.setState({
+            frameNumber: frameNumber
+          });
+        }
+
+        this.state.isLoaded = isLoaded;
+      }
+    }, {
+      key: "_onTileLoad",
+      value: function _onTileLoad(tile) {
+        var layer = this.getCurrentLayer();
+        layer.props.onTileLoad(tile);
+
+        layer._updateTileset();
+      }
+    }, {
+      key: "_onTileError",
+      value: function _onTileError(error) {
+        var layer = this.getCurrentLayer();
+        layer.props.onTileError(error);
+
+        layer._updateTileset();
+      }
+    }, {
+      key: "getTileData",
+      value: function getTileData(tile) {
+        var _this$props = this.props,
+            getTileData = _this$props.getTileData,
+            fetch = _this$props.fetch,
+            data = _this$props.data;
+        tile.url = getURLFromTemplate(data, tile);
+
+        if (getTileData) {
+          return getTileData(tile);
+        }
+
+        if (tile.url) {
+          return fetch(tile.url, {
+            layer: this
+          });
+        }
+
+        return null;
+      }
+    }, {
+      key: "renderSubLayers",
+      value: function renderSubLayers(props) {
+        return this.props.renderSubLayers(props);
+      }
+    }, {
+      key: "getPickingInfo",
+      value: function getPickingInfo(_ref3) {
+        var info = _ref3.info,
+            sourceLayer = _ref3.sourceLayer;
+        info.sourceLayer = sourceLayer;
+        info.tile = sourceLayer.props.tile;
+        return info;
+      }
+    }, {
+      key: "renderLayers",
+      value: function renderLayers() {
+        var _this = this;
+
+        var visible = this.props.visible;
+        return this.state.tileset.tiles.map(function (tile) {
+          var isVisible = visible && tile.isVisible;
+
+          if (!tile.layers) {
+            var layers = _this.renderSubLayers(Object.assign({}, _this.props, {
+              id: "".concat(_this.id, "-").concat(tile.x, "-").concat(tile.y, "-").concat(tile.z),
+              data: tile.data,
+              visible: isVisible,
+              _offset: 0,
+              tile: tile
+            }));
+
+            tile.layers = core._flatten(layers, Boolean);
+          } else if (tile.layers[0] && tile.layers[0].props.visible !== isVisible) {
+            tile.layers = tile.layers.map(function (layer) {
+              return layer.clone({
+                visible: isVisible
+              });
+            });
+          }
+
+          return tile.layers;
+        });
+      }
+    }, {
+      key: "isLoaded",
+      get: function get() {
+        var tileset = this.state.tileset;
+        return tileset.selectedTiles.every(function (tile) {
+          return tile.layers && tile.layers.every(function (layer) {
+            return layer.isLoaded;
+          });
+        });
+      }
+    }]);
+
+    return TileLayer;
+  }(core.CompositeLayer);
   TileLayer.layerName = 'TileLayer';
   TileLayer.defaultProps = defaultProps;
 
-  class EnhancedTileLayer extends TileLayer {
-    renderLayers() {
-      const {renderSubLayers, visible} = this.props;
-      const z = this.getZoomLevel();
+  var runtime_1 = createCommonjsModule(function (module) {
+  /**
+   * Copyright (c) 2014-present, Facebook, Inc.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   */
 
-      const layers = [];
-      for (const tile of this.state.tileset.tiles) {
-        if (tile.isLoaded) {
-          // For a tile to be visible:
-          // - parent layer must be visible
-          // - tile must be visible in the current viewport
-          // - if all tiles are loaded, only display the tiles from the current z level
-          const isVisible = visible && tile.isVisible && (!this.state.isLoaded || tile.z === z);
-          // cache the rendered layer in the tile
-          if (!tile.layer) {
-            const subLayers = renderSubLayers(
-              Object.assign({}, this.props, {
-                id: `${this.id}-${tile.x}-${tile.y}-${tile.z}`,
-                data: tile.data,
-                visible: isVisible,
-                tile
-              })
-            );
-            // eslint-disable-next-line max-depth
-            if (subLayers) {
-              tile.layer = Array.isArray(subLayers) ? subLayers : [subLayers];
+  var runtime = (function (exports) {
+
+    var Op = Object.prototype;
+    var hasOwn = Op.hasOwnProperty;
+    var undefined$1; // More compressible than void 0.
+    var $Symbol = typeof Symbol === "function" ? Symbol : {};
+    var iteratorSymbol = $Symbol.iterator || "@@iterator";
+    var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
+    var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
+
+    function wrap(innerFn, outerFn, self, tryLocsList) {
+      // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
+      var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
+      var generator = Object.create(protoGenerator.prototype);
+      var context = new Context(tryLocsList || []);
+
+      // The ._invoke method unifies the implementations of the .next,
+      // .throw, and .return methods.
+      generator._invoke = makeInvokeMethod(innerFn, self, context);
+
+      return generator;
+    }
+    exports.wrap = wrap;
+
+    // Try/catch helper to minimize deoptimizations. Returns a completion
+    // record like context.tryEntries[i].completion. This interface could
+    // have been (and was previously) designed to take a closure to be
+    // invoked without arguments, but in all the cases we care about we
+    // already have an existing method we want to call, so there's no need
+    // to create a new function object. We can even get away with assuming
+    // the method takes exactly one argument, since that happens to be true
+    // in every case, so we don't have to touch the arguments object. The
+    // only additional allocation required is the completion record, which
+    // has a stable shape and so hopefully should be cheap to allocate.
+    function tryCatch(fn, obj, arg) {
+      try {
+        return { type: "normal", arg: fn.call(obj, arg) };
+      } catch (err) {
+        return { type: "throw", arg: err };
+      }
+    }
+
+    var GenStateSuspendedStart = "suspendedStart";
+    var GenStateSuspendedYield = "suspendedYield";
+    var GenStateExecuting = "executing";
+    var GenStateCompleted = "completed";
+
+    // Returning this object from the innerFn has the same effect as
+    // breaking out of the dispatch switch statement.
+    var ContinueSentinel = {};
+
+    // Dummy constructor functions that we use as the .constructor and
+    // .constructor.prototype properties for functions that return Generator
+    // objects. For full spec compliance, you may wish to configure your
+    // minifier not to mangle the names of these two functions.
+    function Generator() {}
+    function GeneratorFunction() {}
+    function GeneratorFunctionPrototype() {}
+
+    // This is a polyfill for %IteratorPrototype% for environments that
+    // don't natively support it.
+    var IteratorPrototype = {};
+    IteratorPrototype[iteratorSymbol] = function () {
+      return this;
+    };
+
+    var getProto = Object.getPrototypeOf;
+    var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
+    if (NativeIteratorPrototype &&
+        NativeIteratorPrototype !== Op &&
+        hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
+      // This environment has a native %IteratorPrototype%; use it instead
+      // of the polyfill.
+      IteratorPrototype = NativeIteratorPrototype;
+    }
+
+    var Gp = GeneratorFunctionPrototype.prototype =
+      Generator.prototype = Object.create(IteratorPrototype);
+    GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
+    GeneratorFunctionPrototype.constructor = GeneratorFunction;
+    GeneratorFunctionPrototype[toStringTagSymbol] =
+      GeneratorFunction.displayName = "GeneratorFunction";
+
+    // Helper for defining the .next, .throw, and .return methods of the
+    // Iterator interface in terms of a single ._invoke method.
+    function defineIteratorMethods(prototype) {
+      ["next", "throw", "return"].forEach(function(method) {
+        prototype[method] = function(arg) {
+          return this._invoke(method, arg);
+        };
+      });
+    }
+
+    exports.isGeneratorFunction = function(genFun) {
+      var ctor = typeof genFun === "function" && genFun.constructor;
+      return ctor
+        ? ctor === GeneratorFunction ||
+          // For the native GeneratorFunction constructor, the best we can
+          // do is to check its .name property.
+          (ctor.displayName || ctor.name) === "GeneratorFunction"
+        : false;
+    };
+
+    exports.mark = function(genFun) {
+      if (Object.setPrototypeOf) {
+        Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
+      } else {
+        genFun.__proto__ = GeneratorFunctionPrototype;
+        if (!(toStringTagSymbol in genFun)) {
+          genFun[toStringTagSymbol] = "GeneratorFunction";
+        }
+      }
+      genFun.prototype = Object.create(Gp);
+      return genFun;
+    };
+
+    // Within the body of any async function, `await x` is transformed to
+    // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
+    // `hasOwn.call(value, "__await")` to determine if the yielded value is
+    // meant to be awaited.
+    exports.awrap = function(arg) {
+      return { __await: arg };
+    };
+
+    function AsyncIterator(generator, PromiseImpl) {
+      function invoke(method, arg, resolve, reject) {
+        var record = tryCatch(generator[method], generator, arg);
+        if (record.type === "throw") {
+          reject(record.arg);
+        } else {
+          var result = record.arg;
+          var value = result.value;
+          if (value &&
+              typeof value === "object" &&
+              hasOwn.call(value, "__await")) {
+            return PromiseImpl.resolve(value.__await).then(function(value) {
+              invoke("next", value, resolve, reject);
+            }, function(err) {
+              invoke("throw", err, resolve, reject);
+            });
+          }
+
+          return PromiseImpl.resolve(value).then(function(unwrapped) {
+            // When a yielded Promise is resolved, its final value becomes
+            // the .value of the Promise<{value,done}> result for the
+            // current iteration.
+            result.value = unwrapped;
+            resolve(result);
+          }, function(error) {
+            // If a rejected Promise was yielded, throw the rejection back
+            // into the async generator function so it can be handled there.
+            return invoke("throw", error, resolve, reject);
+          });
+        }
+      }
+
+      var previousPromise;
+
+      function enqueue(method, arg) {
+        function callInvokeWithMethodAndArg() {
+          return new PromiseImpl(function(resolve, reject) {
+            invoke(method, arg, resolve, reject);
+          });
+        }
+
+        return previousPromise =
+          // If enqueue has been called before, then we want to wait until
+          // all previous Promises have been resolved before calling invoke,
+          // so that results are always delivered in the correct order. If
+          // enqueue has not been called before, then it is important to
+          // call invoke immediately, without waiting on a callback to fire,
+          // so that the async generator function has the opportunity to do
+          // any necessary setup in a predictable way. This predictability
+          // is why the Promise constructor synchronously invokes its
+          // executor callback, and why async functions synchronously
+          // execute code before the first await. Since we implement simple
+          // async functions in terms of async generators, it is especially
+          // important to get this right, even though it requires care.
+          previousPromise ? previousPromise.then(
+            callInvokeWithMethodAndArg,
+            // Avoid propagating failures to Promises returned by later
+            // invocations of the iterator.
+            callInvokeWithMethodAndArg
+          ) : callInvokeWithMethodAndArg();
+      }
+
+      // Define the unified helper method that is used to implement .next,
+      // .throw, and .return (see defineIteratorMethods).
+      this._invoke = enqueue;
+    }
+
+    defineIteratorMethods(AsyncIterator.prototype);
+    AsyncIterator.prototype[asyncIteratorSymbol] = function () {
+      return this;
+    };
+    exports.AsyncIterator = AsyncIterator;
+
+    // Note that simple async functions are implemented on top of
+    // AsyncIterator objects; they just return a Promise for the value of
+    // the final result produced by the iterator.
+    exports.async = function(innerFn, outerFn, self, tryLocsList, PromiseImpl) {
+      if (PromiseImpl === void 0) PromiseImpl = Promise;
+
+      var iter = new AsyncIterator(
+        wrap(innerFn, outerFn, self, tryLocsList),
+        PromiseImpl
+      );
+
+      return exports.isGeneratorFunction(outerFn)
+        ? iter // If outerFn is a generator, return the full iterator.
+        : iter.next().then(function(result) {
+            return result.done ? result.value : iter.next();
+          });
+    };
+
+    function makeInvokeMethod(innerFn, self, context) {
+      var state = GenStateSuspendedStart;
+
+      return function invoke(method, arg) {
+        if (state === GenStateExecuting) {
+          throw new Error("Generator is already running");
+        }
+
+        if (state === GenStateCompleted) {
+          if (method === "throw") {
+            throw arg;
+          }
+
+          // Be forgiving, per 25.3.3.3.3 of the spec:
+          // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
+          return doneResult();
+        }
+
+        context.method = method;
+        context.arg = arg;
+
+        while (true) {
+          var delegate = context.delegate;
+          if (delegate) {
+            var delegateResult = maybeInvokeDelegate(delegate, context);
+            if (delegateResult) {
+              if (delegateResult === ContinueSentinel) continue;
+              return delegateResult;
             }
-          } else if (tile.layer.some(layer => layer.props.visible !== isVisible)) {
-            tile.layer = tile.layer.map(layer => layer.clone({visible: isVisible}));
+          }
+
+          if (context.method === "next") {
+            // Setting context._sent for legacy support of Babel's
+            // function.sent implementation.
+            context.sent = context._sent = context.arg;
+
+          } else if (context.method === "throw") {
+            if (state === GenStateSuspendedStart) {
+              state = GenStateCompleted;
+              throw context.arg;
+            }
+
+            context.dispatchException(context.arg);
+
+          } else if (context.method === "return") {
+            context.abrupt("return", context.arg);
+          }
+
+          state = GenStateExecuting;
+
+          var record = tryCatch(innerFn, self, context);
+          if (record.type === "normal") {
+            // If an exception is thrown from innerFn, we leave state ===
+            // GenStateExecuting and loop back for another invocation.
+            state = context.done
+              ? GenStateCompleted
+              : GenStateSuspendedYield;
+
+            if (record.arg === ContinueSentinel) {
+              continue;
+            }
+
+            return {
+              value: record.arg,
+              done: context.done
+            };
+
+          } else if (record.type === "throw") {
+            state = GenStateCompleted;
+            // Dispatch the exception by looping back around to the
+            // context.dispatchException(context.arg) call above.
+            context.method = "throw";
+            context.arg = record.arg;
           }
         }
-        layers.push(tile.layer);
+      };
+    }
+
+    // Call delegate.iterator[context.method](context.arg) and handle the
+    // result, either by returning a { value, done } result from the
+    // delegate iterator, or by modifying context.method and context.arg,
+    // setting context.delegate to null, and returning the ContinueSentinel.
+    function maybeInvokeDelegate(delegate, context) {
+      var method = delegate.iterator[context.method];
+      if (method === undefined$1) {
+        // A .throw or .return when the delegate iterator has no .throw
+        // method always terminates the yield* loop.
+        context.delegate = null;
+
+        if (context.method === "throw") {
+          // Note: ["return"] must be used for ES3 parsing compatibility.
+          if (delegate.iterator["return"]) {
+            // If the delegate iterator has a return method, give it a
+            // chance to clean up.
+            context.method = "return";
+            context.arg = undefined$1;
+            maybeInvokeDelegate(delegate, context);
+
+            if (context.method === "throw") {
+              // If maybeInvokeDelegate(context) changed context.method from
+              // "return" to "throw", let that override the TypeError below.
+              return ContinueSentinel;
+            }
+          }
+
+          context.method = "throw";
+          context.arg = new TypeError(
+            "The iterator does not provide a 'throw' method");
+        }
+
+        return ContinueSentinel;
       }
-      return layers;
+
+      var record = tryCatch(method, delegate.iterator, context.arg);
+
+      if (record.type === "throw") {
+        context.method = "throw";
+        context.arg = record.arg;
+        context.delegate = null;
+        return ContinueSentinel;
+      }
+
+      var info = record.arg;
+
+      if (! info) {
+        context.method = "throw";
+        context.arg = new TypeError("iterator result is not an object");
+        context.delegate = null;
+        return ContinueSentinel;
+      }
+
+      if (info.done) {
+        // Assign the result of the finished delegate to the temporary
+        // variable specified by delegate.resultName (see delegateYield).
+        context[delegate.resultName] = info.value;
+
+        // Resume execution at the desired location (see delegateYield).
+        context.next = delegate.nextLoc;
+
+        // If context.method was "throw" but the delegate handled the
+        // exception, let the outer generator proceed normally. If
+        // context.method was "next", forget context.arg since it has been
+        // "consumed" by the delegate iterator. If context.method was
+        // "return", allow the original .return call to continue in the
+        // outer generator.
+        if (context.method !== "return") {
+          context.method = "next";
+          context.arg = undefined$1;
+        }
+
+      } else {
+        // Re-yield the result returned by the delegate method.
+        return info;
+      }
+
+      // The delegate iterator is finished, so forget it and continue with
+      // the outer generator.
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    // Define Generator.prototype.{next,throw,return} in terms of the
+    // unified ._invoke helper method.
+    defineIteratorMethods(Gp);
+
+    Gp[toStringTagSymbol] = "Generator";
+
+    // A Generator should always return itself as the iterator object when the
+    // @@iterator function is called on it. Some browsers' implementations of the
+    // iterator prototype chain incorrectly implement this, causing the Generator
+    // object to not be returned from this call. This ensures that doesn't happen.
+    // See https://github.com/facebook/regenerator/issues/274 for more details.
+    Gp[iteratorSymbol] = function() {
+      return this;
+    };
+
+    Gp.toString = function() {
+      return "[object Generator]";
+    };
+
+    function pushTryEntry(locs) {
+      var entry = { tryLoc: locs[0] };
+
+      if (1 in locs) {
+        entry.catchLoc = locs[1];
+      }
+
+      if (2 in locs) {
+        entry.finallyLoc = locs[2];
+        entry.afterLoc = locs[3];
+      }
+
+      this.tryEntries.push(entry);
+    }
+
+    function resetTryEntry(entry) {
+      var record = entry.completion || {};
+      record.type = "normal";
+      delete record.arg;
+      entry.completion = record;
+    }
+
+    function Context(tryLocsList) {
+      // The root entry object (effectively a try statement without a catch
+      // or a finally block) gives us a place to store values thrown from
+      // locations where there is no enclosing try statement.
+      this.tryEntries = [{ tryLoc: "root" }];
+      tryLocsList.forEach(pushTryEntry, this);
+      this.reset(true);
+    }
+
+    exports.keys = function(object) {
+      var keys = [];
+      for (var key in object) {
+        keys.push(key);
+      }
+      keys.reverse();
+
+      // Rather than returning an object with a next method, we keep
+      // things simple and return the next function itself.
+      return function next() {
+        while (keys.length) {
+          var key = keys.pop();
+          if (key in object) {
+            next.value = key;
+            next.done = false;
+            return next;
+          }
+        }
+
+        // To avoid creating an additional object, we just hang the .value
+        // and .done properties off the next function object itself. This
+        // also ensures that the minifier will not anonymize the function.
+        next.done = true;
+        return next;
+      };
+    };
+
+    function values(iterable) {
+      if (iterable) {
+        var iteratorMethod = iterable[iteratorSymbol];
+        if (iteratorMethod) {
+          return iteratorMethod.call(iterable);
+        }
+
+        if (typeof iterable.next === "function") {
+          return iterable;
+        }
+
+        if (!isNaN(iterable.length)) {
+          var i = -1, next = function next() {
+            while (++i < iterable.length) {
+              if (hasOwn.call(iterable, i)) {
+                next.value = iterable[i];
+                next.done = false;
+                return next;
+              }
+            }
+
+            next.value = undefined$1;
+            next.done = true;
+
+            return next;
+          };
+
+          return next.next = next;
+        }
+      }
+
+      // Return an iterator with no values.
+      return { next: doneResult };
+    }
+    exports.values = values;
+
+    function doneResult() {
+      return { value: undefined$1, done: true };
+    }
+
+    Context.prototype = {
+      constructor: Context,
+
+      reset: function(skipTempReset) {
+        this.prev = 0;
+        this.next = 0;
+        // Resetting context._sent for legacy support of Babel's
+        // function.sent implementation.
+        this.sent = this._sent = undefined$1;
+        this.done = false;
+        this.delegate = null;
+
+        this.method = "next";
+        this.arg = undefined$1;
+
+        this.tryEntries.forEach(resetTryEntry);
+
+        if (!skipTempReset) {
+          for (var name in this) {
+            // Not sure about the optimal order of these conditions:
+            if (name.charAt(0) === "t" &&
+                hasOwn.call(this, name) &&
+                !isNaN(+name.slice(1))) {
+              this[name] = undefined$1;
+            }
+          }
+        }
+      },
+
+      stop: function() {
+        this.done = true;
+
+        var rootEntry = this.tryEntries[0];
+        var rootRecord = rootEntry.completion;
+        if (rootRecord.type === "throw") {
+          throw rootRecord.arg;
+        }
+
+        return this.rval;
+      },
+
+      dispatchException: function(exception) {
+        if (this.done) {
+          throw exception;
+        }
+
+        var context = this;
+        function handle(loc, caught) {
+          record.type = "throw";
+          record.arg = exception;
+          context.next = loc;
+
+          if (caught) {
+            // If the dispatched exception was caught by a catch block,
+            // then let that catch block handle the exception normally.
+            context.method = "next";
+            context.arg = undefined$1;
+          }
+
+          return !! caught;
+        }
+
+        for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+          var entry = this.tryEntries[i];
+          var record = entry.completion;
+
+          if (entry.tryLoc === "root") {
+            // Exception thrown outside of any try block that could handle
+            // it, so set the completion value of the entire function to
+            // throw the exception.
+            return handle("end");
+          }
+
+          if (entry.tryLoc <= this.prev) {
+            var hasCatch = hasOwn.call(entry, "catchLoc");
+            var hasFinally = hasOwn.call(entry, "finallyLoc");
+
+            if (hasCatch && hasFinally) {
+              if (this.prev < entry.catchLoc) {
+                return handle(entry.catchLoc, true);
+              } else if (this.prev < entry.finallyLoc) {
+                return handle(entry.finallyLoc);
+              }
+
+            } else if (hasCatch) {
+              if (this.prev < entry.catchLoc) {
+                return handle(entry.catchLoc, true);
+              }
+
+            } else if (hasFinally) {
+              if (this.prev < entry.finallyLoc) {
+                return handle(entry.finallyLoc);
+              }
+
+            } else {
+              throw new Error("try statement without catch or finally");
+            }
+          }
+        }
+      },
+
+      abrupt: function(type, arg) {
+        for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+          var entry = this.tryEntries[i];
+          if (entry.tryLoc <= this.prev &&
+              hasOwn.call(entry, "finallyLoc") &&
+              this.prev < entry.finallyLoc) {
+            var finallyEntry = entry;
+            break;
+          }
+        }
+
+        if (finallyEntry &&
+            (type === "break" ||
+             type === "continue") &&
+            finallyEntry.tryLoc <= arg &&
+            arg <= finallyEntry.finallyLoc) {
+          // Ignore the finally entry if control is not jumping to a
+          // location outside the try/catch block.
+          finallyEntry = null;
+        }
+
+        var record = finallyEntry ? finallyEntry.completion : {};
+        record.type = type;
+        record.arg = arg;
+
+        if (finallyEntry) {
+          this.method = "next";
+          this.next = finallyEntry.finallyLoc;
+          return ContinueSentinel;
+        }
+
+        return this.complete(record);
+      },
+
+      complete: function(record, afterLoc) {
+        if (record.type === "throw") {
+          throw record.arg;
+        }
+
+        if (record.type === "break" ||
+            record.type === "continue") {
+          this.next = record.arg;
+        } else if (record.type === "return") {
+          this.rval = this.arg = record.arg;
+          this.method = "return";
+          this.next = "end";
+        } else if (record.type === "normal" && afterLoc) {
+          this.next = afterLoc;
+        }
+
+        return ContinueSentinel;
+      },
+
+      finish: function(finallyLoc) {
+        for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+          var entry = this.tryEntries[i];
+          if (entry.finallyLoc === finallyLoc) {
+            this.complete(entry.completion, entry.afterLoc);
+            resetTryEntry(entry);
+            return ContinueSentinel;
+          }
+        }
+      },
+
+      "catch": function(tryLoc) {
+        for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+          var entry = this.tryEntries[i];
+          if (entry.tryLoc === tryLoc) {
+            var record = entry.completion;
+            if (record.type === "throw") {
+              var thrown = record.arg;
+              resetTryEntry(entry);
+            }
+            return thrown;
+          }
+        }
+
+        // The context.catch method must only be called with a location
+        // argument that corresponds to a known catch block.
+        throw new Error("illegal catch attempt");
+      },
+
+      delegateYield: function(iterable, resultName, nextLoc) {
+        this.delegate = {
+          iterator: values(iterable),
+          resultName: resultName,
+          nextLoc: nextLoc
+        };
+
+        if (this.method === "next") {
+          // Deliberately forget the last sent value so that we don't
+          // accidentally pass it on to the delegate.
+          this.arg = undefined$1;
+        }
+
+        return ContinueSentinel;
+      }
+    };
+
+    // Regardless of whether this script is executing as a CommonJS module
+    // or not, return the runtime object so that we can declare the variable
+    // regeneratorRuntime in the outer scope, which allows this module to be
+    // injected easily by `bin/regenerator --include-runtime script.js`.
+    return exports;
+
+  }(
+    // If this script is executing as a CommonJS module, use module.exports
+    // as the regeneratorRuntime namespace. Otherwise create a new empty
+    // object. Either way, the resulting object will be used to initialize
+    // the regeneratorRuntime variable at the top of this file.
+     module.exports 
+  ));
+
+  try {
+    regeneratorRuntime = runtime;
+  } catch (accidentalStrictMode) {
+    // This module should not be running in strict mode, so the above
+    // assignment should always work unless something is misconfigured. Just
+    // in case runtime.js accidentally runs in strict mode, we can escape
+    // strict mode using a global Function call. This could conceivably fail
+    // if a Content Security Policy forbids using Function, but in that case
+    // the proper solution is to fix the accidental strict mode problem. If
+    // you've misconfigured your bundler to force strict mode and applied a
+    // CSP to forbid Function, and you're not willing to fix either of those
+    // problems, please detail your unique predicament in a GitHub issue.
+    Function("r", "regeneratorRuntime = r")(runtime);
+  }
+  });
+
+  var regenerator = runtime_1;
+
+  function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+    try {
+      var info = gen[key](arg);
+      var value = info.value;
+    } catch (error) {
+      reject(error);
+      return;
+    }
+
+    if (info.done) {
+      resolve(value);
+    } else {
+      Promise.resolve(value).then(_next, _throw);
     }
   }
 
-  var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+  function _asyncToGenerator(fn) {
+    return function () {
+      var self = this,
+          args = arguments;
+      return new Promise(function (resolve, reject) {
+        var gen = fn.apply(self, args);
 
-  function createCommonjsModule(fn, module) {
-  	return module = { exports: {} }, fn(module, module.exports), module.exports;
+        function _next(value) {
+          asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+        }
+
+        function _throw(err) {
+          asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+        }
+
+        _next(undefined);
+      });
+    };
   }
+
+  function assert$1(condition, message) {
+    if (!condition) {
+      throw new Error(message);
+    }
+  }
+
+  var globals = {
+    self: typeof self !== 'undefined' && self,
+    window: typeof window !== 'undefined' && window,
+    global: typeof global !== 'undefined' && global,
+    document: typeof document !== 'undefined' && document
+  };
+  var global_ = globals.global || globals.self || globals.window;
+  var isBrowser = (typeof process === "undefined" ? "undefined" : _typeof(process)) !== 'object' || String(process) !== '[object process]' || process.browser;
+  var matches = typeof process !== 'undefined' && process.version && process.version.match(/v([0-9]*)/);
+  var nodeVersion = matches && parseFloat(matches[1]) || 0;
+
+  var _parseImageNode = global_._parseImageNode;
+  var IMAGE_SUPPORTED = typeof Image !== 'undefined';
+  var IMAGE_BITMAP_SUPPORTED = typeof ImageBitmap !== 'undefined';
+  var NODE_IMAGE_SUPPORTED = Boolean(_parseImageNode);
+  function isImageTypeSupported(type) {
+    switch (type) {
+      case 'auto':
+        return IMAGE_BITMAP_SUPPORTED || IMAGE_SUPPORTED || NODE_IMAGE_SUPPORTED;
+
+      case 'imagebitmap':
+        return IMAGE_BITMAP_SUPPORTED;
+
+      case 'html':
+      case 'image':
+        return IMAGE_SUPPORTED;
+
+      case 'ndarray':
+      case 'data':
+        return isBrowser ? true : NODE_IMAGE_SUPPORTED;
+
+      default:
+        throw new Error("@loaders.gl/images: image ".concat(type, " not supported in this environment"));
+    }
+  }
+  function getDefaultImageType() {
+    if (isImageTypeSupported('image')) {
+      return 'image';
+    }
+
+    if (isImageTypeSupported('imagebitmap')) {
+      return 'imagebitmap';
+    }
+
+    if (isImageTypeSupported('data')) {
+      return 'data';
+    }
+
+    throw new Error("Install '@loaders.gl/polyfills' to parse images under Node.js");
+  }
+
+  function getImageType(image) {
+    var format = getImageTypeOrNull(image);
+
+    if (!format) {
+      throw new Error('Not an image');
+    }
+
+    return format;
+  }
+  function getImageData(image) {
+    switch (getImageType(image)) {
+      case 'data':
+        return image;
+
+      case 'image':
+      case 'imagebitmap':
+        var canvas = document.createElement('canvas');
+        var context = canvas.getContext('2d');
+        canvas.width = image.width;
+        canvas.height = image.height;
+        context.drawImage(image, 0, 0);
+        var imageData = context.getImageData(0, 0, image.width, image.height);
+        return imageData;
+
+      default:
+        return assert$1(false);
+    }
+  }
+
+  function getImageTypeOrNull(image) {
+    if (typeof ImageBitmap !== 'undefined' && image instanceof ImageBitmap) {
+      return 'imagebitmap';
+    }
+
+    if (typeof Image !== 'undefined' && image instanceof Image) {
+      return 'image';
+    }
+
+    if (image && _typeof(image) === 'object' && image.data && image.width && image.height) {
+      return 'data';
+    }
+
+    return null;
+  }
+
+  var SVG_DATA_URL_PATTERN = /^data:image\/svg\+xml/;
+  var SVG_URL_PATTERN = /\.svg((\?|#).*)?$/;
+  function getBlob(arrayBuffer, url) {
+    if (isSVG(url)) {
+      console.warn('SVG cannot be parsed to imagebitmap');
+      return new Blob([new Uint8Array(arrayBuffer)], {
+        type: 'image/svg+xml'
+      });
+    }
+
+    return new Blob([new Uint8Array(arrayBuffer)]);
+  }
+  function getBlobOrDataUrl(arrayBuffer, url) {
+    if (isSVG(url)) {
+      var textDecoder = new TextDecoder();
+      var xmlText = textDecoder.decode(arrayBuffer);
+      var src = "data:image/svg+xml;base64,".concat(btoa(xmlText));
+      return src;
+    }
+
+    return getBlob(arrayBuffer, url);
+  }
+
+  function isSVG(url) {
+    return url && (SVG_DATA_URL_PATTERN.test(url) || SVG_URL_PATTERN.test(url));
+  }
+
+  function parseToImage(_x, _x2, _x3) {
+    return _parseToImage.apply(this, arguments);
+  }
+
+  function _parseToImage() {
+    _parseToImage = _asyncToGenerator(regenerator.mark(function _callee(arrayBuffer, options, url) {
+      var blobOrDataUrl, URL, objectUrl;
+      return regenerator.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              blobOrDataUrl = getBlobOrDataUrl(arrayBuffer, url);
+              URL = self.URL || self.webkitURL;
+              objectUrl = typeof blobOrDataUrl !== 'string' && URL.createObjectURL(blobOrDataUrl);
+              _context.prev = 3;
+              _context.next = 6;
+              return loadToImage(objectUrl || blobOrDataUrl, options);
+
+            case 6:
+              return _context.abrupt("return", _context.sent);
+
+            case 7:
+              _context.prev = 7;
+
+              if (objectUrl) {
+                URL.revokeObjectURL(objectUrl);
+              }
+
+              return _context.finish(7);
+
+            case 10:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, null, [[3,, 7, 10]]);
+    }));
+    return _parseToImage.apply(this, arguments);
+  }
+
+  function loadToImage(_x4, _x5) {
+    return _loadToImage.apply(this, arguments);
+  }
+
+  function _loadToImage() {
+    _loadToImage = _asyncToGenerator(regenerator.mark(function _callee2(url, options) {
+      var image;
+      return regenerator.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              image = new Image();
+              image.src = url;
+
+              if (!(options.image && options.image.decode && image.decode)) {
+                _context2.next = 6;
+                break;
+              }
+
+              _context2.next = 5;
+              return image.decode();
+
+            case 5:
+              return _context2.abrupt("return", image);
+
+            case 6:
+              _context2.next = 8;
+              return new Promise(function (resolve, reject) {
+                try {
+                  image.onload = function () {
+                    return resolve(image);
+                  };
+
+                  image.onerror = function (err) {
+                    return reject(new Error("Could not load image ".concat(url, ": ").concat(err)));
+                  };
+                } catch (error) {
+                  reject(error);
+                }
+              });
+
+            case 8:
+              return _context2.abrupt("return", _context2.sent);
+
+            case 9:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }));
+    return _loadToImage.apply(this, arguments);
+  }
+
+  var imagebitmapOptionsSupported = true;
+  function parseToImageBitmap(_x, _x2, _x3) {
+    return _parseToImageBitmap.apply(this, arguments);
+  }
+
+  function _parseToImageBitmap() {
+    _parseToImageBitmap = _asyncToGenerator(regenerator.mark(function _callee(arrayBuffer, options, url) {
+      var blob, imagebitmapOptions;
+      return regenerator.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              blob = getBlob(arrayBuffer, url);
+              imagebitmapOptions = options && options.imagebitmap;
+
+              if (isEmptyObject(imagebitmapOptions) || !imagebitmapOptionsSupported) {
+                imagebitmapOptions = null;
+              }
+
+              if (!imagebitmapOptions) {
+                _context.next = 14;
+                break;
+              }
+
+              _context.prev = 4;
+              _context.next = 7;
+              return createImageBitmap(blob, imagebitmapOptions);
+
+            case 7:
+              return _context.abrupt("return", _context.sent);
+
+            case 10:
+              _context.prev = 10;
+              _context.t0 = _context["catch"](4);
+              console.warn(_context.t0);
+              imagebitmapOptionsSupported = false;
+
+            case 14:
+              _context.next = 16;
+              return createImageBitmap(blob);
+
+            case 16:
+              return _context.abrupt("return", _context.sent);
+
+            case 17:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, null, [[4, 10]]);
+    }));
+    return _parseToImageBitmap.apply(this, arguments);
+  }
+
+  var EMPTY_OBJECT = {};
+
+  function isEmptyObject(object) {
+    for (var key in object || EMPTY_OBJECT) {
+      return true;
+    }
+
+    return false;
+  }
+
+  var BIG_ENDIAN = false;
+  var LITTLE_ENDIAN = true;
+  var mimeTypeMap = new Map([['image/png', {
+    test: isPng,
+    getSize: getPngSize
+  }], ['image/jpeg', {
+    test: isJpeg,
+    getSize: getJpegSize
+  }], ['image/gif', {
+    test: isGif,
+    getSize: getGifSize
+  }], ['image/bmp', {
+    test: isBmp,
+    getSize: getBmpSize
+  }]]);
+  function isPng(dataView) {
+    return dataView.byteLength >= 24 && dataView.getUint32(0, BIG_ENDIAN) === 0x89504e47;
+  }
+
+  function getPngSize(dataView) {
+    return {
+      width: dataView.getUint32(16, BIG_ENDIAN),
+      height: dataView.getUint32(20, BIG_ENDIAN)
+    };
+  }
+
+  function isGif(dataView) {
+    return dataView.byteLength >= 10 && dataView.getUint32(0, BIG_ENDIAN) === 0x47494638;
+  }
+
+  function getGifSize(dataView) {
+    return {
+      width: dataView.getUint16(6, LITTLE_ENDIAN),
+      height: dataView.getUint16(8, LITTLE_ENDIAN)
+    };
+  }
+
+  function isBmp(dataView) {
+    return dataView.byteLength >= 14 && dataView.getUint16(0, BIG_ENDIAN) === 0x424d && dataView.getUint32(2, LITTLE_ENDIAN) === dataView.byteLength;
+  }
+
+  function getBmpSize(dataView) {
+    return {
+      width: dataView.getUint32(18, LITTLE_ENDIAN),
+      height: dataView.getUint32(22, LITTLE_ENDIAN)
+    };
+  }
+
+  function isJpeg(dataView) {
+    return dataView.byteLength >= 3 && dataView.getUint16(0, BIG_ENDIAN) === 0xffd8 && dataView.getUint8(2, BIG_ENDIAN) === 0xff;
+  }
+
+  function getJpegSize(dataView) {
+    if (dataView.byteLength < 2 || dataView.getUint16(0, BIG_ENDIAN) !== 0xffd8) {
+      return null;
+    }
+
+    var _getJpegMarkers = getJpegMarkers(),
+        tableMarkers = _getJpegMarkers.tableMarkers,
+        sofMarkers = _getJpegMarkers.sofMarkers;
+
+    var i = 2;
+
+    while (i < dataView.byteLength) {
+      var marker = dataView.getUint16(i, BIG_ENDIAN);
+
+      if (sofMarkers.has(marker)) {
+        return {
+          height: dataView.getUint16(i + 5, BIG_ENDIAN),
+          width: dataView.getUint16(i + 7, BIG_ENDIAN)
+        };
+      }
+
+      if (!tableMarkers.has(marker)) {
+        return null;
+      }
+
+      i += 2;
+      i += dataView.getUint16(i, BIG_ENDIAN);
+    }
+
+    return null;
+  }
+
+  function getJpegMarkers() {
+    var tableMarkers = new Set([0xffdb, 0xffc4, 0xffcc, 0xffdd, 0xfffe]);
+
+    for (var i = 0xffe0; i < 0xfff0; ++i) {
+      tableMarkers.add(i);
+    }
+
+    var sofMarkers = new Set([0xffc0, 0xffc1, 0xffc2, 0xffc3, 0xffc5, 0xffc6, 0xffc7, 0xffc9, 0xffca, 0xffcb, 0xffcd, 0xffce, 0xffcf, 0xffde]);
+    return {
+      tableMarkers: tableMarkers,
+      sofMarkers: sofMarkers
+    };
+  }
+
+  var ERR_INVALID_MIME_TYPE = "Invalid MIME type. Supported MIME types are: ".concat(Array.from(mimeTypeMap.keys()).join(', '));
+  function getBinaryImageMIMEType(arrayBuffer) {
+    var dataView = toDataView(arrayBuffer);
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+      for (var _iterator = mimeTypeMap.entries()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        var _step$value = _slicedToArray(_step.value, 2),
+            mimeType = _step$value[0],
+            test = _step$value[1].test;
+
+        if (test(dataView)) {
+          return mimeType;
+        }
+      }
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+          _iterator["return"]();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  function toDataView(data) {
+    data = data.buffer || data;
+
+    if (data instanceof ArrayBuffer) {
+      return new DataView(data);
+    }
+
+    if (ArrayBuffer.isView(data)) {
+      return new DataView(data.buffer);
+    }
+
+    throw new Error('toDataView');
+  }
+
+  function parseToNodeImage(arrayBuffer, options) {
+    var mimeType = getBinaryImageMIMEType(arrayBuffer);
+    var _parseImageNode = global_._parseImageNode;
+    assert$1(_parseImageNode);
+    return _parseImageNode(arrayBuffer, mimeType, options);
+  }
+
+  function parseImage(_x, _x2, _x3) {
+    return _parseImage.apply(this, arguments);
+  }
+
+  function _parseImage() {
+    _parseImage = _asyncToGenerator(regenerator.mark(function _callee(arrayBuffer, options, context) {
+      var imageOptions, imageType, _ref, url, loadType, image;
+
+      return regenerator.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              options = options || {};
+              imageOptions = options.image || {};
+              imageType = imageOptions.type || 'auto';
+              _ref = context || {}, url = _ref.url;
+              loadType = getLoadableImageType(imageType);
+              _context.t0 = loadType;
+              _context.next = _context.t0 === 'imagebitmap' ? 8 : _context.t0 === 'image' ? 12 : _context.t0 === 'data' ? 16 : 20;
+              break;
+
+            case 8:
+              _context.next = 10;
+              return parseToImageBitmap(arrayBuffer, options, url);
+
+            case 10:
+              image = _context.sent;
+              return _context.abrupt("break", 21);
+
+            case 12:
+              _context.next = 14;
+              return parseToImage(arrayBuffer, options, url);
+
+            case 14:
+              image = _context.sent;
+              return _context.abrupt("break", 21);
+
+            case 16:
+              _context.next = 18;
+              return parseToNodeImage(arrayBuffer, options);
+
+            case 18:
+              image = _context.sent;
+              return _context.abrupt("break", 21);
+
+            case 20:
+              assert$1(false);
+
+            case 21:
+              if (imageType === 'data') {
+                image = getImageData(image);
+              }
+
+              return _context.abrupt("return", image);
+
+            case 23:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+    return _parseImage.apply(this, arguments);
+  }
+
+  function getLoadableImageType(type) {
+    switch (type) {
+      case 'auto':
+      case 'data':
+        return getDefaultImageType();
+
+      default:
+        isImageTypeSupported(type);
+        return type;
+    }
+  }
+
+  var VERSION =  "2.1.2" ;
+  var EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp', 'ico', 'svg'];
+  var MIME_TYPES = ['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/bmp', 'image/vndmicrosofticon', 'image/svg+xml'];
+  var ImageLoader = {
+    name: 'Images',
+    version: VERSION,
+    mimeTypes: MIME_TYPES,
+    extensions: EXTENSIONS,
+    parse: parseImage,
+    test: function test(arrayBuffer) {
+      var dataView = new DataView(arrayBuffer);
+      return isJpeg(dataView) || isBmp(dataView) || isGif(dataView) || isPng(dataView);
+    },
+    options: {
+      image: {
+        format: 'auto',
+        decode: true
+      }
+    }
+  };
 
   /*
 
@@ -28014,265 +29828,31 @@ var EarthEngineLayerLibrary = (function (core, layers) {
     browser.ImageCollection.prototype.getMapAsync = getMapAsync;
   }
 
-  // TODO
-
-  async function loadImageBitmap(imageUrl, options = {}) {
-    const response = await fetch(imageUrl);
-    const blob = await response.blob();
-    // const blob = new Blob([new Uint8Array(arrayBuffer)]); // MIME type not needed...
-    const imagebitmapOptions = options && options.imagebitmap;
-    return imagebitmapOptions ? createImageBitmap(blob) : createImageBitmap(blob, imagebitmapOptions);
-  }
-
-  /*
-  function arrayBufferToBase64(buffer) {
-    let binary = '';
-    const bytes = new Uint8Array( buffer );
-    const len = bytes.byteLength;
-    for (var i = 0; i < len; i++) {
-        binary += String.fromCharCode( bytes[ i ] );
-    }
-    return window.btoa(binary);
-  }
-  */
-
-  var sphericalmercator = createCommonjsModule(function (module, exports) {
-  var SphericalMercator = (function(){
-
-  // Closures including constants and other precalculated values.
-  var cache = {},
-      D2R = Math.PI / 180,
-      R2D = 180 / Math.PI,
-      // 900913 properties.
-      A = 6378137.0,
-      MAXEXTENT = 20037508.342789244;
-
-  function isFloat(n){
-      return Number(n) === n && n % 1 !== 0;
-  }
-
-  // SphericalMercator constructor: precaches calculations
-  // for fast tile lookups.
-  function SphericalMercator(options) {
-      options = options || {};
-      this.size = options.size || 256;
-      if (!cache[this.size]) {
-          var size = this.size;
-          var c = cache[this.size] = {};
-          c.Bc = [];
-          c.Cc = [];
-          c.zc = [];
-          c.Ac = [];
-          for (var d = 0; d < 30; d++) {
-              c.Bc.push(size / 360);
-              c.Cc.push(size / (2 * Math.PI));
-              c.zc.push(size / 2);
-              c.Ac.push(size);
-              size *= 2;
-          }
-      }
-      this.Bc = cache[this.size].Bc;
-      this.Cc = cache[this.size].Cc;
-      this.zc = cache[this.size].zc;
-      this.Ac = cache[this.size].Ac;
-  }
-  // Convert lon lat to screen pixel value
-  //
-  // - `ll` {Array} `[lon, lat]` array of geographic coordinates.
-  // - `zoom` {Number} zoom level.
-  SphericalMercator.prototype.px = function(ll, zoom) {
-    if (isFloat(zoom)) {
-      var size = this.size * Math.pow(2, zoom);
-      var d = size / 2;
-      var bc = (size / 360);
-      var cc = (size / (2 * Math.PI));
-      var ac = size;
-      var f = Math.min(Math.max(Math.sin(D2R * ll[1]), -0.9999), 0.9999);
-      var x = d + ll[0] * bc;
-      var y = d + 0.5 * Math.log((1 + f) / (1 - f)) * -cc;
-      (x > ac) && (x = ac);
-      (y > ac) && (y = ac);
-      //(x < 0) && (x = 0);
-      //(y < 0) && (y = 0);
-      return [x, y];
-    } else {
-      var d = this.zc[zoom];
-      var f = Math.min(Math.max(Math.sin(D2R * ll[1]), -0.9999), 0.9999);
-      var x = Math.round(d + ll[0] * this.Bc[zoom]);
-      var y = Math.round(d + 0.5 * Math.log((1 + f) / (1 - f)) * (-this.Cc[zoom]));
-      (x > this.Ac[zoom]) && (x = this.Ac[zoom]);
-      (y > this.Ac[zoom]) && (y = this.Ac[zoom]);
-      //(x < 0) && (x = 0);
-      //(y < 0) && (y = 0);
-      return [x, y];
-    }
-  };
-
-  // Convert screen pixel value to lon lat
-  //
-  // - `px` {Array} `[x, y]` array of geographic coordinates.
-  // - `zoom` {Number} zoom level.
-  SphericalMercator.prototype.ll = function(px, zoom) {
-    if (isFloat(zoom)) {
-      var size = this.size * Math.pow(2, zoom);
-      var bc = (size / 360);
-      var cc = (size / (2 * Math.PI));
-      var zc = size / 2;
-      var g = (px[1] - zc) / -cc;
-      var lon = (px[0] - zc) / bc;
-      var lat = R2D * (2 * Math.atan(Math.exp(g)) - 0.5 * Math.PI);
-      return [lon, lat];
-    } else {
-      var g = (px[1] - this.zc[zoom]) / (-this.Cc[zoom]);
-      var lon = (px[0] - this.zc[zoom]) / this.Bc[zoom];
-      var lat = R2D * (2 * Math.atan(Math.exp(g)) - 0.5 * Math.PI);
-      return [lon, lat];
-    }
-  };
-
-  // Convert tile xyz value to bbox of the form `[w, s, e, n]`
-  //
-  // - `x` {Number} x (longitude) number.
-  // - `y` {Number} y (latitude) number.
-  // - `zoom` {Number} zoom.
-  // - `tms_style` {Boolean} whether to compute using tms-style.
-  // - `srs` {String} projection for resulting bbox (WGS84|900913).
-  // - `return` {Array} bbox array of values in form `[w, s, e, n]`.
-  SphericalMercator.prototype.bbox = function(x, y, zoom, tms_style, srs) {
-      // Convert xyz into bbox with srs WGS84
-      if (tms_style) {
-          y = (Math.pow(2, zoom) - 1) - y;
-      }
-      // Use +y to make sure it's a number to avoid inadvertent concatenation.
-      var ll = [x * this.size, (+y + 1) * this.size]; // lower left
-      // Use +x to make sure it's a number to avoid inadvertent concatenation.
-      var ur = [(+x + 1) * this.size, y * this.size]; // upper right
-      var bbox = this.ll(ll, zoom).concat(this.ll(ur, zoom));
-
-      // If web mercator requested reproject to 900913.
-      if (srs === '900913') {
-          return this.convert(bbox, '900913');
-      } else {
-          return bbox;
-      }
-  };
-
-  // Convert bbox to xyx bounds
-  //
-  // - `bbox` {Number} bbox in the form `[w, s, e, n]`.
-  // - `zoom` {Number} zoom.
-  // - `tms_style` {Boolean} whether to compute using tms-style.
-  // - `srs` {String} projection of input bbox (WGS84|900913).
-  // - `@return` {Object} XYZ bounds containing minX, maxX, minY, maxY properties.
-  SphericalMercator.prototype.xyz = function(bbox, zoom, tms_style, srs) {
-      // If web mercator provided reproject to WGS84.
-      if (srs === '900913') {
-          bbox = this.convert(bbox, 'WGS84');
-      }
-
-      var ll = [bbox[0], bbox[1]]; // lower left
-      var ur = [bbox[2], bbox[3]]; // upper right
-      var px_ll = this.px(ll, zoom);
-      var px_ur = this.px(ur, zoom);
-      // Y = 0 for XYZ is the top hence minY uses px_ur[1].
-      var x = [ Math.floor(px_ll[0] / this.size), Math.floor((px_ur[0] - 1) / this.size) ];
-      var y = [ Math.floor(px_ur[1] / this.size), Math.floor((px_ll[1] - 1) / this.size) ];
-      var bounds = {
-          minX: Math.min.apply(Math, x) < 0 ? 0 : Math.min.apply(Math, x),
-          minY: Math.min.apply(Math, y) < 0 ? 0 : Math.min.apply(Math, y),
-          maxX: Math.max.apply(Math, x),
-          maxY: Math.max.apply(Math, y)
-      };
-      if (tms_style) {
-          var tms = {
-              minY: (Math.pow(2, zoom) - 1) - bounds.maxY,
-              maxY: (Math.pow(2, zoom) - 1) - bounds.minY
-          };
-          bounds.minY = tms.minY;
-          bounds.maxY = tms.maxY;
-      }
-      return bounds;
-  };
-
-  // Convert projection of given bbox.
-  //
-  // - `bbox` {Number} bbox in the form `[w, s, e, n]`.
-  // - `to` {String} projection of output bbox (WGS84|900913). Input bbox
-  //   assumed to be the "other" projection.
-  // - `@return` {Object} bbox with reprojected coordinates.
-  SphericalMercator.prototype.convert = function(bbox, to) {
-      if (to === '900913') {
-          return this.forward(bbox.slice(0, 2)).concat(this.forward(bbox.slice(2,4)));
-      } else {
-          return this.inverse(bbox.slice(0, 2)).concat(this.inverse(bbox.slice(2,4)));
-      }
-  };
-
-  // Convert lon/lat values to 900913 x/y.
-  SphericalMercator.prototype.forward = function(ll) {
-      var xy = [
-          A * ll[0] * D2R,
-          A * Math.log(Math.tan((Math.PI*0.25) + (0.5 * ll[1] * D2R)))
-      ];
-      // if xy value is beyond maxextent (e.g. poles), return maxextent.
-      (xy[0] > MAXEXTENT) && (xy[0] = MAXEXTENT);
-      (xy[0] < -MAXEXTENT) && (xy[0] = -MAXEXTENT);
-      (xy[1] > MAXEXTENT) && (xy[1] = MAXEXTENT);
-      (xy[1] < -MAXEXTENT) && (xy[1] = -MAXEXTENT);
-      return xy;
-  };
-
-  // Convert 900913 x/y values to lon/lat.
-  SphericalMercator.prototype.inverse = function(xy) {
-      return [
-          (xy[0] * R2D / A),
-          ((Math.PI*0.5) - 2.0 * Math.atan(Math.exp(-xy[1] / A))) * R2D
-      ];
-  };
-
-  return SphericalMercator;
-
-  })();
-
-  {
-      module.exports = exports = SphericalMercator;
-  }
-  });
-
-  const merc = new sphericalmercator({size: 256});
+  // import {createMeshGrid} from './image-utils/image-utils';
 
   const eeApi = new EEApi();
   // Global access token, to allow single EE API initialization if using multiple
   // layers
   let accessToken;
 
-  console.log('global scope');
-
   const defaultProps$1 = {
-    /*
-    data: object,
-    token: string,
-    eeObject: String || object,
-    visParams: object
-    */
+    ...TileLayer.defaultProps,
+    // data prop is unused
+    data: {type: 'object', value: null},
+    token: {type: 'string', value: null},
+    eeObject: {type: 'object', value: null},
+    visParams: {type: 'object', value: null}
   };
 
   class EarthEngineLayer extends core.CompositeLayer {
     initializeState() {
-      console.log('initializeState');
-      console.log('this.props');
-
-      console.log(this.props);
-      this.state = {
-        accessToken: null
-      };
+      this.state = {};
     }
 
-    updateState({props, oldProps, changeFlags}) {
-      console.log('updateState');
-      this._updateToken(props, oldProps, changeFlags);
+    async updateState({props, oldProps, changeFlags}) {
+      await this._updateToken(props, oldProps, changeFlags);
       this._updateEEObject(props, oldProps, changeFlags);
-      this._updateEEVisParams(props, oldProps, changeFlags);
+      await this._updateEEVisParams(props, oldProps, changeFlags);
     }
 
     async _updateToken(props, oldProps, changeFlags) {
@@ -28286,8 +29866,6 @@ var EarthEngineLayerLibrary = (function (core, layers) {
     }
 
     _updateEEObject(props, oldProps, changeFlags) {
-      console.log('updating ee object');
-      console.log(props);
       if (!changeFlags.dataChanged) {
         return;
       }
@@ -28297,8 +29875,7 @@ var EarthEngineLayerLibrary = (function (core, layers) {
       if (typeof props.eeObject === 'string') {
         eeObject = browser.Deserializer.fromJSON(props.eeObject);
       } else {
-        eeObject = browser.Deserializer.decode(props.eeObject);
-        // eeObject = props.eeObject;
+        eeObject = props.eeObject;
       }
 
       if (Array.isArray(props.eeObject) && props.eeObject.length === 0) {
@@ -28309,7 +29886,6 @@ var EarthEngineLayerLibrary = (function (core, layers) {
     }
 
     async _updateEEVisParams(props, oldProps, changeFlags) {
-      console.log('_updateEEVisParams');
       if (props.visParams === oldProps.visParams && !changeFlags.dataChanged) {
         return;
       }
@@ -28336,7 +29912,6 @@ var EarthEngineLayerLibrary = (function (core, layers) {
 
     // Get static layer id for image
     _getLayerId(getTileUrl) {
-      console.log('_getLayerId');
       const url = getTileUrl(0, 0, 0);
 
       // This grabs the full layer id of the URL, e.g.
@@ -28348,82 +29923,39 @@ var EarthEngineLayerLibrary = (function (core, layers) {
 
     renderLayers() {
       const {getTileUrl} = this.state;
-      console.log('renderLayers');
 
       return (
         getTileUrl &&
-        new EnhancedTileLayer({
-          // TODO HACK Get a tile url to trigger refresh on dataset change
-          id: this._getLayerId(getTileUrl),
-          async getTileData({x, y, z}) {
-            const imageUrl = getTileUrl(x, y, z);
-            const image = await loadImageBitmap(imageUrl);
-            // const imageData = await getImageData(image);
+        new TileLayer(
+          this.getSubLayerProps({
+            id: 'tiles'
+          }),
+          {
+            id: this._getLayerId(getTileUrl),
+            async getTileData({x, y, z}) {
+              const imageUrl = getTileUrl(x, y, z);
+              const image = await core$1.load(imageUrl, ImageLoader);
+              return image;
+            },
 
-            const bounds = merc.bbox(x, y, z);
+            renderSubLayers(props) {
+              const {data, tile} = props;
+              const {west, south, east, north} = tile.bbox;
+              const bounds = [west, south, east, north];
 
-            // const meshGrid = createMeshGrid(bounds, imageData);
-            // const terrain = getGrayScaleData(imageData);
-            // const tile = martini.createTile(terrain);
-            // const mesh = tile.getMesh(10);
-            // console.debug(`loaded tile ${x}/${y}/${z}`, bounds);
-
-            return {
-              id: `${z}/${x}/${y}`,
-              image,
-              bounds
-            };
-          },
-
-          renderSubLayers(props) {
-            // console.debug(props.data.meshGrid);
-
-            return (
-              props.data.image && [
-                /*
-              new SimpleMeshLayer({
-                ...props.data,
-                data: [{0, 0}]
-                mesh: {
-                  header: {vertexCount: 0},
-                  attributes: {
-                    POSITION: {},
-                    NORMAL: {},
-                    TEXCOORD_0: {value}
-                  }
-                }
-              }),
-              new ColumnLayer({
-                id: `${props.id}-pt`,
-                data: props.data.meshGrid,
-                extruded: true,
-                radius: 30,
-                getPosition: d => [d[0], d[1]],
-                getRadius: 0.01,
-                getFillColor: d => [0, d[2][1], d[2][2]],
-                getElevation: d => d[2][0] * 10,
-                opacity: 1
-              }),
-              */
-                // new ScatterplotLayer({
-                //   id: `${props.id}-pt`,
-                //   data: props.data.meshGrid,
-                //   extruded: true,
-                //   radius: 30,
-                //   getPosition: d => [d[0], d[1]],
-                //   getRadius: 0.01,
-                //   getFillColor: d => [0, d[2][1], d[2][2]],
-                //   getElevation: d => d[2][0] * 10,
-                //   opacity: 1
-                // }),
-                new layers.BitmapLayer({
-                  ...props.data
-                  // opacity: 0.2
-                })
-              ]
-            );
+              return (
+                data && [
+                  new layers.BitmapLayer(
+                    Object.assign(props, {
+                      image: data,
+                      bounds
+                    })
+                  )
+                ]
+              );
+            }
           }
-        })
+        )
       );
     }
   }
@@ -28441,4 +29973,4 @@ var EarthEngineLayerLibrary = (function (core, layers) {
 
   return EarthEngineLayerLibrary;
 
-}(deck, deck));
+}(deck, deck, loaders));

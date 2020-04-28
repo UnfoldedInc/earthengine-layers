@@ -1,16 +1,11 @@
 import {CompositeLayer} from '@deck.gl/core';
-import EnhancedTileLayer from './tile-layer/enhanced-tile-layer';
+import {TileLayer} from '@deck.gl/geo-layers';
 import {BitmapLayer} from '@deck.gl/layers';
 import EEApi from './ee-api'; // Promisify ee apis
 import ee from '@google/earthengine';
-// import {load} from '@loaders.gl/core';
-// import {ImageLoader, getImageData} from '@loaders.gl/images';
-import {loadImageBitmap} from './image-utils/image-utils';
+import {load} from '@loaders.gl/core';
+import {ImageLoader} from '@loaders.gl/images';
 // import {createMeshGrid} from './image-utils/image-utils';
-
-import SphericalMercator from '@mapbox/sphericalmercator';
-
-const merc = new SphericalMercator({size: 256});
 
 const eeApi = new EEApi();
 // Global access token, to allow single EE API initialization if using multiple
@@ -18,12 +13,12 @@ const eeApi = new EEApi();
 let accessToken;
 
 const defaultProps = {
-  /*
-  data: object,
-  token: string,
-  eeObject: String || object,
-  visParams: object
-  */
+  ...TileLayer.defaultProps,
+  // data prop is unused
+  data: {type: 'object', value: null},
+  token: {type: 'string', value: null},
+  eeObject: {type: 'object', value: null},
+  visParams: {type: 'object', value: null}
 };
 
 export default class EarthEngineLayer extends CompositeLayer {
@@ -108,78 +103,36 @@ export default class EarthEngineLayer extends CompositeLayer {
 
     return (
       getTileUrl &&
-      new EnhancedTileLayer({
-        // TODO HACK Get a tile url to trigger refresh on dataset change
-        id: this._getLayerId(getTileUrl),
-        async getTileData({x, y, z}) {
-          const imageUrl = getTileUrl(x, y, z);
-          const image = await loadImageBitmap(imageUrl);
-          // const imageData = await getImageData(image);
+      new TileLayer(
+        this.getSubLayerProps({
+          id: 'tiles'
+        }),
+        {
+          id: this._getLayerId(getTileUrl),
+          async getTileData({x, y, z}) {
+            const imageUrl = getTileUrl(x, y, z);
+            const image = await load(imageUrl, ImageLoader);
+            return image;
+          },
 
-          const bounds = merc.bbox(x, y, z);
+          renderSubLayers(props) {
+            const {data, tile} = props;
+            const {west, south, east, north} = tile.bbox;
+            const bounds = [west, south, east, north];
 
-          // const meshGrid = createMeshGrid(bounds, imageData);
-          // const terrain = getGrayScaleData(imageData);
-          // const tile = martini.createTile(terrain);
-          // const mesh = tile.getMesh(10);
-          // console.debug(`loaded tile ${x}/${y}/${z}`, bounds);
-
-          return {
-            id: `${z}/${x}/${y}`,
-            image,
-            bounds
-          };
-        },
-
-        renderSubLayers(props) {
-          // console.debug(props.data.meshGrid);
-
-          return (
-            props.data.image && [
-              /*
-            new SimpleMeshLayer({
-              ...props.data,
-              data: [{0, 0}]
-              mesh: {
-                header: {vertexCount: 0},
-                attributes: {
-                  POSITION: {},
-                  NORMAL: {},
-                  TEXCOORD_0: {value}
-                }
-              }
-            }),
-            new ColumnLayer({
-              id: `${props.id}-pt`,
-              data: props.data.meshGrid,
-              extruded: true,
-              radius: 30,
-              getPosition: d => [d[0], d[1]],
-              getRadius: 0.01,
-              getFillColor: d => [0, d[2][1], d[2][2]],
-              getElevation: d => d[2][0] * 10,
-              opacity: 1
-            }),
-            */
-              // new ScatterplotLayer({
-              //   id: `${props.id}-pt`,
-              //   data: props.data.meshGrid,
-              //   extruded: true,
-              //   radius: 30,
-              //   getPosition: d => [d[0], d[1]],
-              //   getRadius: 0.01,
-              //   getFillColor: d => [0, d[2][1], d[2][2]],
-              //   getElevation: d => d[2][0] * 10,
-              //   opacity: 1
-              // }),
-              new BitmapLayer({
-                ...props.data
-                // opacity: 0.2
-              })
-            ]
-          );
+            return (
+              data && [
+                new BitmapLayer(
+                  Object.assign(props, {
+                    image: data,
+                    bounds
+                  })
+                )
+              ]
+            );
+          }
         }
-      })
+      )
     );
   }
 }
