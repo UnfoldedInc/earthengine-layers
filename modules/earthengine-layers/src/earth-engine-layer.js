@@ -15,6 +15,7 @@ let accessToken;
 
 const defaultProps = {
   ...TileLayer.defaultProps,
+  // data prop is unused
   data: {type: 'object', value: null},
   token: {type: 'string', value: null},
   eeObject: {type: 'object', value: null},
