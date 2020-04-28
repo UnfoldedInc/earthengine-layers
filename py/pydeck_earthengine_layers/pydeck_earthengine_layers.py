@@ -12,7 +12,12 @@ EARTHENGINE_LAYER_BUNDLE_URL = 'https://cdn.jsdelivr.net/gh/UnfoldedInc/eartheng
 class EarthEngineLayer(pdk.Layer):
     """Wrapper class for using the Earth Engine custom layer with Pydeck
     """
-    def __init__(self, ee_object, credentials=None, **kwargs):
+    def __init__(
+            self,
+            ee_object,
+            credentials=None,
+            library_url=EARTHENGINE_LAYER_BUNDLE_URL,
+            **kwargs):
         """EarthEngineLayer constructor
 
         Args:
@@ -28,7 +33,7 @@ class EarthEngineLayer(pdk.Layer):
         # Should we assume ee has already been initialized?
         ee.Initialize()
 
-        self._set_custom_library()
+        self._set_custom_library(url=library_url)
 
         self.credentials = credentials or ee.data.get_persistent_credentials()
 
