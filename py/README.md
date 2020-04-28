@@ -15,7 +15,7 @@ instructions](https://pydeck.gl/installation.html) to install.
 ## Using
 
 For an example, see the
-[`examples/Introduction.ipynb`](examples/Introduction.ipynb) Jupyter Notebook.
+[`examples/Introduction.ipynb`](https://raw.githubusercontent.com/UnfoldedInc/earthengine-layers/master/py/examples/Introduction.ipynb) Jupyter Notebook.
 
 ## Release notes
 
