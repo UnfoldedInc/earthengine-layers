@@ -82,10 +82,12 @@ class EarthEngineLayer(pdk.Layer):
 
         token_dict = r.json()
 
-        # Set expiration time
+        # Set expiration time: expires_in * .9
+        # See reference EE API code here:
+        # https://github.com/google/earthengine-api/blob/5909d9a19a9b829d49b69f38ac4205b4924b21c9/javascript/src/apiclient.js#L1107
         self.access_token = token_dict['access_token']
         self.token_expiration = datetime.now() + timedelta(
-            seconds=token_dict['expires_in'] - 1)
+            seconds=token_dict['expires_in'] * .9)
 
     @property
     def token(self):
