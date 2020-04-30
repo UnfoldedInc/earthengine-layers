@@ -23,9 +23,10 @@ class EarthEngineLayer(pdk.Layer):
         Args:
             - ee_object: Earth Engine object
             - vis_params: Dict of vis_params to pass to the Earth Engine backend
-            - credentials: Custom credentials. Saved credentials will be loaded
-              if not passed.
-
+            - credentials: Google OAuth2 credentials object. Saved credentials
+              will be loaded if not passed.
+            - library_url: URL from which to load EarthEngineLayer JavaScript
+              bundle
         """
         super(EarthEngineLayer, self).__init__(
             'EarthEngineLayer', None, **kwargs)
