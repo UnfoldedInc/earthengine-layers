@@ -5,7 +5,7 @@ import EEApi from './ee-api'; // Promisify ee apis
 import ee from '@google/earthengine';
 import {load} from '@loaders.gl/core';
 import {ImageLoader} from '@loaders.gl/images';
-// import {createMeshGrid} from './image-utils/image-utils';
+import {deepEqual} from './utils';
 
 const eeApi = new EEApi();
 // Global access token, to allow single EE API initialization if using multiple
@@ -18,7 +18,7 @@ const defaultProps = {
   data: {type: 'object', value: null},
   token: {type: 'string', value: null},
   eeObject: {type: 'object', value: null},
-  visParams: {type: 'object', value: null}
+  visParams: {type: 'object', value: null, equal: deepEqual}
 };
 
 export default class EarthEngineLayer extends CompositeLayer {
@@ -87,17 +87,6 @@ export default class EarthEngineLayer extends CompositeLayer {
     this.setState({map, getTileUrl});
   }
 
-  // Get static layer id for image
-  _getLayerId(getTileUrl) {
-    const url = getTileUrl(0, 0, 0);
-
-    // This grabs the full layer id of the URL, e.g.
-    // [0-9a-f]{32}-[0-9a-f]{32}
-    const fullId = url.split('/')[7];
-
-    return fullId.split('-')[0];
-  }
-
   renderLayers() {
     const {getTileUrl} = this.state;
 
@@ -108,7 +97,7 @@ export default class EarthEngineLayer extends CompositeLayer {
           id: 'tiles'
         }),
         {
-          id: this._getLayerId(getTileUrl),
+          id: getTileUrl(0, 0, 0),
           async getTileData({x, y, z}) {
             const imageUrl = getTileUrl(x, y, z);
             const image = await load(imageUrl, ImageLoader);
