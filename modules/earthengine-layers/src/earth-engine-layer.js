@@ -105,7 +105,8 @@ export default class EarthEngineLayer extends CompositeLayer {
       getTileUrl &&
       new TileLayer(
         this.getSubLayerProps({
-          id: 'tiles'
+          id: 'tiles',
+          ...this.props,
         }),
         {
           id: this._getLayerId(getTileUrl),

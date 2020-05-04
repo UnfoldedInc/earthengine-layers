@@ -75,7 +75,7 @@ export default class App extends React.Component {
         opacity: 0.5,
         // Do not display any tile that is not selected
         // https://deck.gl/#/documentation/deckgl-api-reference/layers/tile-layer?section=refinementstrategy-enum-optional-
-        refinementStrategy: 'never'
+        refinementStrategy: 'no-overlap'
       })
     ];
 
