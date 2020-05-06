@@ -71,7 +71,7 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-env-variables',
       options: {
-        whitelist: ['MapboxAccessToken'] // TODO replace with Google Maps integration
+        whitelist: ['MapboxAccessToken', 'EE_CLIENT_ID'] // TODO replace with Google Maps integration
       }
     }
   ]
