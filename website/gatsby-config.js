@@ -14,10 +14,7 @@ module.exports = {
         ROOT_FOLDER: `${__dirname}/../`,
 
         DOCS: DOC_TABLE_OF_CONTENTS,
-        DOC_FOLDERS: [
-          `${__dirname}/../docs/`,
-          `${__dirname}/../modules/`
-        ],
+        DOC_FOLDERS: [`${__dirname}/../docs/`, `${__dirname}/../modules/`],
         SOURCE: [`${__dirname}/static`, `${__dirname}/src`],
 
         PROJECT_TYPE: 'github',
@@ -54,7 +51,7 @@ module.exports = {
 
         LINK_TO_GET_STARTED: '/docs/developer-guide/get-started',
 
-        ADDITIONAL_LINKS: [{name: 'Blog', href: 'http://medium.com/vis-gl'}],
+        ADDITIONAL_LINKS: [{name: 'Blog', href: 'http://medium.com/vis-gl', index: 1}],
 
         INDEX_PAGE_URL: resolve(__dirname, './templates/index.jsx'),
 
@@ -65,7 +62,9 @@ module.exports = {
             componentUrl: resolve(__dirname, '../examples/ee-demo/app.js'),
             path: 'examples/earthengine-layer'
           }
-        ]
+        ],
+
+        STYLESHEETS: ['https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.0/mapbox-gl.css']
       }
     },
     {resolve: 'gatsby-plugin-no-sourcemaps'},
