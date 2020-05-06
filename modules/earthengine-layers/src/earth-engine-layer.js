@@ -18,7 +18,8 @@ const defaultProps = {
   data: {type: 'object', value: null},
   token: {type: 'string', value: null},
   eeObject: {type: 'object', value: null},
-  visParams: {type: 'object', value: null, equal: deepEqual}
+  visParams: {type: 'object', value: null, equal: deepEqual},
+  refinementStrategy: 'no-overlap'
 };
 
 export default class EarthEngineLayer extends CompositeLayer {
@@ -89,15 +90,33 @@ export default class EarthEngineLayer extends CompositeLayer {
 
   renderLayers() {
     const {getTileUrl} = this.state;
+    const {
+      refinementStrategy,
+      onViewportLoad,
+      onTileLoad,
+      onTileError,
+      maxZoom,
+      minZoom,
+      maxCacheSize,
+      maxCacheByteSize
+    } = this.props;
 
     return (
       getTileUrl &&
       new TileLayer(
         this.getSubLayerProps({
-          id: 'tiles'
+          id: getTileUrl(0, 0, 0)
         }),
         {
-          id: getTileUrl(0, 0, 0),
+          refinementStrategy,
+          onViewportLoad,
+          onTileLoad,
+          onTileError,
+          maxZoom,
+          minZoom,
+          maxCacheSize,
+          maxCacheByteSize,
+
           async getTileData({x, y, z}) {
             const imageUrl = getTileUrl(x, y, z);
             const image = await load(imageUrl, ImageLoader);
