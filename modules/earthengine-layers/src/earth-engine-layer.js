@@ -101,24 +101,33 @@ export default class EarthEngineLayer extends CompositeLayer {
 
   renderLayers() {
     const {getTileUrl} = this.state;
+    const {
+      refinementStrategy,
+      onViewportLoad,
+      onTileLoad,
+      onTileError,
+      maxZoom,
+      minZoom,
+      maxCacheSize,
+      maxCacheByteSize
+    } = this.props;
 
     return (
       getTileUrl &&
       new TileLayer(
         this.getSubLayerProps({
-          id: 'tiles',
-          refinementStrategy: this.props.refinementStrategy,
-          onViewportLoad: this.props.onViewportLoad,
-          onTileLoad: this.props.onTileLoad,
-          onTileError: this.props.onTileError,
-          maxZoom: this.props.maxZoom,
-          minZoom: this.props.minZoom,
-          maxCacheSize: this.props.maxCacheSize,
-          maxCacheByteSize: this.props.maxCacheByteSize,
-          zRange: this.props.zRange
+          id: this._getLayerId(getTileUrl)
         }),
         {
-          id: this._getLayerId(getTileUrl),
+          refinementStrategy,
+          onViewportLoad,
+          onTileLoad,
+          onTileError,
+          maxZoom,
+          minZoom,
+          maxCacheSize,
+          maxCacheByteSize,
+
           async getTileData({x, y, z}) {
             const imageUrl = getTileUrl(x, y, z);
             const image = await load(imageUrl, ImageLoader);
