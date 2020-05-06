@@ -72,10 +72,7 @@ export default class App extends React.Component {
       new EarthEngineLayer({
         eeObject: this.state.eeImage,
         visParams: {min: 0, max: 255},
-        opacity: 0.5,
-        // Prevent overlapping tiles from multiple zoom levels
-        // https://deck.gl/#/documentation/deckgl-api-reference/layers/tile-layer?section=refinementstrategy-enum-optional-
-        refinementStrategy: 'no-overlap'
+        opacity: 0.5
       })
     ];
 

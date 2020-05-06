@@ -18,7 +18,8 @@ const defaultProps = {
   data: {type: 'object', value: null},
   token: {type: 'string', value: null},
   eeObject: {type: 'object', value: null},
-  visParams: {type: 'object', value: null}
+  visParams: {type: 'object', value: null},
+  refinementStrategy: 'no-overlap'
 };
 
 export default class EarthEngineLayer extends CompositeLayer {
@@ -106,7 +107,15 @@ export default class EarthEngineLayer extends CompositeLayer {
       new TileLayer(
         this.getSubLayerProps({
           id: 'tiles',
-          ...this.props,
+          refinementStrategy: this.props.refinementStrategy,
+          onViewportLoad: this.props.onViewportLoad,
+          onTileLoad: this.props.onTileLoad,
+          onTileError: this.props.onTileError,
+          maxZoom: this.props.maxZoom,
+          minZoom: this.props.minZoom,
+          maxCacheSize: this.props.maxCacheSize,
+          maxCacheByteSize: this.props.maxCacheByteSize,
+          zRange: this.props.zRange
         }),
         {
           id: this._getLayerId(getTileUrl),
