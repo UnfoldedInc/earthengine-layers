@@ -77,14 +77,16 @@ export default class App extends React.Component {
     ];
 
     return (
-      <DeckGL
-        controller
-        onViewStateChange={this._onViewStateChange}
-        viewState={this.state.viewState}
-        layers={layers}
-      >
-        <GoogleLoginPane loginProvider={this.loginProvider} />
-      </DeckGL>
+      <div style={{position: 'relative', height: '100%'}}>
+        <DeckGL
+          controller
+          onViewStateChange={this._onViewStateChange}
+          viewState={this.state.viewState}
+          layers={layers}
+        >
+          <GoogleLoginPane loginProvider={this.loginProvider} />
+        </DeckGL>
+      </div>
     );
   }
 }
