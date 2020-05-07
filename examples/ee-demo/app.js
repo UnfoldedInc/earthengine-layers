@@ -14,10 +14,7 @@ import {GoogleLoginPane} from '../shared/react-components';
 // eslint-disable-next-line
 const EE_CLIENT_ID = process.env.EE_CLIENT_ID;
 
-export const EARTHENGINE_SCOPES = [
-  'https://www.googleapis.com/auth/earthengine',
-  'https://www.googleapis.com/auth/cloud-platform'
-];
+export const EARTHENGINE_SCOPES = ['https://www.googleapis.com/auth/earthengine'];
 
 const defaultViewState = {
   longitude: -122.41669,
