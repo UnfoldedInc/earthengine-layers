@@ -1,11 +1,12 @@
+import {terser} from 'rollup-plugin-terser';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 
-const config = {
+const config = (file, plugins = []) => ({
   input: 'src/bundle.js',
   output: {
-    file: 'dist/bundle.js',
+    file,
     format: 'iife',
     name: 'EarthEngineLayerLibrary',
     globals: {
@@ -26,6 +27,7 @@ const config = {
     '@loaders.gl/loader-utils'
   ],
   plugins: [
+    ...plugins,
     resolve({
       browser: true,
       preferBuiltins: true
@@ -33,6 +35,6 @@ const config = {
     commonjs(),
     json()
   ]
-};
+});
 
-export default config;
+export default [config('dist/bundle.js'), config('dist/bundle.min.js', [terser()])];
