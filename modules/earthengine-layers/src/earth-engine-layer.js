@@ -80,7 +80,15 @@ export default class EarthEngineLayer extends CompositeLayer {
     }
 
     // Evaluate map
-    const map = await eeObject.getMapAsync(props.visParams);
+    const map = await new Promise((resolve, reject) =>
+      eeObject.getMap(props.visParams, (value, error) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+        resolve(value);
+      })
+    );
 
     // Get a tile url generation function
     const getTileUrl = map.formatTileUrl.bind(map);

@@ -1,7 +1,5 @@
 import ee from '@google/earthengine';
 
-promisifyEEAPIs();
-
 export default class EEApi {
   constructor() {
     this.ee = ee;
@@ -51,22 +49,4 @@ export default class EEApi {
       ee.initialize(baseurl, tileurl, value => resolve(value), error => reject(error));
     });
   }
-}
-
-function promisifyEEAPIs() {
-  async function getMapAsync(visParams) {
-    return await new Promise((resolve, reject) =>
-      // eslint-disable-next-line no-invalid-this
-      this.getMap(visParams, (value, error) => {
-        if (error) {
-          reject(error);
-          return;
-        }
-        resolve(value);
-      })
-    );
-  }
-
-  ee.Image.prototype.getMapAsync = getMapAsync;
-  ee.ImageCollection.prototype.getMapAsync = getMapAsync;
 }
