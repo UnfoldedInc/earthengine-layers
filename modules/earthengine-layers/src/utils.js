@@ -20,10 +20,10 @@ export function deepEqual(a, b) {
   return true;
 }
 
-// Promisify eeObject.getMap
-export function getMapAsync(eeObject, visParams) {
+// Promisify eeObject methods
+export function promisifyEEObject(eeObject, method, ...args) {
   return new Promise((resolve, reject) =>
-    eeObject.getMap(visParams, (value, error) => {
+    eeObject[method](...args, (value, error) => {
       if (error) {
         reject(error);
         return;
