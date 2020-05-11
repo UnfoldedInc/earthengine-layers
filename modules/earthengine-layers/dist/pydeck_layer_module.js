@@ -29850,7 +29850,7 @@ var EarthEngineLayerLibrary = (function (core, layers, core$1) {
     return true;
   }
 
-  const eeApi = new EEApi();
+  let eeApi;
   // Global access token, to allow single EE API initialization if using multiple
   // layers
   let accessToken;
@@ -29882,6 +29882,7 @@ var EarthEngineLayerLibrary = (function (core, layers, core$1) {
       }
 
       const {token} = props;
+      eeApi = eeApi || new EEApi();
       await eeApi.initialize({token});
       accessToken = token;
     }
