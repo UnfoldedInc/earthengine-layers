@@ -5,7 +5,7 @@ import EEApi from './ee-api'; // Promisify ee apis
 import ee from '@google/earthengine';
 import {load} from '@loaders.gl/core';
 import {ImageLoader} from '@loaders.gl/images';
-import {deepEqual} from './utils';
+import {deepEqual, getMapAsync} from './utils';
 
 const eeApi = new EEApi();
 // Global access token, to allow single EE API initialization if using multiple
@@ -80,15 +80,7 @@ export default class EarthEngineLayer extends CompositeLayer {
     }
 
     // Evaluate map
-    const map = await new Promise((resolve, reject) =>
-      eeObject.getMap(props.visParams, (value, error) => {
-        if (error) {
-          reject(error);
-          return;
-        }
-        resolve(value);
-      })
-    );
+    const map = await getMapAsync(eeObject, props.visParams);
 
     // Get a tile url generation function
     const getTileUrl = map.formatTileUrl.bind(map);
