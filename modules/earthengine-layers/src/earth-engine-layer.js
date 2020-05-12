@@ -24,13 +24,29 @@ const defaultProps = {
 
 export default class EarthEngineLayer extends CompositeLayer {
   initializeState() {
-    this.state = {};
+    this.state = {
+      frame: 0
+    };
+  }
+
+  _animate() {
+    const {
+      loopLength = 24, // unit corresponds to the timestamp in source data
+      animationSpeed = 12 // unit time per second
+    } = this.props;
+    const timestamp = Date.now() / 1000;
+    const loopTime = loopLength / animationSpeed;
+
+    this.setState({
+      frame: Math.round(((timestamp % loopTime) / loopTime) * loopLength)
+    });
   }
 
   async updateState({props, oldProps, changeFlags}) {
     await this._updateToken(props, oldProps, changeFlags);
     this._updateEEObject(props, oldProps, changeFlags);
     await this._updateEEVisParams(props, oldProps, changeFlags);
+    this._animate();
   }
 
   async _updateToken(props, oldProps, changeFlags) {
@@ -73,23 +89,53 @@ export default class EarthEngineLayer extends CompositeLayer {
       return;
     }
 
-    if (!eeObject.getMap) {
-      throw new Error(
-        'EarthEngineLayer only accepts data rows that are EE Objects with a getMap() method'
-      );
+    // if (!eeObject.getMap) {
+    //   throw new Error(
+    //     'EarthEngineLayer only accepts data rows that are EE Objects with a getMap() method'
+    //   );
+    // }
+
+    // console.log(eeObject);
+    // // Evaluate map
+    // let getTileUrl;
+    // if (eeObject instanceof ee.ImageCollection) {
+    //   console.log('hi');
+    //   getTileUrl = eeObject.getFilmstripThumbURL.bind(eeObject);
+    // } else {
+    //   const map = await promisifyEEObject(eeObject, 'getMap', props.visParams);
+    //   // Get a tile url generation function
+    //   getTileUrl = map.formatTileUrl.bind(map);
+    // }
+
+    // this.setState({getTileUrl});
+  }
+
+  async getFilmstripTileData({bbox}) {
+    const {eeObject} = this.state;
+    const {visParams} = this.props;
+    const {west, north, east, south} = bbox;
+    const filmArgs = {
+      ...visParams,
+      dimensions: [256, 256],
+      region: ee.Geometry.Rectangle([west, south, east, north]),
+      crs: 'EPSG:3857'
+    };
+    const imageUrl = await promisifyEEObject(eeObject, 'getFilmstripThumbURL', filmArgs);
+
+    const imageOptions = {image: {type: 'imagebitmap'}};
+    const image = await load(imageUrl, ImageLoader, imageOptions);
+
+    const slices = [];
+    for (let i = 0; i < image.height / 256; i++) {
+      const image_bounds = [0, i * 256, 256, 256];
+      slices.push(createImageBitmap(image, ...image_bounds));
     }
 
-    // Evaluate map
-    const map = await promisifyEEObject(eeObject, 'getMap', props.visParams);
-
-    // Get a tile url generation function
-    const getTileUrl = map.formatTileUrl.bind(map);
-
-    this.setState({map, getTileUrl});
+    return Promise.all(slices);
   }
 
   renderLayers() {
-    const {getTileUrl} = this.state;
+    const {getTileUrl, eeObject, frame} = this.state;
     const {
       refinementStrategy,
       onViewportLoad,
@@ -102,10 +148,12 @@ export default class EarthEngineLayer extends CompositeLayer {
     } = this.props;
 
     return (
-      getTileUrl &&
+      eeObject &&
       new TileLayer(
         this.getSubLayerProps({
-          id: getTileUrl(0, 0, 0)
+          // id: getTileUrl(0, 0, 0)
+          // id: Math.random()
+          id: 'constant string'
         }),
         {
           refinementStrategy,
@@ -116,27 +164,36 @@ export default class EarthEngineLayer extends CompositeLayer {
           minZoom,
           maxCacheSize,
           maxCacheByteSize,
+          frame,
 
-          async getTileData({x, y, z}) {
-            const imageUrl = getTileUrl(x, y, z);
-            const image = await load(imageUrl, ImageLoader);
-            return image;
-          },
+          getTileData: options => this.getFilmstripTileData(options),
+          // async getTileData({x, y, z}) {
+          //   console.log(getTileUrl);
+          //   const imageUrl = getTileUrl(x, y, z);
+          //   const image = await load(imageUrl, ImageLoader);
+          //   return image;
+          // },
 
           renderSubLayers(props) {
-            const {data, tile} = props;
+            const {data, tile, frame} = props;
             const {west, south, east, north} = tile.bbox;
             const bounds = [west, south, east, north];
 
+            let image;
+            if (Array.isArray(data)) {
+              image = data[frame];
+            } else if (data) {
+              image = data.then(result => result && result[frame]);
+            }
+
             return (
-              data && [
-                new BitmapLayer(
-                  Object.assign(props, {
-                    image: data,
-                    bounds
-                  })
-                )
-              ]
+              data &&
+              new BitmapLayer(
+                Object.assign(props, {
+                  image,
+                  bounds
+                })
+              )
             );
           }
         }

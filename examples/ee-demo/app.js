@@ -17,9 +17,9 @@ const EE_CLIENT_ID = process.env.EE_CLIENT_ID;
 export const EARTHENGINE_SCOPES = ['https://www.googleapis.com/auth/earthengine'];
 
 const defaultViewState = {
-  longitude: -122.41669,
+  longitude: -80.41669,
   latitude: 37.7853,
-  zoom: 8,
+  zoom: 2,
   pitch: 0,
   bearing: 0
 };
@@ -56,7 +56,20 @@ export default class App extends React.Component {
     // Client id to your EE application
     await this.eeApi.initialize({clientId: EE_CLIENT_ID});
 
-    const eeImage = ee.Image('CGIAR/SRTM90_V4').serialize();
+    // const eeImage = ee.Image('CGIAR/SRTM90_V4').serialize();
+    const eeImage = ee
+      .ImageCollection('NOAA/GFS0P25')
+      .filterDate('2018-12-22', '2018-12-23')
+      .limit(24)
+      .select('temperature_2m_above_ground');
+    // const eeImage = ee.Deserializer.fromJSON(
+    //   ee
+    //     .ImageCollection('NOAA/GFS0P25')
+    //     .filterDate('2018-12-22', '2018-12-23')
+    //     .limit(24)
+    //     .select('temperature_2m_above_ground')
+    //     .serialize()
+    // );
     this.setState({eeImage});
   }
 
@@ -68,7 +81,12 @@ export default class App extends React.Component {
     const layers = this.state.eeImage && [
       new EarthEngineLayer({
         eeObject: this.state.eeImage,
-        visParams: {min: 0, max: 255},
+        // visParams: {min: 0, max: 255},
+        visParams: {
+          min: -40.0,
+          max: 35.0,
+          palette: ['blue', 'purple', 'cyan', 'green', 'yellow', 'red']
+        },
         opacity: 0.5
       })
     ];
