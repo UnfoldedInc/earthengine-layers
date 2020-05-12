@@ -21,7 +21,7 @@ export function deepEqual(a, b) {
 }
 
 // Promisify eeObject methods
-export function promisifyEEObject(eeObject, method, ...args) {
+export function promisifyEEMethod(eeObject, method, ...args) {
   return new Promise((resolve, reject) =>
     eeObject[method](...args, (value, error) => {
       if (error) {

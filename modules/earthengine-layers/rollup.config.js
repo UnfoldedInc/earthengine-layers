@@ -1,14 +1,16 @@
+import {terser} from 'rollup-plugin-terser';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 
-const config = {
+const config = ({file, plugins = [], globals = {}, external = []}) => ({
   input: 'src/bundle.js',
   output: {
-    file: 'dist/bundle.js',
+    file,
     format: 'iife',
     name: 'EarthEngineLayerLibrary',
     globals: {
+      ...globals,
       '@deck.gl/core': 'deck',
       '@deck.gl/layers': 'deck',
       '@luma.gl/core': 'luma',
@@ -16,6 +18,7 @@ const config = {
     }
   },
   external: [
+    ...external,
     '@deck.gl/core',
     '@deck.gl/layers',
     '@luma.gl/core',
@@ -26,6 +29,7 @@ const config = {
     '@loaders.gl/loader-utils'
   ],
   plugins: [
+    ...plugins,
     resolve({
       browser: true,
       preferBuiltins: true
@@ -33,6 +37,25 @@ const config = {
     commonjs(),
     json()
   ]
-};
+});
 
-export default config;
+export default [
+  config({
+    file: 'dist/dist.js',
+    globals: {'@google/earthengine': 'ee'},
+    external: ['@google/earthengine']
+  }),
+  config({
+    file: 'dist/dist.min.js',
+    plugins: [terser()],
+    globals: {'@google/earthengine': 'ee'},
+    external: ['@google/earthengine']
+  }),
+  config({
+    file: 'dist/pydeck_layer_module.js'
+  }),
+  config({
+    file: 'dist/pydeck_layer_module.min.js',
+    plugins: [terser()]
+  })
+];

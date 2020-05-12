@@ -5,7 +5,7 @@ import EEApi from './ee-api'; // Promisify ee apis
 import ee from '@google/earthengine';
 import {load} from '@loaders.gl/core';
 import {ImageLoader} from '@loaders.gl/images';
-import {deepEqual, promisifyEEObject} from './utils';
+import {deepEqual, promisifyEEMethod} from './utils';
 
 const eeApi = new EEApi();
 // Global access token, to allow single EE API initialization if using multiple
@@ -102,7 +102,7 @@ export default class EarthEngineLayer extends CompositeLayer {
     //   console.log('hi');
     //   getTileUrl = eeObject.getFilmstripThumbURL.bind(eeObject);
     // } else {
-    //   const map = await promisifyEEObject(eeObject, 'getMap', props.visParams);
+    //   const map = await promisifyEEMethod(eeObject, 'getMap', props.visParams);
     //   // Get a tile url generation function
     //   getTileUrl = map.formatTileUrl.bind(map);
     // }
@@ -120,7 +120,7 @@ export default class EarthEngineLayer extends CompositeLayer {
       region: ee.Geometry.Rectangle([west, south, east, north]),
       crs: 'EPSG:3857'
     };
-    const imageUrl = await promisifyEEObject(eeObject, 'getFilmstripThumbURL', filmArgs);
+    const imageUrl = await promisifyEEMethod(eeObject, 'getFilmstripThumbURL', filmArgs);
 
     const imageOptions = {image: {type: 'imagebitmap'}};
     const image = await load(imageUrl, ImageLoader, imageOptions);

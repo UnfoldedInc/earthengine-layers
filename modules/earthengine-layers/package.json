@@ -15,7 +15,6 @@
     "build-rollup": "rollup --config"
   },
   "dependencies": {
-    "@google/earthengine": "^0.1.217",
     "@loaders.gl/core": "^2.1.2",
     "@loaders.gl/images": "^2.1.2",
     "@math.gl/web-mercator": "3.1.2"
@@ -24,11 +23,13 @@
     "@rollup/plugin-commonjs": "^11.0.2",
     "@rollup/plugin-json": "^4.0.2",
     "@rollup/plugin-node-resolve": "^7.1.1",
-    "rollup": "^2.4.0"
+    "rollup": "^2.4.0",
+    "rollup-plugin-terser": "^5.3.0"
   },
   "peerDependencies": {
     "@deck.gl/core": "^8.1.1",
     "@deck.gl/geo-layers": "^8.1.1",
-    "@deck.gl/layers": "^8.1.1"
+    "@deck.gl/layers": "^8.1.1",
+    "@google/earthengine": "^0.1.217"
   }
 }
