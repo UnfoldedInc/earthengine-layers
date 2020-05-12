@@ -1,3 +1,4 @@
+/* global createImageBitmap */
 import {CompositeLayer} from '@deck.gl/core';
 import {TileLayer} from '@deck.gl/geo-layers';
 import {BitmapLayer} from '@deck.gl/layers';
@@ -188,15 +189,7 @@ export default class EarthEngineLayer extends CompositeLayer {
               image = data.then(result => result && result[frame]);
             }
 
-            return (
-              data &&
-              new BitmapLayer(
-                Object.assign(props, {
-                  image,
-                  bounds
-                })
-              )
-            );
+            return data && new BitmapLayer({...props, image, bounds});
           }
         }
       )
