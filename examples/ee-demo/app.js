@@ -41,7 +41,8 @@ export default class App extends React.Component {
 
     this.state = {
       viewState: defaultViewState,
-      eeObject: null
+      eeObject: null,
+      visParams: null
     };
   }
 
@@ -62,6 +63,11 @@ export default class App extends React.Component {
       .filterDate('2018-12-22', '2018-12-23')
       .limit(24)
       .select('temperature_2m_above_ground');
+    const visParams = {
+      min: -40.0,
+      max: 35.0,
+      palette: ['blue', 'purple', 'cyan', 'green', 'yellow', 'red']
+    };
     // const eeObject = ee.Deserializer.fromJSON(
     //   ee
     //     .ImageCollection('NOAA/GFS0P25')
@@ -70,7 +76,7 @@ export default class App extends React.Component {
     //     .select('temperature_2m_above_ground')
     //     .serialize()
     // );
-    this.setState({eeObject});
+    this.setState({eeObject, visParams});
   }
 
   _onViewStateChange({viewState}) {
@@ -78,17 +84,12 @@ export default class App extends React.Component {
   }
 
   render() {
-    const {eeObject} = this.state;
+    const {eeObject, visParams, viewState} = this.state;
 
     const layers = eeObject && [
       new EarthEngineLayer({
         eeObject,
-        // visParams: {min: 0, max: 255},
-        visParams: {
-          min: -40.0,
-          max: 35.0,
-          palette: ['blue', 'purple', 'cyan', 'green', 'yellow', 'red']
-        },
+        visParams,
         opacity: 0.5
       })
     ];
@@ -98,7 +99,7 @@ export default class App extends React.Component {
         <DeckGL
           controller
           onViewStateChange={this._onViewStateChange}
-          viewState={this.state.viewState}
+          viewState={viewState}
           layers={layers}
         >
           <GoogleLoginPane loginProvider={this.loginProvider} />
