@@ -41,7 +41,7 @@ export default class App extends React.Component {
 
     this.state = {
       viewState: defaultViewState,
-      eeImage: null
+      eeObject: null
     };
   }
 
@@ -56,13 +56,13 @@ export default class App extends React.Component {
     // Client id to your EE application
     await this.eeApi.initialize({clientId: EE_CLIENT_ID});
 
-    // const eeImage = ee.Image('CGIAR/SRTM90_V4').serialize();
-    const eeImage = ee
+    // const eeObject = ee.Image('CGIAR/SRTM90_V4').serialize();
+    const eeObject = ee
       .ImageCollection('NOAA/GFS0P25')
       .filterDate('2018-12-22', '2018-12-23')
       .limit(24)
       .select('temperature_2m_above_ground');
-    // const eeImage = ee.Deserializer.fromJSON(
+    // const eeObject = ee.Deserializer.fromJSON(
     //   ee
     //     .ImageCollection('NOAA/GFS0P25')
     //     .filterDate('2018-12-22', '2018-12-23')
@@ -70,7 +70,7 @@ export default class App extends React.Component {
     //     .select('temperature_2m_above_ground')
     //     .serialize()
     // );
-    this.setState({eeImage});
+    this.setState({eeObject});
   }
 
   _onViewStateChange({viewState}) {
@@ -78,9 +78,11 @@ export default class App extends React.Component {
   }
 
   render() {
-    const layers = this.state.eeImage && [
+    const {eeObject} = this.state;
+
+    const layers = eeObject && [
       new EarthEngineLayer({
-        eeObject: this.state.eeImage,
+        eeObject,
         // visParams: {min: 0, max: 255},
         visParams: {
           min: -40.0,
