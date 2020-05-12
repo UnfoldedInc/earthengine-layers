@@ -114,9 +114,11 @@ export default class EarthEngineLayer extends CompositeLayer {
     const {eeObject} = this.state;
     const {visParams} = this.props;
     const {west, north, east, south} = bbox;
+    const TILE_SIZE = 256;
+
     const filmArgs = {
       ...visParams,
-      dimensions: [256, 256],
+      dimensions: [TILE_SIZE, TILE_SIZE],
       region: ee.Geometry.Rectangle([west, south, east, north]),
       crs: 'EPSG:3857'
     };
@@ -126,9 +128,9 @@ export default class EarthEngineLayer extends CompositeLayer {
     const image = await load(imageUrl, ImageLoader, imageOptions);
 
     const slices = [];
-    for (let i = 0; i < image.height / 256; i++) {
-      const image_bounds = [0, i * 256, 256, 256];
-      slices.push(createImageBitmap(image, ...image_bounds));
+    for (let i = 0; i < image.height / TILE_SIZE; i++) {
+      const imageBounds = [0, i * TILE_SIZE, TILE_SIZE, TILE_SIZE];
+      slices.push(createImageBitmap(image, ...imageBounds));
     }
 
     return Promise.all(slices);
