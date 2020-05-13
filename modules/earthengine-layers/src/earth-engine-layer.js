@@ -39,7 +39,7 @@ export default class EarthEngineLayer extends CompositeLayer {
     const loopTime = loopLength / animationSpeed;
 
     this.setState({
-      frame: Math.round(((timestamp % loopTime) / loopTime) * loopLength)
+      frame: Math.floor(((timestamp % loopTime) / loopTime) * loopLength)
     });
   }
 
