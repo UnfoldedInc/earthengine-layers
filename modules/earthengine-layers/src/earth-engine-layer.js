@@ -90,25 +90,48 @@ export default class EarthEngineLayer extends CompositeLayer {
       return;
     }
 
-    // if (!eeObject.getMap) {
-    //   throw new Error(
-    //     'EarthEngineLayer only accepts data rows that are EE Objects with a getMap() method'
-    //   );
-    // }
+    let getTileUrl;
+    let renderMethod;
+    console.log(eeObject);
+    if (eeObject instanceof ee.ImageCollection) {
+      renderMethod = 'filmstrip';
+      // no op
+    } else if (!eeObject.getMap) {
+      throw new Error(
+        'EarthEngineLayer only accepts data rows that are EE Objects with a getMap() method'
+      );
+    } else {
+      console.log('hello world');
 
-    // console.log(eeObject);
-    // // Evaluate map
-    // let getTileUrl;
-    // if (eeObject instanceof ee.ImageCollection) {
-    //   console.log('hi');
-    //   getTileUrl = eeObject.getFilmstripThumbURL.bind(eeObject);
-    // } else {
-    //   const map = await promisifyEEMethod(eeObject, 'getMap', props.visParams);
-    //   // Get a tile url generation function
-    //   getTileUrl = map.formatTileUrl.bind(map);
-    // }
+      // Evaluate map
+      const map = await promisifyEEMethod(eeObject, 'getMap', props.visParams);
+      // Get a tile url generation function
+      getTileUrl = map.formatTileUrl.bind(map);
+      renderMethod = 'imageTiles';
+    }
 
-    // this.setState({getTileUrl});
+    this.setState({getTileUrl, renderMethod});
+  }
+
+  getTileData(options) {
+    const {renderMethod} = this.state;
+    if (renderMethod === 'filmstrip') {
+      return this.getFilmstripTileData(options);
+    }
+
+    return this.getImageTileData(options);
+  }
+
+  async getImageTileData({x, y, z}) {
+    const {getTileUrl} = this.state;
+    if (!getTileUrl) {
+      return null;
+    }
+    const imageUrl = getTileUrl(x, y, z);
+    console.log(imageUrl);
+    // return load(imageUrl, ImageLoader);
+    const image = await load(imageUrl, ImageLoader);
+    return Promise.all([image]);
   }
 
   async getFilmstripTileData({bbox}) {
@@ -154,9 +177,10 @@ export default class EarthEngineLayer extends CompositeLayer {
       eeObject &&
       new TileLayer(
         this.getSubLayerProps({
+          id: getTileUrl ? getTileUrl(0, 0, 0) : 'constant string'
           // id: getTileUrl(0, 0, 0)
           // id: Math.random()
-          id: 'constant string'
+          // id: 'constant string'
         }),
         {
           refinementStrategy,
@@ -169,27 +193,27 @@ export default class EarthEngineLayer extends CompositeLayer {
           maxCacheByteSize,
           frame,
 
-          getTileData: options => this.getFilmstripTileData(options),
-          // async getTileData({x, y, z}) {
-          //   console.log(getTileUrl);
-          //   const imageUrl = getTileUrl(x, y, z);
-          //   const image = await load(imageUrl, ImageLoader);
-          //   return image;
-          // },
+          getTileData: options => this.getTileData(options),
 
           renderSubLayers(props) {
-            const {data, tile, frame} = props;
+            const {data, tile} = props;
             const {west, south, east, north} = tile.bbox;
             const bounds = [west, south, east, north];
 
+            if (!data) {
+              return null;
+            }
+
+            console.log(data);
             let image;
             if (Array.isArray(data)) {
               image = data[frame];
             } else if (data) {
+              // image = data;
               image = data.then(result => result && result[frame]);
             }
 
-            return data && new BitmapLayer({...props, image, bounds});
+            return image && new BitmapLayer({...props, image, bounds});
           }
         }
       )

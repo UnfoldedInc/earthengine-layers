@@ -57,26 +57,21 @@ export default class App extends React.Component {
     // Client id to your EE application
     await this.eeApi.initialize({clientId: EE_CLIENT_ID});
 
-    // const eeObject = ee.Image('CGIAR/SRTM90_V4').serialize();
-    const eeObject = ee
-      .ImageCollection('NOAA/GFS0P25')
-      .filterDate('2018-12-22', '2018-12-23')
-      .limit(24)
-      .select('temperature_2m_above_ground');
-    const visParams = {
-      min: -40.0,
-      max: 35.0,
-      palette: ['blue', 'purple', 'cyan', 'green', 'yellow', 'red']
-    };
-    // const eeObject = ee.Deserializer.fromJSON(
-    //   ee
-    //     .ImageCollection('NOAA/GFS0P25')
-    //     .filterDate('2018-12-22', '2018-12-23')
-    //     .limit(24)
-    //     .select('temperature_2m_above_ground')
-    //     .serialize()
-    // );
-    this.setState({eeObject, visParams});
+    // Old elevation example
+    // Eventually we'll have multiple examples
+    const eeObject = ee.Image('CGIAR/SRTM90_V4').serialize();
+    // const eeObject = ee
+    //   .ImageCollection('NOAA/GFS0P25')
+    //   .filterDate('2018-12-22', '2018-12-23')
+    //   .limit(24)
+    //   .select('temperature_2m_above_ground');
+    // const visParams = {
+    //   min: -40.0,
+    //   max: 35.0,
+    //   palette: ['blue', 'purple', 'cyan', 'green', 'yellow', 'red']
+    // };
+    // this.setState({eeObject, visParams});
+    this.setState({eeObject});
   }
 
   _onViewStateChange({viewState}) {
