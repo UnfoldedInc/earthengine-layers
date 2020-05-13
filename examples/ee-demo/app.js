@@ -59,19 +59,19 @@ export default class App extends React.Component {
 
     // Old elevation example
     // Eventually we'll have multiple examples
-    const eeObject = ee.Image('CGIAR/SRTM90_V4').serialize();
-    // const eeObject = ee
-    //   .ImageCollection('NOAA/GFS0P25')
-    //   .filterDate('2018-12-22', '2018-12-23')
-    //   .limit(24)
-    //   .select('temperature_2m_above_ground');
-    // const visParams = {
-    //   min: -40.0,
-    //   max: 35.0,
-    //   palette: ['blue', 'purple', 'cyan', 'green', 'yellow', 'red']
-    // };
-    // this.setState({eeObject, visParams});
-    this.setState({eeObject});
+    // const eeObject = ee.Image('CGIAR/SRTM90_V4').serialize();
+    // this.setState({eeObject});
+    const eeObject = ee
+      .ImageCollection('NOAA/GFS0P25')
+      .filterDate('2018-12-22', '2018-12-23')
+      .limit(48)
+      .select('temperature_2m_above_ground');
+    const visParams = {
+      min: -40.0,
+      max: 35.0,
+      palette: ['blue', 'purple', 'cyan', 'green', 'yellow', 'red']
+    };
+    this.setState({eeObject, visParams});
   }
 
   _onViewStateChange({viewState}) {

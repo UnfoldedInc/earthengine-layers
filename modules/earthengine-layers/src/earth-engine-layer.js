@@ -25,21 +25,23 @@ const defaultProps = {
 
 export default class EarthEngineLayer extends CompositeLayer {
   initializeState() {
-    this.state = {
-      frame: 0
-    };
+    this.state = {};
   }
 
   _animate() {
-    const {
-      loopLength = 24, // unit corresponds to the timestamp in source data
-      animationSpeed = 12 // unit time per second
-    } = this.props;
+    // unit corresponds to the timestamp in source data
+    const {nFrames} = this.state;
+    if (!nFrames) {
+      return;
+    }
+
+    // unit time per second
+    const {animationSpeed = 12} = this.props;
     const timestamp = Date.now() / 1000;
-    const loopTime = loopLength / animationSpeed;
+    const loopTime = nFrames / animationSpeed;
 
     this.setState({
-      frame: Math.floor(((timestamp % loopTime) / loopTime) * loopLength)
+      frame: Math.floor(((timestamp % loopTime) / loopTime) * nFrames)
     });
   }
 
@@ -92,7 +94,6 @@ export default class EarthEngineLayer extends CompositeLayer {
 
     let getTileUrl;
     let renderMethod;
-    console.log(eeObject);
     if (eeObject instanceof ee.ImageCollection) {
       renderMethod = 'filmstrip';
       // no op
@@ -101,8 +102,6 @@ export default class EarthEngineLayer extends CompositeLayer {
         'EarthEngineLayer only accepts data rows that are EE Objects with a getMap() method'
       );
     } else {
-      console.log('hello world');
-
       // Evaluate map
       const map = await promisifyEEMethod(eeObject, 'getMap', props.visParams);
       // Get a tile url generation function
@@ -128,7 +127,6 @@ export default class EarthEngineLayer extends CompositeLayer {
       return null;
     }
     const imageUrl = getTileUrl(x, y, z);
-    console.log(imageUrl);
     // return load(imageUrl, ImageLoader);
     const image = await load(imageUrl, ImageLoader);
     return Promise.all([image]);
@@ -150,9 +148,11 @@ export default class EarthEngineLayer extends CompositeLayer {
 
     const imageOptions = {image: {type: 'imagebitmap'}};
     const image = await load(imageUrl, ImageLoader, imageOptions);
+    const nFrames = image.height / TILE_SIZE;
+    this.setState({nFrames});
 
     const slices = [];
-    for (let i = 0; i < image.height / TILE_SIZE; i++) {
+    for (let i = 0; i < nFrames; i++) {
       const imageBounds = [0, i * TILE_SIZE, TILE_SIZE, TILE_SIZE];
       slices.push(createImageBitmap(image, ...imageBounds));
     }
@@ -161,7 +161,7 @@ export default class EarthEngineLayer extends CompositeLayer {
   }
 
   renderLayers() {
-    const {getTileUrl, eeObject, frame} = this.state;
+    const {getTileUrl, eeObject, frame = 0} = this.state;
     const {
       refinementStrategy,
       onViewportLoad,
@@ -204,7 +204,6 @@ export default class EarthEngineLayer extends CompositeLayer {
               return null;
             }
 
-            console.log(data);
             let image;
             if (Array.isArray(data)) {
               image = data[frame];
