@@ -166,7 +166,6 @@ export default class EarthEngineLayer extends CompositeLayer {
     const imageOptions = {image: {type: 'imagebitmap'}};
     const image = await load(imageUrl, ImageLoader, imageOptions);
     const nFrames = image.height / TILE_SIZE;
-    this.setState({nFrames});
 
     const slices = [];
     for (let i = 0; i < nFrames; i++) {
@@ -174,6 +173,7 @@ export default class EarthEngineLayer extends CompositeLayer {
       slices.push(createImageBitmap(image, ...imageBounds));
     }
 
+    this.setState({nFrames});
     return Promise.all(slices);
   }
 
