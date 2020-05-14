@@ -77,6 +77,12 @@ export default class EarthEngineLayer extends CompositeLayer {
       eeObject = props.eeObject;
     }
 
+    if (props.animate) {
+      // Force to be ee.ImageCollection. Sometimes deserializes as
+      // FeatureCollection
+      eeObject = ee.ImageCollection(eeObject);
+    }
+
     if (Array.isArray(props.eeObject) && props.eeObject.length === 0) {
       eeObject = null;
     }
@@ -95,14 +101,15 @@ export default class EarthEngineLayer extends CompositeLayer {
     }
 
     if (!eeObject.getMap) {
-      throw new Error(
-        'EarthEngineLayer only accepts data rows that are EE Objects with a getMap() method'
-      );
+      throw new Error('eeObject must have a getMap() method');
     }
 
     let renderMethod;
     if (props.animate) {
       renderMethod = 'filmstrip';
+      if (!eeObject.getFilmstripThumbURL) {
+        throw new Error('eeObject must have a getFilmstripThumbURL method to animate.');
+      }
     } else {
       renderMethod = 'imageTiles';
     }
