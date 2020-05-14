@@ -22,6 +22,8 @@ const defaultProps = {
   visParams: {type: 'object', value: null, equal: deepEqual},
   // Force animation; animation is on by default when ImageCollection passed
   animate: false,
+  // Frames per second
+  animationSpeed: 12,
   refinementStrategy: 'no-overlap'
 };
 
@@ -38,7 +40,7 @@ export default class EarthEngineLayer extends CompositeLayer {
     }
 
     // unit time per second
-    const {animationSpeed = 12} = this.props;
+    const {animationSpeed} = this.props;
     const timestamp = Date.now() / 1000;
     const loopTime = nFrames / animationSpeed;
 
