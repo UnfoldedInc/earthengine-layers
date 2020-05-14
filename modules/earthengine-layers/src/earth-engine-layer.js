@@ -138,10 +138,12 @@ export default class EarthEngineLayer extends CompositeLayer {
     const {west, north, east, south} = bbox;
     const TILE_SIZE = 256;
 
+    // Set geodesic=false to prevent horizontal lines from projection issues
+    const region = ee.Geometry.Rectangle([west, south, east, north], 'EPSG:4326', false);
     const filmArgs = {
       ...visParams,
       dimensions: [TILE_SIZE, TILE_SIZE],
-      region: ee.Geometry.Rectangle([west, south, east, north]),
+      region,
       crs: 'EPSG:3857'
     };
     const imageUrl = await promisifyEEMethod(eeObject, 'getFilmstripThumbURL', filmArgs);
