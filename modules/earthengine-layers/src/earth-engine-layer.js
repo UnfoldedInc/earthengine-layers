@@ -20,6 +20,8 @@ const defaultProps = {
   token: {type: 'string', value: null},
   eeObject: {type: 'object', value: null},
   visParams: {type: 'object', value: null, equal: deepEqual},
+  // Force animation; animation is on by default when ImageCollection passed
+  animate: false,
   refinementStrategy: 'no-overlap'
 };
 
@@ -94,7 +96,7 @@ export default class EarthEngineLayer extends CompositeLayer {
 
     let getTileUrl;
     let renderMethod;
-    if (eeObject instanceof ee.ImageCollection) {
+    if (eeObject instanceof ee.ImageCollection || props.animate) {
       renderMethod = 'filmstrip';
       // no op
     } else if (!eeObject.getMap) {
