@@ -101,7 +101,7 @@ export default class EarthEngineLayer extends CompositeLayer {
     }
 
     let renderMethod;
-    if (eeObject instanceof ee.ImageCollection || props.animate) {
+    if (props.animate) {
       renderMethod = 'filmstrip';
     } else {
       renderMethod = 'imageTiles';
