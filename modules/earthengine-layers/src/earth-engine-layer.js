@@ -94,24 +94,25 @@ export default class EarthEngineLayer extends CompositeLayer {
       return;
     }
 
-    let getTileUrl;
-    let renderMethod;
-    if (eeObject instanceof ee.ImageCollection || props.animate) {
-      renderMethod = 'filmstrip';
-      // no op
-    } else if (!eeObject.getMap) {
+    if (!eeObject.getMap) {
       throw new Error(
         'EarthEngineLayer only accepts data rows that are EE Objects with a getMap() method'
       );
+    }
+
+    let renderMethod;
+    if (eeObject instanceof ee.ImageCollection || props.animate) {
+      renderMethod = 'filmstrip';
     } else {
-      // Evaluate map
-      const map = await promisifyEEMethod(eeObject, 'getMap', props.visParams);
-      // Get a tile url generation function
-      getTileUrl = map.formatTileUrl.bind(map);
       renderMethod = 'imageTiles';
     }
 
-    this.setState({getTileUrl, renderMethod});
+    // Evaluate map
+    // Done for all eeObjects, including ImageCollection, to get a stable
+    // identifier
+    const {mapid, urlFormat} = await promisifyEEMethod(eeObject, 'getMap', props.visParams);
+
+    this.setState({mapid, urlFormat, renderMethod});
   }
 
   getTileData(options) {
@@ -124,13 +125,18 @@ export default class EarthEngineLayer extends CompositeLayer {
   }
 
   async getImageTileData({x, y, z}) {
-    const {getTileUrl} = this.state;
-    if (!getTileUrl) {
+    const {urlFormat} = this.state;
+    if (!urlFormat) {
       return null;
     }
-    const imageUrl = getTileUrl(x, y, z);
-    // return load(imageUrl, ImageLoader);
+
+    const imageUrl = urlFormat
+      .replace('{x}', x)
+      .replace('{y}', y)
+      .replace('{z}', z);
+
     const image = await load(imageUrl, ImageLoader);
+    // Return Array for compatible API with getFilmstripTileData
     return Promise.all([image]);
   }
 
@@ -165,7 +171,7 @@ export default class EarthEngineLayer extends CompositeLayer {
   }
 
   renderLayers() {
-    const {getTileUrl, eeObject, frame = 0} = this.state;
+    const {mapid, frame = 0} = this.state;
     const {
       refinementStrategy,
       onViewportLoad,
@@ -178,13 +184,10 @@ export default class EarthEngineLayer extends CompositeLayer {
     } = this.props;
 
     return (
-      eeObject &&
+      mapid &&
       new TileLayer(
         this.getSubLayerProps({
-          id: getTileUrl ? getTileUrl(0, 0, 0) : 'constant string'
-          // id: getTileUrl(0, 0, 0)
-          // id: Math.random()
-          // id: 'constant string'
+          id: mapid
         }),
         {
           refinementStrategy,
@@ -212,7 +215,6 @@ export default class EarthEngineLayer extends CompositeLayer {
             if (Array.isArray(data)) {
               image = data[frame];
             } else if (data) {
-              // image = data;
               image = data.then(result => result && result[frame]);
             }
 
