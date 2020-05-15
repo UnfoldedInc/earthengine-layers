@@ -117,6 +117,8 @@ export default class EarthEngineLayer extends CompositeLayer {
       }
     } else if (props.asVector) {
       renderMethod = 'vector';
+      // Must pass a filename argument ('') so that the callback is correctly
+      // called
       const geojsonUrl = await promisifyEEMethod(eeObject, 'getDownloadURL', 'json', ['.geo'], '');
       const resp = await fetch(geojsonUrl);
       const geojsonData = await resp.json();
