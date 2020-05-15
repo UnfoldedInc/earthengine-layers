@@ -1,7 +1,7 @@
-/* global createImageBitmap */
+/* global createImageBitmap, fetch */
 import {CompositeLayer} from '@deck.gl/core';
 import {TileLayer} from '@deck.gl/geo-layers';
-import {BitmapLayer} from '@deck.gl/layers';
+import {BitmapLayer, GeoJsonLayer} from '@deck.gl/layers';
 import EEApi from './ee-api'; // Promisify ee apis
 import ee from '@google/earthengine';
 import {load} from '@loaders.gl/core';
@@ -15,11 +15,14 @@ let accessToken;
 
 const defaultProps = {
   ...TileLayer.defaultProps,
+  ...GeoJsonLayer.defaultProps,
   // data prop is unused
   data: {type: 'object', value: null},
   token: {type: 'string', value: null},
   eeObject: {type: 'object', value: null},
   visParams: {type: 'object', value: null, equal: deepEqual},
+  // Force rendering as vector
+  asVector: false,
   // Force animation; animation is on by default when ImageCollection passed
   animate: false,
   // Frames per second
@@ -112,6 +115,12 @@ export default class EarthEngineLayer extends CompositeLayer {
       if (!eeObject.getFilmstripThumbURL) {
         throw new Error('eeObject must have a getFilmstripThumbURL method to animate.');
       }
+    } else if (props.asVector) {
+      renderMethod = 'vector';
+      const geojsonUrl = await promisifyEEMethod(eeObject, 'getDownloadURL', 'json', ['.geo'], '');
+      const resp = await fetch(geojsonUrl);
+      const geojsonData = await resp.json();
+      this.setState({geojsonData});
     } else {
       renderMethod = 'imageTiles';
     }
@@ -180,7 +189,7 @@ export default class EarthEngineLayer extends CompositeLayer {
   }
 
   renderLayers() {
-    const {mapid, frame = 0} = this.state;
+    const {mapid, frame = 0, renderMethod, geojsonData} = this.state;
     const {
       refinementStrategy,
       onViewportLoad,
@@ -191,46 +200,98 @@ export default class EarthEngineLayer extends CompositeLayer {
       maxCacheSize,
       maxCacheByteSize
     } = this.props;
+    // GeoJsonLayer props
+    const {
+      stroked,
+      filled,
+      extruded,
+      wireframe,
+      lineWidthUnits,
+      lineWidthScale,
+      lineWidthMinPixels,
+      lineWidthMaxPixels,
+      lineJointRounded,
+      lineMiterLimit,
+      elevationScale,
+      pointRadiusScale,
+      pointRadiusMinPixels,
+      pointRadiusMaxPixels,
+      getLineColor,
+      getFillColor,
+      getRadius,
+      getLineWidth,
+      getElevation,
+      material
+    } = this.props;
 
     return (
       mapid &&
-      new TileLayer(
-        this.getSubLayerProps({
-          id: mapid
-        }),
-        {
-          refinementStrategy,
-          onViewportLoad,
-          onTileLoad,
-          onTileError,
-          maxZoom,
-          minZoom,
-          maxCacheSize,
-          maxCacheByteSize,
-          frame,
-
-          getTileData: options => this.getTileData(options),
-
-          renderSubLayers(props) {
-            const {data, tile} = props;
-            const {west, south, east, north} = tile.bbox;
-            const bounds = [west, south, east, north];
-
-            if (!data) {
-              return null;
+      (renderMethod === 'vector' && geojsonData
+        ? new GeoJsonLayer(
+            this.getSubLayerProps({
+              id: mapid
+            }),
+            {
+              data: geojsonData,
+              stroked,
+              filled,
+              extruded,
+              wireframe,
+              lineWidthUnits,
+              lineWidthScale,
+              lineWidthMinPixels,
+              lineWidthMaxPixels,
+              lineJointRounded,
+              lineMiterLimit,
+              elevationScale,
+              pointRadiusScale,
+              pointRadiusMinPixels,
+              pointRadiusMaxPixels,
+              getLineColor,
+              getFillColor,
+              getRadius,
+              getLineWidth,
+              getElevation,
+              material
             }
+          )
+        : new TileLayer(
+            this.getSubLayerProps({
+              id: mapid
+            }),
+            {
+              refinementStrategy,
+              onViewportLoad,
+              onTileLoad,
+              onTileError,
+              maxZoom,
+              minZoom,
+              maxCacheSize,
+              maxCacheByteSize,
+              frame,
 
-            let image;
-            if (Array.isArray(data)) {
-              image = data[frame];
-            } else if (data) {
-              image = data.then(result => result && result[frame]);
+              getTileData: options => this.getTileData(options),
+
+              renderSubLayers(props) {
+                const {data, tile} = props;
+                const {west, south, east, north} = tile.bbox;
+                const bounds = [west, south, east, north];
+
+                if (!data) {
+                  return null;
+                }
+
+                let image;
+                if (Array.isArray(data)) {
+                  image = data[frame];
+                } else if (data) {
+                  image = data.then(result => result && result[frame]);
+                }
+
+                return image && new BitmapLayer({...props, image, bounds});
+              }
             }
-
-            return image && new BitmapLayer({...props, image, bounds});
-          }
-        }
-      )
+          ))
     );
   }
 }

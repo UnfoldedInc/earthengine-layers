@@ -83,9 +83,21 @@ export default class App extends React.Component {
 
     const layers = eeObject && [
       new EarthEngineLayer({
+        id: 'AnimationLayer',
         eeObject,
         visParams,
-        opacity: 0.5
+        opacity: 1,
+        animate: true
+      }),
+      new EarthEngineLayer({
+        id: 'VectorLayer',
+        eeObject: ee.FeatureCollection('TIGER/2016/States'),
+        filled: false,
+        lineWidthScale: 20,
+        lineWidthMinPixels: 2,
+        getLineWidth: 1,
+        opacity: 1,
+        asVector: true
       })
     ];
 
