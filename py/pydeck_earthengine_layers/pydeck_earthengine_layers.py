@@ -15,6 +15,7 @@ class EarthEngineLayer(pdk.Layer):
     def __init__(
             self,
             ee_object,
+            vis_params=None,
             credentials=None,
             library_url=EARTHENGINE_LAYER_BUNDLE_URL,
             **kwargs):
@@ -29,7 +30,7 @@ class EarthEngineLayer(pdk.Layer):
               bundle
         """
         super(EarthEngineLayer, self).__init__(
-            'EarthEngineLayer', None, **kwargs)
+            'EarthEngineLayer', None, vis_params=vis_params, **kwargs)
 
         # Should we assume ee has already been initialized?
         ee.Initialize()
