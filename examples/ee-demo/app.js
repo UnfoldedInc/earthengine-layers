@@ -17,9 +17,9 @@ const EE_CLIENT_ID = process.env.EE_CLIENT_ID;
 export const EARTHENGINE_SCOPES = ['https://www.googleapis.com/auth/earthengine'];
 
 const defaultViewState = {
-  longitude: -122.41669,
+  longitude: -80.41669,
   latitude: 37.7853,
-  zoom: 8,
+  zoom: 2,
   pitch: 0,
   bearing: 0
 };
@@ -41,7 +41,8 @@ export default class App extends React.Component {
 
     this.state = {
       viewState: defaultViewState,
-      eeImage: null
+      eeObject: null,
+      visParams: null
     };
   }
 
@@ -56,8 +57,21 @@ export default class App extends React.Component {
     // Client id to your EE application
     await this.eeApi.initialize({clientId: EE_CLIENT_ID});
 
-    const eeImage = ee.Image('CGIAR/SRTM90_V4').serialize();
-    this.setState({eeImage});
+    // Old elevation example
+    // Eventually we'll have multiple examples
+    // const eeObject = ee.Image('CGIAR/SRTM90_V4').serialize();
+    // this.setState({eeObject});
+    const eeObject = ee
+      .ImageCollection('NOAA/GFS0P25')
+      .filterDate('2018-12-22', '2018-12-23')
+      .limit(48)
+      .select('temperature_2m_above_ground');
+    const visParams = {
+      min: -40.0,
+      max: 35.0,
+      palette: ['blue', 'purple', 'cyan', 'green', 'yellow', 'red']
+    };
+    this.setState({eeObject, visParams});
   }
 
   _onViewStateChange({viewState}) {
@@ -65,10 +79,12 @@ export default class App extends React.Component {
   }
 
   render() {
-    const layers = this.state.eeImage && [
+    const {eeObject, visParams, viewState} = this.state;
+
+    const layers = eeObject && [
       new EarthEngineLayer({
-        eeObject: this.state.eeImage,
-        visParams: {min: 0, max: 255},
+        eeObject,
+        visParams,
         opacity: 0.5
       })
     ];
@@ -78,7 +94,7 @@ export default class App extends React.Component {
         <DeckGL
           controller
           onViewStateChange={this._onViewStateChange}
-          viewState={this.state.viewState}
+          viewState={viewState}
           layers={layers}
         >
           <GoogleLoginPane loginProvider={this.loginProvider} />
