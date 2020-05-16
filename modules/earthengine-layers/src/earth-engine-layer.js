@@ -4,9 +4,10 @@ import {TileLayer} from '@deck.gl/geo-layers';
 import {BitmapLayer, GeoJsonLayer} from '@deck.gl/layers';
 import EEApi from './ee-api'; // Promisify ee apis
 import ee from '@google/earthengine';
-import {load} from '@loaders.gl/core';
+import {load, loadInBatches} from '@loaders.gl/core';
 import {ImageLoader} from '@loaders.gl/images';
 import {deepEqual, promisifyEEMethod} from './utils';
+import {JSONLoader} from '@loaders.gl/json';
 
 const eeApi = new EEApi();
 // Global access token, to allow single EE API initialization if using multiple
@@ -32,7 +33,9 @@ const defaultProps = {
 
 export default class EarthEngineLayer extends CompositeLayer {
   initializeState() {
-    this.state = {};
+    this.state = {
+      geojsonDataChunks: []
+    };
   }
 
   _animate() {
@@ -120,8 +123,21 @@ export default class EarthEngineLayer extends CompositeLayer {
       // Must pass a filename argument ('') so that the callback is correctly
       // called
       const geojsonUrl = await promisifyEEMethod(eeObject, 'getDownloadURL', 'json', ['.geo'], '');
-      const resp = await fetch(geojsonUrl);
-      const geojsonData = await resp.json();
+      const geojsonData = await load(geojsonUrl, JSONLoader);
+      // for await (const batch of batches) {
+      //   // batch.data will contain a number of rows
+      //   for (const feature of batch.data) {
+      //     // console.log(feature);
+      //     // this.state.geojsonDataChunks.push(feature);
+      //     this.setState(prevState => {
+      //       console.log(prevState)
+      //       return {
+      //         geojsonDataChunks: [...prevState.geojsonDataChunks.slice(), feature]
+      //       };
+      //     });
+      //   }
+      // }
+
       this.setState({geojsonData});
     } else {
       renderMethod = 'imageTiles';
@@ -190,19 +206,8 @@ export default class EarthEngineLayer extends CompositeLayer {
     return Promise.all(slices);
   }
 
-  renderLayers() {
-    const {mapid, frame = 0, renderMethod, geojsonData} = this.state;
-    const {
-      refinementStrategy,
-      onViewportLoad,
-      onTileLoad,
-      onTileError,
-      maxZoom,
-      minZoom,
-      maxCacheSize,
-      maxCacheByteSize
-    } = this.props;
-    // GeoJsonLayer props
+  _renderGeoJsonLayer() {
+    const {mapid, geojsonData, geojsonDataChunks} = this.state;
     const {
       stroked,
       filled,
@@ -226,37 +231,99 @@ export default class EarthEngineLayer extends CompositeLayer {
       material
     } = this.props;
 
+    if (!geojsonData) {
+      return null;
+    }
+
+    return new GeoJsonLayer(
+      this.getSubLayerProps({
+        id: mapid
+      }),
+      {
+        data: geojsonData,
+        stroked,
+        filled,
+        extruded,
+        wireframe,
+        lineWidthUnits,
+        lineWidthScale,
+        lineWidthMinPixels,
+        lineWidthMaxPixels,
+        lineJointRounded,
+        lineMiterLimit,
+        elevationScale,
+        pointRadiusScale,
+        pointRadiusMinPixels,
+        pointRadiusMaxPixels,
+        getLineColor,
+        getFillColor,
+        getRadius,
+        getLineWidth,
+        getElevation,
+        material
+      }
+    );
+
+    // if (!geojsonDataChunks || geojsonDataChunks.length === 0) {
+    //   return null;
+    // }
+
+    // const layers = geojsonDataChunks.map(
+    //   (chunk, chunkIndex) =>
+    //     new GeoJsonLayer(
+    //       this.getSubLayerProps({
+    //         // Important: each layer must have a consistent & unique id
+    //         id: `${mapid}-${chunkIndex}`
+    //       }),
+    //       {
+    //         // If we have 10 100,000-row chunks already loaded and a new one arrive,
+    //         // the first 10 layers will see no prop change
+    //         // only the 11th layer's buffers need to be generated
+    //         data: chunk,
+    //         stroked,
+    //         filled,
+    //         extruded,
+    //         wireframe,
+    //         lineWidthUnits,
+    //         lineWidthScale,
+    //         lineWidthMinPixels,
+    //         lineWidthMaxPixels,
+    //         lineJointRounded,
+    //         lineMiterLimit,
+    //         elevationScale,
+    //         pointRadiusScale,
+    //         pointRadiusMinPixels,
+    //         pointRadiusMaxPixels,
+    //         getLineColor,
+    //         getFillColor,
+    //         getRadius,
+    //         getLineWidth,
+    //         getElevation,
+    //         material
+    //       }
+    //     )
+    // );
+
+    // return layers;
+  }
+
+  renderLayers() {
+    const {mapid, frame = 0, renderMethod} = this.state;
+    const {
+      refinementStrategy,
+      onViewportLoad,
+      onTileLoad,
+      onTileError,
+      maxZoom,
+      minZoom,
+      maxCacheSize,
+      maxCacheByteSize
+    } = this.props;
+
     return (
       mapid &&
-      (renderMethod === 'vector' && geojsonData
-        ? new GeoJsonLayer(
-            this.getSubLayerProps({
-              id: mapid
-            }),
-            {
-              data: geojsonData,
-              stroked,
-              filled,
-              extruded,
-              wireframe,
-              lineWidthUnits,
-              lineWidthScale,
-              lineWidthMinPixels,
-              lineWidthMaxPixels,
-              lineJointRounded,
-              lineMiterLimit,
-              elevationScale,
-              pointRadiusScale,
-              pointRadiusMinPixels,
-              pointRadiusMaxPixels,
-              getLineColor,
-              getFillColor,
-              getRadius,
-              getLineWidth,
-              getElevation,
-              material
-            }
-          )
+      (renderMethod === 'vector'
+        ? this._renderGeoJsonLayer()
         : new TileLayer(
             this.getSubLayerProps({
               id: mapid
