@@ -11,7 +11,7 @@ const CONFIG = {
   mode: 'development',
 
   entry: {
-    app: './app.js'
+    app: './image.js'
   },
 
   output: {

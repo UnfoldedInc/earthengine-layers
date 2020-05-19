@@ -1,10 +1,8 @@
 import React from 'react';
 import {render} from 'react-dom';
 
-import ee from '@google/earthengine';
-
 import DeckGL from '@deck.gl/react';
-import {EEApi, EarthEngineLayer} from '@unfolded.gl/earthengine-layers';
+import {EEApi} from '@unfolded.gl/earthengine-layers';
 import {GoogleLoginProvider} from '@unfolded.gl/earthengine-layers';
 
 import {GoogleLoginPane} from '../shared/react-components';
@@ -29,7 +27,6 @@ export default class App extends React.Component {
     super(props);
 
     this._onLoginSuccess = this._onLoginSuccess.bind(this);
-    this._onViewStateChange = this._onViewStateChange.bind(this);
 
     this.loginProvider = new GoogleLoginProvider({
       clientId: EE_CLIENT_ID,
@@ -39,64 +36,31 @@ export default class App extends React.Component {
 
     this.eeApi = new EEApi();
 
-    this.state = {
-      viewState: defaultViewState,
-      eeObject: null,
-      visParams: null
-    };
+    this.state = {loggedIn: false};
   }
 
   async _onLoginSuccess(user, loginProvider) {
     // TODO - called twice, this should not be needed
-    if (this.loggedIn) {
+    const {loggedIn} = this.state;
+    if (loggedIn) {
       return;
     }
-    this.loggedIn = true;
 
     this.forceUpdate();
     // Client id to your EE application
     await this.eeApi.initialize({clientId: EE_CLIENT_ID});
-
-    // Old elevation example
-    // Eventually we'll have multiple examples
-    // const eeObject = ee.Image('CGIAR/SRTM90_V4').serialize();
-    // this.setState({eeObject});
-    const eeObject = ee
-      .ImageCollection('NOAA/GFS0P25')
-      .filterDate('2018-12-22', '2018-12-23')
-      .limit(48)
-      .select('temperature_2m_above_ground');
-    const visParams = {
-      min: -40.0,
-      max: 35.0,
-      palette: ['blue', 'purple', 'cyan', 'green', 'yellow', 'red']
-    };
-    this.setState({eeObject, visParams});
-  }
-
-  _onViewStateChange({viewState}) {
-    this.setState({viewState});
+    // Must be after initialization
+    this.setState({loggedIn: true});
   }
 
   render() {
-    const {eeObject, visParams, viewState} = this.state;
+    const {layersFunction} = this.props;
+    const {loggedIn} = this.state;
 
-    const layers = eeObject && [
-      new EarthEngineLayer({
-        eeObject,
-        visParams,
-        opacity: 0.5
-      })
-    ];
-
+    const layers = loggedIn && layersFunction();
     return (
       <div style={{position: 'relative', height: '100%'}}>
-        <DeckGL
-          controller
-          onViewStateChange={this._onViewStateChange}
-          viewState={viewState}
-          layers={layers}
-        >
+        <DeckGL controller initialViewState={defaultViewState} layers={layers}>
           <GoogleLoginPane loginProvider={this.loginProvider} />
         </DeckGL>
       </div>
