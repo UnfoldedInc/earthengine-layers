@@ -5,7 +5,7 @@ import ee from '@google/earthengine';
 import {EarthEngineLayer} from '@unfolded.gl/earthengine-layers';
 import App from './app';
 
-function ImageExampleLayers() {
+function renderImageExampleLayers() {
   const eeObject = ee.Image('CGIAR/SRTM90_V4');
   const visParams = {
     min: 0,
@@ -17,7 +17,7 @@ function ImageExampleLayers() {
 }
 
 export default function ImageExample() {
-  return <App layersFunction={ImageExampleLayers} />;
+  return <App layersFunction={renderImageExampleLayers} />;
 }
 
 export function renderToDOM(container) {
