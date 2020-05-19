@@ -7,7 +7,6 @@ import {GoogleLoginProvider} from '@unfolded.gl/earthengine-layers';
 
 import {GoogleLoginPane} from '../shared/react-components';
 // import {GoogleEarthEngineIcon} from '../shared/react-components';
-import {ImageExampleLayers, ImageCollectionExampleLayers} from './examples';
 
 // Add a EE-enabled Google Client id here (or inject it with e.g. a webpack environment plugin)
 // eslint-disable-next-line
@@ -55,23 +54,10 @@ export default class App extends React.Component {
   }
 
   render() {
-    const {exampleName = 'imagecollection'} = this.props;
+    const {layersFunction} = this.props;
     const {loggedIn} = this.state;
 
-    let layers;
-    if (loggedIn) {
-      switch (exampleName.toLowerCase()) {
-        case 'image':
-          layers = ImageExampleLayers();
-          break;
-        case 'imagecollection':
-          layers = ImageCollectionExampleLayers();
-          break;
-        default:
-          break;
-      }
-    }
-
+    const layers = loggedIn && layersFunction();
     return (
       <div style={{position: 'relative', height: '100%'}}>
         <DeckGL controller initialViewState={defaultViewState} layers={layers}>
