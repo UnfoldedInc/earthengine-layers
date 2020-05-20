@@ -58,7 +58,7 @@ module.exports = {
         EXAMPLES: [
           {
             title: 'Image',
-            image: 'images/example-eelayer.png',
+            image: 'images/image-example-screenshot.jpg',
             componentUrl: resolve(__dirname, '../examples/ee-demo/image.js'),
             path: 'examples/image'
           },
