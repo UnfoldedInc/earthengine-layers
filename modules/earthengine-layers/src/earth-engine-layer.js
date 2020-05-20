@@ -124,20 +124,6 @@ export default class EarthEngineLayer extends CompositeLayer {
       // called
       const geojsonUrl = await promisifyEEMethod(eeObject, 'getDownloadURL', 'json', ['.geo'], '');
       const geojsonData = await load(geojsonUrl, JSONLoader);
-      // for await (const batch of batches) {
-      //   // batch.data will contain a number of rows
-      //   for (const feature of batch.data) {
-      //     // console.log(feature);
-      //     // this.state.geojsonDataChunks.push(feature);
-      //     this.setState(prevState => {
-      //       console.log(prevState)
-      //       return {
-      //         geojsonDataChunks: [...prevState.geojsonDataChunks.slice(), feature]
-      //       };
-      //     });
-      //   }
-      // }
-
       this.setState({geojsonData});
     } else {
       renderMethod = 'imageTiles';
@@ -207,7 +193,7 @@ export default class EarthEngineLayer extends CompositeLayer {
   }
 
   _renderGeoJsonLayer() {
-    const {mapid, geojsonData, geojsonDataChunks} = this.state;
+    const {mapid, geojsonData} = this.state;
     const {
       stroked,
       filled,
@@ -263,48 +249,6 @@ export default class EarthEngineLayer extends CompositeLayer {
         material
       }
     );
-
-    // if (!geojsonDataChunks || geojsonDataChunks.length === 0) {
-    //   return null;
-    // }
-
-    // const layers = geojsonDataChunks.map(
-    //   (chunk, chunkIndex) =>
-    //     new GeoJsonLayer(
-    //       this.getSubLayerProps({
-    //         // Important: each layer must have a consistent & unique id
-    //         id: `${mapid}-${chunkIndex}`
-    //       }),
-    //       {
-    //         // If we have 10 100,000-row chunks already loaded and a new one arrive,
-    //         // the first 10 layers will see no prop change
-    //         // only the 11th layer's buffers need to be generated
-    //         data: chunk,
-    //         stroked,
-    //         filled,
-    //         extruded,
-    //         wireframe,
-    //         lineWidthUnits,
-    //         lineWidthScale,
-    //         lineWidthMinPixels,
-    //         lineWidthMaxPixels,
-    //         lineJointRounded,
-    //         lineMiterLimit,
-    //         elevationScale,
-    //         pointRadiusScale,
-    //         pointRadiusMinPixels,
-    //         pointRadiusMaxPixels,
-    //         getLineColor,
-    //         getFillColor,
-    //         getRadius,
-    //         getLineWidth,
-    //         getElevation,
-    //         material
-    //       }
-    //     )
-    // );
-
-    // return layers;
   }
 
   renderLayers() {
