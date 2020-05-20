@@ -83,6 +83,19 @@ When the `EarthEngineLayer` is used with a geospatial view such as the [MapView]
 When the `EarthEngineLayer` is used used with a non-geospatial view such as the [OrthographicView](/docs/api-reference/orthographic-view.md) or the [OrbitView](/docs/api-reference/orbit-view.md), `x` and `y` increment from the world origin, and each tile's width and height match that defined by the `tileSize` prop. For example, the tile `x: 0, y: 0` occupies the square between `[0, 0]` and `[tileSize, tileSize]`.
 
 
+## Static Methods
+
+### async initializeEEApi({clientId?: string, token?: string})
+
+Can be called to initialize the earth engine API. Calls ` ee.data.authenticateViaOauth()`, `ee.initialize()` or `ee.setToken()`, and returns a `Promise` that resolves when authentication and initialization is completed and the EE API is ready to use.
+
+This method is just a convenience, it can be replaced with direct calls to the EE API.
+
+Parameters:
+- `clientId` A valid Google clientId that has been authenticated with the earthengine scope and set up to whitelist the 'origin' URL that the app will be served on.
+- `token` Alternatively, a pre-generated authentication token.
+
+
 ## Properties
 
 Inherits all properties from [base `Layer`](/docs/api-reference/layer.md).
