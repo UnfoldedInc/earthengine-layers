@@ -42,7 +42,7 @@ enableDOMLogging({
 });
 
 test('deck.gl', t => {
-  require('./modules');
+  // require('./modules');
 
   // Tests currently only work in browser
   // require('./render');
