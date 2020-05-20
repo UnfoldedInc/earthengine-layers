@@ -1,31 +1,14 @@
+// This is a helper class for Google Login, intended to be replaced by application code
+
 /* eslint-disable camelcase */
 /* global gapi */
-import {
-  loadGapi,
-  loadGapiClient,
-  initGapiClient,
-  auth2Initialize,
-  auth2Authorize,
-  auth2GetUserInfo
-} from './google-api';
+import {loadGapi, loadGapiClient, initGapiClient, auth2Initialize} from './google-api';
 
-// TODO - we need to choose. Can't use auth2.init/auth2.signIn and auth2.authorize at the same time
-const USE_AUTH2_AUTHORIZE = false;
-
-const cache = {};
-
-function probe(message, ...args) {
-  if (!cache[message]) {
-    cache[message] = true;
-    // eslint-disable-next-line
-    console.debug((performance.now() / 1000).toFixed(2), message, ...args);
-  }
-}
+const isBrowser = typeof document !== 'undefined';
 
 const defaultProps = {
   // gapi.client
   // discoveryDocs,
-
   // gapi.auth2
   // clientId,
   // scope: '',
@@ -41,23 +24,6 @@ const defaultProps = {
 };
 
 export default class GoogleLoginProvider {
-  // Normalize a google user object
-  static normalizeUser(googleUser, authResponse = null) {
-    if (googleUser && googleUser.getBasicProfile) {
-      authResponse = authResponse || googleUser.getAuthResponse(true);
-      return normalizeUserProfile(googleUser, authResponse);
-    }
-    if (googleUser && googleUser.picture) {
-      return normalizeUserInfo(googleUser, authResponse);
-    }
-    return googleUser;
-  }
-
-  // Create a new GoogleLoginProvider
-  // Notes:
-  // = To access Google Drive, specify it in scopes
-  // @param scopes = ['https://www.googleapis.com/auth/drive'];
-
   constructor(props) {
     this.props = {
       ...defaultProps,
@@ -68,6 +34,10 @@ export default class GoogleLoginProvider {
 
     this.signedIn = false;
     this.user = null;
+
+    if (!isBrowser) {
+      return;
+    }
 
     // "Start loading" the google API
     this._initialize();
@@ -90,15 +60,11 @@ export default class GoogleLoginProvider {
       return this.user;
     }
 
-    return USE_AUTH2_AUTHORIZE
-      ? await this._loginViaAuthorize(options)
-      : await this._loginViaSignIn(options);
+    return await this._loginViaSignIn(options);
   }
 
   async logout() {
-    if (!USE_AUTH2_AUTHORIZE) {
-      await this._logoutViaSignOut();
-    }
+    await this._logoutViaSignOut();
   }
 
   setAccessToken(access_token, id_token) {
@@ -115,39 +81,36 @@ export default class GoogleLoginProvider {
     return (token || '') !== '' ? token : null;
   }
 
+  // Normalize a google user object
+  static normalizeUser(googleUser, authResponse = null) {
+    if (googleUser && googleUser.getBasicProfile) {
+      authResponse = authResponse || googleUser.getAuthResponse(true);
+      return normalizeUserProfile(googleUser, authResponse);
+    }
+    if (googleUser && googleUser.picture) {
+      return normalizeUserInfo(googleUser, authResponse);
+    }
+    return googleUser;
+  }
+
   // PRIVATE
 
   _checkIfLoggedIn() {
-    if (USE_AUTH2_AUTHORIZE) {
-      // Attempt immediate login via gapi.auth2.authorize
-      this.login({prompt: 'none'});
-    } else {
-      // Initialize will init auth...
-      this._initialize();
-    }
+    // Initialize will init auth...
+    this._initialize();
   }
 
   // Initialize the Google API (gapi) by loading it dynamically and initializing with appropriate scope
   // TODO - https://stackoverflow.com/questions/15657983/popup-blocking-the-gdrive-authorization-in-chrome
   // Ensure we call async initialization code only once
   async _initialize() {
-    probe('gapi script loading...');
-
     await loadGapi();
-    probe('gapi script loaded');
-
     await loadGapiClient();
-    probe('gapi client loaded');
-
     // Initialize the JavaScript client library.
     const {discoveryDocs} = this.props;
     await initGapiClient({discoveryDocs});
-    probe('gapi client initialized');
 
-    // optionally init gapi.auth2 (since we can't use auth2.init and auth2.authorize at the same time)
-    if (!USE_AUTH2_AUTHORIZE) {
-      await this._initializeAuth2();
-    }
+    await this._initializeAuth2();
   }
 
   async _initializeAuth2() {
@@ -161,68 +124,12 @@ export default class GoogleLoginProvider {
     }
 
     this._listenToLoginStatus();
-    probe('gapi auth2 initialized');
 
     if (user) {
-      probe('Auto sign-in detected', user);
       this._setUser(user);
     }
   }
 
-  // Set (or clear) user data
-  _setUser(user) {
-    const oldUser = this.user;
-
-    this.signedIn = Boolean(user);
-    this.user = user;
-
-    if (oldUser !== user && oldUser !== undefined) {
-      // console.log('GOOGLE ACCOUNT USER CHANGE', user); // eslint-disable-line
-      this.props.onLoginChange(user, this);
-    }
-  }
-
-  // OPTION 1: PRIVATE METHODS FOR AUTHORIZE FLOW
-
-  // The advanced login flow, using:
-  //   gapi.auth2.authorize()
-  // Allows signin calls with multiple client_ids, different options, etc
-  //
-  // Note: gapi could potentially be initialized by other parts of kepler (in particular, by other cloud providers)
-  // To fully handle that case we likely need to use the advanced gapi authentication API,
-  // as the recommended API only supports one sign-in.
-
-  async _loginViaAuthorize(options) {
-    await this._initialize();
-
-    const authOptions = {...getAuthOptionsFromProps(this.props), ...options};
-
-    // eslint-disable-next-line
-    console.log('gapi.client.authorize with options', authOptions);
-
-    const authResponse = await auth2Authorize(authOptions);
-
-    probe('gapi auth2 authorized');
-
-    // TODO - `auth2.currentUser` is only available when calling gapi.auth2.init...
-    // We need to fetch the user data directly from google instead.
-    const userInfo = await auth2GetUserInfo(authResponse);
-    const user = GoogleLoginProvider.normalizeUser(userInfo, authResponse);
-
-    // console.log('GOOGLE ACCOUNT LOGIN SUCCESS (AUTHORIZE)', authResponse, user); // eslint-disable-line
-
-    probe('gapi user data received', user);
-    this._setUser(user);
-  }
-
-  _logoutViaAuthorize() {
-    // TODO - no idea how to do this
-  }
-
-  // OPTION 2: PRIVATE METHODS FOR "SIGNIN" FLOW
-
-  // The simpler login flow, using:
-  //   gapi.auth2.init(), gapi.auth2.signIn(), ...
   async _loginViaSignIn(options, responseType) {
     await this._initialize();
 
@@ -253,6 +160,18 @@ export default class GoogleLoginProvider {
     if (authInstance) {
       await authInstance.signOut();
       await authInstance.disconnect();
+    }
+  }
+
+  // Set (or clear) user data
+  _setUser(user) {
+    const oldUser = this.user;
+    this.signedIn = Boolean(user);
+    this.user = user;
+
+    const userChanged = Boolean(user) !== Boolean(oldUser);
+    if (userChanged) {
+      this.props.onLoginChange(user, this);
     }
   }
 
