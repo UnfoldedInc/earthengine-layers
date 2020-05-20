@@ -63,8 +63,8 @@ module.exports = {
             path: 'examples/image'
           },
           {
-            title: 'ImageCollection Animation',
-            image: 'images/example-eelayer.png',
+            title: 'ImageCollection (Animation)',
+            image: 'images/image-animation-example-still.png',
             componentUrl: resolve(__dirname, '../examples/ee-demo/image-collection-animation.js'),
             path: 'examples/image-collection-animation'
           }
