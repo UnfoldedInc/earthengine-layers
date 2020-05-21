@@ -25,7 +25,9 @@ const defaultProps = {
   visParams: {type: 'object', value: null, equal: deepEqual},
   // Force rendering as vector
   asVector: false,
-  vectorDownloadProps: {type: 'array', value: [], equal: deepEqual},
+  // When rendered as vector, selectors that should be used to determine which
+  // attributes will be downloaded
+  selectors: {type: 'array', value: [], equal: deepEqual},
   // Force animation; animation is on by default when ImageCollection passed
   animate: false,
   // Frames per second
@@ -110,7 +112,7 @@ export default class EarthEngineLayer extends CompositeLayer {
     if (props.visParams === oldProps.visParams && !changeFlags.dataChanged) {
       return;
     }
-    const {animate, asVector, vectorDownloadProps} = props;
+    const {animate, asVector, selectors} = props;
 
     const {eeObject} = this.state;
     if (!eeObject) {
@@ -131,12 +133,11 @@ export default class EarthEngineLayer extends CompositeLayer {
       renderMethod = 'vector';
       // Must pass a filename argument ('') so that the callback is correctly
       // called
-      const downloadProps = ['.geo', ...vectorDownloadProps];
       const geojsonUrl = await promisifyEEMethod(
         eeObject,
         'getDownloadURL',
         'json',
-        downloadProps,
+        ['.geo', ...selectors],
         ''
       );
       const geojsonData = await load(geojsonUrl, JSONLoader);
