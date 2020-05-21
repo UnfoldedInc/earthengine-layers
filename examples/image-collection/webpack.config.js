@@ -39,7 +39,6 @@ const CONFIG = {
         ],
         options: {
           presets: ['@babel/preset-react'],
-          plugins: ['@babel/plugin-proposal-class-properties'],
           ignore: [/ee_api/]
         }
       }

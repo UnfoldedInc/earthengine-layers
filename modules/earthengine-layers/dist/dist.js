@@ -3782,6 +3782,7 @@ var EarthEngineLayerLibrary = (function (core, layers, core$1, ee) {
   /* global createImageBitmap */
 
   const eeApi = new EEApi();
+
   // Global access token, to allow single EE API initialization if using multiple
   // layers
   let accessToken;
@@ -3801,8 +3802,31 @@ var EarthEngineLayerLibrary = (function (core, layers, core$1, ee) {
   };
 
   class EarthEngineLayer extends core.CompositeLayer {
+    // helper function to initialize EE API
+    static async initializeEEApi({clientId, token}) {
+      await eeApi.initialize({clientId, token});
+    }
+
     initializeState() {
       this.state = {};
+    }
+
+    // Note - Layer.updateState is not async. But it lets us `await` the initialization below
+    async updateState({props, oldProps, changeFlags}) {
+      await this._updateToken(props, oldProps, changeFlags);
+      this._updateEEObject(props, oldProps, changeFlags);
+      await this._updateEEVisParams(props, oldProps, changeFlags);
+      this._animate();
+    }
+
+    async _updateToken(props, oldProps, changeFlags) {
+      if (!props.token || props.token === accessToken) {
+        return;
+      }
+
+      const {token} = props;
+      await eeApi.initialize({token});
+      accessToken = token;
     }
 
     _animate() {
@@ -3822,25 +3846,9 @@ var EarthEngineLayerLibrary = (function (core, layers, core$1, ee) {
       });
     }
 
-    async updateState({props, oldProps, changeFlags}) {
-      await this._updateToken(props, oldProps, changeFlags);
-      this._updateEEObject(props, oldProps, changeFlags);
-      await this._updateEEVisParams(props, oldProps, changeFlags);
-      this._animate();
-    }
-
-    async _updateToken(props, oldProps, changeFlags) {
-      if (!props.token || props.token === accessToken) {
-        return;
-      }
-
-      const {token} = props;
-      await eeApi.initialize({token});
-      accessToken = token;
-    }
-
     _updateEEObject(props, oldProps, changeFlags) {
-      if (!changeFlags.dataChanged) {
+      // if (!changeFlags.dataChanged) - TODO - we are not using data
+      if (props.eeObject === oldProps.eeObject) {
         return;
       }
 
@@ -3852,12 +3860,13 @@ var EarthEngineLayerLibrary = (function (core, layers, core$1, ee) {
         eeObject = props.eeObject;
       }
 
-      if (props.animate) {
+      if (eeObject && props.animate) {
         // Force to be ee.ImageCollection. Sometimes deserializes as
         // FeatureCollection
         eeObject = ee.ImageCollection(eeObject);
       }
 
+      // TODO - what case is this handling
       if (Array.isArray(props.eeObject) && props.eeObject.length === 0) {
         eeObject = null;
       }

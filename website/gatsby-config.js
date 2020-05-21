@@ -57,10 +57,16 @@ module.exports = {
 
         EXAMPLES: [
           {
-            title: 'EarthEngineLayer',
+            title: 'EE Image',
             image: 'images/example-eelayer.png',
-            componentUrl: resolve(__dirname, '../examples/ee-demo/app.js'),
-            path: 'examples/earthengine-layer'
+            componentUrl: resolve(__dirname, '../examples/image/app.js'),
+            path: 'examples/image'
+          },
+          {
+            title: 'EE ImageCollection',
+            image: 'images/example-eelayer.png',
+            componentUrl: resolve(__dirname, '../examples/image-collection/app.js'),
+            path: 'examples/image-collection'
           }
         ],
 
