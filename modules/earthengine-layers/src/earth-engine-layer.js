@@ -1,10 +1,10 @@
-/* global createImageBitmap, fetch */
+/* global createImageBitmap */
 import {CompositeLayer} from '@deck.gl/core';
 import {TileLayer} from '@deck.gl/geo-layers';
 import {BitmapLayer, GeoJsonLayer} from '@deck.gl/layers';
 import EEApi from './ee-api'; // Promisify ee apis
 import ee from '@google/earthengine';
-import {load, loadInBatches} from '@loaders.gl/core';
+import {load} from '@loaders.gl/core';
 import {ImageLoader} from '@loaders.gl/images';
 import {deepEqual, promisifyEEMethod} from './utils';
 import {JSONLoader} from '@loaders.gl/json';
@@ -24,6 +24,7 @@ const defaultProps = {
   visParams: {type: 'object', value: null, equal: deepEqual},
   // Force rendering as vector
   asVector: false,
+  vectorDownloadProps: {type: 'array', value: [], equal: deepEqual},
   // Force animation; animation is on by default when ImageCollection passed
   animate: false,
   // Frames per second
@@ -102,6 +103,7 @@ export default class EarthEngineLayer extends CompositeLayer {
     if (props.visParams === oldProps.visParams && !changeFlags.dataChanged) {
       return;
     }
+    const {animate, asVector, vectorDownloadProps} = props;
 
     const {eeObject} = this.state;
     if (!eeObject) {
@@ -113,16 +115,23 @@ export default class EarthEngineLayer extends CompositeLayer {
     }
 
     let renderMethod;
-    if (props.animate) {
+    if (animate) {
       renderMethod = 'filmstrip';
       if (!eeObject.getFilmstripThumbURL) {
         throw new Error('eeObject must have a getFilmstripThumbURL method to animate.');
       }
-    } else if (props.asVector) {
+    } else if (asVector) {
       renderMethod = 'vector';
       // Must pass a filename argument ('') so that the callback is correctly
       // called
-      const geojsonUrl = await promisifyEEMethod(eeObject, 'getDownloadURL', 'json', ['.geo'], '');
+      const downloadProps = ['.geo', ...vectorDownloadProps];
+      const geojsonUrl = await promisifyEEMethod(
+        eeObject,
+        'getDownloadURL',
+        'json',
+        downloadProps,
+        ''
+      );
       const geojsonData = await load(geojsonUrl, JSONLoader);
       this.setState({geojsonData});
     } else {
