@@ -62,6 +62,35 @@ var EarthEngineLayerLibrary = (function (core, layers, core$1) {
     return _getPrototypeOf(o);
   }
 
+  function _superPropBase(object, property) {
+    while (!Object.prototype.hasOwnProperty.call(object, property)) {
+      object = _getPrototypeOf(object);
+      if (object === null) break;
+    }
+
+    return object;
+  }
+
+  function _get(target, property, receiver) {
+    if (typeof Reflect !== "undefined" && Reflect.get) {
+      _get = Reflect.get;
+    } else {
+      _get = function _get(target, property, receiver) {
+        var base = _superPropBase(target, property);
+        if (!base) return;
+        var desc = Object.getOwnPropertyDescriptor(base, property);
+
+        if (desc.get) {
+          return desc.get.call(receiver);
+        }
+
+        return desc.value;
+      };
+    }
+
+    return _get(target, property, receiver || target);
+  }
+
   function _setPrototypeOf(o, p) {
     _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
       o.__proto__ = p;
@@ -2385,6 +2414,22 @@ var EarthEngineLayerLibrary = (function (core, layers, core$1) {
   TileLayer.layerName = 'TileLayer';
   TileLayer.defaultProps = defaultProps;
 
+  function _arrayWithoutHoles(arr) {
+    if (Array.isArray(arr)) return _arrayLikeToArray(arr);
+  }
+
+  function _iterableToArray(iter) {
+    if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
+  }
+
+  function _nonIterableSpread() {
+    throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+  }
+
+  function _toConsumableArray(arr) {
+    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
+  }
+
   var runtime_1 = createCommonjsModule(function (module) {
   /**
    * Copyright (c) 2014-present, Facebook, Inc.
@@ -3117,6 +3162,21 @@ var EarthEngineLayerLibrary = (function (core, layers, core$1) {
   });
 
   var regenerator = runtime_1;
+
+  function _defineProperty(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+      });
+    } else {
+      obj[key] = value;
+    }
+
+    return obj;
+  }
 
   function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
     try {
@@ -29843,6 +29903,1390 @@ var EarthEngineLayerLibrary = (function (core, layers, core$1) {
     );
   }
 
+  var DEFAULT_BATCH_SIZE = 100;
+
+  var TableBatchBuilder = function () {
+    function TableBatchBuilder(TableBatchType, schema) {
+      var batchSize = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : DEFAULT_BATCH_SIZE;
+
+      _classCallCheck(this, TableBatchBuilder);
+
+      this.TableBatchType = TableBatchType;
+      this.schema = schema;
+      this.batchSize = batchSize;
+      this.batch = null;
+      this.batchCount = 0;
+    }
+
+    _createClass(TableBatchBuilder, [{
+      key: "addRow",
+      value: function addRow(row) {
+        if (!this.batch) {
+          var TableBatchType = this.TableBatchType;
+          this.batch = new TableBatchType(this.schema, this.batchSize);
+        }
+
+        this.batch.addRow(row);
+      }
+    }, {
+      key: "chunkComplete",
+      value: function chunkComplete() {
+        if (this.batch) {
+          this.batch.chunkComplete();
+        }
+      }
+    }, {
+      key: "isFull",
+      value: function isFull() {
+        return this.batch && this.batch.isFull();
+      }
+    }, {
+      key: "hasBatch",
+      value: function hasBatch() {
+        return Boolean(this.batch);
+      }
+    }, {
+      key: "getNormalizedBatch",
+      value: function getNormalizedBatch() {
+        if (this.batch) {
+          var normalizedBatch = this.batch.getNormalizedBatch();
+          this.batch = null;
+          normalizedBatch.count = this.batchCount;
+          this.batchCount++;
+          return normalizedBatch;
+        }
+
+        return null;
+      }
+    }]);
+
+    return TableBatchBuilder;
+  }();
+
+  var RowTableBatch = function () {
+    function RowTableBatch(schema, batchSize) {
+      _classCallCheck(this, RowTableBatch);
+
+      this.schema = schema;
+      this.batchSize = batchSize;
+      this.rows = null;
+      this.length = 0;
+      this.isChunkComplete = false;
+
+      if (!Array.isArray(schema)) {
+        this._headers = [];
+
+        for (var key in schema) {
+          this._headers[schema[key].index] = schema[key].name;
+        }
+      }
+    }
+
+    _createClass(RowTableBatch, [{
+      key: "addRow",
+      value: function addRow(row) {
+        if (!this.rows) {
+          this.rows = new Array(this.batchSize);
+          this.length = 0;
+        }
+
+        this.rows[this.length] = convertRowToObject(row, this._headers);
+        this.length++;
+      }
+    }, {
+      key: "chunkComplete",
+      value: function chunkComplete() {
+        this.isChunkComplete = true;
+      }
+    }, {
+      key: "isFull",
+      value: function isFull() {
+        if (this.batchSize === 'auto') {
+          return this.isChunkComplete && this.length > 0;
+        }
+
+        return this.rows && this.length >= this.batchSize;
+      }
+    }, {
+      key: "getNormalizedBatch",
+      value: function getNormalizedBatch() {
+        if (this.rows) {
+          var rows = this.rows.slice(0, this.length);
+          this.rows = null;
+          this.isChunkComplete = false;
+          return {
+            data: rows,
+            schema: this.schema,
+            length: rows.length
+          };
+        }
+
+        return null;
+      }
+    }]);
+
+    return RowTableBatch;
+  }();
+
+  function convertRowToObject(row, headers) {
+    if (!row) {
+      throw new Error('null row');
+    }
+
+    if (!Array.isArray(row)) {
+      return row;
+    }
+
+    if (!headers) {
+      return row;
+    }
+
+    var result = {};
+
+    for (var i = 0; i < headers.length; i++) {
+      result[headers[i]] = row[i];
+    }
+
+    return result;
+  }
+
+  function parseJSONSync(jsonText, options) {
+    try {
+      var json = JSON.parse(jsonText);
+
+      if (options.json.table) {
+        return getFirstArray(json) || json;
+      }
+
+      return json;
+    } catch (error) {
+      throw new Error('JSONLoader: failed to parse JSON');
+    }
+  }
+
+  function getFirstArray(json) {
+    if (Array.isArray(json)) {
+      return json;
+    }
+
+    if (json && _typeof(json) === 'object') {
+      for (var _i = 0, _Object$values = Object.values(json); _i < _Object$values.length; _i++) {
+        var value = _Object$values[_i];
+        var array = getFirstArray(value);
+
+        if (array) {
+          return array;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  function _AwaitValue(value) {
+    this.wrapped = value;
+  }
+
+  function _awaitAsyncGenerator(value) {
+    return new _AwaitValue(value);
+  }
+
+  function AsyncGenerator(gen) {
+    var front, back;
+
+    function send(key, arg) {
+      return new Promise(function (resolve, reject) {
+        var request = {
+          key: key,
+          arg: arg,
+          resolve: resolve,
+          reject: reject,
+          next: null
+        };
+
+        if (back) {
+          back = back.next = request;
+        } else {
+          front = back = request;
+          resume(key, arg);
+        }
+      });
+    }
+
+    function resume(key, arg) {
+      try {
+        var result = gen[key](arg);
+        var value = result.value;
+        var wrappedAwait = value instanceof _AwaitValue;
+        Promise.resolve(wrappedAwait ? value.wrapped : value).then(function (arg) {
+          if (wrappedAwait) {
+            resume(key === "return" ? "return" : "next", arg);
+            return;
+          }
+
+          settle(result.done ? "return" : "normal", arg);
+        }, function (err) {
+          resume("throw", err);
+        });
+      } catch (err) {
+        settle("throw", err);
+      }
+    }
+
+    function settle(type, value) {
+      switch (type) {
+        case "return":
+          front.resolve({
+            value: value,
+            done: true
+          });
+          break;
+
+        case "throw":
+          front.reject(value);
+          break;
+
+        default:
+          front.resolve({
+            value: value,
+            done: false
+          });
+          break;
+      }
+
+      front = front.next;
+
+      if (front) {
+        resume(front.key, front.arg);
+      } else {
+        back = null;
+      }
+    }
+
+    this._invoke = send;
+
+    if (typeof gen["return"] !== "function") {
+      this["return"] = undefined;
+    }
+  }
+
+  if (typeof Symbol === "function" && Symbol.asyncIterator) {
+    AsyncGenerator.prototype[Symbol.asyncIterator] = function () {
+      return this;
+    };
+  }
+
+  AsyncGenerator.prototype.next = function (arg) {
+    return this._invoke("next", arg);
+  };
+
+  AsyncGenerator.prototype["throw"] = function (arg) {
+    return this._invoke("throw", arg);
+  };
+
+  AsyncGenerator.prototype["return"] = function (arg) {
+    return this._invoke("return", arg);
+  };
+
+  function _wrapAsyncGenerator(fn) {
+    return function () {
+      return new AsyncGenerator(fn.apply(this, arguments));
+    };
+  }
+
+  function _asyncIterator(iterable) {
+    var method;
+
+    if (typeof Symbol !== "undefined") {
+      if (Symbol.asyncIterator) {
+        method = iterable[Symbol.asyncIterator];
+        if (method != null) return method.call(iterable);
+      }
+
+      if (Symbol.iterator) {
+        method = iterable[Symbol.iterator];
+        if (method != null) return method.call(iterable);
+      }
+    }
+
+    throw new TypeError("Object is not async iterable");
+  }
+
+  var MAX_BUFFER_LENGTH = Number.MAX_SAFE_INTEGER;
+  var buffers = {
+    textNode: undefined,
+    numberNode: ''
+  };
+  var S = 0;
+  var STATE = {
+    BEGIN: S++,
+    VALUE: S++,
+    OPEN_OBJECT: S++,
+    CLOSE_OBJECT: S++,
+    OPEN_ARRAY: S++,
+    CLOSE_ARRAY: S++,
+    TEXT_ESCAPE: S++,
+    STRING: S++,
+    BACKSLASH: S++,
+    END: S++,
+    OPEN_KEY: S++,
+    CLOSE_KEY: S++,
+    TRUE: S++,
+    TRUE2: S++,
+    TRUE3: S++,
+    FALSE: S++,
+    FALSE2: S++,
+    FALSE3: S++,
+    FALSE4: S++,
+    NULL: S++,
+    NULL2: S++,
+    NULL3: S++,
+    NUMBER_DECIMAL_POINT: S++,
+    NUMBER_DIGIT: S++
+  };
+
+  for (var s_ in STATE) {
+    STATE[STATE[s_]] = s_;
+  }
+
+  S = STATE;
+  var Char = {
+    tab: 0x09,
+    lineFeed: 0x0a,
+    carriageReturn: 0x0d,
+    space: 0x20,
+    doubleQuote: 0x22,
+    plus: 0x2b,
+    comma: 0x2c,
+    minus: 0x2d,
+    period: 0x2e,
+    _0: 0x30,
+    _9: 0x39,
+    colon: 0x3a,
+    E: 0x45,
+    openBracket: 0x5b,
+    backslash: 0x5c,
+    closeBracket: 0x5d,
+    a: 0x61,
+    b: 0x62,
+    e: 0x65,
+    f: 0x66,
+    l: 0x6c,
+    n: 0x6e,
+    r: 0x72,
+    s: 0x73,
+    t: 0x74,
+    u: 0x75,
+    openBrace: 0x7b,
+    closeBrace: 0x7d
+  };
+
+  function checkBufferLength(parser) {
+    var maxAllowed = Math.max(MAX_BUFFER_LENGTH, 10);
+    var maxActual = 0;
+
+    for (var buffer in buffers) {
+      var len = parser[buffer] === undefined ? 0 : parser[buffer].length;
+
+      if (len > maxAllowed) {
+        switch (buffer) {
+          case 'text':
+            closeText(parser);
+            break;
+
+          default:
+            error(parser, 'Max buffer length exceeded: ' + buffer);
+        }
+      }
+
+      maxActual = Math.max(maxActual, len);
+    }
+
+    parser.bufferCheckPosition = MAX_BUFFER_LENGTH - maxActual + parser.position;
+  }
+
+  var stringTokenPattern = /[\\"\n]/g;
+
+  var ClarinetParser = function () {
+    function ClarinetParser() {
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+      _classCallCheck(this, ClarinetParser);
+
+      this._initialize(options);
+    }
+
+    _createClass(ClarinetParser, [{
+      key: "_initialize",
+      value: function _initialize(options) {
+        this._clearBuffers(this);
+
+        this.bufferCheckPosition = MAX_BUFFER_LENGTH;
+        this.q = '';
+        this.c = '';
+        this.p = '';
+        this.options = options || {};
+        this.closed = false;
+        this.closedRoot = false;
+        this.sawRoot = false;
+        this.tag = null;
+        this.error = null;
+        this.state = S.BEGIN;
+        this.stack = new Array();
+        this.position = this.column = 0;
+        this.line = 1;
+        this.slashed = false;
+        this.unicodeI = 0;
+        this.unicodeS = null;
+        this.depth = 0;
+
+        if ('onready' in options) {
+          this.onready = options.onready;
+        }
+
+        if ('onopenobject' in options) {
+          this.onopenobject = options.onopenobject;
+        }
+
+        if ('onkey' in options) {
+          this.onkey = options.onkey;
+        }
+
+        if ('oncloseobject' in options) {
+          this.oncloseobject = options.oncloseobject;
+        }
+
+        if ('onopenarray' in options) {
+          this.onopenarray = options.onopenarray;
+        }
+
+        if ('onclosearray' in options) {
+          this.onclosearray = options.onclosearray;
+        }
+
+        if ('onvalue' in options) {
+          this.onvalue = options.onvalue;
+        }
+
+        if ('onerror' in options) {
+          this.onerror = options.onerror;
+        }
+
+        if ('onend' in options) {
+          this.onend = options.onend;
+        }
+
+        if ('onchunkparsed' in options) {
+          this.onchunkparsed = options.onchunkparsed;
+        }
+
+        emit(this, 'onready');
+      }
+    }, {
+      key: "_clearBuffers",
+      value: function _clearBuffers() {
+        for (var buffer in buffers) {
+          this[buffer] = buffers[buffer];
+        }
+      }
+    }, {
+      key: "end",
+      value: function end() {
+        if (this.state !== S.VALUE || this.depth !== 0) error(this, 'Unexpected end');
+        closeValue(this);
+        this.c = '';
+        this.closed = true;
+        emit(this, 'onend');
+
+        this._initialize(this.options);
+
+        return this;
+      }
+    }, {
+      key: "resume",
+      value: function resume() {
+        this.error = null;
+        return this;
+      }
+    }, {
+      key: "close",
+      value: function close() {
+        return this.write(null);
+      }
+    }, {
+      key: "write",
+      value: function write(chunk) {
+        if (this.error) {
+          throw this.error;
+        }
+
+        if (this.closed) {
+          return error(this, 'Cannot write after close. Assign an onready handler.');
+        }
+
+        if (chunk === null) {
+          return this.end();
+        }
+
+        var i = 0,
+            c = chunk.charCodeAt(0),
+            p = this.p;
+
+        while (c) {
+          p = c;
+          this.c = c = chunk.charCodeAt(i++);
+
+          if (p !== c) {
+            this.p = p;
+          } else {
+            p = this.p;
+          }
+
+          if (!c) break;
+          this.position++;
+
+          if (c === Char.lineFeed) {
+            this.line++;
+            this.column = 0;
+          } else this.column++;
+
+          switch (this.state) {
+            case S.BEGIN:
+              if (c === Char.openBrace) this.state = S.OPEN_OBJECT;else if (c === Char.openBracket) this.state = S.OPEN_ARRAY;else if (!isWhitespace(c)) {
+                error(this, 'Non-whitespace before {[.');
+              }
+              continue;
+
+            case S.OPEN_KEY:
+            case S.OPEN_OBJECT:
+              if (isWhitespace(c)) continue;
+              if (this.state === S.OPEN_KEY) this.stack.push(S.CLOSE_KEY);else {
+                if (c === Char.closeBrace) {
+                  emit(this, 'onopenobject');
+                  this.depth++;
+                  emit(this, 'oncloseobject');
+                  this.depth--;
+                  this.state = this.stack.pop() || S.VALUE;
+                  continue;
+                } else this.stack.push(S.CLOSE_OBJECT);
+              }
+              if (c === Char.doubleQuote) this.state = S.STRING;else error(this, 'Malformed object key should start with "');
+              continue;
+
+            case S.CLOSE_KEY:
+            case S.CLOSE_OBJECT:
+              if (isWhitespace(c)) continue;
+              var event = this.state === S.CLOSE_KEY ? 'key' : 'object';
+
+              if (c === Char.colon) {
+                if (this.state === S.CLOSE_OBJECT) {
+                  this.stack.push(S.CLOSE_OBJECT);
+                  closeValue(this, 'onopenobject');
+                  this.depth++;
+                } else closeValue(this, 'onkey');
+
+                this.state = S.VALUE;
+              } else if (c === Char.closeBrace) {
+                emitNode(this, 'oncloseobject');
+                this.depth--;
+                this.state = this.stack.pop() || S.VALUE;
+              } else if (c === Char.comma) {
+                if (this.state === S.CLOSE_OBJECT) this.stack.push(S.CLOSE_OBJECT);
+                closeValue(this);
+                this.state = S.OPEN_KEY;
+              } else error(this, 'Bad object');
+
+              continue;
+
+            case S.OPEN_ARRAY:
+            case S.VALUE:
+              if (isWhitespace(c)) continue;
+
+              if (this.state === S.OPEN_ARRAY) {
+                emit(this, 'onopenarray');
+                this.depth++;
+                this.state = S.VALUE;
+
+                if (c === Char.closeBracket) {
+                  emit(this, 'onclosearray');
+                  this.depth--;
+                  this.state = this.stack.pop() || S.VALUE;
+                  continue;
+                } else {
+                  this.stack.push(S.CLOSE_ARRAY);
+                }
+              }
+
+              if (c === Char.doubleQuote) this.state = S.STRING;else if (c === Char.openBrace) this.state = S.OPEN_OBJECT;else if (c === Char.openBracket) this.state = S.OPEN_ARRAY;else if (c === Char.t) this.state = S.TRUE;else if (c === Char.f) this.state = S.FALSE;else if (c === Char.n) this.state = S.NULL;else if (c === Char.minus) {
+                this.numberNode += '-';
+              } else if (Char._0 <= c && c <= Char._9) {
+                this.numberNode += String.fromCharCode(c);
+                this.state = S.NUMBER_DIGIT;
+              } else error(this, 'Bad value');
+              continue;
+
+            case S.CLOSE_ARRAY:
+              if (c === Char.comma) {
+                this.stack.push(S.CLOSE_ARRAY);
+                closeValue(this, 'onvalue');
+                this.state = S.VALUE;
+              } else if (c === Char.closeBracket) {
+                emitNode(this, 'onclosearray');
+                this.depth--;
+                this.state = this.stack.pop() || S.VALUE;
+              } else if (isWhitespace(c)) continue;else error(this, 'Bad array');
+
+              continue;
+
+            case S.STRING:
+              if (this.textNode === undefined) {
+                this.textNode = '';
+              }
+
+              var starti = i - 1,
+                  slashed = this.slashed,
+                  unicodeI = this.unicodeI;
+
+              STRING_BIGLOOP: while (true) {
+
+                while (unicodeI > 0) {
+                  this.unicodeS += String.fromCharCode(c);
+                  c = chunk.charCodeAt(i++);
+                  this.position++;
+
+                  if (unicodeI === 4) {
+                    this.textNode += String.fromCharCode(parseInt(this.unicodeS, 16));
+                    unicodeI = 0;
+                    starti = i - 1;
+                  } else {
+                    unicodeI++;
+                  }
+
+                  if (!c) break STRING_BIGLOOP;
+                }
+
+                if (c === Char.doubleQuote && !slashed) {
+                  this.state = this.stack.pop() || S.VALUE;
+                  this.textNode += chunk.substring(starti, i - 1);
+                  this.position += i - 1 - starti;
+                  break;
+                }
+
+                if (c === Char.backslash && !slashed) {
+                  slashed = true;
+                  this.textNode += chunk.substring(starti, i - 1);
+                  this.position += i - 1 - starti;
+                  c = chunk.charCodeAt(i++);
+                  this.position++;
+                  if (!c) break;
+                }
+
+                if (slashed) {
+                  slashed = false;
+
+                  if (c === Char.n) {
+                    this.textNode += '\n';
+                  } else if (c === Char.r) {
+                    this.textNode += '\r';
+                  } else if (c === Char.t) {
+                    this.textNode += '\t';
+                  } else if (c === Char.f) {
+                    this.textNode += '\f';
+                  } else if (c === Char.b) {
+                    this.textNode += '\b';
+                  } else if (c === Char.u) {
+                    unicodeI = 1;
+                    this.unicodeS = '';
+                  } else {
+                    this.textNode += String.fromCharCode(c);
+                  }
+
+                  c = chunk.charCodeAt(i++);
+                  this.position++;
+                  starti = i - 1;
+                  if (!c) break;else continue;
+                }
+
+                stringTokenPattern.lastIndex = i;
+                var reResult = stringTokenPattern.exec(chunk);
+
+                if (reResult === null) {
+                  i = chunk.length + 1;
+                  this.textNode += chunk.substring(starti, i - 1);
+                  this.position += i - 1 - starti;
+                  break;
+                }
+
+                i = reResult.index + 1;
+                c = chunk.charCodeAt(reResult.index);
+
+                if (!c) {
+                  this.textNode += chunk.substring(starti, i - 1);
+                  this.position += i - 1 - starti;
+                  break;
+                }
+              }
+
+              this.slashed = slashed;
+              this.unicodeI = unicodeI;
+              continue;
+
+            case S.TRUE:
+              if (c === Char.r) this.state = S.TRUE2;else error(this, 'Invalid true started with t' + c);
+              continue;
+
+            case S.TRUE2:
+              if (c === Char.u) this.state = S.TRUE3;else error(this, 'Invalid true started with tr' + c);
+              continue;
+
+            case S.TRUE3:
+              if (c === Char.e) {
+                emit(this, 'onvalue', true);
+                this.state = this.stack.pop() || S.VALUE;
+              } else error(this, 'Invalid true started with tru' + c);
+
+              continue;
+
+            case S.FALSE:
+              if (c === Char.a) this.state = S.FALSE2;else error(this, 'Invalid false started with f' + c);
+              continue;
+
+            case S.FALSE2:
+              if (c === Char.l) this.state = S.FALSE3;else error(this, 'Invalid false started with fa' + c);
+              continue;
+
+            case S.FALSE3:
+              if (c === Char.s) this.state = S.FALSE4;else error(this, 'Invalid false started with fal' + c);
+              continue;
+
+            case S.FALSE4:
+              if (c === Char.e) {
+                emit(this, 'onvalue', false);
+                this.state = this.stack.pop() || S.VALUE;
+              } else error(this, 'Invalid false started with fals' + c);
+
+              continue;
+
+            case S.NULL:
+              if (c === Char.u) this.state = S.NULL2;else error(this, 'Invalid null started with n' + c);
+              continue;
+
+            case S.NULL2:
+              if (c === Char.l) this.state = S.NULL3;else error(this, 'Invalid null started with nu' + c);
+              continue;
+
+            case S.NULL3:
+              if (c === Char.l) {
+                emit(this, 'onvalue', null);
+                this.state = this.stack.pop() || S.VALUE;
+              } else error(this, 'Invalid null started with nul' + c);
+
+              continue;
+
+            case S.NUMBER_DECIMAL_POINT:
+              if (c === Char.period) {
+                this.numberNode += '.';
+                this.state = S.NUMBER_DIGIT;
+              } else error(this, 'Leading zero not followed by .');
+
+              continue;
+
+            case S.NUMBER_DIGIT:
+              if (Char._0 <= c && c <= Char._9) this.numberNode += String.fromCharCode(c);else if (c === Char.period) {
+                if (this.numberNode.indexOf('.') !== -1) error(this, 'Invalid number has two dots');
+                this.numberNode += '.';
+              } else if (c === Char.e || c === Char.E) {
+                if (this.numberNode.indexOf('e') !== -1 || this.numberNode.indexOf('E') !== -1) error(this, 'Invalid number has two exponential');
+                this.numberNode += 'e';
+              } else if (c === Char.plus || c === Char.minus) {
+                if (!(p === Char.e || p === Char.E)) error(this, 'Invalid symbol in number');
+                this.numberNode += String.fromCharCode(c);
+              } else {
+                closeNumber(this);
+                i--;
+                this.state = this.stack.pop() || S.VALUE;
+              }
+              continue;
+
+            default:
+              error(this, 'Unknown state: ' + this.state);
+          }
+        }
+
+        if (this.position >= this.bufferCheckPosition) {
+          checkBufferLength(this);
+        }
+
+        emit(this, 'onchunkparsed');
+        return this;
+      }
+    }]);
+
+    return ClarinetParser;
+  }();
+
+  function emit(parser, event, data) {
+
+    if (parser[event]) {
+      parser[event](data, parser);
+    }
+  }
+
+  function emitNode(parser, event, data) {
+    closeValue(parser);
+    emit(parser, event, data);
+  }
+
+  function closeValue(parser, event) {
+    parser.textNode = textopts(parser.options, parser.textNode);
+
+    if (parser.textNode !== undefined) {
+      emit(parser, event ? event : 'onvalue', parser.textNode);
+    }
+
+    parser.textNode = undefined;
+  }
+
+  function closeNumber(parser) {
+    if (parser.numberNode) emit(parser, 'onvalue', parseFloat(parser.numberNode));
+    parser.numberNode = '';
+  }
+
+  function textopts(opt, text) {
+    if (text === undefined) {
+      return text;
+    }
+
+    if (opt.trim) text = text.trim();
+    if (opt.normalize) text = text.replace(/\s+/g, ' ');
+    return text;
+  }
+
+  function error(parser, er) {
+    closeValue(parser);
+    er += '\nLine: ' + parser.line + '\nColumn: ' + parser.column + '\nChar: ' + parser.c;
+    er = new Error(er);
+    parser.error = er;
+    emit(parser, 'onerror', er);
+    return parser;
+  }
+
+  function isWhitespace(c) {
+    return c === Char.carriageReturn || c === Char.lineFeed || c === Char.space || c === Char.tab;
+  }
+
+  var JSONParser = function () {
+    function JSONParser() {
+      _classCallCheck(this, JSONParser);
+
+      this.reset();
+
+      this._initializeParser();
+    }
+
+    _createClass(JSONParser, [{
+      key: "reset",
+      value: function reset() {
+        this.result = undefined;
+        this.previousStates = [];
+        this.currentState = Object.freeze({
+          container: [],
+          key: null
+        });
+      }
+    }, {
+      key: "write",
+      value: function write(chunk) {
+        this.parser.write(chunk);
+      }
+    }, {
+      key: "close",
+      value: function close() {
+        this.parser.close();
+      }
+    }, {
+      key: "_pushOrSet",
+      value: function _pushOrSet(value) {
+        var _this$currentState = this.currentState,
+            container = _this$currentState.container,
+            key = _this$currentState.key;
+
+        if (key !== null) {
+          container[key] = value;
+          this.currentState.key = null;
+        } else {
+          container.push(value);
+        }
+      }
+    }, {
+      key: "_openContainer",
+      value: function _openContainer(newContainer) {
+        this._pushOrSet(newContainer);
+
+        this.previousStates.push(this.currentState);
+        this.currentState = {
+          container: newContainer,
+          key: null
+        };
+      }
+    }, {
+      key: "_closeContainer",
+      value: function _closeContainer() {
+        this.currentState = this.previousStates.pop();
+      }
+    }, {
+      key: "_initializeParser",
+      value: function _initializeParser() {
+        var _this = this;
+
+        this.parser = new ClarinetParser({
+          onready: function onready() {
+            _this.previousStates.length = 0;
+            _this.currentState.container.length = 0;
+          },
+          onopenobject: function onopenobject(name) {
+            _this._openContainer({});
+
+            if (typeof name !== 'undefined') {
+              _this.parser.onkey(name);
+            }
+          },
+          onkey: function onkey(name) {
+            _this.currentState.key = name;
+          },
+          oncloseobject: function oncloseobject() {
+            _this._closeContainer();
+          },
+          onopenarray: function onopenarray() {
+            _this._openContainer([]);
+          },
+          onclosearray: function onclosearray() {
+            _this._closeContainer();
+          },
+          onvalue: function onvalue(value) {
+            _this._pushOrSet(value);
+          },
+          onerror: function onerror(error) {
+            throw error;
+          },
+          onend: function onend() {
+            _this.result = _this.currentState.container.pop();
+          }
+        });
+      }
+    }]);
+
+    return JSONParser;
+  }();
+
+  var StreamingJSONParser = function (_JSONParser) {
+    _inherits(StreamingJSONParser, _JSONParser);
+
+    function StreamingJSONParser() {
+      var _this;
+
+      _classCallCheck(this, StreamingJSONParser);
+
+      _this = _possibleConstructorReturn(this, _getPrototypeOf(StreamingJSONParser).call(this));
+      _this.topLevelArray = null;
+      _this.topLevelObject = null;
+
+      _this._extendParser();
+
+      return _this;
+    }
+
+    _createClass(StreamingJSONParser, [{
+      key: "write",
+      value: function write(chunk) {
+        _get(_getPrototypeOf(StreamingJSONParser.prototype), "write", this).call(this, chunk);
+
+        var array = [];
+
+        if (this.topLevelArray) {
+          array = _toConsumableArray(this.topLevelArray);
+          this.topLevelArray.length = 0;
+        }
+
+        return array;
+      }
+    }, {
+      key: "getPartialResult",
+      value: function getPartialResult() {
+        return this.topLevelObject;
+      }
+    }, {
+      key: "_extendParser",
+      value: function _extendParser() {
+        var _this2 = this;
+
+        this.parser.onopenarray = function () {
+          if (!_this2.topLevelArray) {
+            _this2.topLevelArray = [];
+
+            _this2._openContainer(_this2.topLevelArray);
+          } else {
+            _this2._openContainer([]);
+          }
+        };
+
+        this.parser.onopenobject = function (name) {
+          if (!_this2.topLevelObject) {
+            _this2.topLevelObject = {};
+
+            _this2._openContainer(_this2.topLevelObject);
+          } else {
+            _this2._openContainer({});
+          }
+
+          if (typeof name !== 'undefined') {
+            _this2.parser.onkey(name);
+          }
+        };
+      }
+    }]);
+
+    return StreamingJSONParser;
+  }(JSONParser);
+
+  function parseJSONInBatches(_x, _x2) {
+    return _parseJSONInBatches.apply(this, arguments);
+  }
+
+  function _parseJSONInBatches() {
+    _parseJSONInBatches = _wrapAsyncGenerator(regenerator.mark(function _callee(asyncIterator, options) {
+      var _options$json, batchSize, _rootObjectBatches, TableBatchType, isFirstChunk, tableBatchBuilder, schema, parser, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, _value, chunk, rows, initialBatch, _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, row, batch, finalBatch;
+
+      return regenerator.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _options$json = options.json, batchSize = _options$json.batchSize, _rootObjectBatches = _options$json._rootObjectBatches;
+              TableBatchType = options.json.TableBatch;
+              isFirstChunk = true;
+              tableBatchBuilder = null;
+              schema = null;
+              parser = new StreamingJSONParser();
+              tableBatchBuilder = tableBatchBuilder || new TableBatchBuilder(TableBatchType, schema, batchSize);
+              _iteratorNormalCompletion = true;
+              _didIteratorError = false;
+              _context.prev = 9;
+              _iterator = _asyncIterator(asyncIterator);
+
+            case 11:
+              _context.next = 13;
+              return _awaitAsyncGenerator(_iterator.next());
+
+            case 13:
+              _step = _context.sent;
+              _iteratorNormalCompletion = _step.done;
+              _context.next = 17;
+              return _awaitAsyncGenerator(_step.value);
+
+            case 17:
+              _value = _context.sent;
+
+              if (_iteratorNormalCompletion) {
+                _context.next = 63;
+                break;
+              }
+
+              chunk = _value;
+              rows = parser.write(chunk);
+
+              if (!isFirstChunk) {
+                _context.next = 28;
+                break;
+              }
+
+              if (!_rootObjectBatches) {
+                _context.next = 26;
+                break;
+              }
+
+              initialBatch = {
+                batchType: 'root-object-batch-partial',
+                container: parser.getPartialResult(),
+                data: [],
+                schema: null
+              };
+              _context.next = 26;
+              return initialBatch;
+
+            case 26:
+              isFirstChunk = false;
+              schema = deduceSchema(rows);
+
+            case 28:
+              _iteratorNormalCompletion2 = true;
+              _didIteratorError2 = false;
+              _iteratorError2 = undefined;
+              _context.prev = 31;
+              _iterator2 = rows[Symbol.iterator]();
+
+            case 33:
+              if (_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done) {
+                _context.next = 42;
+                break;
+              }
+
+              row = _step2.value;
+              tableBatchBuilder.addRow(row);
+
+              if (!tableBatchBuilder.isFull()) {
+                _context.next = 39;
+                break;
+              }
+
+              _context.next = 39;
+              return tableBatchBuilder.getNormalizedBatch();
+
+            case 39:
+              _iteratorNormalCompletion2 = true;
+              _context.next = 33;
+              break;
+
+            case 42:
+              _context.next = 48;
+              break;
+
+            case 44:
+              _context.prev = 44;
+              _context.t0 = _context["catch"](31);
+              _didIteratorError2 = true;
+              _iteratorError2 = _context.t0;
+
+            case 48:
+              _context.prev = 48;
+              _context.prev = 49;
+
+              if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+                _iterator2["return"]();
+              }
+
+            case 51:
+              _context.prev = 51;
+
+              if (!_didIteratorError2) {
+                _context.next = 54;
+                break;
+              }
+
+              throw _iteratorError2;
+
+            case 54:
+              return _context.finish(51);
+
+            case 55:
+              return _context.finish(48);
+
+            case 56:
+              tableBatchBuilder.chunkComplete();
+
+              if (!tableBatchBuilder.isFull()) {
+                _context.next = 60;
+                break;
+              }
+
+              _context.next = 60;
+              return tableBatchBuilder.getNormalizedBatch();
+
+            case 60:
+              _iteratorNormalCompletion = true;
+              _context.next = 11;
+              break;
+
+            case 63:
+              _context.next = 69;
+              break;
+
+            case 65:
+              _context.prev = 65;
+              _context.t1 = _context["catch"](9);
+              _didIteratorError = true;
+              _iteratorError = _context.t1;
+
+            case 69:
+              _context.prev = 69;
+              _context.prev = 70;
+
+              if (!(!_iteratorNormalCompletion && _iterator["return"] != null)) {
+                _context.next = 74;
+                break;
+              }
+
+              _context.next = 74;
+              return _awaitAsyncGenerator(_iterator["return"]());
+
+            case 74:
+              _context.prev = 74;
+
+              if (!_didIteratorError) {
+                _context.next = 77;
+                break;
+              }
+
+              throw _iteratorError;
+
+            case 77:
+              return _context.finish(74);
+
+            case 78:
+              return _context.finish(69);
+
+            case 79:
+              batch = tableBatchBuilder.getNormalizedBatch();
+
+              if (!batch) {
+                _context.next = 83;
+                break;
+              }
+
+              _context.next = 83;
+              return batch;
+
+            case 83:
+              if (!_rootObjectBatches) {
+                _context.next = 87;
+                break;
+              }
+
+              finalBatch = {
+                batchType: 'root-object-batch-complete',
+                container: parser.getPartialResult(),
+                data: [],
+                schema: null
+              };
+              _context.next = 87;
+              return finalBatch;
+
+            case 87:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, null, [[9, 65, 69, 79], [31, 44, 48, 56], [49,, 51, 55], [70,, 74, 78]]);
+    }));
+    return _parseJSONInBatches.apply(this, arguments);
+  }
+
+  function deduceSchema(rows) {
+    var row = rows[0];
+    var schema = {};
+    var i = 0;
+
+    for (var columnName in row) {
+      var value = row[columnName];
+
+      switch (_typeof(value)) {
+        case 'number':
+        case 'boolean':
+          schema[columnName] = {
+            name: String(columnName),
+            index: i,
+            type: Float32Array
+          };
+          break;
+
+        case 'object':
+          schema[columnName] = {
+            name: String(columnName),
+            index: i,
+            type: Array
+          };
+          break;
+
+        case 'string':
+        default:
+          schema[columnName] = {
+            name: String(columnName),
+            index: i,
+            type: Array
+          };
+      }
+
+      i++;
+    }
+
+    return schema;
+  }
+
+  function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+  function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+  var VERSION$1 =  "2.1.6" ;
+  var JSONLoader = {
+    id: 'json',
+    name: 'JSON',
+    version: VERSION$1,
+    extensions: ['json'],
+    mimeType: 'text/json',
+    category: 'table',
+    testText: null,
+    text: true,
+    parse: parse,
+    parseTextSync: parseTextSync,
+    parseInBatches: parseInBatches,
+    options: {
+      json: {
+        TableBatch: RowTableBatch,
+        batchSize: 'auto'
+      }
+    }
+  };
+
+  function parse(_x, _x2) {
+    return _parse.apply(this, arguments);
+  }
+
+  function _parse() {
+    _parse = _asyncToGenerator(regenerator.mark(function _callee(arrayBuffer, options) {
+      return regenerator.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              return _context.abrupt("return", parseTextSync(new TextDecoder().decode(arrayBuffer), options));
+
+            case 1:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+    return _parse.apply(this, arguments);
+  }
+
+  function parseTextSync(text, options) {
+    options = _objectSpread({}, JSONLoader.options, {}, options);
+    options.json = _objectSpread({}, JSONLoader.options.json, {}, options.json);
+    return parseJSONSync(text, options);
+  }
+
+  function parseInBatches(_x3, _x4) {
+    return _parseInBatches.apply(this, arguments);
+  }
+
+  function _parseInBatches() {
+    _parseInBatches = _asyncToGenerator(regenerator.mark(function _callee2(asyncIterator, options) {
+      return regenerator.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              options = _objectSpread({}, JSONLoader.options, {}, options);
+              options.json = _objectSpread({}, JSONLoader.options.json, {}, options.json);
+              return _context2.abrupt("return", parseJSONInBatches(asyncIterator, options));
+
+            case 3:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }));
+    return _parseInBatches.apply(this, arguments);
+  }
+
   /* global createImageBitmap */
 
   const eeApi = new EEApi();
@@ -29853,11 +31297,17 @@ var EarthEngineLayerLibrary = (function (core, layers, core$1) {
 
   const defaultProps$1 = {
     ...TileLayer.defaultProps,
+    ...layers.GeoJsonLayer.defaultProps,
     // data prop is unused
     data: {type: 'object', value: null},
     token: {type: 'string', value: null},
     eeObject: {type: 'object', value: null},
     visParams: {type: 'object', value: null, equal: deepEqual},
+    // Force rendering as vector
+    asVector: false,
+    // When rendered as vector, selectors that should be used to determine which
+    // attributes will be downloaded
+    selectors: {type: 'array', value: [], equal: deepEqual},
     // Force animation; animation is on by default when ImageCollection passed
     animate: false,
     // Frames per second
@@ -29942,6 +31392,7 @@ var EarthEngineLayerLibrary = (function (core, layers, core$1) {
       if (props.visParams === oldProps.visParams && !changeFlags.dataChanged) {
         return;
       }
+      const {animate, asVector, selectors} = props;
 
       const {eeObject} = this.state;
       if (!eeObject) {
@@ -29953,11 +31404,24 @@ var EarthEngineLayerLibrary = (function (core, layers, core$1) {
       }
 
       let renderMethod;
-      if (props.animate) {
+      if (animate) {
         renderMethod = 'filmstrip';
         if (!eeObject.getFilmstripThumbURL) {
           throw new Error('eeObject must have a getFilmstripThumbURL method to animate.');
         }
+      } else if (asVector) {
+        renderMethod = 'vector';
+        // Must pass a filename argument ('') so that the callback is correctly
+        // called
+        const geojsonUrl = await promisifyEEMethod(
+          eeObject,
+          'getDownloadURL',
+          'json',
+          ['.geo', ...selectors],
+          ''
+        );
+        const geojsonData = await core$1.load(geojsonUrl, JSONLoader);
+        this.setState({geojsonData});
       } else {
         renderMethod = 'imageTiles';
       }
@@ -30025,8 +31489,67 @@ var EarthEngineLayerLibrary = (function (core, layers, core$1) {
       return Promise.all(slices);
     }
 
+    _renderGeoJsonLayer() {
+      const {mapid, geojsonData} = this.state;
+      const {
+        stroked,
+        filled,
+        extruded,
+        wireframe,
+        lineWidthUnits,
+        lineWidthScale,
+        lineWidthMinPixels,
+        lineWidthMaxPixels,
+        lineJointRounded,
+        lineMiterLimit,
+        elevationScale,
+        pointRadiusScale,
+        pointRadiusMinPixels,
+        pointRadiusMaxPixels,
+        getLineColor,
+        getFillColor,
+        getRadius,
+        getLineWidth,
+        getElevation,
+        material
+      } = this.props;
+
+      if (!geojsonData) {
+        return null;
+      }
+
+      return new layers.GeoJsonLayer(
+        this.getSubLayerProps({
+          id: mapid
+        }),
+        {
+          data: geojsonData,
+          stroked,
+          filled,
+          extruded,
+          wireframe,
+          lineWidthUnits,
+          lineWidthScale,
+          lineWidthMinPixels,
+          lineWidthMaxPixels,
+          lineJointRounded,
+          lineMiterLimit,
+          elevationScale,
+          pointRadiusScale,
+          pointRadiusMinPixels,
+          pointRadiusMaxPixels,
+          getLineColor,
+          getFillColor,
+          getRadius,
+          getLineWidth,
+          getElevation,
+          material
+        }
+      );
+    }
+
     renderLayers() {
-      const {mapid, frame = 0} = this.state;
+      const {mapid, frame = 0, renderMethod} = this.state;
       const {
         refinementStrategy,
         onViewportLoad,
@@ -30040,43 +31563,45 @@ var EarthEngineLayerLibrary = (function (core, layers, core$1) {
 
       return (
         mapid &&
-        new TileLayer(
-          this.getSubLayerProps({
-            id: mapid
-          }),
-          {
-            refinementStrategy,
-            onViewportLoad,
-            onTileLoad,
-            onTileError,
-            maxZoom,
-            minZoom,
-            maxCacheSize,
-            maxCacheByteSize,
-            frame,
+        (renderMethod === 'vector'
+          ? this._renderGeoJsonLayer()
+          : new TileLayer(
+              this.getSubLayerProps({
+                id: mapid
+              }),
+              {
+                refinementStrategy,
+                onViewportLoad,
+                onTileLoad,
+                onTileError,
+                maxZoom,
+                minZoom,
+                maxCacheSize,
+                maxCacheByteSize,
+                frame,
 
-            getTileData: options => this.getTileData(options),
+                getTileData: options => this.getTileData(options),
 
-            renderSubLayers(props) {
-              const {data, tile} = props;
-              const {west, south, east, north} = tile.bbox;
-              const bounds = [west, south, east, north];
+                renderSubLayers(props) {
+                  const {data, tile} = props;
+                  const {west, south, east, north} = tile.bbox;
+                  const bounds = [west, south, east, north];
 
-              if (!data) {
-                return null;
+                  if (!data) {
+                    return null;
+                  }
+
+                  let image;
+                  if (Array.isArray(data)) {
+                    image = data[frame];
+                  } else if (data) {
+                    image = data.then(result => result && result[frame]);
+                  }
+
+                  return image && new layers.BitmapLayer({...props, image, bounds});
+                }
               }
-
-              let image;
-              if (Array.isArray(data)) {
-                image = data[frame];
-              } else if (data) {
-                image = data.then(result => result && result[frame]);
-              }
-
-              return image && new layers.BitmapLayer({...props, image, bounds});
-            }
-          }
-        )
+            ))
       );
     }
   }
