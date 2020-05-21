@@ -1,12 +1,13 @@
 /* global createImageBitmap */
 import {CompositeLayer} from '@deck.gl/core';
 import {TileLayer} from '@deck.gl/geo-layers';
-import {BitmapLayer} from '@deck.gl/layers';
+import {BitmapLayer, GeoJsonLayer} from '@deck.gl/layers';
 import EEApi from './ee-api'; // Promisify ee apis
 import ee from '@google/earthengine';
 import {load} from '@loaders.gl/core';
 import {ImageLoader} from '@loaders.gl/images';
 import {deepEqual, promisifyEEMethod} from './utils';
+import {JSONLoader} from '@loaders.gl/json';
 
 const eeApi = new EEApi();
 
@@ -16,11 +17,17 @@ let accessToken;
 
 const defaultProps = {
   ...TileLayer.defaultProps,
+  ...GeoJsonLayer.defaultProps,
   // data prop is unused
   data: {type: 'object', value: null},
   token: {type: 'string', value: null},
   eeObject: {type: 'object', value: null},
   visParams: {type: 'object', value: null, equal: deepEqual},
+  // Force rendering as vector
+  asVector: false,
+  // When rendered as vector, selectors that should be used to determine which
+  // attributes will be downloaded
+  selectors: {type: 'array', value: [], equal: deepEqual},
   // Force animation; animation is on by default when ImageCollection passed
   animate: false,
   // Frames per second
@@ -105,6 +112,7 @@ export default class EarthEngineLayer extends CompositeLayer {
     if (props.visParams === oldProps.visParams && !changeFlags.dataChanged) {
       return;
     }
+    const {animate, asVector, selectors} = props;
 
     const {eeObject} = this.state;
     if (!eeObject) {
@@ -116,11 +124,24 @@ export default class EarthEngineLayer extends CompositeLayer {
     }
 
     let renderMethod;
-    if (props.animate) {
+    if (animate) {
       renderMethod = 'filmstrip';
       if (!eeObject.getFilmstripThumbURL) {
         throw new Error('eeObject must have a getFilmstripThumbURL method to animate.');
       }
+    } else if (asVector) {
+      renderMethod = 'vector';
+      // Must pass a filename argument ('') so that the callback is correctly
+      // called
+      const geojsonUrl = await promisifyEEMethod(
+        eeObject,
+        'getDownloadURL',
+        'json',
+        ['.geo', ...selectors],
+        ''
+      );
+      const geojsonData = await load(geojsonUrl, JSONLoader);
+      this.setState({geojsonData});
     } else {
       renderMethod = 'imageTiles';
     }
@@ -188,8 +209,67 @@ export default class EarthEngineLayer extends CompositeLayer {
     return Promise.all(slices);
   }
 
+  _renderGeoJsonLayer() {
+    const {mapid, geojsonData} = this.state;
+    const {
+      stroked,
+      filled,
+      extruded,
+      wireframe,
+      lineWidthUnits,
+      lineWidthScale,
+      lineWidthMinPixels,
+      lineWidthMaxPixels,
+      lineJointRounded,
+      lineMiterLimit,
+      elevationScale,
+      pointRadiusScale,
+      pointRadiusMinPixels,
+      pointRadiusMaxPixels,
+      getLineColor,
+      getFillColor,
+      getRadius,
+      getLineWidth,
+      getElevation,
+      material
+    } = this.props;
+
+    if (!geojsonData) {
+      return null;
+    }
+
+    return new GeoJsonLayer(
+      this.getSubLayerProps({
+        id: mapid
+      }),
+      {
+        data: geojsonData,
+        stroked,
+        filled,
+        extruded,
+        wireframe,
+        lineWidthUnits,
+        lineWidthScale,
+        lineWidthMinPixels,
+        lineWidthMaxPixels,
+        lineJointRounded,
+        lineMiterLimit,
+        elevationScale,
+        pointRadiusScale,
+        pointRadiusMinPixels,
+        pointRadiusMaxPixels,
+        getLineColor,
+        getFillColor,
+        getRadius,
+        getLineWidth,
+        getElevation,
+        material
+      }
+    );
+  }
+
   renderLayers() {
-    const {mapid, frame = 0} = this.state;
+    const {mapid, frame = 0, renderMethod} = this.state;
     const {
       refinementStrategy,
       onViewportLoad,
@@ -203,43 +283,45 @@ export default class EarthEngineLayer extends CompositeLayer {
 
     return (
       mapid &&
-      new TileLayer(
-        this.getSubLayerProps({
-          id: mapid
-        }),
-        {
-          refinementStrategy,
-          onViewportLoad,
-          onTileLoad,
-          onTileError,
-          maxZoom,
-          minZoom,
-          maxCacheSize,
-          maxCacheByteSize,
-          frame,
+      (renderMethod === 'vector'
+        ? this._renderGeoJsonLayer()
+        : new TileLayer(
+            this.getSubLayerProps({
+              id: mapid
+            }),
+            {
+              refinementStrategy,
+              onViewportLoad,
+              onTileLoad,
+              onTileError,
+              maxZoom,
+              minZoom,
+              maxCacheSize,
+              maxCacheByteSize,
+              frame,
 
-          getTileData: options => this.getTileData(options),
+              getTileData: options => this.getTileData(options),
 
-          renderSubLayers(props) {
-            const {data, tile} = props;
-            const {west, south, east, north} = tile.bbox;
-            const bounds = [west, south, east, north];
+              renderSubLayers(props) {
+                const {data, tile} = props;
+                const {west, south, east, north} = tile.bbox;
+                const bounds = [west, south, east, north];
 
-            if (!data) {
-              return null;
+                if (!data) {
+                  return null;
+                }
+
+                let image;
+                if (Array.isArray(data)) {
+                  image = data[frame];
+                } else if (data) {
+                  image = data.then(result => result && result[frame]);
+                }
+
+                return image && new BitmapLayer({...props, image, bounds});
+              }
             }
-
-            let image;
-            if (Array.isArray(data)) {
-              image = data[frame];
-            } else if (data) {
-              image = data.then(result => result && result[frame]);
-            }
-
-            return image && new BitmapLayer({...props, image, bounds});
-          }
-        }
-      )
+          ))
     );
   }
 }
