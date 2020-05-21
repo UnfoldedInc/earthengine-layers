@@ -11,7 +11,7 @@
     "start": "yarn clean && yarn develop",
     "build": "yarn clean-examples && yarn clean && gatsby build --no-uglify",
     "clean": "rm -rf ./.cache ./public",
-    "clean-examples": "find ../examples -name node_modules -exec rm -r {} \\; || true",
+    "clean-examples": "find ../examples -name node_modules -exec rm -rf {} \\; || true",
     "develop": "yarn clean-examples && gatsby develop --port 8080",
     "serve": "gatsby serve --port 8080",
     "deploy": "NODE_DEBUG=gh-pages gh-pages -d public"

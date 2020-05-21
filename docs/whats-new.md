@@ -2,4 +2,4 @@
 
 ## v0.0.0 
 
-Initial commit
+Initial version

@@ -1745,6 +1745,14 @@
     "@babel/runtime" "^7.3.1"
     "@loaders.gl/loader-utils" "2.1.2"
 
+"@loaders.gl/core@2.1.6":
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/@loaders.gl/core/-/core-2.1.6.tgz#9c3e0cf5a1aebb672c50876ab75fd35033b8672c"
+  integrity sha512-1uxlSZ3dKbraWmvsOsBeSfJxR/+mXjDCsDLkl8N9QzXeN1nIer3siDPLqckox4MMsPxPo5uo1Be8iwORAUo3VQ==
+  dependencies:
+    "@babel/runtime" "^7.3.1"
+    "@loaders.gl/loader-utils" "2.1.6"
+
 "@loaders.gl/core@^2.1.2":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@loaders.gl/core/-/core-2.1.4.tgz#dc2931091f4747804f2a9e85bf4113f94040d261"
@@ -1776,6 +1784,13 @@
   dependencies:
     "@loaders.gl/loader-utils" "2.1.4"
 
+"@loaders.gl/json@^2.1.6":
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/@loaders.gl/json/-/json-2.1.6.tgz#277effab7d09af3bd34e2a0ea2250b4571d48b27"
+  integrity sha512-t0HvETHTv1IMHwdBK15tBYO0GfZiX91aakKceUFVtC1lw88kEba2eCHGoUeE29STUdf1Q4LaUt9n1Kg5FMuETA==
+  dependencies:
+    "@loaders.gl/tables" "2.1.6"
+
 "@loaders.gl/loader-utils@2.1.2":
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/@loaders.gl/loader-utils/-/loader-utils-2.1.2.tgz#271892be6b0f39b2b1c50e24d531875f6281d0da"
@@ -1788,6 +1803,14 @@
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@loaders.gl/loader-utils/-/loader-utils-2.1.4.tgz#f631a7beccd8b8eb80f8b4e8eed25535d6b9eb75"
   integrity sha512-hu0WnaUY2O3aMHxCetsxlNPR4eo1cDLgjOlFNe+QF+XKrSsSPSfYOW96R4KTrxBp2bnfS95cgogG+TYKBLXjaA==
+  dependencies:
+    "@babel/runtime" "^7.3.1"
+    "@probe.gl/stats" "^3.2.1"
+
+"@loaders.gl/loader-utils@2.1.6":
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/@loaders.gl/loader-utils/-/loader-utils-2.1.6.tgz#8eb5a9a2215b3c94c3bb548767cbc276e3701a5c"
+  integrity sha512-V9ZJH60HwSmSIw2jqNDMFpDqZVfy02WZ1/1e2ENw3PODE8ubNqs1bQ8nFj9omqwVMPF7fBVLvzoeoGrpeW0gfQ==
   dependencies:
     "@babel/runtime" "^7.3.1"
     "@probe.gl/stats" "^3.2.1"
@@ -1809,6 +1832,13 @@
     "@loaders.gl/loader-utils" "2.1.2"
     "@mapbox/vector-tile" "^1.3.1"
     pbf "^3.2.1"
+
+"@loaders.gl/tables@2.1.6":
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/@loaders.gl/tables/-/tables-2.1.6.tgz#1f87fae63ce2dccf2a8e1c0057dd188a0a7e3937"
+  integrity sha512-CG/4ewOMRaMUOx0ovlRMUFpW+2AdobzgebazfjixZR6whkYg5lU6lyDvx4XjXRn1lPC7XtH+iWlE2Vq7IbsFzQ==
+  dependencies:
+    "@loaders.gl/core" "2.1.6"
 
 "@loaders.gl/terrain@^2.1.1":
   version "2.1.2"

@@ -1,1 +1,2 @@
-import {} from '@unfolded.gl/earthengine-layers';
+// This currently slows down tests too much
+// import {} from '@unfolded.gl/earthengine-layers';

@@ -57,16 +57,16 @@ module.exports = {
 
         EXAMPLES: [
           {
-            title: 'Image',
+            title: 'EE Image',
             image: 'images/image-example-screenshot.jpg',
-            componentUrl: resolve(__dirname, '../examples/ee-demo/image.js'),
+            componentUrl: resolve(__dirname, '../examples/image/app.js'),
             path: 'examples/image'
           },
           {
-            title: 'ImageCollection (Animation)',
+            title: 'EE ImageCollection',
             image: 'images/image-animation-example-still.png',
-            componentUrl: resolve(__dirname, '../examples/ee-demo/image-collection-animation.js'),
-            path: 'examples/image-collection-animation'
+            componentUrl: resolve(__dirname, '../examples/image-collection/app.js'),
+            path: 'examples/image-collection'
           }
         ],
 
