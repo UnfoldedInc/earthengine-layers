@@ -6,7 +6,7 @@ import {EarthEngineLayer} from '@unfolded.gl/earthengine-layers';
 
 import ee from '@google/earthengine';
 
-import {GoogleLoginProvider, GoogleLoginPane} from '../shared';
+import {GoogleLoginProvider, GoogleLoginPane, InfoBox} from '../shared';
 
 // Add a EE-enabled Google Client id here (or inject it with e.g. a webpack environment plugin)
 const EE_CLIENT_ID = process.env.EE_CLIENT_ID; // eslint-disable-line
@@ -23,9 +23,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {eeObject: null};
-  }
 
-  componentDidMount() {
     this.loginProvider = new GoogleLoginProvider({
       scopes: ['https://www.googleapis.com/auth/earthengine'],
       clientId: EE_CLIENT_ID,
@@ -53,6 +51,9 @@ export default class App extends React.Component {
       <div style={{position: 'relative', height: '100%'}}>
         <DeckGL controller initialViewState={INITIAL_VIEW_STATE} layers={layers}>
           <GoogleLoginPane loginProvider={this.loginProvider} />
+          <InfoBox title="Image">
+            Displaying the <code>CGIAR/SRTM90_V4</code> dataset using an ee.ImageObject.
+          </InfoBox>
         </DeckGL>
       </div>
     );
