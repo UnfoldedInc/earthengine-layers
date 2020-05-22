@@ -67,6 +67,18 @@ module.exports = {
             image: 'images/image-animation-example-still.png',
             componentUrl: resolve(__dirname, '../examples/image-collection/app.js'),
             path: 'examples/image-collection'
+          },
+          {
+            title: 'EE FeatureCollection (lines)',
+            image: 'images/noaa_hurricanes.jpg',
+            componentUrl: resolve(__dirname, '../examples/noaa-hurricanes/app.js'),
+            path: 'examples/noaa-hurricanes'
+          },
+          {
+            title: 'EE FeatureCollection (polygons)',
+            image: 'images/intl-boundaries.jpg',
+            componentUrl: resolve(__dirname, '../examples/intl-boundary/app.js'),
+            path: 'examples/intl-boundary'
           }
         ],
 

@@ -12,9 +12,9 @@ import {GoogleLoginProvider, GoogleLoginPane, InfoBox} from '../shared';
 const EE_CLIENT_ID = process.env.EE_CLIENT_ID; // eslint-disable-line
 
 const INITIAL_VIEW_STATE = {
-  longitude: -85,
-  latitude: 25,
-  zoom: 3,
+  longitude: -80.41669,
+  latitude: 37.7853,
+  zoom: 2,
   pitch: 0,
   bearing: 0
 };
@@ -33,19 +33,29 @@ export default class App extends React.Component {
 
   async _onLoginSuccess(user, loginProvider) {
     await EarthEngineLayer.initializeEEApi({clientId: EE_CLIENT_ID});
-    this.setState({eeObject: ee.Image('CGIAR/SRTM90_V4')});
+    const dataset = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017');
+    const styleParams = {fillColor: 'b5ffb4', color: '00909F', width: 3.0};
+    const eeObject = dataset.style(styleParams);
+    this.setState({eeObject});
   }
 
   render() {
     const {eeObject} = this.state;
+    const {asVector = false} = this.props;
 
-    const visParams = {
-      min: 0,
-      max: 4000,
-      palette: ['006633', 'E5FFCC', '662A00', 'D8D8D8', 'F5F5F5']
-    };
-
-    const layers = [new EarthEngineLayer({eeObject, visParams, opacity: 0.5})];
+    const visParams = {};
+    const layers = asVector
+      ? [
+          new EarthEngineLayer({
+            eeObject,
+            asVector: true,
+            getLineColor: [255, 0, 0],
+            getLineWidth: 1000,
+            lineWidthMinPixels: 3,
+            opacity: 0.5
+          })
+        ]
+      : [new EarthEngineLayer({eeObject, visParams, opacity: 0.5})];
 
     return (
       <div style={{position: 'relative', height: '100%'}}>
@@ -53,10 +63,10 @@ export default class App extends React.Component {
           <GoogleLoginPane loginProvider={this.loginProvider} />
           <InfoBox title="FeatureCollection">
             The{' '}
-            <a href="https://developers.google.com/earth-engine/datasets/catalog/CGIAR_SRTM90_V4">
-              SRTM elevation dataset
+            <a href="https://developers.google.com/earth-engine/datasets/catalog/USDOS_LSIB_SIMPLE_2017">
+              Large Scale International Boundary Polygons
             </a>{' '}
-            displayed using an <code>ee.Image</code> object.
+            dataset displayed using an <code>ee.FeatureCollection</code> object.
           </InfoBox>
         </DeckGL>
       </div>
