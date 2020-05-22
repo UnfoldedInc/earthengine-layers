@@ -23,7 +23,7 @@ module.exports = {
         PROJECT_ORG: 'UnfoldedInc',
         PROJECT_ORG_LOGO: 'images/unfolded.png', // TODO - earthengine logo?
         PROJECT_URL: 'https://github.com/UnfoldedInc/earthengine-layers',
-        PROJECT_DESC: 'deck.gl layers for Google Earth Engine API',
+        PROJECT_DESC: 'deck.gl layers for Google Earth Engine for JavaScript and Python',
         PATH_PREFIX: '/',
 
         GA_TRACKING: null,
@@ -40,12 +40,12 @@ module.exports = {
             url: 'https://deck.gl'
           },
           {
-            name: 'earthengine-api',
-            url: 'https://github.com/google/earthengine-api'
+            name: 'pydeck',
+            url: 'https://pydeck.gl'
           },
           {
-            name: 'nebula.gl',
-            url: 'https://nebula.gl/'
+            name: 'earthengine-api',
+            url: 'https://github.com/google/earthengine-api'
           }
         ],
 
