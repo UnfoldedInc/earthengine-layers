@@ -12,9 +12,9 @@ import {GoogleLoginProvider, GoogleLoginPane} from '../shared';
 const EE_CLIENT_ID = process.env.EE_CLIENT_ID; // eslint-disable-line
 
 const INITIAL_VIEW_STATE = {
-  longitude: -80.41669,
-  latitude: 37.7853,
-  zoom: 2,
+  longitude: -85,
+  latitude: 25,
+  zoom: 3,
   pitch: 0,
   bearing: 0
 };
