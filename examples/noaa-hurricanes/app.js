@@ -6,7 +6,7 @@ import {EarthEngineLayer} from '@unfolded.gl/earthengine-layers';
 import {StaticMap} from 'react-map-gl';
 import ee from '@google/earthengine';
 
-import {GoogleLoginProvider, GoogleLoginPane} from '../shared';
+import {GoogleLoginProvider, GoogleLoginPane, InfoBox} from '../shared';
 
 // Add a EE-enabled Google Client id here (or inject it with e.g. a webpack environment plugin)
 const EE_CLIENT_ID = process.env.EE_CLIENT_ID; // eslint-disable-line
@@ -23,7 +23,7 @@ const INITIAL_VIEW_STATE = {
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {eeObject: null};
+    this.state = {eeObject: null, asVector: true};
 
     this.loginProvider = new GoogleLoginProvider({
       scopes: ['https://www.googleapis.com/auth/earthengine'],
@@ -63,8 +63,8 @@ export default class App extends React.Component {
   }
 
   render() {
-    const {points, lines} = this.state;
-    const {asVector = true, mapStyle = 'mapbox://styles/mapbox/dark-v9'} = this.props;
+    const {points, lines, asVector} = this.state;
+    const {mapStyle = 'mapbox://styles/mapbox/dark-v9'} = this.props;
 
     const layers = asVector
       ? [
@@ -112,6 +112,25 @@ export default class App extends React.Component {
           />
 
           <GoogleLoginPane loginProvider={this.loginProvider} />
+          <InfoBox title="FeatureCollection">
+            The{' '}
+            <a href="https://developers.google.com/earth-engine/datasets/catalog/NOAA_NHC_HURDAT2_atlantic">
+              Atlantic hurricane catalog
+            </a>{' '}
+            displayed using an <code>ee.FeatureCollection</code> object.
+            <p>
+              <input
+                type="checkbox"
+                defaultChecked={this.state.asVector}
+                onClick={() =>
+                  this.setState(prevState => {
+                    return {asVector: !prevState.asVector};
+                  })
+                }
+              />
+              Render as vector data
+            </p>
+          </InfoBox>
         </DeckGL>
       </div>
     );
