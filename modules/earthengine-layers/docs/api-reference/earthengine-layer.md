@@ -7,41 +7,52 @@
   <img src="https://img.shields.io/badge/lighting-yes-blue.svg?style=flat-square" alt="lighting" />
 </p>
 
-The `EarthEngineLayer` is a composite layer that makes it possible to visualize very large datasets. Instead of fetching the entire dataset, it only loads and renders what's visible in the current viewport.
+The `EarthEngineLayer` builds on the strength of [Google Earth Engine][gee],
+making it possible to visualize planetary-scale geospatial datasets.
 
-To use this layer, the data must be sliced into "tiles". Each tile has a pre-defined bounding box and level of detail.
-Users have the option to load each tile from a unique URL, defined by a template in the `data` property.
-The layer can also supply a callback `getTileData` that does custom fetching when a tile is requested.
-The loaded tile data is then rendered with the layer(s) returned by `renderSubLayers`.
+[gee]: https://earthengine.google.com/
 
-This particular example uses the deck.gl React bindings but the `EarthEngineLayer` can of course also be used with the pure JavaSript and scripting APIs:
+To use this layer, you need to sign in with an EarthEngine-enabled Google
+Account. [Visit here][gee-signup] to sign up.
+
+[gee-signup]: https://signup.earthengine.google.com/#!/
+
+This particular example uses the deck.gl React bindings but the
+`EarthEngineLayer` can of course also be used with the pure JavaScript and
+scripting APIs:
+
 ```js
+import React from 'react';
 import DeckGL from '@deck.gl/react';
 import {EarthEngineLayer} from '@unfolded.gl/earthengine-layers';
+import ee from '@google/earthengine';
 
-export const App = ({viewport}) => {
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {eeObject: null};
+  }
 
-  const layer = new EarthEngineLayer({
-    // https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#Tile_servers
-    data: 'https://c.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  async _onLoginSuccess(user, loginProvider) {
+    const token = 'Google OAuth2 access token'
+    await EarthEngineLayer.initializeEEApi({clientId: EE_CLIENT_ID, token});
+    this.setState({eeObject: ee.Image('CGIAR/SRTM90_V4')});
+  }
 
-    minZoom: 0,
-    maxZoom: 19,
-
-    renderSubLayers: props => {
-      const {
-        bbox: {west, south, east, north}
-      } = props.tile;
-
-      return new BitmapLayer(props, {
-        data: null,
-        image: props.data,
-        bounds: [west, south, east, north]
-      });
-    }
-  });
-  return <DeckGL {...viewport} layers={[layer]} />;
-};
+  render() {
+    const {viewport} = this.props;
+    const {eeObject} = this.state;
+    const visParams = {
+      min: 0,
+      max: 4000,
+      palette: ['006633', 'E5FFCC', '662A00', 'D8D8D8', 'F5F5F5']
+    };
+    const layers = [new EarthEngineLayer({eeObject, visParams})];
+    return (
+        <DeckGL controller {...viewport} layers={layers}/>
+    );
+  }
+}
 ```
 
 
@@ -50,9 +61,9 @@ export const App = ({viewport}) => {
 To install the dependencies from NPM:
 
 ```bash
-npm install deck.gl
+npm install deck.gl @google/earthengine @unfolded.gl/earthengine-layers
 # or
-npm install @deck.gl/core @deck.gl/layers @deck.gl/geo-layers @unfolded.gl/earthengine-layers
+npm install @deck.gl/core @deck.gl/layers @deck.gl/geo-layers @google/earthengine @unfolded.gl/earthengine-layers
 ```
 
 ```js
@@ -64,24 +75,19 @@ To use pre-bundled scripts:
 
 ```html
 <script src="https://unpkg.com/deck.gl@^8.0.0/dist.min.js"></script>
+<script src="https://unpkg.com/@google/earthengine@^0.1.221/build/ee_api_js.js"></script>
+<script src="https://unpkg.com/@unfolded.gl/earthengine-layers@^0.1.0/dist.min.js"></script>
 <!-- or -->
 <script src="https://unpkg.com/@deck.gl/core@^8.0.0/dist.min.js"></script>
 <script src="https://unpkg.com/@deck.gl/layers@^8.0.0/dist.min.js"></script>
-<script src="https://unpkg.com/@unfolded.gl/earthengine-layers@^8.0.0/dist.min.js"></script>
+<script src="https://unpkg.com/@deck.gl/geo-layers@^8.0.0/dist.min.js"></script>
+<script src="https://unpkg.com/@google/earthengine@^0.1.221/build/ee_api_js.js"></script>
+<script src="https://unpkg.com/@unfolded.gl/earthengine-layers@^0.1.0/dist.min.js"></script>
 ```
 
 ```js
 new deck.EarthEngineLayer({});
 ```
-
-## Indexing System
-
-At each integer zoom level (`z`), the XY plane in the view space is divided into square tiles of the same size, each uniquely identified by their `x` and `y` index. When `z` increases by 1, the view space is scaled by 2, meaning that one tile at `z` covers the same area as four tiles at `z+1`.
-
-When the `EarthEngineLayer` is used with a geospatial view such as the [MapView](/docs/api-reference/map-view.md), x, y, and z are determined from [the OSM tile index](https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames).
-
-When the `EarthEngineLayer` is used used with a non-geospatial view such as the [OrthographicView](/docs/api-reference/orthographic-view.md) or the [OrbitView](/docs/api-reference/orbit-view.md), `x` and `y` increment from the world origin, and each tile's width and height match that defined by the `tileSize` prop. For example, the tile `x: 0, y: 0` occupies the square between `[0, 0]` and `[tileSize, tileSize]`.
-
 
 ## Static Methods
 
@@ -93,140 +99,110 @@ This method is just a convenience, it can be replaced with direct calls to the E
 
 Parameters:
 - `clientId` A valid Google clientId that has been authenticated with the earthengine scope and set up to whitelist the 'origin' URL that the app will be served on.
-- `token` Alternatively, a pre-generated authentication token.
+- `token` Alternatively, a pre-generated OAuth2 access token.
 
 
 ## Properties
 
-Inherits all properties from [base `Layer`](/docs/api-reference/layer.md).
+Inherits all properties from base [`Layer`][base-layer] and from the [`TileLayer`][tile-layer]. If rendering images, inherits all properties from the [`BitmapLayer`][bitmap-layer]. If rendering vector data, inherits all properties from the [`GeoJsonLayer`][geojson-layer].
 
-If using the default `renderSubLayers`, supports all [`GeoJSONLayer`](/docs/layers/geojson-layer.md) properties to style features.
+[base-layer]: https://deck.gl/#/documentation/deckgl-api-reference/layers/layer
+[tile-layer]: https://deck.gl/#/documentation/deckgl-api-reference/layers/tile-layer
+[bitmap-layer]: https://deck.gl/#/documentation/deckgl-api-reference/layers/bitmap-layer
+[geojson-layer]: https://deck.gl/#/documentation/deckgl-api-reference/layers/geojson-layer
+
+### Authentication Options
+
+##### `token` (String, optional)
+
+- Default: `null`
+
+A valid Google OAuth2 access token. Unnecessary from `pydeck` or if using
+`initializeEEApi` described above.
 
 ### Data Options
 
-##### `data` (String|Array, optional)
+##### `eeObject` (EarthEngine Object|String)
+
+- Default: `null`
+
+Either an EarthEngine JavaScript API object, or a serialized string representing
+an object (created with, e.g. `ee.Image.serialize()`).
+
+By default, `getMap` is called on the object, and image tiles are displayed
+representing the object. You can pass `asVector` or `animate` for alternative
+rendering.
+
+##### `visParams` (Object, optional)
+
+- Default: `null`
+
+An object representing the visualization parameters passed to Earth Engine. See
+[Earth Engine documentation][visparams-docs] for more information on supported
+parameters. Alternatively, you can style objects by using the
+[`.style()`][style-fn] function for `FeatureCollection` or `ImageCollection`
+objects.
+
+[visparams-docs]: https://developers.google.com/earth-engine/image_visualization
+[style-fn]: https://developers.google.com/earth-engine/api_docs#ee.featurecollection.style
+
+Unused when `asVector` is `true`.
+
+##### `selectors` (Array of String, optional)
 
 - Default: `[]`
 
-Either a URL template or an array of URL templates from which the tile data should be loaded.
+Names of additional properties to download when `asVector` is `true`.
 
-If the value is a string: a URL template. Substrings `{x}` `{y}` and `{z}`, if present, will be replaced with a tile's actual index when it is requested.
-
-If the value is an array: multiple URL templates. Each endpoint must return the same content for the same tile index. This can be used to work around [domain sharding](https://developer.mozilla.org/en-US/docs/Glossary/Domain_sharding), allowing browsers to download more resources simultaneously. Requests made are balanced among the endpoints, based on the tile index.
-
-
-##### `getTileData` (Function, optional)
-
-- Default: `tile => load(tile.url)`
-
-If supplied, `getTileData` is called to retrieve the data of each tile. It receives one argument `tile` which contains the following fields:
-
-- `x` (Number) - x index of the tile
-- `y` (Number) - y index of the tile
-- `z` (Number) - z index of the tile
-- `url` (String) - resolved url of the tile if the `data` prop is provided, otherwise `null`
-- `bbox` (Object) - bounding box of the tile. When used with a geospatial view, `bbox` is in the shape of `{west: <longitude>, north: <latitude>, east: <longitude>, south: <latitude>}`. When used used with a non-geospatial view, `bbox` is in the shape of `{left, top, right, bottom}`.
-
-It should return either the tile data or a Promise that resolves to the tile data.
-
-This prop is not required if `data` points to a supported format (JSON or image by default). Additional formats may be added by registering [loaders.gl](https://loaders.gl/modules/core/docs/api-reference/register-loaders) modules.
-
-
-##### `tileSize` (Number, optional)
-
-The pixel dimension of the tiles, usually a power of 2.
-
-When using a geospatial view, this prop has no effect.
-
-When using a non-geospatial view, the tile size represents the width and height of each tile in world units at zoom level `0`.
-
-- Default: `512`
-
-
-##### `maxZoom` (Number|Null, optional)
-
-Use tiles from this level when over-zoomed.
-
-- Default: `null`
-
-
-##### `minZoom` (Number, optional)
-
-Hide tiles when under-zoomed.
-
-- Default: 0
-
-
-##### `maxCacheSize` (Number, optional)
-
-The maximum number of tiles that can be cached. The tile cache keeps loaded tiles in memory even if they are no longer visible. It reduces the need to re-download the same data over and over again when the user pan/zooms around the map, providing a smoother experience.
-
-If not supplied, the `maxCacheSize` is calculated as `5` times the number of tiles in the current viewport.
-
-- Default: `null`
-
-
-##### `maxCacheByteSize` (Number, optional)
-
-The maximum memory used for caching tiles. If this limit is supplied, `getTileData` must return an object that contains a `byteLength` field.
-
-- Default: `null`
-
-
-##### `refinementStrategy` (Enum, optional)
-
-How the tile layer refines the visibility of tiles. One of the following:
-
-* `'best-available'`: If a tile in the current viewport is waiting for its data to load, use cached content from the closest zoom level to fill the empty space. This approach minimizes the visual flashing due to missing content.
-* `'no-overlap'`: Avoid showing overlapping tiles when backfilling with cached content. This is usually favorable when tiles do not have opaque backgrounds.
-* `'never'`: Do not display any tile that is not selected.
-
-- Default: `'best-available'`
-
+By default, only the geometries of the `FeatureCollection` are downloaded. In
+order to apply data-driven styling using GeoJsonLayer styling properties, you
+need to specify those property names here.
 
 ### Render Options
 
-##### `renderSubLayers` (Function, optional))
+##### `asVector` (Boolean, optional)
 
-Renders one or an array of Layer instances with all the `EarthEngineLayer` props and the following props:
+- Default: `false`
 
-* `id`: An unique id for this sublayer
-* `data`: Resolved from `getTileData`
-* `tile`: An object containing tile index `x`, `y`, `z`, and `bbox` of the tile.
+If `true`, render vector data using the deck.gl `GeoJsonLayer`.
 
-- Default: `props => new GeoJsonLayer(props)`
+Rendering as vector is only possible for `ee.FeatureCollection` objects; an
+error will be produced if `asVector` is set to `true` when another object type
+is passed.
 
+When `asVector` is set, the GeoJSON representation of the `FeatureCollection` is
+downloaded, which can include very precise geometries. As such, beware of large
+downloads: the Earth Engine backend may return no data if the output would be
+larger than 100MB.
 
-### Callbacks
+To reduce the dataset size, use `filter` expressions on the `FeatureCollection`
+object before passing it to `EarthEngineLayer`.
 
-##### `onViewportLoad` (Function, optional)
+##### `animate` (Boolean, optional)
 
-`onViewportLoad` is a function that is called when all tiles in the current viewport are loaded. The loaded content (as returned by `getTileData`) for each visible tile is passed as an array to this callback function.
+- Default: `false`
 
-- Default: `data => null`
+If `true`, render an animated ImageCollection.
 
+Rendering an animation is only possible for `ee.ImageCollection` objects; an
+error will be produced if `animate` is set to `true` when another object type is
+passed.
 
-##### `onTileLoad` (Function, optional)
+The `ImageCollection` should be filtered and sorted in the order desired for the
+animation. If an `ImageCollection` contains 20 images, the animation will
+contain those images as individual frames of the animation, in the same order.
+Earth Engine has an upper limit of 100 animation frames.
 
-`onTileLoad` called when a tile successfully loads.
+##### `animationSpeed` (Number, optional)
 
-- Default: `() => {}`
+- Default: `12`
 
-Receives arguments:
-
-- `tile` (Object) - the tile that has been loaded.
-
-##### `onTileError` (Function, optional)
-
-`onTileError` called when a tile failed to load.
-
-- Default: `console.error`
-
-Receives arguments:
-
-- `error` (`Error`)
+If `animate` is `true`, `animationSpeed` represents the number of frames per
+second. Keeping this constant implies that animations will play at the same
+speed; an `ImageCollection` with more frames will have a longer loop than one
+with fewer frames.
 
 
 ## Source
 
-[modules/geo-layers/src/tile-layer](https://github.com/uber/deck.gl/tree/master/modules/geo-layers/src/tile-layer)
+[modules/earthengine-layers/src/earth-engine-layer](https://github.com/UnfoldedInc/earthengine-layers/tree/master/modules/earthengine-layers/src)
