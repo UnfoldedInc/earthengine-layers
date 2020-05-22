@@ -6,3 +6,4 @@ export {default as GoogleEarthEngineIcon} from './react-components/earthengine-i
 
 // React Components
 export {default as GoogleLoginPane} from './react-components/google-login-pane';
+export {default as InfoBox} from './react-components/info-box';
