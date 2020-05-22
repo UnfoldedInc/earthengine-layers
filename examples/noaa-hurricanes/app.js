@@ -24,9 +24,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {eeObject: null};
-  }
 
-  componentDidMount() {
     this.loginProvider = new GoogleLoginProvider({
       scopes: ['https://www.googleapis.com/auth/earthengine'],
       clientId: EE_CLIENT_ID,
