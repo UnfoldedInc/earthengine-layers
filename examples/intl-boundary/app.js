@@ -6,7 +6,7 @@ import {EarthEngineLayer} from '@unfolded.gl/earthengine-layers';
 
 import ee from '@google/earthengine';
 
-import {GoogleLoginProvider, GoogleLoginPane} from '../shared';
+import {GoogleLoginProvider, GoogleLoginPane, InfoBox} from '../shared';
 
 // Add a EE-enabled Google Client id here (or inject it with e.g. a webpack environment plugin)
 const EE_CLIENT_ID = process.env.EE_CLIENT_ID; // eslint-disable-line
@@ -61,6 +61,13 @@ export default class App extends React.Component {
       <div style={{position: 'relative', height: '100%'}}>
         <DeckGL controller initialViewState={INITIAL_VIEW_STATE} layers={layers}>
           <GoogleLoginPane loginProvider={this.loginProvider} />
+          <InfoBox title="FeatureCollection">
+            The{' '}
+            <a href="https://developers.google.com/earth-engine/datasets/catalog/USDOS_LSIB_SIMPLE_2017">
+              Large Scale International Boundary Polygons
+            </a>{' '}
+            dataset displayed using an <code>ee.FeatureCollection</code> object.
+          </InfoBox>
         </DeckGL>
       </div>
     );
