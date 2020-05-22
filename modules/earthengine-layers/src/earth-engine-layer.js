@@ -109,7 +109,7 @@ export default class EarthEngineLayer extends CompositeLayer {
   }
 
   async _updateEEVisParams(props, oldProps, changeFlags) {
-    if (props.visParams === oldProps.visParams && !changeFlags.dataChanged) {
+    if (props.visParams === oldProps.visParams && props.eeObject === oldProps.eeObject) {
       return;
     }
     const {animate, asVector, selectors} = props;
