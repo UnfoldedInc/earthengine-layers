@@ -8,7 +8,8 @@
 </p>
 
 The `EarthEngineLayer` builds on the strength of [Google Earth Engine][gee],
-making it possible to visualize planetary-scale geospatial datasets.
+making it possible to visualize planetary-scale geospatial datasets in
+[deck.gl](https://deck.gl).
 
 [gee]: https://earthengine.google.com/
 
