@@ -15,6 +15,7 @@
           "title": "Guides",
           "entries": [
             {"entry": "docs/developer-guide/get-started"},
+            {"entry": "docs/developer-guide/authentication"},
             {"entry": "docs/developer-guide/pydeck-integration"}
           ]
         }
