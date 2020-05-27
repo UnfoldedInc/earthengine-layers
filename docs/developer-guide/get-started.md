@@ -21,7 +21,7 @@ To use the `EarthEngineLayer` in your JavaScript application to visualize earthe
 ```js
 import {Deck} from '@deck.gl/core`;
 import {EarthEngineLayer} from `@unfolded/earthengine-layers`;
-import ee from `@google/earthengine-layers`;
+import ee from `@google/earthengine`;
 
 const eeImage = ee.Image('CGIAR/SRTM90_V4');
 
