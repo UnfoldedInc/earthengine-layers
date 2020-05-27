@@ -5,14 +5,16 @@ import styled from 'styled-components';
 
 const StyledPanel = styled.div`
   position: absolute;
-  top: 40px;
-  right: 40px;
-  width: 300px;
-  background: lightgrey;
+  top: 20px;
+  right: 20px;
+  width: 344px;
+  background: #fff;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+  margin: 24px;
   font-family: ff-clan-web-pro, 'Helvetica Neue', Helvetica, sans-serif;
   font-size: 15px;
   z-index: 1000;
-  padding: 24px;
+  padding: 12px 24px;
   padding-top: 2px;
 `;
 
@@ -31,17 +33,17 @@ const InfoBox = ({title = 'Example', children}) => {
   return (
     <div style={{position: 'relative', width: '100%', height: '100%'}}>
       <StyledPanel>
-        <h2>
+        <h3>
           {title} <StyledEELogo />
-        </h2>
+        </h3>
         {children}
-        <br />
-        <br />
-        <small>
-          To run this demo, you need to sign in with an{' '}
-          <a href="https://earthengine.google.com/signup/">Earth Engine-enabled</a> Google Account.
-          Loading EE data may take some time.
-        </small>
+        <p>
+          <small>
+            To run this demo, you need to sign in with an{' '}
+            <a href="https://earthengine.google.com/signup/">Earth Engine-enabled</a> Google
+            Account. Loading EE data may take some time.
+          </small>
+        </p>
       </StyledPanel>
     </div>
   );
