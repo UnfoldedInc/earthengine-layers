@@ -59,10 +59,13 @@ export default class App extends React.Component {
         <DeckGL controller initialViewState={INITIAL_VIEW_STATE} layers={layers}>
           <GoogleLoginPane loginProvider={this.loginProvider} />
           <InfoBox title="ImageCollection">
-            <a href="https://developers.google.com/earth-engine/datasets/catalog/NOAA_GFS0P25">
-              Hourly temperature
-            </a>{' '}
-            animated using an <code>ee.ImageCollection</code> object.
+            <p>
+              <a href="https://developers.google.com/earth-engine/datasets/catalog/NOAA_GFS0P25">
+                Hourly temperature
+              </a>{' '}
+              animated using an <code>ee.ImageCollection</code> object.
+              <b> Note that this currently does not work on Safari or iOS devices.</b>
+            </p>
           </InfoBox>
         </DeckGL>
       </div>
