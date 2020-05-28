@@ -20,9 +20,9 @@ To use the `EarthEngineLayer` in your JavaScript application to visualize Earth
 Engine API objects (such as `ee.Image` objects):
 
 ```js
-import {Deck} from '@deck.gl/core';
-import {EarthEngineLayer} from '@unfolded/earthengine-layers';
-import ee from '@google/earthengine-layers';
+import {Deck} from '@deck.gl/core`;
+import {EarthEngineLayer} from `@unfolded/earthengine-layers`;
+import ee from `@google/earthengine`;
 
 const eeObject = ee.Image('CGIAR/SRTM90_V4');
 const visParams = {
