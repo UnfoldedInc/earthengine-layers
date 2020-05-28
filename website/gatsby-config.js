@@ -14,7 +14,11 @@ module.exports = {
         ROOT_FOLDER: `${__dirname}/../`,
 
         DOCS: DOC_TABLE_OF_CONTENTS,
-        DOC_FOLDERS: [`${__dirname}/../docs/`, `${__dirname}/../modules/`],
+        DOC_FOLDERS: [
+          `${__dirname}/../docs/`,
+          `${__dirname}/../modules/`,
+          `${__dirname}/../py/`
+        ],
         SOURCE: [`${__dirname}/static`, `${__dirname}/src`],
 
         PROJECT_TYPE: 'github',

@@ -12,25 +12,28 @@ const Bullet = styled.li`
   list-style: none;
   max-width: 540px;
   padding: 8px 0 12px 42px;
-  font: ${props => props.theme.typography.font300};
+  font: ${(props) => props.theme.typography.font300};
 `;
 
-const HeroExample = () => <div/>; // <GLTFExample panel={false} />
+const HeroExample = () => (
+  <div
+    style={{
+      height: '100%',
+      backgroundImage: 'url(images/image-animation-wide_less-bright.gif)',
+      backgroundSize: 'cover',
+      backgroundRepeat: 'no-repeat'
+    }}
+  ></div>
+);
 
 export default class IndexPage extends React.Component {
   render() {
     return (
-      <Home HeroExample={HeroExample} >
+      <Home HeroExample={HeroExample}>
         <ul>
-          <Bullet>
-            deck.gl layers for the Google Earth Engine API.
-          </Bullet>
-          <Bullet>
-            Effortlessly visualize planetary scale satellite data.
-          </Bullet>
-          <Bullet>
-            Python and Jupyter Notebook supported via pydeck.
-          </Bullet>
+          <Bullet>deck.gl layers for the Google Earth Engine API.</Bullet>
+          <Bullet>Effortlessly visualize planetary scale satellite data.</Bullet>
+          <Bullet>Python and Jupyter Notebook supported via pydeck.</Bullet>
         </ul>
       </Home>
     );

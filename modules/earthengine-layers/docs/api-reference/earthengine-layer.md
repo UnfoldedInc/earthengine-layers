@@ -4,12 +4,11 @@
 
 <p class="badges">
   <img src="https://img.shields.io/badge/@unfolded.gl/earthengine--layers-lightgrey.svg?style=flat-square" alt="@unfolded.gl/earthengine-layers" />
-  <img src="https://img.shields.io/badge/lighting-yes-blue.svg?style=flat-square" alt="lighting" />
 </p>
 
-The `EarthEngineLayer` builds on the strength of [Google Earth Engine][gee],
-making it possible to visualize planetary-scale geospatial datasets in
-[deck.gl](https://deck.gl).
+The `EarthEngineLayer` connects [Google Earth Engine][gee] to
+[deck.gl](https://deck.gl), making it possible to visualize planetary-scale
+geospatial datasets in a JavaScript application.
 
 [gee]: https://earthengine.google.com/
 
@@ -94,9 +93,13 @@ new deck.EarthEngineLayer({});
 
 ### async initializeEEApi({clientId?: string, token?: string})
 
-Can be called to initialize the earth engine API. Calls ` ee.data.authenticateViaOauth()`, `ee.initialize()` or `ee.setToken()`, and returns a `Promise` that resolves when authentication and initialization is completed and the EE API is ready to use.
+Can be called to initialize the earth engine API. Calls
+`ee.data.authenticateViaOauth()`, `ee.initialize()` or `ee.setToken()`, and
+returns a `Promise` that resolves when authentication and initialization is
+completed and the EE API is ready to use.
 
-This method is just a convenience, it can be replaced with direct calls to the EE API.
+This method is just a convenience, it can be replaced with direct calls to the
+EE API.
 
 Parameters:
 - `clientId` A valid Google clientId that has been authenticated with the earthengine scope and set up to whitelist the 'origin' URL that the app will be served on.

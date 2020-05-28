@@ -51,7 +51,7 @@ export default class App extends React.Component {
       <div style={{position: 'relative', height: '100%'}}>
         <DeckGL controller initialViewState={INITIAL_VIEW_STATE} layers={layers}>
           <GoogleLoginPane loginProvider={this.loginProvider} />
-          <InfoBox title="FeatureCollection">
+          <InfoBox title="Image">
             The{' '}
             <a href="https://developers.google.com/earth-engine/datasets/catalog/CGIAR_SRTM90_V4">
               SRTM elevation dataset
