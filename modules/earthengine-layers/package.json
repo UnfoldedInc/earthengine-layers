@@ -1,7 +1,7 @@
 {
   "name": "@unfolded.gl/earthengine-layers",
   "description": "Earth Engine Integration for Unfolded, Inc.",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "license": "MIT",
   "_comment": "This module is private for now, should not be published",
   "private": true,
