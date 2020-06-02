@@ -2,6 +2,7 @@
   "name": "deck.gl-earthengine-hurricanes-demo",
   "version": "1.0.0-alpha.1",
   "license": "MIT",
+  "private": true,
   "scripts": {
     "start": "webpack-dev-server --progress --hot --open",
     "start-local": "webpack-dev-server --env.local --progress --hot --open",
@@ -28,5 +29,6 @@
     "webpack": "^4.20.2",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.1"
-  }
+  },
+  "gitHead": "c57dbd5b98fb743617ed6770ed5bf031c4f09410"
 }
