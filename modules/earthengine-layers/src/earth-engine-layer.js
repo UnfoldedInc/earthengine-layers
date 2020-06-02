@@ -2,7 +2,7 @@
 import {CompositeLayer} from '@deck.gl/core';
 import {TileLayer} from '@deck.gl/geo-layers';
 import {BitmapLayer, GeoJsonLayer} from '@deck.gl/layers';
-import {eeApiInitialize} from './ee-api'; // Promisify ee apis
+import {initializeEEApi} from './ee-api'; // Promisify ee apis
 import ee from '@google/earthengine';
 import {load} from '@loaders.gl/core';
 import {ImageLoader} from '@loaders.gl/images';
@@ -36,7 +36,7 @@ const defaultProps = {
 export default class EarthEngineLayer extends CompositeLayer {
   // helper function to initialize EE API
   static async initializeEEApi({clientId, token}) {
-    await eeApiInitialize({clientId, token});
+    await initializeEEApi({clientId, token});
   }
 
   initializeState() {
@@ -57,7 +57,7 @@ export default class EarthEngineLayer extends CompositeLayer {
     }
 
     const {token} = props;
-    await eeApiInitialize({token});
+    await initializeEEApi({token});
     accessToken = token;
   }
 

@@ -1,6 +1,6 @@
 import ee from '@google/earthengine';
 
-export async function eeApiInitialize({clientId, token}) {
+export async function initializeEEApi({clientId, token}) {
   if (token) {
     setToken(token);
   } else {
