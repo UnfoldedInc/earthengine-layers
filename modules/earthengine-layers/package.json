@@ -1,10 +1,8 @@
 {
   "name": "@unfolded.gl/earthengine-layers",
-  "description": "Earth Engine Integration for Unfolded, Inc.",
+  "description": "deck.gl layers for Google Earth Engine",
   "version": "1.0.0-alpha.2",
   "license": "MIT",
-  "_comment": "This module is private for now, should not be published",
-  "private": true,
   "author": "Unfolded, Inc.",
   "repository": {
     "type": "git",
