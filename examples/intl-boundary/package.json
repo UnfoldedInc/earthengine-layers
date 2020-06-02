@@ -1,6 +1,6 @@
 {
   "name": "deck.gl-earthengine-feature-collection-tile-demo",
-  "version": "1.0.0-alpha.1",
+  "version": "0.0.0",
   "license": "MIT",
   "private": true,
   "scripts": {
