@@ -1,7 +1,7 @@
 {
   "name": "@unfolded.gl/earthengine-layers",
   "description": "deck.gl layers for Google Earth Engine",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
   "license": "MIT",
   "author": "Unfolded, Inc.",
   "publishConfig": {
