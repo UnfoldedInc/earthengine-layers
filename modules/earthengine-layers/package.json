@@ -4,6 +4,9 @@
   "version": "1.0.0-beta.1",
   "license": "MIT",
   "author": "Unfolded, Inc.",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/UnfoldedInc/platform.git"
@@ -30,5 +33,6 @@
     "@deck.gl/geo-layers": "^8.1.1",
     "@deck.gl/layers": "^8.1.1",
     "@google/earthengine": "^0.1.217"
-  }
+  },
+  "gitHead": "73094f68451e557a8b32909cf8376f45942de021"
 }
