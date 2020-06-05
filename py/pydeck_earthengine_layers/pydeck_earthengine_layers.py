@@ -6,7 +6,7 @@ import ee
 import pydeck as pdk
 import requests
 
-EARTHENGINE_LAYER_BUNDLE_URL = 'https://unpkg.com/@unfolded.gl/earthengine-layers/dist/pydeck_layer_module.min.js'
+EARTHENGINE_LAYER_BUNDLE_URL = 'https://unpkg.com/@unfolded.gl/earthengine-layers@beta/dist/pydeck_layer_module.min.js'
 
 
 class EarthEngineLayer(pdk.Layer):
