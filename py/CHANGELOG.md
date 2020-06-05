@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.2 (2020-06-05)
+
+- Update Python module to point to _beta_ NPM module via unpkg for now
+
 ## 0.2.1 (2020-06-04)
 
 - Update Python module to point to released NPM module via unpkg, instead of serving directly from Github. #77
