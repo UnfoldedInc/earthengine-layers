@@ -58,18 +58,16 @@ export default class App extends React.Component {
 
     const layers =
       eeObject &&
-      Object.keys(FUEL_COLOR_MAPPING_VECTOR).map((fuel, index) => {
-        return new EarthEngineLayer({
-          eeObject: eeObject.filter(ee.Filter.eq('fuel1', fuel)),
-          getRadius: f => Math.pow(f.properties.capacitymw, 1.35),
-          getFillColor: FUEL_COLOR_MAPPING_VECTOR[fuel],
-          selectors: ['fuel1', 'capacitymw'],
-          asVector: true,
-          lineWidthMinPixels: 0.5,
-          pointRadiusMinPixels: 2,
-          opacity: 0.4,
-          id: fuel
-        });
+      new EarthEngineLayer({
+        eeObject,
+        getRadius: f => Math.pow(f.properties.capacitymw, 1.35),
+        getFillColor: f => FUEL_COLOR_MAPPING_VECTOR[f.properties.fuel1],
+        selectors: ['fuel1', 'capacitymw'],
+        asVector: true,
+        lineWidthMinPixels: 0.5,
+        pointRadiusMinPixels: 2,
+        opacity: 0.4,
+        id: 'fuel'
       });
 
     return (
