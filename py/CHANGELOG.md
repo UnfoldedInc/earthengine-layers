@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.1 (2020-06-04)
+
+- Update Python module to point to released NPM module via unpkg, instead of serving directly from Github. #77
+
 ## 0.2.0 (2020-05-26)
 
 - Set `vis_params` as the second positional argument #56
