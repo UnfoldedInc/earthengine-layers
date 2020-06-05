@@ -14,11 +14,7 @@ module.exports = {
         ROOT_FOLDER: `${__dirname}/../`,
 
         DOCS: DOC_TABLE_OF_CONTENTS,
-        DOC_FOLDERS: [
-          `${__dirname}/../docs/`,
-          `${__dirname}/../modules/`,
-          `${__dirname}/../py/`
-        ],
+        DOC_FOLDERS: [`${__dirname}/../docs/`, `${__dirname}/../modules/`, `${__dirname}/../py/`],
         SOURCE: [`${__dirname}/static`, `${__dirname}/src`],
 
         PROJECT_TYPE: 'github',
@@ -71,6 +67,12 @@ module.exports = {
             image: 'images/image-animation-example-still.png',
             componentUrl: resolve(__dirname, '../examples/image-collection/app.js'),
             path: 'examples/image-collection'
+          },
+          {
+            title: 'EE FeatureCollection (points)',
+            image: 'images/power-plants.jpg',
+            componentUrl: resolve(__dirname, '../examples/power-plants/app.js'),
+            path: 'examples/power-plants'
           },
           {
             title: 'EE FeatureCollection (lines)',
