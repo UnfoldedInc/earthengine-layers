@@ -13,7 +13,7 @@
   },
   "main": "src/index.js",
   "scripts": {
-    "build-rollup": "rollup --config"
+    "build": "rollup --config"
   },
   "dependencies": {
     "@loaders.gl/core": "^2.1.2",
