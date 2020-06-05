@@ -1,4 +1,4 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[10],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[5],{
 
 /***/ "2lZV":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -484,45 +484,31 @@ Object(_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__[/*
 
 /***/ }),
 
-/***/ "8BNJ":
+/***/ "IJIR":
+/***/ (function(module, exports, __webpack_require__) {
+
+// 19.1.2.15 Object.preventExtensions(O)
+var isObject = __webpack_require__("BjK0");
+var meta = __webpack_require__("N+BI").onFreeze;
+
+__webpack_require__("939a")('preventExtensions', function ($preventExtensions) {
+  return function preventExtensions(it) {
+    return $preventExtensions && isObject(it) ? $preventExtensions(meta(it)) : it;
+  };
+});
+
+
+/***/ }),
+
+/***/ "UP1k":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-// ESM COMPAT FLAG
-__webpack_require__.r(__webpack_exports__);
 
 // EXPORTS
-__webpack_require__.d(__webpack_exports__, "default", function() { return /* binding */ app_App; });
-__webpack_require__.d(__webpack_exports__, "renderToDOM", function() { return /* binding */ renderToDOM; });
+__webpack_require__.d(__webpack_exports__, "a", function() { return /* reexport */ static_map_StaticMap; });
 
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.promise.js
-var es6_promise = __webpack_require__("6kNP");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.object.to-string.js
-var es6_object_to_string = __webpack_require__("8npG");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/regenerator/index.js
-var regenerator = __webpack_require__("kD0k");
-var regenerator_default = /*#__PURE__*/__webpack_require__.n(regenerator);
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.array.sort.js
-var es6_array_sort = __webpack_require__("zGcK");
-
-// EXTERNAL MODULE: ../node_modules/regenerator-runtime/runtime.js
-var runtime = __webpack_require__("wcNg");
-
-// EXTERNAL MODULE: ./node_modules/react/index.js
-var react = __webpack_require__("q1tI");
-var react_default = /*#__PURE__*/__webpack_require__.n(react);
-
-// EXTERNAL MODULE: ./node_modules/react-dom/index.js
-var react_dom = __webpack_require__("i8i4");
-
-// EXTERNAL MODULE: ./node_modules/@deck.gl/react/dist/esm/deckgl.js + 55 modules
-var deckgl = __webpack_require__("yYqN");
-
-// EXTERNAL MODULE: ../modules/earthengine-layers/src/index.js + 49 modules
-var src = __webpack_require__("NGNH");
+// UNUSED EXPORTS: default, InteractiveMap, Source, Layer, BaseControl, Marker, Popup, FullscreenControl, GeolocateControl, NavigationControl, ScaleControl, CanvasOverlay, HTMLOverlay, SVGOverlay, TRANSITION_EVENTS, TransitionInterpolator, LinearInterpolator, FlyToInterpolator, MapController, WebMercatorViewport, setRTLTextPlugin, _MapContext
 
 // EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.function.bind.js
 var es6_function_bind = __webpack_require__("n7j8");
@@ -575,6 +561,9 @@ var inherits = __webpack_require__("x364");
 // EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/defineProperty.js
 var defineProperty = __webpack_require__("FqMR");
 
+// EXTERNAL MODULE: ./node_modules/react/index.js
+var react = __webpack_require__("q1tI");
+
 // EXTERNAL MODULE: ./node_modules/prop-types/index.js
 var prop_types = __webpack_require__("17x9");
 var prop_types_default = /*#__PURE__*/__webpack_require__.n(prop_types);
@@ -602,6 +591,9 @@ var web_dom_iterable = __webpack_require__("rzGZ");
 
 // EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.array.iterator.js
 var es6_array_iterator = __webpack_require__("Dq+y");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.object.to-string.js
+var es6_object_to_string = __webpack_require__("8npG");
 
 // EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.object.keys.js
 var es6_object_keys = __webpack_require__("Ggvi");
@@ -4684,6 +4676,9 @@ Object(defineProperty["a" /* default */])(fullscreen_control_FullscreenControl, 
 Object(defineProperty["a" /* default */])(fullscreen_control_FullscreenControl, "defaultProps", fullscreen_control_defaultProps);
 
 
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.promise.js
+var es6_promise = __webpack_require__("6kNP");
+
 // CONCATENATED MODULE: ./node_modules/react-map-gl/dist/esm/utils/geolocate-utils.js
 
 
@@ -5513,37 +5508,6 @@ var setRTLTextPlugin = mapbox_gl_default.a ? mapbox_gl_default.a.setRTLTextPlugi
 
 
 
-
-// EXTERNAL MODULE: ../node_modules/@google/earthengine/build/browser.js
-var browser = __webpack_require__("RtaV");
-var browser_default = /*#__PURE__*/__webpack_require__.n(browser);
-
-// EXTERNAL MODULE: ../examples/shared/index.js + 6 modules
-var shared = __webpack_require__("v5MB");
-
-// CONCATENATED MODULE: ../examples/noaa-hurricanes/app.js
-function asyncGeneratorStep(gen,resolve,reject,_next,_throw,key,arg){try{var info=gen[key](arg);var value=info.value;}catch(error){reject(error);return;}if(info.done){resolve(value);}else{Promise.resolve(value).then(_next,_throw);}}function _asyncToGenerator(fn){return function(){var self=this,args=arguments;return new Promise(function(resolve,reject){var gen=fn.apply(self,args);function _next(value){asyncGeneratorStep(gen,resolve,reject,_next,_throw,"next",value);}function _throw(err){asyncGeneratorStep(gen,resolve,reject,_next,_throw,"throw",err);}_next(undefined);});};}function _assertThisInitialized(self){if(self===void 0){throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return self;}function _inheritsLoose(subClass,superClass){subClass.prototype=Object.create(superClass.prototype);subClass.prototype.constructor=subClass;subClass.__proto__=superClass;}// Add a EE-enabled Google Client id here (or inject it with e.g. a webpack environment plugin)
-var EE_CLIENT_ID="562875810552-5mut6fkiukje0cbbvg5cd9vdmdb8u6dh.apps.googleusercontent.com";// eslint-disable-line
-var MAPBOX_TOKEN="pk.eyJ1Ijoia3lsZWJhcnJvbiIsImEiOiJjazJieGNtd2MwNmRrM25sY3BsdXVwaGhiIn0.CUixqH36Knh0ra_TaG5aug";// eslint-disable-line
-var INITIAL_VIEW_STATE={longitude:-53,latitude:36,zoom:3,pitch:0,bearing:0};var app_App=/*#__PURE__*/function(_React$Component){_inheritsLoose(App,_React$Component);function App(props){var _this;_this=_React$Component.call(this,props)||this;_this.state={eeObject:null,asVector:true};_this.loginProvider=new shared["b" /* GoogleLoginProvider */]({scopes:['https://www.googleapis.com/auth/earthengine'],clientId:EE_CLIENT_ID,onLoginChange:_this._onLoginSuccess.bind(_assertThisInitialized(_this))});return _this;}var _proto=App.prototype;_proto._onLoginSuccess=/*#__PURE__*/function(){var _onLoginSuccess2=_asyncToGenerator(/*#__PURE__*/regenerator_default.a.mark(function _callee(user,loginProvider){var _this$props$year,year,hurricanes,points,storm_ids,lines;return regenerator_default.a.wrap(function _callee$(_context){while(1){switch(_context.prev=_context.next){case 0:_context.next=2;return src["a" /* EarthEngineLayer */].initializeEEApi({clientId:EE_CLIENT_ID});case 2:_this$props$year=this.props.year,year=_this$props$year===void 0?'2017':_this$props$year;// Show hurricane tracks and points for 2017.
-hurricanes=browser_default.a.FeatureCollection('NOAA/NHC/HURDAT2/atlantic');points=hurricanes.filter(browser_default.a.Filter.date(browser_default.a.Date(year).getRange('year')));// Find all of the hurricane ids.
-storm_ids=points.toList(1000).map(function(point){return browser_default.a.Feature(point).get('id');}).distinct();// Create a line for each hurricane.
-lines=browser_default.a.FeatureCollection(storm_ids.map(function(storm_id){var pts=points.filter(browser_default.a.Filter.eq('id',browser_default.a.String(storm_id))).sort('system:time_start');var line=browser_default.a.Geometry.LineString(pts.geometry().coordinates());var feature=browser_default.a.Feature(line);return feature.set('id',storm_id);}));this.setState({points:points,lines:lines});case 8:case"end":return _context.stop();}}},_callee,this);}));function _onLoginSuccess(_x,_x2){return _onLoginSuccess2.apply(this,arguments);}return _onLoginSuccess;}();_proto.render=function render(){var _this2=this;var _this$state=this.state,points=_this$state.points,lines=_this$state.lines,asVector=_this$state.asVector;var _this$props$mapStyle=this.props.mapStyle,mapStyle=_this$props$mapStyle===void 0?'mapbox://styles/mapbox/dark-v9':_this$props$mapStyle;var layers=asVector?[new src["a" /* EarthEngineLayer */]({id:'lines-vector',eeObject:lines,asVector:asVector,getLineColor:[255,0,0],getLineWidth:1000,lineWidthMinPixels:3}),new src["a" /* EarthEngineLayer */]({id:'points-vector',eeObject:points,asVector:asVector,getFillColor:[0,0,0],pointRadiusMinPixels:3,getRadius:100,getLineColor:[255,255,255],lineWidthMinPixels:0.5,stroked:true})]:[new src["a" /* EarthEngineLayer */]({id:'lines-raster',eeObject:lines,visParams:{color:'red'}}),new src["a" /* EarthEngineLayer */]({id:'points-raster',eeObject:points,visParams:{color:'black'}})];return/*#__PURE__*/react_default.a.createElement("div",{style:{position:'relative',height:'100%'}},/*#__PURE__*/react_default.a.createElement(deckgl["a" /* default */],{controller:true,initialViewState:INITIAL_VIEW_STATE,layers:layers},/*#__PURE__*/react_default.a.createElement(static_map_StaticMap,{reuseMaps:true,mapStyle:mapStyle,preventStyleDiffing:true,mapboxApiAccessToken:MAPBOX_TOKEN}),/*#__PURE__*/react_default.a.createElement(shared["a" /* GoogleLoginPane */],{loginProvider:this.loginProvider}),/*#__PURE__*/react_default.a.createElement(shared["c" /* InfoBox */],{title:"FeatureCollection"},"The",' ',/*#__PURE__*/react_default.a.createElement("a",{href:"https://developers.google.com/earth-engine/datasets/catalog/NOAA_NHC_HURDAT2_atlantic"},"Atlantic hurricane catalog"),' ',"displayed using an ",/*#__PURE__*/react_default.a.createElement("code",null,"ee.FeatureCollection")," object.",/*#__PURE__*/react_default.a.createElement("p",null,/*#__PURE__*/react_default.a.createElement("input",{type:"checkbox",defaultChecked:this.state.asVector,onClick:function onClick(){return _this2.setState(function(prevState){return{asVector:!prevState.asVector};});}}),"Render as vector data"))));};return App;}(react_default.a.Component);function renderToDOM(container){return Object(react_dom["render"])(/*#__PURE__*/react_default.a.createElement(app_App,null),container);}
-
-/***/ }),
-
-/***/ "IJIR":
-/***/ (function(module, exports, __webpack_require__) {
-
-// 19.1.2.15 Object.preventExtensions(O)
-var isObject = __webpack_require__("BjK0");
-var meta = __webpack_require__("N+BI").onFreeze;
-
-__webpack_require__("939a")('preventExtensions', function ($preventExtensions) {
-  return function preventExtensions(it) {
-    return $preventExtensions && isObject(it) ? $preventExtensions(meta(it)) : it;
-  };
-});
 
 
 /***/ }),
