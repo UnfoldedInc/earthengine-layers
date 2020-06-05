@@ -36,7 +36,10 @@ const FUEL_COLOR_MAPPING_VECTOR = {
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {eeObject: null, asVector: true};
+    this.state = {eeObject: null, hoveredObject: null};
+
+    this._onHover = this._onHover.bind(this);
+    this._renderTooltip = this._renderTooltip.bind(this);
 
     this.loginProvider = new GoogleLoginProvider({
       scopes: ['https://www.googleapis.com/auth/earthengine'],
@@ -52,6 +55,36 @@ export default class App extends React.Component {
     this.setState({eeObject});
   }
 
+  _renderTooltip() {
+    const {hoveredObject} = this.state;
+    return (
+      hoveredObject && {
+        html: `<div className="tooltip">
+          <div>
+            <b>Name</b>
+          </div>
+          <div>
+            <div>${hoveredObject.properties.name}</div>
+          </div>
+          <div>
+            <b>Fuel Type</b>
+          </div>
+          <div>
+            <div>${hoveredObject.properties.fuel1}</div>
+          </div>
+          <div>
+            <b>Capacity (MW)</b>
+          </div>
+          <div>${Math.round(hoveredObject.properties.capacitymw)}</div>
+        </div>`
+      }
+    );
+  }
+
+  _onHover({x, y, object}) {
+    this.setState({x, y, hoveredObject: object});
+  }
+
   render() {
     const {eeObject} = this.state;
     const {mapStyle = 'mapbox://styles/mapbox/dark-v9'} = this.props;
@@ -62,17 +95,24 @@ export default class App extends React.Component {
         eeObject,
         getRadius: f => Math.pow(f.properties.capacitymw, 1.35),
         getFillColor: f => FUEL_COLOR_MAPPING_VECTOR[f.properties.fuel1],
-        selectors: ['fuel1', 'capacitymw'],
+        selectors: ['fuel1', 'capacitymw', 'name'],
         asVector: true,
         lineWidthMinPixels: 0.5,
         pointRadiusMinPixels: 2,
         opacity: 0.4,
-        id: 'fuel'
+        id: 'fuel',
+        pickable: true,
+        onHover: this._onHover
       });
 
     return (
       <div style={{position: 'relative', height: '100%'}}>
-        <DeckGL controller initialViewState={INITIAL_VIEW_STATE} layers={layers}>
+        <DeckGL
+          controller
+          initialViewState={INITIAL_VIEW_STATE}
+          layers={layers}
+          getTooltip={this._renderTooltip}
+        >
           <StaticMap
             reuseMaps
             mapStyle={mapStyle}
