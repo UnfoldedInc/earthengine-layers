@@ -102,7 +102,9 @@ export default class App extends React.Component {
         opacity: 0.4,
         id: 'fuel',
         pickable: true,
-        onHover: this._onHover
+        onHover: this._onHover,
+        // Prevent z-fighting when pitched
+        parameters: {depthTest: false}
       });
 
     return (
