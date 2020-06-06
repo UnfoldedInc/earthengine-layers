@@ -59,7 +59,7 @@ export default class App extends React.Component {
     const {hoveredObject} = this.state;
     return (
       hoveredObject && {
-        html: `<div className="tooltip">
+        html: `<div className="tooltip" style="font-family: ff-clan-web-pro, 'Helvetica Neue', Helvetica, sans-serif;font-size: 13px;">
           <div>
             <b>Name</b>
           </div>
