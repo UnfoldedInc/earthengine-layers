@@ -9,9 +9,9 @@ information on how to authenticate, this is a quick overview.
 ## Pydeck
 
 If using the `pydeck-earthengine-layers` package, any extra authentication steps
-should be handled for you automatically. You'll only need to do the standard
-Python Earth Engine authentication to work with Earth Engine Python objects,
-i.e.:
+should be handled for you automatically. You'll need only the standard
+authentication required by the `earthengine-api` library to work with Earth
+Engine Python objects, i.e.:
 
 ```py
 import ee
