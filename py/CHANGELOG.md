@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0 (2020-06-05)
+
+- Release in conjunction with NPM 1.0 release.
+
 ## 0.2.2 (2020-06-05)
 
 - Update Python module to point to _beta_ NPM module via unpkg for now
