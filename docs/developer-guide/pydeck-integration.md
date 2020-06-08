@@ -9,8 +9,20 @@ Google Account. [Visit here][gee-signup] to sign up.
 
 [gee-signup]: https://signup.earthengine.google.com/#!/
 
-## Usage
+## Examples
 
+There are no interactive pydeck examples hosted on this website because the
+pydeck `EarthEngineLayer` authentication process requires the user to sign in
+with their own credentials in a Python session.
+
+Static Jupyter Notebook examples are available [on nbviewer][nbviewer-examples].
+Each notebook corresponds to a JavaScript example viewable on the
+[`earthengine-layers` website][ee-layers-js-examples]
+
+[nbviewer-examples]: https://nbviewer.jupyter.org/github/UnfoldedInc/earthengine-layers/tree/master/py/examples/
+[ee-layers-js-examples]: https://earthengine-layers.com/examples
+
+## Usage
 
 ```py
 from pydeck_earthengine_layers import EarthEngineLayer
