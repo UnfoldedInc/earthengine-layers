@@ -47,27 +47,8 @@ r.show()
 
 ## Installation
 
-To install the dependencies from the Python Package Index (PyPI):
-
-```bash
-pip install earthengine-api pydeck pydeck-earthengine-layers
-```
-
-`pydeck-earthengine-layers` is not on Conda. If you use Conda for package
-management, you may install `earthengine-api` and `pydeck` from `conda-forge`,
-then `pydeck-earthengine-layers` using `pip`:
-
-```
-conda install -c conda-forge earthengine-api pydeck
-pip install pydeck-earthengine-layers
-```
-
-### Enable with Jupyter
-
-After installing `pydeck`, you **must also enable it for use with Jupyter**. See
-the [pydeck documentation][pydeck-enable-jupyter] for instructions.
-
-[pydeck-enable-jupyter]: https://pydeck.gl/installation.html#enabling-pydeck-for-jupyter
+See the [pydeck integration guide](/docs/developer-guide/pydeck-integration.md)
+for installation instructions.
 
 ## `EarthEngineLayer`
 
@@ -90,9 +71,9 @@ library, and correctly passing the EarthEngine objects to JavaScript.
   `EarthEngineLayer` bundle for a specific URL. By default, loads from the most
   recent `EarthEngineLayer` release.
 
-All properties accepted by the [JavaScript
+**All properties accepted by the [JavaScript
 `EarthEngineLayer`](/modules/earthengine-layers/docs/api-reference/earthengine-layer.md#properties)
-are accepted as keyword arguments. So, for example, to animate an
+are accepted as keyword arguments**. So, for example, to animate an
 `ee.ImageCollection` from Python, you can pass 
 
 ```py

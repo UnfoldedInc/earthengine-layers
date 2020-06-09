@@ -56,13 +56,13 @@ r.show()
 
 ## Installation
 
-To install the dependencies from the Python Package Index (PyPI):
+To install dependencies from the Python Package Index (PyPI):
 
 ```bash
 pip install earthengine-api pydeck pydeck-earthengine-layers
 ```
 
-`pydeck-earthengine-layers` is not on Conda. If you use Conda for package
+`pydeck-earthengine-layers` is not yet on Conda. If you use Conda for package
 management, you may install `earthengine-api` and `pydeck` from `conda-forge`,
 then `pydeck-earthengine-layers` using `pip`:
 
@@ -73,7 +73,44 @@ pip install pydeck-earthengine-layers
 
 ### Enable with Jupyter
 
-After installing `pydeck`, you **must also enable it for use with Jupyter**. See
-the [pydeck documentation][pydeck-enable-jupyter] for instructions.
+After installing `pydeck`, you **must also enable it for use with Jupyter**. The
+following is a short overview; for more information, see the [pydeck
+documentation][pydeck-enable-jupyter].
 
 [pydeck-enable-jupyter]: https://pydeck.gl/installation.html#enabling-pydeck-for-jupyter
+
+**Jupyter Notebook**
+
+To use with Jupyter Notebook, first make sure Jupyter Notebook is installed:
+
+```
+conda install -c conda-forge jupyter notebook
+```
+
+Then to enable pydeck with Jupyter Notebook, run
+
+```bash
+jupyter nbextension install --sys-prefix --symlink --overwrite --py pydeck
+jupyter nbextension enable --sys-prefix --py pydeck
+jupyter labextension install @deck.gl/jupyter-widget@$DECKGL_SEMVER
+```
+**Jupyter Lab**
+
+To use with Jupyter Lab, first make sure that Jupyter Lab is installed:
+(`nodejs` is necessary to install Jupyter Lab extensions):
+
+```
+conda install -c conda-forge jupyter jupyterlab nodejs
+```
+
+Then to enable pydeck with Jupyter Lab, run
+
+```bash
+jupyter labextension install @jupyter-widgets/jupyterlab-manager
+DECKGL_SEMVER=`python -c "import pydeck; print(pydeck.frontend_semver.DECKGL_SEMVER)"`
+jupyter labextension install @deck.gl/jupyter-widget@$DECKGL_SEMVER
+```
+
+Note that only Jupyter Lab version 1.x is currently supported. Jupyter Lab
+version 2.0 and greater are expected to be supported in the upcoming  pydeck
+0.4.0 release.
