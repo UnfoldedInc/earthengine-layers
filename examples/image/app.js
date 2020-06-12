@@ -35,7 +35,7 @@ export default class App extends React.Component {
     await EarthEngineMeshLayer.initializeEEApi({clientId: EE_CLIENT_ID});
     this.setState({
       eeObject: ee.Image('CGIAR/SRTM90_V4'),
-      eeMeshObject: ee.Image('CGIAR/SRTM90_V4')
+      eeMeshObject: ee.Image('USGS/NED').select('elevation')
     });
   }
 
@@ -48,7 +48,7 @@ export default class App extends React.Component {
       palette: ['006633', 'E5FFCC', '662A00', 'D8D8D8', 'F5F5F5']
     };
 
-    const layers = [new EarthEngineMeshLayer({eeObject, visParams, eeMeshObject, opacity: 0.5})];
+    const layers = [new EarthEngineMeshLayer({eeObject, visParams, eeMeshObject, opacity: 1})];
 
     return (
       <div style={{position: 'relative', height: '100%'}}>

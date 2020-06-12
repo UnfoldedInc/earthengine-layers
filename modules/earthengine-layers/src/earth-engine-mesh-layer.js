@@ -1,6 +1,7 @@
 /* global createImageBitmap */
 import {CompositeLayer} from '@deck.gl/core';
-import {TileLayer, TerrainLayer} from '@deck.gl/geo-layers';
+import {TerrainLayer} from '@deck.gl/geo-layers';
+import TileLayer from './tile-layer/tile-layer';
 import EEApi from './ee-api'; // Promisify ee apis
 import ee from '@google/earthengine';
 import {load} from '@loaders.gl/core';
@@ -229,20 +230,17 @@ export default class EarthEngineMeshLayer extends CompositeLayer {
   renderLayers() {
     const {mapid, urlFormat, meshMapid, meshUrlFormat} = this.state;
 
-    return (
-      mapid &&
-      meshMapid &&
-      new TerrainLayer(
+    return mapid && meshMapid && new TerrainLayer(
         this.getSubLayerProps({
           id: mapid
         }),
         {
           elevationData: meshUrlFormat,
           texture: urlFormat,
-          elevationDecoder: ELEVATION_DECODER
+          elevationDecoder: ELEVATION_DECODER,
+          meshMaxError: 10,
         }
-      )
-    );
+      );
   }
 }
 
