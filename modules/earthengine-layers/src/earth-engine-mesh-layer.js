@@ -1,8 +1,8 @@
 /* global createImageBitmap */
 import {CompositeLayer} from '@deck.gl/core';
 import {TileLayer, TerrainLayer} from '@deck.gl/geo-layers';
-import EEApi from './ee-api'; // Promisify ee apis
 import ee from '@google/earthengine';
+import {initializeEEApi} from './ee-api'; // Promisify ee apis
 import {load} from '@loaders.gl/core';
 import {ImageLoader} from '@loaders.gl/images';
 import {deepEqual, promisifyEEMethod} from './utils';
@@ -16,8 +16,6 @@ export const ELEVATION_DECODER = {
   bScaler: 1 / 256,
   offset: -32768
 };
-
-const eeApi = new EEApi();
 
 // Global access token, to allow single EE API initialization if using multiple
 // layers
@@ -41,7 +39,7 @@ const defaultProps = {
 export default class EarthEngineMeshLayer extends CompositeLayer {
   // helper function to initialize EE API
   static async initializeEEApi({clientId, token}) {
-    await eeApi.initialize({clientId, token});
+    await initializeEEApi({clientId, token});
   }
 
   initializeState() {
@@ -129,7 +127,11 @@ export default class EarthEngineMeshLayer extends CompositeLayer {
   }
 
   async _updateEEVisParams(props, oldProps, changeFlags) {
-    if (props.visParams === oldProps.visParams && props.eeObject === oldProps.eeObject && props.eeMeshObject === oldProps.eeMeshObject) {
+    if (
+      props.visParams === oldProps.visParams &&
+      props.eeObject === oldProps.eeObject &&
+      props.eeMeshObject === oldProps.eeMeshObject
+    ) {
       return;
     }
     const {animate} = props;
@@ -229,7 +231,10 @@ export default class EarthEngineMeshLayer extends CompositeLayer {
   renderLayers() {
     const {mapid, urlFormat, meshMapid, meshUrlFormat} = this.state;
 
-    return mapid && meshMapid && new TerrainLayer(
+    return (
+      mapid &&
+      meshMapid &&
+      new TerrainLayer(
         this.getSubLayerProps({
           id: mapid
         }),
@@ -237,9 +242,10 @@ export default class EarthEngineMeshLayer extends CompositeLayer {
           elevationData: meshUrlFormat,
           texture: urlFormat,
           elevationDecoder: ELEVATION_DECODER,
-          meshMaxError: 10,
+          meshMaxError: 10
         }
-      );
+      )
+    );
   }
 }
 
