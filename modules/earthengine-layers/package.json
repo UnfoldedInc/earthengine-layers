@@ -1,18 +1,19 @@
 {
   "name": "@unfolded.gl/earthengine-layers",
-  "description": "Earth Engine Integration for Unfolded, Inc.",
-  "version": "0.1.0",
+  "description": "deck.gl layers for Google Earth Engine",
+  "version": "1.0.0",
   "license": "MIT",
-  "_comment": "This module is private for now, should not be published",
-  "private": true,
   "author": "Unfolded, Inc.",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/UnfoldedInc/platform.git"
   },
   "main": "src/index.js",
   "scripts": {
-    "build-rollup": "rollup --config"
+    "build": "rollup --config"
   },
   "dependencies": {
     "@loaders.gl/core": "^2.1.2",
@@ -32,5 +33,6 @@
     "@deck.gl/geo-layers": "^8.1.1",
     "@deck.gl/layers": "^8.1.1",
     "@google/earthengine": "^0.1.217"
-  }
+  },
+  "gitHead": "73094f68451e557a8b32909cf8376f45942de021"
 }

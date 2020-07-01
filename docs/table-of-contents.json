@@ -15,6 +15,7 @@
           "title": "Guides",
           "entries": [
             {"entry": "docs/developer-guide/get-started"},
+            {"entry": "docs/developer-guide/authentication"},
             {"entry": "docs/developer-guide/pydeck-integration"}
           ]
         }
@@ -23,7 +24,8 @@
     {
       "title": "API Reference",
       "entries": [
-        {"entry": "modules/earthengine-layers/docs/api-reference/earthengine-layer"}
+        {"entry": "modules/earthengine-layers/docs/api-reference/earthengine-layer"},
+        {"entry": "py/docs/pydeck-earthengine-layer"}
       ]
     }
   ]
