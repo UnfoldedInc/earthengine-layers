@@ -1,7 +1,6 @@
 /* global createImageBitmap */
 import {CompositeLayer} from '@deck.gl/core';
-import {TerrainLayer} from '@deck.gl/geo-layers';
-import TileLayer from './tile-layer/tile-layer';
+import {TileLayer, TerrainLayer} from '@deck.gl/geo-layers';
 import EEApi from './ee-api'; // Promisify ee apis
 import ee from '@google/earthengine';
 import {load} from '@loaders.gl/core';
