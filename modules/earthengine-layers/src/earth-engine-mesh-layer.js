@@ -8,7 +8,7 @@ import {ImageLoader} from '@loaders.gl/images';
 import {deepEqual, promisifyEEMethod} from './utils';
 
 /**
- * Decoder for AWS Terrain Tiles
+ * Decoder for Terrarium encoding
  */
 export const ELEVATION_DECODER = {
   rScaler: 256,
@@ -60,7 +60,7 @@ export default class EarthEngineMeshLayer extends CompositeLayer {
     }
 
     const {token} = props;
-    await eeApi.initialize({token});
+    await initializeEEApi({token});
     accessToken = token;
   }
 
