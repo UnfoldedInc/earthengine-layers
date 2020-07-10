@@ -2,7 +2,7 @@ import React from 'react';
 import {render} from 'react-dom';
 
 import DeckGL from '@deck.gl/react';
-import {EarthEngineMeshLayer} from '@unfolded.gl/earthengine-layers';
+import {EarthEngineLayer} from '@unfolded.gl/earthengine-layers';
 
 import ee from '@google/earthengine';
 
@@ -32,15 +32,12 @@ export default class App extends React.Component {
   }
 
   async _onLoginSuccess(user, loginProvider) {
-    await EarthEngineMeshLayer.initializeEEApi({clientId: EE_CLIENT_ID});
-    this.setState({
-      eeObject: ee.Image('CGIAR/SRTM90_V4'),
-      eeMeshObject: ee.Image('USGS/NED').select('elevation')
-    });
+    await EarthEngineLayer.initializeEEApi({clientId: EE_CLIENT_ID});
+    this.setState({eeObject: ee.Image('CGIAR/SRTM90_V4')});
   }
 
   render() {
-    const {eeObject, eeMeshObject} = this.state;
+    const {eeObject} = this.state;
 
     const visParams = {
       min: 0,
@@ -48,7 +45,7 @@ export default class App extends React.Component {
       palette: ['006633', 'E5FFCC', '662A00', 'D8D8D8', 'F5F5F5']
     };
 
-    const layers = [new EarthEngineMeshLayer({eeObject, visParams, eeMeshObject, opacity: 1})];
+    const layers = [new EarthEngineLayer({eeObject, visParams, opacity: 0.5})];
 
     return (
       <div style={{position: 'relative', height: '100%'}}>
