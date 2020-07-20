@@ -27,7 +27,7 @@ const defaultProps = {
   data: {type: 'object', value: null},
   token: {type: 'string', value: null},
   eeObject: {type: 'object', value: null},
-  eeMeshObject: {type: 'object', value: null},
+  eeTerrainObject: {type: 'object', value: null},
   visParams: {type: 'object', value: null, equal: deepEqual},
   // Force animation; animation is on by default when ImageCollection passed
   animate: false,
@@ -36,7 +36,7 @@ const defaultProps = {
   refinementStrategy: 'no-overlap'
 };
 
-export default class EarthEngineMeshLayer extends CompositeLayer {
+export default class EarthEngineTerrainLayer extends CompositeLayer {
   // helper function to initialize EE API
   static async initializeEEApi({clientId, token}) {
     await initializeEEApi({clientId, token});
@@ -82,34 +82,37 @@ export default class EarthEngineMeshLayer extends CompositeLayer {
   }
 
   _updateEEObject(props, oldProps, changeFlags) {
-    if (props.eeObject === oldProps.eeObject && props.eeMeshObject === oldProps.eeMeshObject) {
+    if (
+      props.eeObject === oldProps.eeObject &&
+      props.eeTerrainObject === oldProps.eeTerrainObject
+    ) {
       return;
     }
 
     let eeObject;
-    let eeMeshObject;
+    let eeTerrainObject;
     // If a string, assume a JSON-serialized EE object.
     if (typeof props.eeObject === 'string') {
       eeObject = ee.Deserializer.fromJSON(props.eeObject);
     } else {
       eeObject = props.eeObject;
     }
-    if (typeof props.eeMeshObject === 'string') {
-      eeMeshObject = ee.Deserializer.fromJSON(props.eeMeshObject);
+    if (typeof props.eeTerrainObject === 'string') {
+      eeTerrainObject = ee.Deserializer.fromJSON(props.eeTerrainObject);
     } else {
-      eeMeshObject = props.eeMeshObject;
+      eeTerrainObject = props.eeTerrainObject;
     }
 
-    if (eeMeshObject) {
-      // Quantize eeMeshObject
-      const added = eeMeshObject.add(32768);
+    if (eeTerrainObject) {
+      // Quantize eeTerrainObject
+      const added = eeTerrainObject.add(32768);
       const red = added.divide(256).floor();
       const green = added.mod(256).floor();
       const blue = added
         .subtract(added.floor())
         .multiply(255)
         .floor();
-      eeMeshObject = ee.Image.rgb(red, green, blue);
+      eeTerrainObject = ee.Image.rgb(red, green, blue);
     }
 
     if (eeObject && props.animate) {
@@ -123,20 +126,20 @@ export default class EarthEngineMeshLayer extends CompositeLayer {
       eeObject = null;
     }
 
-    this.setState({eeObject, eeMeshObject});
+    this.setState({eeObject, eeTerrainObject});
   }
 
   async _updateEEVisParams(props, oldProps, changeFlags) {
     if (
       props.visParams === oldProps.visParams &&
       props.eeObject === oldProps.eeObject &&
-      props.eeMeshObject === oldProps.eeMeshObject
+      props.eeTerrainObject === oldProps.eeTerrainObject
     ) {
       return;
     }
     const {animate} = props;
 
-    const {eeObject, eeMeshObject} = this.state;
+    const {eeObject, eeTerrainObject} = this.state;
     if (!eeObject) {
       return;
     }
@@ -161,7 +164,7 @@ export default class EarthEngineMeshLayer extends CompositeLayer {
     const {mapid, urlFormat} = await promisifyEEMethod(eeObject, 'getMap', props.visParams);
 
     const {mapid: meshMapid, urlFormat: meshUrlFormat} = await promisifyEEMethod(
-      eeMeshObject,
+      eeTerrainObject,
       'getMap',
       {
         min: 0,
@@ -249,5 +252,5 @@ export default class EarthEngineMeshLayer extends CompositeLayer {
   }
 }
 
-EarthEngineMeshLayer.layerName = 'EarthEngineMeshLayer';
-EarthEngineMeshLayer.defaultProps = defaultProps;
+EarthEngineTerrainLayer.layerName = 'EarthEngineTerrainLayer';
+EarthEngineTerrainLayer.defaultProps = defaultProps;

@@ -1,10 +1,10 @@
-# EarthEngineMeshLayer
+# EarthEngineTerrainLayer
 
 <p class="badges">
   <img src="https://img.shields.io/badge/@unfolded.gl/earthengine--layers-lightgrey.svg?style=flat-square" alt="@unfolded.gl/earthengine-layers" />
 </p>
 
-The `EarthEngineMeshLayer` connects [Google Earth Engine][gee] to
+The `EarthEngineTerrainLayer` connects [Google Earth Engine][gee] to
 [deck.gl](https://deck.gl), making it possible to visualize planetary-scale
 geospatial datasets _over 3D terrain_ in a JavaScript application. The
 difference with the `EarthEngineLayer` is that you must provide _two_
@@ -19,39 +19,39 @@ Account. [Visit here][gee-signup] to sign up.
 [gee-signup]: https://signup.earthengine.google.com/#!/
 
 This particular example uses the deck.gl React bindings but the
-`EarthEngineMeshLayer` can of course also be used with the pure JavaScript and
-scripting APIs:
+`EarthEngineTerrainLayer` can of course also be used with the pure JavaScript
+and scripting APIs:
 
 ```js
 import React from 'react';
 import DeckGL from '@deck.gl/react';
-import {EarthEngineMeshLayer} from '@unfolded.gl/earthengine-layers';
+import {EarthEngineTerrainLayer} from '@unfolded.gl/earthengine-layers';
 import ee from '@google/earthengine';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {eeObject: null, eeMeshObject: null};
+    this.state = {eeObject: null, eeTerrainObject: null};
   }
 
   async _onLoginSuccess(user, loginProvider) {
     const token = 'Google OAuth2 access token'
-    await EarthEngineMeshLayer.initializeEEApi({clientId: EE_CLIENT_ID, token});
+    await EarthEngineTerrainLayer.initializeEEApi({clientId: EE_CLIENT_ID, token});
     this.setState({
       eeObject: ee.Image('CGIAR/SRTM90_V4'),
-      eeMeshObject: ee.Image('USGS/NED').select('elevation')
+      eeTerrainObject: ee.Image('USGS/NED').select('elevation')
     });
   }
 
   render() {
     const {viewport} = this.props;
-    const {eeObject, eeMeshObject} = this.state;
+    const {eeObject, eeTerrainObject} = this.state;
     const visParams = {
       min: 0,
       max: 4000,
       palette: ['006633', 'E5FFCC', '662A00', 'D8D8D8', 'F5F5F5']
     };
-    const layers = [new EarthEngineMeshLayer({eeObject, visParams, eeMeshObject, opacity: 1})];
+    const layers = [new EarthEngineTerrainLayer({eeObject, visParams, eeTerrainObject, opacity: 1})];
     return (
         <DeckGL controller {...viewport} layers={layers}/>
     );
@@ -70,8 +70,8 @@ npm install @deck.gl/core @deck.gl/layers @deck.gl/geo-layers @google/earthengin
 ```
 
 ```js
-import {EarthEngineMeshLayer} from '@unfolded.gl/earthengine-layers';
-new EarthEngineMeshLayer({});
+import {EarthEngineTerrainLayer} from '@unfolded.gl/earthengine-layers';
+new EarthEngineTerrainLayer({});
 ```
 
 To use pre-bundled scripts:
@@ -89,7 +89,7 @@ To use pre-bundled scripts:
 ```
 
 ```js
-new deck.EarthEngineMeshLayer({});
+new deck.EarthEngineTerrainLayer({});
 ```
 
 ## Static Methods
@@ -139,7 +139,7 @@ By default, `getMap` is called on the object, and image tiles are displayed
 representing the object. If you supply an `ImageCollection` object, you can pass
 `true` to the `animate` prop to animate the rendering.
 
-##### `eeMeshObject` (EarthEngine Object|String)
+##### `eeTerrainObject` (EarthEngine Object|String)
 
 - Default: `null`
 
@@ -194,4 +194,4 @@ with fewer frames.
 
 ## Source
 
-[modules/earthengine-layers/src/earth-engine-mesh-layer](https://github.com/UnfoldedInc/earthengine-layers/tree/master/modules/earthengine-layers/src)
+[modules/earthengine-layers/src/earth-engine-terrain-layer](https://github.com/UnfoldedInc/earthengine-layers/tree/master/modules/earthengine-layers/src)

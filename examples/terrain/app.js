@@ -2,7 +2,7 @@ import React from 'react';
 import {render} from 'react-dom';
 
 import DeckGL from '@deck.gl/react';
-import {EarthEngineMeshLayer} from '@unfolded.gl/earthengine-layers';
+import {EarthEngineTerrainLayer} from '@unfolded.gl/earthengine-layers';
 
 import ee from '@google/earthengine';
 
@@ -23,7 +23,7 @@ const INITIAL_VIEW_STATE = {
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {eeObject: null, eeMeshObject: null};
+    this.state = {eeObject: null, eeTerrainObject: null};
 
     this.loginProvider = new GoogleLoginProvider({
       scopes: ['https://www.googleapis.com/auth/earthengine'],
@@ -33,15 +33,15 @@ export default class App extends React.Component {
   }
 
   async _onLoginSuccess(user, loginProvider) {
-    await EarthEngineMeshLayer.initializeEEApi({clientId: EE_CLIENT_ID});
+    await EarthEngineTerrainLayer.initializeEEApi({clientId: EE_CLIENT_ID});
     this.setState({
       eeObject: ee.Image('CGIAR/SRTM90_V4'),
-      eeMeshObject: ee.Image('USGS/NED').select('elevation')
+      eeTerrainObject: ee.Image('USGS/NED').select('elevation')
     });
   }
 
   render() {
-    const {eeObject, eeMeshObject} = this.state;
+    const {eeObject, eeTerrainObject} = this.state;
 
     const visParams = {
       min: 0,
@@ -49,7 +49,9 @@ export default class App extends React.Component {
       palette: ['006633', 'E5FFCC', '662A00', 'D8D8D8', 'F5F5F5']
     };
 
-    const layers = [new EarthEngineMeshLayer({eeObject, visParams, eeMeshObject, opacity: 1})];
+    const layers = [
+      new EarthEngineTerrainLayer({eeObject, visParams, eeTerrainObject, opacity: 1})
+    ];
 
     return (
       <div style={{position: 'relative', height: '100%'}}>
