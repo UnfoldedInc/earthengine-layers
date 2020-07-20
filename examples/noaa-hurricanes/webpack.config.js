@@ -45,7 +45,7 @@ const CONFIG = {
     ]
   },
 
-  plugins: [new webpack.EnvironmentPlugin(['EE_CLIENT_ID', 'MapboxAccessToken'])]
+  plugins: [new webpack.EnvironmentPlugin(['EE_CLIENT_ID', 'GoogleMapsAPIKey'])]
 };
 
 // This line enables bundling against src in this repo rather than installed module

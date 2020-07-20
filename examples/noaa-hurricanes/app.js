@@ -1,16 +1,14 @@
 import React from 'react';
 import {render} from 'react-dom';
 
-import DeckGL from '@deck.gl/react';
 import {EarthEngineLayer} from '@unfolded.gl/earthengine-layers';
-import {StaticMap} from 'react-map-gl';
 import ee from '@google/earthengine';
 
-import {GoogleLoginProvider, GoogleLoginPane, InfoBox} from '../shared';
+import {GoogleLoginProvider, GoogleLoginPane, InfoBox, DeckWithGoogleMaps} from '../shared';
 
 // Add a EE-enabled Google Client id here (or inject it with e.g. a webpack environment plugin)
 const EE_CLIENT_ID = process.env.EE_CLIENT_ID; // eslint-disable-line
-const MAPBOX_TOKEN = process.env.MapboxAccessToken; // eslint-disable-line
+const GOOGLE_MAPS_TOKEN = process.env.GoogleMapsAPIKey; // eslint-disable-line
 
 const INITIAL_VIEW_STATE = {
   longitude: -53,
@@ -64,7 +62,6 @@ export default class App extends React.Component {
 
   render() {
     const {points, lines, asVector} = this.state;
-    const {mapStyle = 'mapbox://styles/mapbox/dark-v9'} = this.props;
 
     const layers = asVector
       ? [
@@ -102,36 +99,33 @@ export default class App extends React.Component {
         ];
 
     return (
-      <div style={{position: 'relative', height: '100%'}}>
-        <DeckGL controller initialViewState={INITIAL_VIEW_STATE} layers={layers}>
-          <StaticMap
-            reuseMaps
-            mapStyle={mapStyle}
-            preventStyleDiffing={true}
-            mapboxApiAccessToken={MAPBOX_TOKEN}
-          />
-
-          <GoogleLoginPane loginProvider={this.loginProvider} />
-          <InfoBox title="FeatureCollection">
-            The{' '}
-            <a href="https://developers.google.com/earth-engine/datasets/catalog/NOAA_NHC_HURDAT2_atlantic">
-              Atlantic hurricane catalog
-            </a>{' '}
-            displayed using an <code>ee.FeatureCollection</code> object.
-            <p>
-              <input
-                type="checkbox"
-                defaultChecked={this.state.asVector}
-                onClick={() =>
-                  this.setState(prevState => {
-                    return {asVector: !prevState.asVector};
-                  })
-                }
-              />
-              Render as vector data
-            </p>
-          </InfoBox>
-        </DeckGL>
+      <div style={{position: 'relative', height: '100%', width: '100%'}}>
+        <DeckWithGoogleMaps
+          initialViewState={INITIAL_VIEW_STATE}
+          id="json-deck"
+          layers={layers}
+          googleMapsToken={GOOGLE_MAPS_TOKEN}
+        />
+        <GoogleLoginPane loginProvider={this.loginProvider} />
+        <InfoBox title="FeatureCollection" style={{zIndex: -1}}>
+          The{' '}
+          <a href="https://developers.google.com/earth-engine/datasets/catalog/NOAA_NHC_HURDAT2_atlantic">
+            Atlantic hurricane catalog
+          </a>{' '}
+          displayed using an <code>ee.FeatureCollection</code> object.
+          <p>
+            <input
+              type="checkbox"
+              defaultChecked={this.state.asVector}
+              onClick={() =>
+                this.setState(prevState => {
+                  return {asVector: !prevState.asVector};
+                })
+              }
+            />
+            Render as vector data
+          </p>
+        </InfoBox>
       </div>
     );
   }
