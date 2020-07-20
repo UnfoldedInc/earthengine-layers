@@ -85,6 +85,12 @@ module.exports = {
             image: 'images/intl-boundaries.jpg',
             componentUrl: resolve(__dirname, '../examples/intl-boundary/app.js'),
             path: 'examples/intl-boundary'
+          },
+          {
+            title: 'Terrain',
+            image: 'images/intl-boundaries.jpg',
+            componentUrl: resolve(__dirname, '../examples/terrain/app.js'),
+            path: 'examples/terrain'
           }
         ],
 

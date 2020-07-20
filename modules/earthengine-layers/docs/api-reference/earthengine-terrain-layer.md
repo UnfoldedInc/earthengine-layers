@@ -1,12 +1,15 @@
-# EarthEngineLayer
+# EarthEngineTerrainLayer
 
 <p class="badges">
   <img src="https://img.shields.io/badge/@unfolded.gl/earthengine--layers-lightgrey.svg?style=flat-square" alt="@unfolded.gl/earthengine-layers" />
 </p>
 
-The `EarthEngineLayer` connects [Google Earth Engine][gee] to
+The `EarthEngineTerrainLayer` connects [Google Earth Engine][gee] to
 [deck.gl](https://deck.gl), making it possible to visualize planetary-scale
-geospatial datasets in a JavaScript application.
+geospatial datasets _over 3D terrain_ in a JavaScript application. The
+difference with the `EarthEngineLayer` is that you must provide _two_
+EarthEngine data sources, one to be used as the imagery source, another as the
+terrain source.
 
 [gee]: https://earthengine.google.com/
 
@@ -16,43 +19,45 @@ Account. [Visit here][gee-signup] to sign up.
 [gee-signup]: https://signup.earthengine.google.com/#!/
 
 This particular example uses the deck.gl React bindings but the
-`EarthEngineLayer` can of course also be used with the pure JavaScript and
-scripting APIs:
+`EarthEngineTerrainLayer` can of course also be used with the pure JavaScript
+and scripting APIs:
 
 ```js
 import React from 'react';
 import DeckGL from '@deck.gl/react';
-import {EarthEngineLayer} from '@unfolded.gl/earthengine-layers';
+import {EarthEngineTerrainLayer} from '@unfolded.gl/earthengine-layers';
 import ee from '@google/earthengine';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {eeObject: null};
+    this.state = {eeObject: null, eeTerrainObject: null};
   }
 
   async _onLoginSuccess(user, loginProvider) {
     const token = 'Google OAuth2 access token'
-    await EarthEngineLayer.initializeEEApi({clientId: EE_CLIENT_ID, token});
-    this.setState({eeObject: ee.Image('CGIAR/SRTM90_V4')});
+    await EarthEngineTerrainLayer.initializeEEApi({clientId: EE_CLIENT_ID, token});
+    this.setState({
+      eeObject: ee.Image('CGIAR/SRTM90_V4'),
+      eeTerrainObject: ee.Image('USGS/NED').select('elevation')
+    });
   }
 
   render() {
     const {viewport} = this.props;
-    const {eeObject} = this.state;
+    const {eeObject, eeTerrainObject} = this.state;
     const visParams = {
       min: 0,
       max: 4000,
       palette: ['006633', 'E5FFCC', '662A00', 'D8D8D8', 'F5F5F5']
     };
-    const layers = [new EarthEngineLayer({eeObject, visParams})];
+    const layers = [new EarthEngineTerrainLayer({eeObject, visParams, eeTerrainObject, opacity: 1})];
     return (
         <DeckGL controller {...viewport} layers={layers}/>
     );
   }
 }
 ```
-
 
 ## Installation
 
@@ -65,8 +70,8 @@ npm install @deck.gl/core @deck.gl/layers @deck.gl/geo-layers @google/earthengin
 ```
 
 ```js
-import {EarthEngineLayer} from '@unfolded.gl/earthengine-layers';
-new EarthEngineLayer({});
+import {EarthEngineTerrainLayer} from '@unfolded.gl/earthengine-layers';
+new EarthEngineTerrainLayer({});
 ```
 
 To use pre-bundled scripts:
@@ -84,7 +89,7 @@ To use pre-bundled scripts:
 ```
 
 ```js
-new deck.EarthEngineLayer({});
+new deck.EarthEngineTerrainLayer({});
 ```
 
 ## Static Methods
@@ -103,15 +108,12 @@ Parameters:
 - `clientId` A valid Google clientId that has been authenticated with the earthengine scope and set up to whitelist the 'origin' URL that the app will be served on.
 - `token` Alternatively, a pre-generated OAuth2 access token.
 
-
 ## Properties
 
-Inherits all properties from base [`Layer`][base-layer] and from the [`TileLayer`][tile-layer]. If rendering images, inherits all properties from the [`BitmapLayer`][bitmap-layer]. If rendering vector data, inherits all properties from the [`GeoJsonLayer`][geojson-layer].
+Inherits all properties from base [`Layer`][base-layer] and from the [`TileLayer`][tile-layer].
 
 [base-layer]: https://deck.gl/#/documentation/deckgl-api-reference/layers/layer
 [tile-layer]: https://deck.gl/#/documentation/deckgl-api-reference/layers/tile-layer
-[bitmap-layer]: https://deck.gl/#/documentation/deckgl-api-reference/layers/bitmap-layer
-[geojson-layer]: https://deck.gl/#/documentation/deckgl-api-reference/layers/geojson-layer
 
 ### Authentication Options
 
@@ -128,12 +130,25 @@ A valid Google OAuth2 access token. Unnecessary from `pydeck` or if using
 
 - Default: `null`
 
+The EarthEngine source used for rendering imagery on top of terrain.
+
+Either an EarthEngine JavaScript API object, or a serialized string representing
+an object (created with, e.g. `ee.Image.serialize()`).
+
+This source is expected to be a raster image whose data value represents
+elevations in meters.
+
+##### `eeTerrainObject` (EarthEngine Object|String)
+
+- Default: `null`
+
+The EarthEngine source to be used as the terrain.
+
 Either an EarthEngine JavaScript API object, or a serialized string representing
 an object (created with, e.g. `ee.Image.serialize()`).
 
 By default, `getMap` is called on the object, and image tiles are displayed
-representing the object. You can pass `asVector` or `animate` for alternative
-rendering.
+representing the object.
 
 ##### `visParams` (Object, optional)
 
@@ -148,63 +163,6 @@ objects.
 [visparams-docs]: https://developers.google.com/earth-engine/image_visualization
 [style-fn]: https://developers.google.com/earth-engine/api_docs#ee.featurecollection.style
 
-Unused when `asVector` is `true`.
-
-##### `selectors` (Array of String, optional)
-
-- Default: `[]`
-
-Names of additional properties to download when `asVector` is `true`.
-
-By default, only the geometries of the `FeatureCollection` are downloaded. In
-order to apply data-driven styling using GeoJsonLayer styling properties, you
-need to specify those property names here.
-
-### Render Options
-
-##### `asVector` (Boolean, optional)
-
-- Default: `false`
-
-If `true`, render vector data using the deck.gl `GeoJsonLayer`.
-
-Rendering as vector is only possible for `ee.FeatureCollection` objects; an
-error will be produced if `asVector` is set to `true` when another object type
-is passed.
-
-When `asVector` is set, the GeoJSON representation of the `FeatureCollection` is
-downloaded, which can include very precise geometries. As such, beware of large
-downloads: the Earth Engine backend may return no data if the output would be
-larger than 100MB.
-
-To reduce the dataset size, use `filter` expressions on the `FeatureCollection`
-object before passing it to `EarthEngineLayer`.
-
-##### `animate` (Boolean, optional)
-
-- Default: `false`
-
-If `true`, render an animated ImageCollection.
-
-Rendering an animation is only possible for `ee.ImageCollection` objects; an
-error will be produced if `animate` is set to `true` when another object type is
-passed.
-
-The `ImageCollection` should be filtered and sorted in the order desired for the
-animation. If an `ImageCollection` contains 20 images, the animation will
-contain those images as individual frames of the animation, in the same order.
-Earth Engine has an upper limit of 100 animation frames.
-
-##### `animationSpeed` (Number, optional)
-
-- Default: `12`
-
-If `animate` is `true`, `animationSpeed` represents the number of frames per
-second. Keeping this constant implies that animations will play at the same
-speed; an `ImageCollection` with more frames will have a longer loop than one
-with fewer frames.
-
-
 ## Source
 
-[modules/earthengine-layers/src/earth-engine-layer](https://github.com/UnfoldedInc/earthengine-layers/tree/master/modules/earthengine-layers/src)
+[modules/earthengine-layers/src/earth-engine-terrain-layer](https://github.com/UnfoldedInc/earthengine-layers/tree/master/modules/earthengine-layers/src)
