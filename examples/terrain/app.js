@@ -23,7 +23,7 @@ const INITIAL_VIEW_STATE = {
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {eeObject: null};
+    this.state = {eeObject: null, eeMeshObject: null};
 
     this.loginProvider = new GoogleLoginProvider({
       scopes: ['https://www.googleapis.com/auth/earthengine'],

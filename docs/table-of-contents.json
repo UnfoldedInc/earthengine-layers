@@ -25,6 +25,7 @@
       "title": "API Reference",
       "entries": [
         {"entry": "modules/earthengine-layers/docs/api-reference/earthengine-layer"},
+        {"entry": "modules/earthengine-layers/docs/api-reference/earthengine-mesh-layer"},
         {"entry": "py/docs/pydeck-earthengine-layer"}
       ]
     }
