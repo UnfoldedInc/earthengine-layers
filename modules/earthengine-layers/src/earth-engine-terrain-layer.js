@@ -44,7 +44,6 @@ export default class EarthEngineTerrainLayer extends CompositeLayer {
     await this._updateToken(props, oldProps, changeFlags);
     this._updateEEObject(props, oldProps, changeFlags);
     await this._updateEEVisParams(props, oldProps, changeFlags);
-    this._animate();
   }
 
   async _updateToken(props, oldProps, changeFlags) {
@@ -55,23 +54,6 @@ export default class EarthEngineTerrainLayer extends CompositeLayer {
     const {token} = props;
     await initializeEEApi({token});
     accessToken = token;
-  }
-
-  _animate() {
-    // unit corresponds to the timestamp in source data
-    const {nFrames} = this.state;
-    if (!nFrames) {
-      return;
-    }
-
-    // unit time per second
-    const {animationSpeed} = this.props;
-    const timestamp = Date.now() / 1000;
-    const loopTime = nFrames / animationSpeed;
-
-    this.setState({
-      frame: Math.floor(((timestamp % loopTime) / loopTime) * nFrames)
-    });
   }
 
   _updateEEObject(props, oldProps, changeFlags) {
