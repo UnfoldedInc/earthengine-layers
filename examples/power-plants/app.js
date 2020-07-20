@@ -1,16 +1,14 @@
 import React from 'react';
 import {render} from 'react-dom';
 
-import DeckGL from '@deck.gl/react';
 import {EarthEngineLayer} from '@unfolded.gl/earthengine-layers';
-import {StaticMap} from 'react-map-gl';
 import ee from '@google/earthengine';
 
-import {GoogleLoginProvider, GoogleLoginPane, InfoBox} from '../shared';
+import {DeckWithGoogleMaps, GoogleLoginProvider, GoogleLoginPane, InfoBox} from '../shared';
 
 // Add a EE-enabled Google Client id here (or inject it with e.g. a webpack environment plugin)
 const EE_CLIENT_ID = process.env.EE_CLIENT_ID; // eslint-disable-line
-const MAPBOX_TOKEN = process.env.MapboxAccessToken; // eslint-disable-line
+const GOOGLE_MAPS_TOKEN = process.env.GoogleMapsAPIKey; // eslint-disable-line
 
 const INITIAL_VIEW_STATE = {
   longitude: -53,
@@ -33,13 +31,59 @@ const FUEL_COLOR_MAPPING_VECTOR = {
   Biomass: [34, 154, 0]
 };
 
+class Tooltip extends React.Component {
+  // Lessen flashing by only updating when name changes
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.props.hoveredObject.properties.name === nextProps.hoveredObject.properties.name) {
+      return false;
+    }
+    return true;
+  }
+
+  render() {
+    const {hoveredObject, x, y} = this.props;
+    return (
+      <div
+        className="tooltip"
+        style={{
+          fontFamily: "ff-clan-web-pro, 'Helvetica Neue', Helvetica, sans-serif",
+          fontSize: '13px',
+          zIndex: 1000,
+          position: 'absolute',
+          color: '#a0a7b4',
+          backgroundColor: '#29323c',
+          padding: '10px',
+          left: `${x}px`,
+          top: `${y}px`
+        }}
+      >
+        <div>
+          <b>Name</b>
+        </div>
+        <div>
+          <div>{hoveredObject.properties.name}</div>
+        </div>
+        <div>
+          <b>Fuel Type</b>
+        </div>
+        <div>
+          <div>{hoveredObject.properties.fuel1}</div>
+        </div>
+        <div>
+          <b>Capacity (MW)</b>
+        </div>
+        <div>{Math.round(hoveredObject.properties.capacitymw)}</div>
+      </div>
+    );
+  }
+}
+
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {eeObject: null, hoveredObject: null};
 
     this._onHover = this._onHover.bind(this);
-    this._renderTooltip = this._renderTooltip.bind(this);
 
     this.loginProvider = new GoogleLoginProvider({
       scopes: ['https://www.googleapis.com/auth/earthengine'],
@@ -55,39 +99,12 @@ export default class App extends React.Component {
     this.setState({eeObject});
   }
 
-  _renderTooltip() {
-    const {hoveredObject} = this.state;
-    return (
-      hoveredObject && {
-        html: `<div className="tooltip" style="font-family: ff-clan-web-pro, 'Helvetica Neue', Helvetica, sans-serif;font-size: 13px;">
-          <div>
-            <b>Name</b>
-          </div>
-          <div>
-            <div>${hoveredObject.properties.name}</div>
-          </div>
-          <div>
-            <b>Fuel Type</b>
-          </div>
-          <div>
-            <div>${hoveredObject.properties.fuel1}</div>
-          </div>
-          <div>
-            <b>Capacity (MW)</b>
-          </div>
-          <div>${Math.round(hoveredObject.properties.capacitymw)}</div>
-        </div>`
-      }
-    );
-  }
-
   _onHover({x, y, object}) {
     this.setState({x, y, hoveredObject: object});
   }
 
   render() {
-    const {eeObject} = this.state;
-    const {mapStyle = 'mapbox://styles/mapbox/dark-v9'} = this.props;
+    const {eeObject, x, y, hoveredObject} = this.state;
 
     const layers =
       eeObject &&
@@ -109,28 +126,23 @@ export default class App extends React.Component {
 
     return (
       <div style={{position: 'relative', height: '100%'}}>
-        <DeckGL
-          controller
+        <DeckWithGoogleMaps
           initialViewState={INITIAL_VIEW_STATE}
+          id="json-deck"
           layers={layers}
-          getTooltip={this._renderTooltip}
-        >
-          <StaticMap
-            reuseMaps
-            mapStyle={mapStyle}
-            preventStyleDiffing={true}
-            mapboxApiAccessToken={MAPBOX_TOKEN}
-          />
+          pickingRadius={10}
+          googleMapsToken={GOOGLE_MAPS_TOKEN}
+        />
+        {hoveredObject && <Tooltip x={x} y={y} hoveredObject={hoveredObject} />}
 
-          <GoogleLoginPane loginProvider={this.loginProvider} />
-          <InfoBox title="FeatureCollection">
-            The{' '}
-            <a href="https://developers.google.com/earth-engine/datasets/catalog/WRI_GPPD_power_plants">
-              Global Power Plant Database
-            </a>{' '}
-            displayed using an <code>ee.FeatureCollection</code> object.
-          </InfoBox>
-        </DeckGL>
+        <GoogleLoginPane loginProvider={this.loginProvider} />
+        <InfoBox title="FeatureCollection">
+          The{' '}
+          <a href="https://developers.google.com/earth-engine/datasets/catalog/WRI_GPPD_power_plants">
+            Global Power Plant Database
+          </a>{' '}
+          displayed using an <code>ee.FeatureCollection</code> object.
+        </InfoBox>
       </div>
     );
   }

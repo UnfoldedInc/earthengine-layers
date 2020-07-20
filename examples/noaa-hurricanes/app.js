@@ -4,7 +4,7 @@ import {render} from 'react-dom';
 import {EarthEngineLayer} from '@unfolded.gl/earthengine-layers';
 import ee from '@google/earthengine';
 
-import {GoogleLoginProvider, GoogleLoginPane, InfoBox, DeckWithGoogleMaps} from '../shared';
+import {DeckWithGoogleMaps, GoogleLoginProvider, GoogleLoginPane, InfoBox} from '../shared';
 
 // Add a EE-enabled Google Client id here (or inject it with e.g. a webpack environment plugin)
 const EE_CLIENT_ID = process.env.EE_CLIENT_ID; // eslint-disable-line
