@@ -1549,41 +1549,6 @@ __webpack_require__("Sc3u")('Float32', 4, function (init) {
 
 /***/ }),
 
-/***/ "6bj0":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global, process) {/* unused harmony export self */
-/* unused harmony export window */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return global_; });
-/* unused harmony export document */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return isBrowser; });
-/* unused harmony export isWorker */
-/* unused harmony export nodeVersion */
-/* harmony import */ var core_js_modules_es6_regexp_match__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("Ll4R");
-/* harmony import */ var core_js_modules_es6_regexp_match__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_regexp_match__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _babel_runtime_helpers_esm_typeof__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("0QZy");
-
-
-var globals = {
-  self: typeof self !== 'undefined' && self,
-  window: typeof window !== 'undefined' && window,
-  global: typeof global !== 'undefined' && global,
-  document: typeof document !== 'undefined' && document
-};
-var self_ = globals.self || globals.window || globals.global;
-var window_ = globals.window || globals.self || globals.global;
-var global_ = globals.global || globals.self || globals.window;
-var document_ = globals.document || {};
-
-var isBrowser = (typeof process === "undefined" ? "undefined" : Object(_babel_runtime_helpers_esm_typeof__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"])(process)) !== 'object' || String(process) !== '[object process]' || process.browser;
-var isWorker = typeof importScripts === 'function';
-var matches = typeof process !== 'undefined' && process.version && process.version.match(/v([0-9]*)/);
-var nodeVersion = matches && parseFloat(matches[1]) || 0;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("yLpj"), __webpack_require__("8oxB")))
-
-/***/ }),
-
 /***/ "6nXr":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1603,6 +1568,28 @@ __webpack_require__("Sc3u")('Int8', 1, function (init) {
   return function Int8Array(data, byteOffset, length) {
     return init(this, data, byteOffset, length);
   };
+});
+
+
+/***/ }),
+
+/***/ "8XfU":
+/***/ (function(module, exports, __webpack_require__) {
+
+// 26.1.14 Reflect.setPrototypeOf(target, proto)
+var $export = __webpack_require__("P8UN");
+var setProto = __webpack_require__("Ftjc");
+
+if (setProto) $export($export.S, 'Reflect', {
+  setPrototypeOf: function setPrototypeOf(target, proto) {
+    setProto.check(target, proto);
+    try {
+      setProto.set(target, proto);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 });
 
 
@@ -1672,8 +1659,7 @@ function _slicedToArray(arr, i) {
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, "a", function() { return /* binding */ gouraudLighting; });
-
-// UNUSED EXPORTS: phongLighting
+__webpack_require__.d(__webpack_exports__, "b", function() { return /* binding */ phongLighting; });
 
 // EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.array.map.js
 var es6_array_map = __webpack_require__("AqHK");
@@ -10993,6 +10979,7 @@ __webpack_require__("t+fG")('sub', function (createHTML) {
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, "a", function() { return /* reexport */ earth_engine_layer_EarthEngineLayer; });
+__webpack_require__.d(__webpack_exports__, "b", function() { return /* reexport */ earth_engine_terrain_layer_EarthEngineTerrainLayer; });
 
 // EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.function.name.js
 var es6_function_name = __webpack_require__("pJf4");
@@ -11356,7 +11343,7 @@ var project32 = __webpack_require__("K4gp");
 var picking = __webpack_require__("BQ9P");
 
 // EXTERNAL MODULE: ./node_modules/@luma.gl/engine/dist/esm/lib/model.js + 8 modules
-var model = __webpack_require__("ykdB");
+var lib_model = __webpack_require__("ykdB");
 
 // EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/objectSpread.js
 var objectSpread = __webpack_require__("oCue");
@@ -11708,7 +11695,7 @@ var scatterplot_layer_ScatterplotLayer = function (_Layer) {
     key: "_getModel",
     value: function _getModel(gl) {
       var positions = [-1, -1, 0, -1, 1, 0, 1, 1, 0, 1, -1, 0];
-      return new model["a" /* default */](gl, Object.assign(this.getShaders(), {
+      return new lib_model["a" /* default */](gl, Object.assign(this.getShaders(), {
         id: this.props.id,
         geometry: new geometry_Geometry({
           drawMode: 6,
@@ -12501,7 +12488,7 @@ var path_layer_PathLayer = function (_Layer) {
     value: function _getModel(gl) {
       var SEGMENT_INDICES = [0, 2, 1, 1, 2, 4, 1, 4, 3, 3, 4, 5];
       var SEGMENT_POSITIONS = [0, 0, 0, -1, 0, 1, 1, -1, 1, 1, 1, 0];
-      return new model["a" /* default */](gl, Object.assign({}, this.getShaders(), {
+      return new lib_model["a" /* default */](gl, Object.assign({}, this.getShaders(), {
         id: this.props.id,
         geometry: new geometry_Geometry({
           drawMode: 4,
@@ -13368,7 +13355,7 @@ var solid_polygon_layer_SolidPolygonLayer = function (_Layer) {
       if (filled) {
         var shaders = this.getShaders(solid_polygon_layer_vertex_top_glsl);
         shaders.defines.NON_INSTANCED_MODEL = 1;
-        topModel = new model["a" /* default */](gl, Object.assign({}, shaders, {
+        topModel = new lib_model["a" /* default */](gl, Object.assign({}, shaders, {
           id: "".concat(id, "-top"),
           drawMode: 4,
           attributes: {
@@ -13384,7 +13371,7 @@ var solid_polygon_layer_SolidPolygonLayer = function (_Layer) {
       }
 
       if (extruded) {
-        sideModel = new model["a" /* default */](gl, Object.assign({}, this.getShaders(solid_polygon_layer_vertex_side_glsl), {
+        sideModel = new lib_model["a" /* default */](gl, Object.assign({}, this.getShaders(solid_polygon_layer_vertex_side_glsl), {
           id: "".concat(id, "-side"),
           geometry: new geometry_Geometry({
             drawMode: 1,
@@ -14200,13 +14187,13 @@ function getTileIndex(_ref, scale) {
   return [x * scale / utils_TILE_SIZE, y * scale / utils_TILE_SIZE];
 }
 
-function getScale(z) {
+function utils_getScale(z) {
   var tileSize = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : utils_TILE_SIZE;
   return Math.pow(2, z) * utils_TILE_SIZE / tileSize;
 }
 
 function osmTile2lngLat(x, y, z) {
-  var scale = getScale(z);
+  var scale = utils_getScale(z);
   var lng = x / scale * 360 - 180;
   var n = Math.PI - 2 * Math.PI * y / scale;
   var lat = 180 / Math.PI * Math.atan(0.5 * (Math.exp(n) - Math.exp(-n)));
@@ -14214,7 +14201,7 @@ function osmTile2lngLat(x, y, z) {
 }
 
 function tile2XY(x, y, z, tileSize) {
-  var scale = getScale(z, tileSize);
+  var scale = utils_getScale(z, tileSize);
   return [x / scale * utils_TILE_SIZE, y / scale * utils_TILE_SIZE];
 }
 
@@ -14260,7 +14247,7 @@ function tileToBoundingBox(viewport, x, y, z) {
 
 function getIdentityTileIndices(viewport, z, tileSize) {
   var bbox = getBoundingBox(viewport);
-  var scale = getScale(z, tileSize);
+  var scale = utils_getScale(z, tileSize);
 
   var _getTileIndex = getTileIndex([bbox[0], bbox[1]], scale),
       _getTileIndex2 = Object(slicedToArray["a" /* default */])(_getTileIndex, 2),
@@ -14289,7 +14276,7 @@ function getIdentityTileIndices(viewport, z, tileSize) {
 
 function getOSMTileIndices(viewport, z, zRange) {
   var bbox = getBoundingBox(viewport, zRange);
-  var scale = getScale(z);
+  var scale = utils_getScale(z);
 
   var _getOSMTileIndex = getOSMTileIndex([bbox[0], bbox[3]], scale),
       _getOSMTileIndex2 = Object(slicedToArray["a" /* default */])(_getOSMTileIndex, 2),
@@ -15292,7 +15279,7 @@ var bitmap_layer_BitmapLayer = function (_Layer) {
         return null;
       }
 
-      return new model["a" /* default */](gl, Object.assign({}, this.getShaders(), {
+      return new lib_model["a" /* default */](gl, Object.assign({}, this.getShaders(), {
         id: this.props.id,
         geometry: new geometry_Geometry({
           drawMode: 6,
@@ -15413,51 +15400,56 @@ var es6_typed_data_view = __webpack_require__("t+I+");
 // EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js
 var asyncToGenerator = __webpack_require__("/S4K");
 
-// CONCATENATED MODULE: ../modules/earthengine-layers/node_modules/@loaders.gl/images/dist/esm/lib/utils/assert.js
+// CONCATENATED MODULE: ../node_modules/@loaders.gl/images/dist/esm/lib/utils/assert.js
 function assert_assert(condition, message) {
   if (!condition) {
     throw new Error(message);
   }
 }
-// EXTERNAL MODULE: ../modules/earthengine-layers/node_modules/@loaders.gl/images/dist/esm/lib/utils/globals.js
-var globals = __webpack_require__("6bj0");
+// EXTERNAL MODULE: ../node_modules/@loaders.gl/images/dist/esm/lib/utils/globals.js
+var globals = __webpack_require__("mgqj");
 
-// CONCATENATED MODULE: ../modules/earthengine-layers/node_modules/@loaders.gl/images/dist/esm/lib/parsed-image-api/image-type.js
+// CONCATENATED MODULE: ../node_modules/@loaders.gl/images/dist/esm/lib/category-api/image-type.js
 
 var image_type_parseImageNode = globals["a" /* global */]._parseImageNode;
 var IMAGE_SUPPORTED = typeof Image !== 'undefined';
 var IMAGE_BITMAP_SUPPORTED = typeof ImageBitmap !== 'undefined';
 var NODE_IMAGE_SUPPORTED = Boolean(image_type_parseImageNode);
+var DATA_SUPPORTED = globals["b" /* isBrowser */] ? true : NODE_IMAGE_SUPPORTED;
 function isImageTypeSupported(type) {
   switch (type) {
     case 'auto':
-      return IMAGE_BITMAP_SUPPORTED || IMAGE_SUPPORTED || NODE_IMAGE_SUPPORTED;
+      return IMAGE_BITMAP_SUPPORTED || IMAGE_SUPPORTED || DATA_SUPPORTED;
 
     case 'imagebitmap':
       return IMAGE_BITMAP_SUPPORTED;
 
-    case 'html':
     case 'image':
       return IMAGE_SUPPORTED;
 
-    case 'ndarray':
     case 'data':
-      return globals["b" /* isBrowser */] ? true : NODE_IMAGE_SUPPORTED;
+      return DATA_SUPPORTED;
+
+    case 'html':
+      return IMAGE_SUPPORTED;
+
+    case 'ndarray':
+      return DATA_SUPPORTED;
 
     default:
       throw new Error("@loaders.gl/images: image ".concat(type, " not supported in this environment"));
   }
 }
 function getDefaultImageType() {
-  if (isImageTypeSupported('image')) {
-    return 'image';
-  }
-
-  if (isImageTypeSupported('imagebitmap')) {
+  if (IMAGE_BITMAP_SUPPORTED) {
     return 'imagebitmap';
   }
 
-  if (isImageTypeSupported('data')) {
+  if (IMAGE_SUPPORTED) {
+    return 'image';
+  }
+
+  if (DATA_SUPPORTED) {
     return 'data';
   }
 
@@ -15466,7 +15458,7 @@ function getDefaultImageType() {
 // EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/typeof.js
 var esm_typeof = __webpack_require__("0QZy");
 
-// CONCATENATED MODULE: ../modules/earthengine-layers/node_modules/@loaders.gl/images/dist/esm/lib/parsed-image-api/parsed-image-api.js
+// CONCATENATED MODULE: ../node_modules/@loaders.gl/images/dist/esm/lib/category-api/parsed-image-api.js
 
 
 function isImage(image) {
@@ -15529,21 +15521,14 @@ function getImageTypeOrNull(image) {
 // EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.typed.uint8-array.js
 var es6_typed_uint8_array = __webpack_require__("CtJk");
 
-// CONCATENATED MODULE: ../modules/earthengine-layers/node_modules/@loaders.gl/images/dist/esm/lib/parsers/get-blob.js
+// CONCATENATED MODULE: ../node_modules/@loaders.gl/images/dist/esm/lib/parsers/svg-utils.js
 
 var SVG_DATA_URL_PATTERN = /^data:image\/svg\+xml/;
 var SVG_URL_PATTERN = /\.svg((\?|#).*)?$/;
-function getBlob(arrayBuffer, url) {
-  if (isSVG(url)) {
-    console.warn('SVG cannot be parsed to imagebitmap');
-    return new Blob([new Uint8Array(arrayBuffer)], {
-      type: 'image/svg+xml'
-    });
-  }
-
-  return new Blob([new Uint8Array(arrayBuffer)]);
+function isSVG(url) {
+  return url && (SVG_DATA_URL_PATTERN.test(url) || SVG_URL_PATTERN.test(url));
 }
-function getBlobOrDataUrl(arrayBuffer, url) {
+function getBlobOrSVGDataUrl(arrayBuffer, url) {
   if (isSVG(url)) {
     var textDecoder = new TextDecoder();
     var xmlText = textDecoder.decode(arrayBuffer);
@@ -15553,11 +15538,14 @@ function getBlobOrDataUrl(arrayBuffer, url) {
 
   return getBlob(arrayBuffer, url);
 }
+function getBlob(arrayBuffer, url) {
+  if (isSVG(url)) {
+    throw new Error('SVG cannot be parsed directly to imagebitmap');
+  }
 
-function isSVG(url) {
-  return url && (SVG_DATA_URL_PATTERN.test(url) || SVG_URL_PATTERN.test(url));
+  return new Blob([new Uint8Array(arrayBuffer)]);
 }
-// CONCATENATED MODULE: ../modules/earthengine-layers/node_modules/@loaders.gl/images/dist/esm/lib/parsers/parse-to-image.js
+// CONCATENATED MODULE: ../node_modules/@loaders.gl/images/dist/esm/lib/parsers/parse-to-image.js
 
 
 
@@ -15574,7 +15562,7 @@ function _parseToImage() {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            blobOrDataUrl = getBlobOrDataUrl(arrayBuffer, url);
+            blobOrDataUrl = getBlobOrSVGDataUrl(arrayBuffer, url);
             URL = self.URL || self.webkitURL;
             objectUrl = typeof blobOrDataUrl !== 'string' && URL.createObjectURL(blobOrDataUrl);
             _context.prev = 3;
@@ -15656,10 +15644,12 @@ function _loadToImage() {
   }));
   return _loadToImage.apply(this, arguments);
 }
-// CONCATENATED MODULE: ../modules/earthengine-layers/node_modules/@loaders.gl/images/dist/esm/lib/parsers/parse-to-image-bitmap.js
+// CONCATENATED MODULE: ../node_modules/@loaders.gl/images/dist/esm/lib/parsers/parse-to-image-bitmap.js
 
 
 
+
+var EMPTY_OBJECT = {};
 var imagebitmapOptionsSupported = true;
 function parseToImageBitmap(_x, _x2, _x3) {
   return _parseToImageBitmap.apply(this, arguments);
@@ -15667,54 +15657,98 @@ function parseToImageBitmap(_x, _x2, _x3) {
 
 function _parseToImageBitmap() {
   _parseToImageBitmap = Object(asyncToGenerator["a" /* default */])(regenerator_default.a.mark(function _callee(arrayBuffer, options, url) {
-    var blob, imagebitmapOptions;
+    var blob, image, imagebitmapOptions;
     return regenerator_default.a.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
+            if (!isSVG(url)) {
+              _context.next = 7;
+              break;
+            }
+
+            _context.next = 3;
+            return parseToImage(arrayBuffer, options, url);
+
+          case 3:
+            image = _context.sent;
+            blob = image;
+            _context.next = 8;
+            break;
+
+          case 7:
             blob = getBlob(arrayBuffer, url);
+
+          case 8:
             imagebitmapOptions = options && options.imagebitmap;
+            _context.next = 11;
+            return safeCreateImageBitmap(blob, imagebitmapOptions);
+
+          case 11:
+            return _context.abrupt("return", _context.sent);
+
+          case 12:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _parseToImageBitmap.apply(this, arguments);
+}
+
+function safeCreateImageBitmap(_x4) {
+  return _safeCreateImageBitmap.apply(this, arguments);
+}
+
+function _safeCreateImageBitmap() {
+  _safeCreateImageBitmap = Object(asyncToGenerator["a" /* default */])(regenerator_default.a.mark(function _callee2(blob) {
+    var imagebitmapOptions,
+        _args2 = arguments;
+    return regenerator_default.a.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            imagebitmapOptions = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : null;
 
             if (isEmptyObject(imagebitmapOptions) || !imagebitmapOptionsSupported) {
               imagebitmapOptions = null;
             }
 
             if (!imagebitmapOptions) {
-              _context.next = 14;
+              _context2.next = 13;
               break;
             }
 
-            _context.prev = 4;
-            _context.next = 7;
+            _context2.prev = 3;
+            _context2.next = 6;
             return createImageBitmap(blob, imagebitmapOptions);
 
-          case 7:
-            return _context.abrupt("return", _context.sent);
+          case 6:
+            return _context2.abrupt("return", _context2.sent);
 
-          case 10:
-            _context.prev = 10;
-            _context.t0 = _context["catch"](4);
-            console.warn(_context.t0);
+          case 9:
+            _context2.prev = 9;
+            _context2.t0 = _context2["catch"](3);
+            console.warn(_context2.t0);
             imagebitmapOptionsSupported = false;
 
-          case 14:
-            _context.next = 16;
+          case 13:
+            _context2.next = 15;
             return createImageBitmap(blob);
 
-          case 16:
-            return _context.abrupt("return", _context.sent);
+          case 15:
+            return _context2.abrupt("return", _context2.sent);
 
-          case 17:
+          case 16:
           case "end":
-            return _context.stop();
+            return _context2.stop();
         }
       }
-    }, _callee, null, [[4, 10]]);
+    }, _callee2, null, [[3, 9]]);
   }));
-  return _parseToImageBitmap.apply(this, arguments);
+  return _safeCreateImageBitmap.apply(this, arguments);
 }
-
-var EMPTY_OBJECT = {};
 
 function isEmptyObject(object) {
   for (var key in object || EMPTY_OBJECT) {
@@ -15726,7 +15760,7 @@ function isEmptyObject(object) {
 // EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.set.js
 var es6_set = __webpack_require__("ToIb");
 
-// CONCATENATED MODULE: ../modules/earthengine-layers/node_modules/@loaders.gl/images/dist/esm/lib/binary-image-api/binary-image-parsers.js
+// CONCATENATED MODULE: ../node_modules/@loaders.gl/images/dist/esm/lib/category-api/binary-image-api.js
 
 
 
@@ -15735,58 +15769,61 @@ var es6_set = __webpack_require__("ToIb");
 
 var BIG_ENDIAN = false;
 var LITTLE_ENDIAN = true;
-var mimeTypeMap = new Map([['image/png', {
-  test: isPng,
-  getSize: getPngSize
-}], ['image/jpeg', {
-  test: isJpeg,
-  getSize: getJpegSize
-}], ['image/gif', {
-  test: isGif,
-  getSize: getGifSize
-}], ['image/bmp', {
-  test: isBmp,
-  getSize: getBmpSize
-}]]);
-function isPng(dataView) {
-  return dataView.byteLength >= 24 && dataView.getUint32(0, BIG_ENDIAN) === 0x89504e47;
+function getBinaryImageMetadata(binaryData) {
+  var dataView = toDataView(binaryData);
+  return getPngMetadata(dataView) || getJpegMetadata(dataView) || getGifMetadata(dataView) || getBmpMetadata(dataView);
 }
 
-function getPngSize(dataView) {
+function getPngMetadata(binaryData) {
+  var dataView = toDataView(binaryData);
+  var isPng = dataView.byteLength >= 24 && dataView.getUint32(0, BIG_ENDIAN) === 0x89504e47;
+
+  if (!isPng) {
+    return null;
+  }
+
   return {
+    mimeType: 'image/png',
     width: dataView.getUint32(16, BIG_ENDIAN),
     height: dataView.getUint32(20, BIG_ENDIAN)
   };
 }
 
-function isGif(dataView) {
-  return dataView.byteLength >= 10 && dataView.getUint32(0, BIG_ENDIAN) === 0x47494638;
-}
+function getGifMetadata(binaryData) {
+  var dataView = toDataView(binaryData);
+  var isGif = dataView.byteLength >= 10 && dataView.getUint32(0, BIG_ENDIAN) === 0x47494638;
 
-function getGifSize(dataView) {
+  if (!isGif) {
+    return null;
+  }
+
   return {
+    mimeType: 'image/gif',
     width: dataView.getUint16(6, LITTLE_ENDIAN),
     height: dataView.getUint16(8, LITTLE_ENDIAN)
   };
 }
 
-function isBmp(dataView) {
-  return dataView.byteLength >= 14 && dataView.getUint16(0, BIG_ENDIAN) === 0x424d && dataView.getUint32(2, LITTLE_ENDIAN) === dataView.byteLength;
-}
+function getBmpMetadata(binaryData) {
+  var dataView = toDataView(binaryData);
+  var isBmp = dataView.byteLength >= 14 && dataView.getUint16(0, BIG_ENDIAN) === 0x424d && dataView.getUint32(2, LITTLE_ENDIAN) === dataView.byteLength;
 
-function getBmpSize(dataView) {
+  if (!isBmp) {
+    return null;
+  }
+
   return {
+    mimeType: 'image/bmp',
     width: dataView.getUint32(18, LITTLE_ENDIAN),
     height: dataView.getUint32(22, LITTLE_ENDIAN)
   };
 }
 
-function isJpeg(dataView) {
-  return dataView.byteLength >= 3 && dataView.getUint16(0, BIG_ENDIAN) === 0xffd8 && dataView.getUint8(2, BIG_ENDIAN) === 0xff;
-}
+function getJpegMetadata(binaryData) {
+  var dataView = toDataView(binaryData);
+  var isJpeg = dataView.byteLength >= 3 && dataView.getUint16(0, BIG_ENDIAN) === 0xffd8 && dataView.getUint8(2) === 0xff;
 
-function getJpegSize(dataView) {
-  if (dataView.byteLength < 2 || dataView.getUint16(0, BIG_ENDIAN) !== 0xffd8) {
+  if (!isJpeg) {
     return null;
   }
 
@@ -15796,11 +15833,12 @@ function getJpegSize(dataView) {
 
   var i = 2;
 
-  while (i < dataView.byteLength) {
+  while (i + 9 < dataView.byteLength) {
     var marker = dataView.getUint16(i, BIG_ENDIAN);
 
     if (sofMarkers.has(marker)) {
       return {
+        mimeType: 'image/jpeg',
         height: dataView.getUint16(i + 5, BIG_ENDIAN),
         width: dataView.getUint16(i + 7, BIG_ENDIAN)
       };
@@ -15830,113 +15868,35 @@ function getJpegMarkers() {
     sofMarkers: sofMarkers
   };
 }
-// CONCATENATED MODULE: ../modules/earthengine-layers/node_modules/@loaders.gl/images/dist/esm/lib/binary-image-api/binary-image-api.js
-
-
-
-
-
-
-
-
-
-
-var ERR_INVALID_MIME_TYPE = "Invalid MIME type. Supported MIME types are: ".concat(Array.from(mimeTypeMap.keys()).join(', '));
-function isBinaryImage(arrayBuffer, mimeType) {
-  if (mimeType) {
-    var _getBinaryImageTypeHa = getBinaryImageTypeHandlers(mimeType),
-        test = _getBinaryImageTypeHa.test;
-
-    var dataView = toDataView(arrayBuffer);
-    return test(dataView);
-  }
-
-  return Boolean(getBinaryImageMIMEType(arrayBuffer));
-}
-function getBinaryImageMIMEType(arrayBuffer) {
-  var dataView = toDataView(arrayBuffer);
-  var _iteratorNormalCompletion = true;
-  var _didIteratorError = false;
-  var _iteratorError = undefined;
-
-  try {
-    for (var _iterator = mimeTypeMap.entries()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-      var _step$value = Object(slicedToArray["a" /* default */])(_step.value, 2),
-          mimeType = _step$value[0],
-          test = _step$value[1].test;
-
-      if (test(dataView)) {
-        return mimeType;
-      }
-    }
-  } catch (err) {
-    _didIteratorError = true;
-    _iteratorError = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion && _iterator["return"] != null) {
-        _iterator["return"]();
-      }
-    } finally {
-      if (_didIteratorError) {
-        throw _iteratorError;
-      }
-    }
-  }
-
-  return null;
-}
-function getBinaryImageSize(arrayBuffer) {
-  var mimeType = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-  mimeType = mimeType || getBinaryImageMIMEType(arrayBuffer);
-
-  var _getBinaryImageTypeHa2 = getBinaryImageTypeHandlers(mimeType),
-      getSize = _getBinaryImageTypeHa2.getSize;
-
-  var dataView = toDataView(arrayBuffer);
-  var size = getSize(dataView);
-
-  if (!size) {
-    throw new Error("invalid image data for type: ".concat(mimeType));
-  }
-
-  return size;
-}
-
-function getBinaryImageTypeHandlers(mimeType) {
-  var handlers = mimeTypeMap.get(mimeType);
-
-  if (!handlers) {
-    throw new Error(ERR_INVALID_MIME_TYPE);
-  }
-
-  return handlers;
-}
 
 function toDataView(data) {
-  data = data.buffer || data;
-
-  if (data instanceof ArrayBuffer) {
-    return new DataView(data);
+  if (data instanceof DataView) {
+    return data;
   }
 
   if (ArrayBuffer.isView(data)) {
     return new DataView(data.buffer);
   }
 
+  if (data instanceof ArrayBuffer) {
+    return new DataView(data);
+  }
+
   throw new Error('toDataView');
 }
-// CONCATENATED MODULE: ../modules/earthengine-layers/node_modules/@loaders.gl/images/dist/esm/lib/parsers/parse-to-node-image.js
+// CONCATENATED MODULE: ../node_modules/@loaders.gl/images/dist/esm/lib/parsers/parse-to-node-image.js
 
 
 
 function parseToNodeImage(arrayBuffer, options) {
-  var mimeType = getBinaryImageMIMEType(arrayBuffer);
+  var _ref = getBinaryImageMetadata(arrayBuffer) || {},
+      mimeType = _ref.mimeType;
+
   var _parseImageNode = globals["a" /* global */]._parseImageNode;
   assert_assert(_parseImageNode);
   return _parseImageNode(arrayBuffer, mimeType, options);
 }
-// CONCATENATED MODULE: ../modules/earthengine-layers/node_modules/@loaders.gl/images/dist/esm/lib/parsers/parse-image.js
+// CONCATENATED MODULE: ../node_modules/@loaders.gl/images/dist/esm/lib/parsers/parse-image.js
 
 
 
@@ -16021,26 +15981,26 @@ function getLoadableImageType(type) {
       return type;
   }
 }
-// CONCATENATED MODULE: ../modules/earthengine-layers/node_modules/@loaders.gl/images/dist/esm/image-loader.js
+// CONCATENATED MODULE: ../node_modules/@loaders.gl/images/dist/esm/image-loader.js
 
 
 
-var VERSION =  true ? "2.1.4" : undefined;
+var VERSION =  true ? "2.2.5" : undefined;
 var EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp', 'ico', 'svg'];
 var MIME_TYPES = ['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/bmp', 'image/vndmicrosofticon', 'image/svg+xml'];
 var ImageLoader = {
+  id: 'image',
   name: 'Images',
   version: VERSION,
   mimeTypes: MIME_TYPES,
   extensions: EXTENSIONS,
   parse: parseImage,
   test: function test(arrayBuffer) {
-    var dataView = new DataView(arrayBuffer);
-    return isJpeg(dataView) || isBmp(dataView) || isGif(dataView) || isPng(dataView);
+    return Boolean(getBinaryImageMetadata(new DataView(arrayBuffer)));
   },
   options: {
     image: {
-      format: 'auto',
+      type: 'auto',
       decode: true
     }
   }
@@ -16057,15 +16017,72 @@ function promisifyEEMethod(eeObject,method){for(var _len=arguments.length,args=n
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+function row_table_batch_ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    if (enumerableOnly) symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    });
+    keys.push.apply(keys, symbols);
+  }
+
+  return keys;
+}
+
+function row_table_batch_objectSpread(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
+    if (i % 2) {
+      row_table_batch_ownKeys(Object(source), true).forEach(function (key) {
+        Object(defineProperty["a" /* default */])(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      row_table_batch_ownKeys(Object(source)).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+
+  return target;
+}
+
+var DEFAULT_OPTIONS = {
+  batchSize: 'auto',
+  convertToObject: true
+};
+
 var row_table_batch_RowTableBatch = function () {
-  function RowTableBatch(schema, batchSize) {
+  function RowTableBatch(schema) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
     Object(classCallCheck["a" /* default */])(this, RowTableBatch);
 
+    options = row_table_batch_objectSpread(row_table_batch_objectSpread({}, DEFAULT_OPTIONS), options);
     this.schema = schema;
-    this.batchSize = batchSize;
+    this.batchSize = options.batchSize;
+    this.convertToObject = options.convertToObject;
     this.rows = null;
     this.length = 0;
     this.isChunkComplete = false;
+    this.cursor = 0;
 
     if (!Array.isArray(schema)) {
       this._headers = [];
@@ -16079,12 +16096,18 @@ var row_table_batch_RowTableBatch = function () {
   Object(createClass["a" /* default */])(RowTableBatch, [{
     key: "addRow",
     value: function addRow(row) {
+      var cursor = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
       if (!this.rows) {
         this.rows = new Array(this.batchSize);
         this.length = 0;
       }
 
-      this.rows[this.length] = convertRowToObject(row, this._headers);
+      if (Number.isFinite(cursor)) {
+        this.cursor = cursor;
+      }
+
+      this.rows[this.length] = this.convertToObject ? convertRowToObject(row, this._headers) : row;
       this.length++;
     }
   }, {
@@ -16102,8 +16125,8 @@ var row_table_batch_RowTableBatch = function () {
       return this.rows && this.length >= this.batchSize;
     }
   }, {
-    key: "getNormalizedBatch",
-    value: function getNormalizedBatch() {
+    key: "getBatch",
+    value: function getBatch() {
       if (this.rows) {
         var rows = this.rows.slice(0, this.length);
         this.rows = null;
@@ -16111,7 +16134,8 @@ var row_table_batch_RowTableBatch = function () {
         return {
           data: rows,
           schema: this.schema,
-          length: rows.length
+          length: rows.length,
+          cursor: this.cursor
         };
       }
 
@@ -16187,6 +16211,9 @@ function getFirstArray(json) {
 
   return null;
 }
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.date.to-string.js
+var es6_date_to_string = __webpack_require__("C9fy");
+
 // EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/awaitAsyncGenerator.js
 var awaitAsyncGenerator = __webpack_require__("aVaM");
 
@@ -16196,7 +16223,422 @@ var wrapAsyncGenerator = __webpack_require__("DkRU");
 // EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/asyncIterator.js
 var esm_asyncIterator = __webpack_require__("9Llm");
 
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.array.index-of.js
+var es6_array_index_of = __webpack_require__("sc67");
+
+// CONCATENATED MODULE: ../node_modules/@loaders.gl/loader-utils/dist/esm/lib/iterator-utils/text-iterators.js
+
+
+
+
+
+function makeTextDecoderIterator(_x, _x2) {
+  return _makeTextDecoderIterator.apply(this, arguments);
+}
+
+function _makeTextDecoderIterator() {
+  _makeTextDecoderIterator = Object(wrapAsyncGenerator["a" /* default */])(regenerator_default.a.mark(function _callee(arrayBufferIterator, options) {
+    var textDecoder, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, _value, arrayBuffer;
+
+    return regenerator_default.a.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            textDecoder = new TextDecoder(options);
+            _iteratorNormalCompletion = true;
+            _didIteratorError = false;
+            _context.prev = 3;
+            _iterator = Object(esm_asyncIterator["a" /* default */])(arrayBufferIterator);
+
+          case 5:
+            _context.next = 7;
+            return Object(awaitAsyncGenerator["a" /* default */])(_iterator.next());
+
+          case 7:
+            _step = _context.sent;
+            _iteratorNormalCompletion = _step.done;
+            _context.next = 11;
+            return Object(awaitAsyncGenerator["a" /* default */])(_step.value);
+
+          case 11:
+            _value = _context.sent;
+
+            if (_iteratorNormalCompletion) {
+              _context.next = 19;
+              break;
+            }
+
+            arrayBuffer = _value;
+            _context.next = 16;
+            return typeof arrayBuffer === 'string' ? arrayBuffer : textDecoder.decode(arrayBuffer, {
+              stream: true
+            });
+
+          case 16:
+            _iteratorNormalCompletion = true;
+            _context.next = 5;
+            break;
+
+          case 19:
+            _context.next = 25;
+            break;
+
+          case 21:
+            _context.prev = 21;
+            _context.t0 = _context["catch"](3);
+            _didIteratorError = true;
+            _iteratorError = _context.t0;
+
+          case 25:
+            _context.prev = 25;
+            _context.prev = 26;
+
+            if (!(!_iteratorNormalCompletion && _iterator["return"] != null)) {
+              _context.next = 30;
+              break;
+            }
+
+            _context.next = 30;
+            return Object(awaitAsyncGenerator["a" /* default */])(_iterator["return"]());
+
+          case 30:
+            _context.prev = 30;
+
+            if (!_didIteratorError) {
+              _context.next = 33;
+              break;
+            }
+
+            throw _iteratorError;
+
+          case 33:
+            return _context.finish(30);
+
+          case 34:
+            return _context.finish(25);
+
+          case 35:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, null, [[3, 21, 25, 35], [26,, 30, 34]]);
+  }));
+  return _makeTextDecoderIterator.apply(this, arguments);
+}
+
+function makeTextEncoderIterator(_x3, _x4) {
+  return _makeTextEncoderIterator.apply(this, arguments);
+}
+
+function _makeTextEncoderIterator() {
+  _makeTextEncoderIterator = Object(wrapAsyncGenerator["a" /* default */])(regenerator_default.a.mark(function _callee2(textIterator, options) {
+    var textEncoder, _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, _value2, text;
+
+    return regenerator_default.a.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            textEncoder = new TextEncoder();
+            _iteratorNormalCompletion2 = true;
+            _didIteratorError2 = false;
+            _context2.prev = 3;
+            _iterator2 = Object(esm_asyncIterator["a" /* default */])(textIterator);
+
+          case 5:
+            _context2.next = 7;
+            return Object(awaitAsyncGenerator["a" /* default */])(_iterator2.next());
+
+          case 7:
+            _step2 = _context2.sent;
+            _iteratorNormalCompletion2 = _step2.done;
+            _context2.next = 11;
+            return Object(awaitAsyncGenerator["a" /* default */])(_step2.value);
+
+          case 11:
+            _value2 = _context2.sent;
+
+            if (_iteratorNormalCompletion2) {
+              _context2.next = 19;
+              break;
+            }
+
+            text = _value2;
+            _context2.next = 16;
+            return typeof text === 'string' ? textEncoder.encode(text) : text;
+
+          case 16:
+            _iteratorNormalCompletion2 = true;
+            _context2.next = 5;
+            break;
+
+          case 19:
+            _context2.next = 25;
+            break;
+
+          case 21:
+            _context2.prev = 21;
+            _context2.t0 = _context2["catch"](3);
+            _didIteratorError2 = true;
+            _iteratorError2 = _context2.t0;
+
+          case 25:
+            _context2.prev = 25;
+            _context2.prev = 26;
+
+            if (!(!_iteratorNormalCompletion2 && _iterator2["return"] != null)) {
+              _context2.next = 30;
+              break;
+            }
+
+            _context2.next = 30;
+            return Object(awaitAsyncGenerator["a" /* default */])(_iterator2["return"]());
+
+          case 30:
+            _context2.prev = 30;
+
+            if (!_didIteratorError2) {
+              _context2.next = 33;
+              break;
+            }
+
+            throw _iteratorError2;
+
+          case 33:
+            return _context2.finish(30);
+
+          case 34:
+            return _context2.finish(25);
+
+          case 35:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2, null, [[3, 21, 25, 35], [26,, 30, 34]]);
+  }));
+  return _makeTextEncoderIterator.apply(this, arguments);
+}
+
+function makeLineIterator(_x5) {
+  return _makeLineIterator.apply(this, arguments);
+}
+
+function _makeLineIterator() {
+  _makeLineIterator = Object(wrapAsyncGenerator["a" /* default */])(regenerator_default.a.mark(function _callee3(textIterator) {
+    var previous, _iteratorNormalCompletion3, _didIteratorError3, _iteratorError3, _iterator3, _step3, _value3, textChunk, eolIndex, line;
+
+    return regenerator_default.a.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            previous = '';
+            _iteratorNormalCompletion3 = true;
+            _didIteratorError3 = false;
+            _context3.prev = 3;
+            _iterator3 = Object(esm_asyncIterator["a" /* default */])(textIterator);
+
+          case 5:
+            _context3.next = 7;
+            return Object(awaitAsyncGenerator["a" /* default */])(_iterator3.next());
+
+          case 7:
+            _step3 = _context3.sent;
+            _iteratorNormalCompletion3 = _step3.done;
+            _context3.next = 11;
+            return Object(awaitAsyncGenerator["a" /* default */])(_step3.value);
+
+          case 11:
+            _value3 = _context3.sent;
+
+            if (_iteratorNormalCompletion3) {
+              _context3.next = 26;
+              break;
+            }
+
+            textChunk = _value3;
+            previous += textChunk;
+            eolIndex = void 0;
+
+          case 16:
+            if (!((eolIndex = previous.indexOf('\n')) >= 0)) {
+              _context3.next = 23;
+              break;
+            }
+
+            line = previous.slice(0, eolIndex + 1);
+            previous = previous.slice(eolIndex + 1);
+            _context3.next = 21;
+            return line;
+
+          case 21:
+            _context3.next = 16;
+            break;
+
+          case 23:
+            _iteratorNormalCompletion3 = true;
+            _context3.next = 5;
+            break;
+
+          case 26:
+            _context3.next = 32;
+            break;
+
+          case 28:
+            _context3.prev = 28;
+            _context3.t0 = _context3["catch"](3);
+            _didIteratorError3 = true;
+            _iteratorError3 = _context3.t0;
+
+          case 32:
+            _context3.prev = 32;
+            _context3.prev = 33;
+
+            if (!(!_iteratorNormalCompletion3 && _iterator3["return"] != null)) {
+              _context3.next = 37;
+              break;
+            }
+
+            _context3.next = 37;
+            return Object(awaitAsyncGenerator["a" /* default */])(_iterator3["return"]());
+
+          case 37:
+            _context3.prev = 37;
+
+            if (!_didIteratorError3) {
+              _context3.next = 40;
+              break;
+            }
+
+            throw _iteratorError3;
+
+          case 40:
+            return _context3.finish(37);
+
+          case 41:
+            return _context3.finish(32);
+
+          case 42:
+            if (!(previous.length > 0)) {
+              _context3.next = 45;
+              break;
+            }
+
+            _context3.next = 45;
+            return previous;
+
+          case 45:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, null, [[3, 28, 32, 42], [33,, 37, 41]]);
+  }));
+  return _makeLineIterator.apply(this, arguments);
+}
+
+function makeNumberedLineIterator(_x6) {
+  return _makeNumberedLineIterator.apply(this, arguments);
+}
+
+function _makeNumberedLineIterator() {
+  _makeNumberedLineIterator = Object(wrapAsyncGenerator["a" /* default */])(regenerator_default.a.mark(function _callee4(lineIterator) {
+    var counter, _iteratorNormalCompletion4, _didIteratorError4, _iteratorError4, _iterator4, _step4, _value4, line;
+
+    return regenerator_default.a.wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            counter = 1;
+            _iteratorNormalCompletion4 = true;
+            _didIteratorError4 = false;
+            _context4.prev = 3;
+            _iterator4 = Object(esm_asyncIterator["a" /* default */])(lineIterator);
+
+          case 5:
+            _context4.next = 7;
+            return Object(awaitAsyncGenerator["a" /* default */])(_iterator4.next());
+
+          case 7:
+            _step4 = _context4.sent;
+            _iteratorNormalCompletion4 = _step4.done;
+            _context4.next = 11;
+            return Object(awaitAsyncGenerator["a" /* default */])(_step4.value);
+
+          case 11:
+            _value4 = _context4.sent;
+
+            if (_iteratorNormalCompletion4) {
+              _context4.next = 20;
+              break;
+            }
+
+            line = _value4;
+            _context4.next = 16;
+            return {
+              counter: counter,
+              line: line
+            };
+
+          case 16:
+            counter++;
+
+          case 17:
+            _iteratorNormalCompletion4 = true;
+            _context4.next = 5;
+            break;
+
+          case 20:
+            _context4.next = 26;
+            break;
+
+          case 22:
+            _context4.prev = 22;
+            _context4.t0 = _context4["catch"](3);
+            _didIteratorError4 = true;
+            _iteratorError4 = _context4.t0;
+
+          case 26:
+            _context4.prev = 26;
+            _context4.prev = 27;
+
+            if (!(!_iteratorNormalCompletion4 && _iterator4["return"] != null)) {
+              _context4.next = 31;
+              break;
+            }
+
+            _context4.next = 31;
+            return Object(awaitAsyncGenerator["a" /* default */])(_iterator4["return"]());
+
+          case 31:
+            _context4.prev = 31;
+
+            if (!_didIteratorError4) {
+              _context4.next = 34;
+              break;
+            }
+
+            throw _iteratorError4;
+
+          case 34:
+            return _context4.finish(31);
+
+          case 35:
+            return _context4.finish(26);
+
+          case 36:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4, null, [[3, 22, 26, 36], [27,, 31, 35]]);
+  }));
+  return _makeNumberedLineIterator.apply(this, arguments);
+}
 // CONCATENATED MODULE: ../node_modules/@loaders.gl/tables/dist/esm/lib/table/table-batch-builder.js
+
+
+
 
 
 var DEFAULT_BATCH_SIZE = 100;
@@ -16204,6 +16646,7 @@ var DEFAULT_BATCH_SIZE = 100;
 var table_batch_builder_TableBatchBuilder = function () {
   function TableBatchBuilder(TableBatchType, schema) {
     var batchSize = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : DEFAULT_BATCH_SIZE;
+    var options = arguments.length > 3 ? arguments[3] : undefined;
 
     Object(classCallCheck["a" /* default */])(this, TableBatchBuilder);
 
@@ -16212,6 +16655,8 @@ var table_batch_builder_TableBatchBuilder = function () {
     this.batchSize = batchSize;
     this.batch = null;
     this.batchCount = 0;
+    this.bytesUsed = 0;
+    this.options = options;
   }
 
   Object(createClass["a" /* default */])(TableBatchBuilder, [{
@@ -16219,14 +16664,16 @@ var table_batch_builder_TableBatchBuilder = function () {
     value: function addRow(row) {
       if (!this.batch) {
         var TableBatchType = this.TableBatchType;
-        this.batch = new TableBatchType(this.schema, this.batchSize);
+        this.batch = new TableBatchType(this.schema, this.batchSize, this.options);
       }
 
       this.batch.addRow(row);
     }
   }, {
     key: "chunkComplete",
-    value: function chunkComplete() {
+    value: function chunkComplete(chunk) {
+      this.bytesUsed += chunk.byteLength || chunk.length || 0;
+
       if (this.batch) {
         this.batch.chunkComplete();
       }
@@ -16242,13 +16689,21 @@ var table_batch_builder_TableBatchBuilder = function () {
       return Boolean(this.batch);
     }
   }, {
-    key: "getNormalizedBatch",
-    value: function getNormalizedBatch() {
+    key: "getBatch",
+    value: function getBatch() {
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+      if (Number.isFinite(options.bytesUsed)) {
+        this.bytesUsed = options.bytesUsed;
+      }
+
       if (this.batch) {
-        var normalizedBatch = this.batch.getNormalizedBatch();
+        var normalizedBatch = this.batch.getBatch();
         this.batch = null;
         normalizedBatch.count = this.batchCount;
         this.batchCount++;
+        normalizedBatch.bytesUsed = this.bytesUsed;
+        Object.assign(normalizedBatch, options);
         return normalizedBatch;
       }
 
@@ -16260,14 +16715,14 @@ var table_batch_builder_TableBatchBuilder = function () {
 }();
 
 
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.reflect.construct.js
+var es6_reflect_construct = __webpack_require__("nWfQ");
+
 // EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.object.freeze.js
 var es6_object_freeze = __webpack_require__("DrhF");
 
 // EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.string.trim.js
 var es6_string_trim = __webpack_require__("HXzo");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.array.index-of.js
-var es6_array_index_of = __webpack_require__("sc67");
 
 // CONCATENATED MODULE: ../node_modules/@loaders.gl/json/dist/esm/lib/clarinet/clarinet.js
 
@@ -16850,7 +17305,227 @@ function error(parser, er) {
 function isWhitespace(c) {
   return c === Char.carriageReturn || c === Char.lineFeed || c === Char.space || c === Char.tab;
 }
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.regexp.split.js
+var es6_regexp_split = __webpack_require__("HQhv");
+
+// CONCATENATED MODULE: ../node_modules/@loaders.gl/json/dist/esm/lib/jsonpath/jsonpath.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function _createForOfIteratorHelper(o, allowArrayLike) {
+  var it;
+
+  if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {
+    if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
+      if (it) o = it;
+      var i = 0;
+
+      var F = function F() {};
+
+      return {
+        s: F,
+        n: function n() {
+          if (i >= o.length) return {
+            done: true
+          };
+          return {
+            done: false,
+            value: o[i++]
+          };
+        },
+        e: function e(_e) {
+          throw _e;
+        },
+        f: F
+      };
+    }
+
+    throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+  }
+
+  var normalCompletion = true,
+      didErr = false,
+      err;
+  return {
+    s: function s() {
+      it = o[Symbol.iterator]();
+    },
+    n: function n() {
+      var step = it.next();
+      normalCompletion = step.done;
+      return step;
+    },
+    e: function e(_e2) {
+      didErr = true;
+      err = _e2;
+    },
+    f: function f() {
+      try {
+        if (!normalCompletion && it["return"] != null) it["return"]();
+      } finally {
+        if (didErr) throw err;
+      }
+    }
+  };
+}
+
+function _unsupportedIterableToArray(o, minLen) {
+  if (!o) return;
+  if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor) n = o.constructor.name;
+  if (n === "Map" || n === "Set") return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+}
+
+function _arrayLikeToArray(arr, len) {
+  if (len == null || len > arr.length) len = arr.length;
+
+  for (var i = 0, arr2 = new Array(len); i < len; i++) {
+    arr2[i] = arr[i];
+  }
+
+  return arr2;
+}
+
+var jsonpath_JSONPath = function () {
+  function JSONPath() {
+    var path = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+    Object(classCallCheck["a" /* default */])(this, JSONPath);
+
+    this.path = ['$'];
+
+    if (path instanceof JSONPath) {
+      this.path = Object(toConsumableArray["a" /* default */])(path.path);
+      return;
+    }
+
+    if (Array.isArray(path)) {
+      var _this$path;
+
+      (_this$path = this.path).push.apply(_this$path, Object(toConsumableArray["a" /* default */])(path));
+
+      return;
+    }
+
+    if (typeof path === 'string') {
+      this.path = path.split('.');
+
+      if (this.path[0] !== '$') {
+        throw new Error('JSONPaths must start with $');
+      }
+    }
+  }
+
+  Object(createClass["a" /* default */])(JSONPath, [{
+    key: "clone",
+    value: function clone() {
+      return new JSONPath(this);
+    }
+  }, {
+    key: "toString",
+    value: function toString() {
+      return this.path.join('.');
+    }
+  }, {
+    key: "push",
+    value: function push(name) {
+      this.path.push(name);
+    }
+  }, {
+    key: "pop",
+    value: function pop() {
+      return this.path.pop();
+    }
+  }, {
+    key: "set",
+    value: function set(name) {
+      this.path[this.path.length - 1] = name;
+    }
+  }, {
+    key: "equals",
+    value: function equals(other) {
+      if (!this || !other || this.path.length !== other.path.length) {
+        return false;
+      }
+
+      for (var i = 0; i < this.path.length; ++i) {
+        if (this.path[i] !== other.path[i]) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+  }, {
+    key: "setFieldAtPath",
+    value: function setFieldAtPath(object, value) {
+      var path = Object(toConsumableArray["a" /* default */])(this.path);
+
+      path.shift();
+      var field = path.pop();
+
+      var _iterator = _createForOfIteratorHelper(path),
+          _step;
+
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var component = _step.value;
+          object = object[component];
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+
+      object[field] = value;
+    }
+  }, {
+    key: "getFieldAtPath",
+    value: function getFieldAtPath(object) {
+      var path = Object(toConsumableArray["a" /* default */])(this.path);
+
+      path.shift();
+      var field = path.pop();
+
+      var _iterator2 = _createForOfIteratorHelper(path),
+          _step2;
+
+      try {
+        for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+          var component = _step2.value;
+          object = object[component];
+        }
+      } catch (err) {
+        _iterator2.e(err);
+      } finally {
+        _iterator2.f();
+      }
+
+      return object[field];
+    }
+  }]);
+
+  return JSONPath;
+}();
+
+
 // CONCATENATED MODULE: ../node_modules/@loaders.gl/json/dist/esm/lib/parser/json-parser.js
+
 
 
 
@@ -16874,6 +17549,7 @@ var json_parser_JSONParser = function () {
         container: [],
         key: null
       });
+      this.jsonpath = new jsonpath_JSONPath();
     }
   }, {
     key: "write",
@@ -16900,19 +17576,45 @@ var json_parser_JSONParser = function () {
       }
     }
   }, {
-    key: "_openContainer",
-    value: function _openContainer(newContainer) {
+    key: "_openArray",
+    value: function _openArray() {
+      var newContainer = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+      this.jsonpath.push(null);
+
       this._pushOrSet(newContainer);
 
       this.previousStates.push(this.currentState);
       this.currentState = {
         container: newContainer,
+        isArray: true,
         key: null
       };
     }
   }, {
-    key: "_closeContainer",
-    value: function _closeContainer() {
+    key: "_closeArray",
+    value: function _closeArray() {
+      this.jsonpath.pop();
+      this.currentState = this.previousStates.pop();
+    }
+  }, {
+    key: "_openObject",
+    value: function _openObject() {
+      var newContainer = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      this.jsonpath.push(null);
+
+      this._pushOrSet(newContainer);
+
+      this.previousStates.push(this.currentState);
+      this.currentState = {
+        container: newContainer,
+        isArray: false,
+        key: null
+      };
+    }
+  }, {
+    key: "_closeObject",
+    value: function _closeObject() {
+      this.jsonpath.pop();
       this.currentState = this.previousStates.pop();
     }
   }, {
@@ -16922,27 +17624,30 @@ var json_parser_JSONParser = function () {
 
       this.parser = new clarinet_ClarinetParser({
         onready: function onready() {
+          _this.jsonpath = new jsonpath_JSONPath();
           _this.previousStates.length = 0;
           _this.currentState.container.length = 0;
         },
         onopenobject: function onopenobject(name) {
-          _this._openContainer({});
+          _this._openObject({});
 
           if (typeof name !== 'undefined') {
             _this.parser.onkey(name);
           }
         },
         onkey: function onkey(name) {
+          _this.jsonpath.set(name);
+
           _this.currentState.key = name;
         },
         oncloseobject: function oncloseobject() {
-          _this._closeContainer();
+          _this._closeObject();
         },
         onopenarray: function onopenarray() {
-          _this._openContainer([]);
+          _this._openArray();
         },
         onclosearray: function onclosearray() {
-          _this._closeContainer();
+          _this._closeArray();
         },
         onvalue: function onvalue(value) {
           _this._pushOrSet(value);
@@ -16971,16 +17676,147 @@ var json_parser_JSONParser = function () {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+function streaming_json_parser_createForOfIteratorHelper(o, allowArrayLike) {
+  var it;
+
+  if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {
+    if (Array.isArray(o) || (it = streaming_json_parser_unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
+      if (it) o = it;
+      var i = 0;
+
+      var F = function F() {};
+
+      return {
+        s: F,
+        n: function n() {
+          if (i >= o.length) return {
+            done: true
+          };
+          return {
+            done: false,
+            value: o[i++]
+          };
+        },
+        e: function e(_e) {
+          throw _e;
+        },
+        f: F
+      };
+    }
+
+    throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+  }
+
+  var normalCompletion = true,
+      didErr = false,
+      err;
+  return {
+    s: function s() {
+      it = o[Symbol.iterator]();
+    },
+    n: function n() {
+      var step = it.next();
+      normalCompletion = step.done;
+      return step;
+    },
+    e: function e(_e2) {
+      didErr = true;
+      err = _e2;
+    },
+    f: function f() {
+      try {
+        if (!normalCompletion && it["return"] != null) it["return"]();
+      } finally {
+        if (didErr) throw err;
+      }
+    }
+  };
+}
+
+function streaming_json_parser_unsupportedIterableToArray(o, minLen) {
+  if (!o) return;
+  if (typeof o === "string") return streaming_json_parser_arrayLikeToArray(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor) n = o.constructor.name;
+  if (n === "Map" || n === "Set") return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return streaming_json_parser_arrayLikeToArray(o, minLen);
+}
+
+function streaming_json_parser_arrayLikeToArray(arr, len) {
+  if (len == null || len > arr.length) len = arr.length;
+
+  for (var i = 0, arr2 = new Array(len); i < len; i++) {
+    arr2[i] = arr[i];
+  }
+
+  return arr2;
+}
+
+function _createSuper(Derived) {
+  var hasNativeReflectConstruct = _isNativeReflectConstruct();
+
+  return function _createSuperInternal() {
+    var Super = Object(getPrototypeOf["a" /* default */])(Derived),
+        result;
+
+    if (hasNativeReflectConstruct) {
+      var NewTarget = Object(getPrototypeOf["a" /* default */])(this).constructor;
+
+      result = Reflect.construct(Super, arguments, NewTarget);
+    } else {
+      result = Super.apply(this, arguments);
+    }
+
+    return Object(possibleConstructorReturn["a" /* default */])(this, result);
+  };
+}
+
+function _isNativeReflectConstruct() {
+  if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+  if (Reflect.construct.sham) return false;
+  if (typeof Proxy === "function") return true;
+
+  try {
+    Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+
+
+
 var streaming_json_parser_StreamingJSONParser = function (_JSONParser) {
   Object(inherits["a" /* default */])(StreamingJSONParser, _JSONParser);
+
+  var _super = _createSuper(StreamingJSONParser);
 
   function StreamingJSONParser() {
     var _this;
 
+    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
     Object(classCallCheck["a" /* default */])(this, StreamingJSONParser);
 
-    _this = Object(possibleConstructorReturn["a" /* default */])(this, Object(getPrototypeOf["a" /* default */])(StreamingJSONParser).call(this));
-    _this.topLevelArray = null;
+    _this = _super.call(this);
+    var jsonpaths = options.jsonpaths || [];
+    _this.jsonPaths = jsonpaths.map(function (jsonpath) {
+      return new jsonpath_JSONPath(jsonpath);
+    });
+    _this.streamingJsonPath = null;
+    _this.streamingArray = null;
     _this.topLevelObject = null;
 
     _this._extendParser();
@@ -16995,9 +17831,9 @@ var streaming_json_parser_StreamingJSONParser = function (_JSONParser) {
 
       var array = [];
 
-      if (this.topLevelArray) {
-        array = Object(toConsumableArray["a" /* default */])(this.topLevelArray);
-        this.topLevelArray.length = 0;
+      if (this.streamingArray) {
+        array = Object(toConsumableArray["a" /* default */])(this.streamingArray);
+        this.streamingArray.length = 0;
       }
 
       return array;
@@ -17008,27 +17844,75 @@ var streaming_json_parser_StreamingJSONParser = function (_JSONParser) {
       return this.topLevelObject;
     }
   }, {
+    key: "getStreamingJsonPath",
+    value: function getStreamingJsonPath() {
+      return this.streamingJsonPath;
+    }
+  }, {
+    key: "getStreamingJsonPathAsString",
+    value: function getStreamingJsonPathAsString() {
+      return this.streamingJsonPath && this.streamingJsonPath.toString();
+    }
+  }, {
+    key: "getJsonPath",
+    value: function getJsonPath() {
+      return this.jsonpath;
+    }
+  }, {
+    key: "_matchJSONPath",
+    value: function _matchJSONPath() {
+      var currentPath = this.getJsonPath();
+
+      if (this.jsonPaths.length === 0) {
+        return true;
+      }
+
+      var _iterator = streaming_json_parser_createForOfIteratorHelper(this.jsonPaths),
+          _step;
+
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var jsonPath = _step.value;
+
+          if (jsonPath.equals(currentPath)) {
+            return true;
+          }
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+
+      return false;
+    }
+  }, {
     key: "_extendParser",
     value: function _extendParser() {
       var _this2 = this;
 
       this.parser.onopenarray = function () {
-        if (!_this2.topLevelArray) {
-          _this2.topLevelArray = [];
+        if (!_this2.streamingArray) {
+          if (_this2._matchJSONPath()) {
+            _this2.streamingJsonPath = _this2.getJsonPath().clone();
+            _this2.streamingArray = [];
 
-          _this2._openContainer(_this2.topLevelArray);
-        } else {
-          _this2._openContainer([]);
+            _this2._openArray(_this2.streamingArray);
+
+            return;
+          }
         }
+
+        _this2._openArray();
       };
 
       this.parser.onopenobject = function (name) {
         if (!_this2.topLevelObject) {
           _this2.topLevelObject = {};
 
-          _this2._openContainer(_this2.topLevelObject);
+          _this2._openObject(_this2.topLevelObject);
         } else {
-          _this2._openContainer({});
+          _this2._openObject({});
         }
 
         if (typeof name !== 'undefined') {
@@ -17054,84 +17938,192 @@ var streaming_json_parser_StreamingJSONParser = function (_JSONParser) {
 
 
 
+
+
+
+
+
+
+function parse_json_in_batches_createForOfIteratorHelper(o, allowArrayLike) {
+  var it;
+
+  if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {
+    if (Array.isArray(o) || (it = parse_json_in_batches_unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
+      if (it) o = it;
+      var i = 0;
+
+      var F = function F() {};
+
+      return {
+        s: F,
+        n: function n() {
+          if (i >= o.length) return {
+            done: true
+          };
+          return {
+            done: false,
+            value: o[i++]
+          };
+        },
+        e: function e(_e) {
+          throw _e;
+        },
+        f: F
+      };
+    }
+
+    throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+  }
+
+  var normalCompletion = true,
+      didErr = false,
+      err;
+  return {
+    s: function s() {
+      it = o[Symbol.iterator]();
+    },
+    n: function n() {
+      var step = it.next();
+      normalCompletion = step.done;
+      return step;
+    },
+    e: function e(_e2) {
+      didErr = true;
+      err = _e2;
+    },
+    f: function f() {
+      try {
+        if (!normalCompletion && it["return"] != null) it["return"]();
+      } finally {
+        if (didErr) throw err;
+      }
+    }
+  };
+}
+
+function parse_json_in_batches_unsupportedIterableToArray(o, minLen) {
+  if (!o) return;
+  if (typeof o === "string") return parse_json_in_batches_arrayLikeToArray(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor) n = o.constructor.name;
+  if (n === "Map" || n === "Set") return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return parse_json_in_batches_arrayLikeToArray(o, minLen);
+}
+
+function parse_json_in_batches_arrayLikeToArray(arr, len) {
+  if (len == null || len > arr.length) len = arr.length;
+
+  for (var i = 0, arr2 = new Array(len); i < len; i++) {
+    arr2[i] = arr[i];
+  }
+
+  return arr2;
+}
+
+
+
+
 function parseJSONInBatches(_x, _x2) {
   return _parseJSONInBatches.apply(this, arguments);
 }
 
 function _parseJSONInBatches() {
   _parseJSONInBatches = Object(wrapAsyncGenerator["a" /* default */])(regenerator_default.a.mark(function _callee(asyncIterator, options) {
-    var _options$json, batchSize, _rootObjectBatches, TableBatchType, isFirstChunk, tableBatchBuilder, schema, parser, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, _value, chunk, rows, initialBatch, _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, row, batch, finalBatch;
+    var metadata, _options$json, batchSize, _rootObjectBatches, jsonpaths, TableBatchType, isFirstChunk, tableBatchBuilder, schema, parser, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, _value, chunk, rows, _jsonpath, initialBatch, _initialBatch, _iterator2, _step2, row, jsonpath, batch, finalBatch, _finalBatch;
 
     return regenerator_default.a.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _options$json = options.json, batchSize = _options$json.batchSize, _rootObjectBatches = _options$json._rootObjectBatches;
+            asyncIterator = makeTextDecoderIterator(asyncIterator);
+            metadata = options.metadata;
+            _options$json = options.json, batchSize = _options$json.batchSize, _rootObjectBatches = _options$json._rootObjectBatches, jsonpaths = _options$json.jsonpaths;
             TableBatchType = options.json.TableBatch;
             isFirstChunk = true;
             tableBatchBuilder = null;
             schema = null;
-            parser = new streaming_json_parser_StreamingJSONParser();
-            tableBatchBuilder = tableBatchBuilder || new table_batch_builder_TableBatchBuilder(TableBatchType, schema, batchSize);
+            parser = new streaming_json_parser_StreamingJSONParser({
+              jsonpaths: jsonpaths
+            });
+            tableBatchBuilder = tableBatchBuilder || new table_batch_builder_TableBatchBuilder(TableBatchType, schema, {
+              batchSize: batchSize
+            });
             _iteratorNormalCompletion = true;
             _didIteratorError = false;
-            _context.prev = 9;
+            _context.prev = 11;
             _iterator = Object(esm_asyncIterator["a" /* default */])(asyncIterator);
 
-          case 11:
-            _context.next = 13;
+          case 13:
+            _context.next = 15;
             return Object(awaitAsyncGenerator["a" /* default */])(_iterator.next());
 
-          case 13:
+          case 15:
             _step = _context.sent;
             _iteratorNormalCompletion = _step.done;
-            _context.next = 17;
+            _context.next = 19;
             return Object(awaitAsyncGenerator["a" /* default */])(_step.value);
 
-          case 17:
+          case 19:
             _value = _context.sent;
 
             if (_iteratorNormalCompletion) {
-              _context.next = 63;
+              _context.next = 61;
               break;
             }
 
             chunk = _value;
             rows = parser.write(chunk);
+            _jsonpath = rows.length > 0 && parser.getStreamingJsonPathAsString();
 
-            if (!isFirstChunk) {
-              _context.next = 28;
+            if (!(rows.length > 0 && isFirstChunk)) {
+              _context.next = 35;
               break;
             }
 
-            if (!_rootObjectBatches) {
-              _context.next = 26;
+            if (!metadata) {
+              _context.next = 29;
               break;
             }
 
             initialBatch = {
+              batchType: 'partial-result',
+              container: parser.getPartialResult(),
+              data: [],
+              bytesUsed: 0,
+              schema: null,
+              jsonpath: _jsonpath
+            };
+            _context.next = 29;
+            return initialBatch;
+
+          case 29:
+            if (!_rootObjectBatches) {
+              _context.next = 33;
+              break;
+            }
+
+            _initialBatch = {
               batchType: 'root-object-batch-partial',
               container: parser.getPartialResult(),
               data: [],
               schema: null
             };
-            _context.next = 26;
-            return initialBatch;
+            _context.next = 33;
+            return _initialBatch;
 
-          case 26:
+          case 33:
             isFirstChunk = false;
             schema = deduceSchema(rows);
 
-          case 28:
-            _iteratorNormalCompletion2 = true;
-            _didIteratorError2 = false;
-            _iteratorError2 = undefined;
-            _context.prev = 31;
-            _iterator2 = rows[Symbol.iterator]();
+          case 35:
+            _iterator2 = parse_json_in_batches_createForOfIteratorHelper(rows);
+            _context.prev = 36;
 
-          case 33:
-            if (_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done) {
-              _context.next = 42;
+            _iterator2.s();
+
+          case 38:
+            if ((_step2 = _iterator2.n()).done) {
+              _context.next = 46;
               break;
             }
 
@@ -17139,138 +18131,143 @@ function _parseJSONInBatches() {
             tableBatchBuilder.addRow(row);
 
             if (!tableBatchBuilder.isFull()) {
-              _context.next = 39;
+              _context.next = 44;
               break;
             }
 
-            _context.next = 39;
-            return tableBatchBuilder.getNormalizedBatch();
-
-          case 39:
-            _iteratorNormalCompletion2 = true;
-            _context.next = 33;
-            break;
-
-          case 42:
-            _context.next = 48;
-            break;
+            _context.next = 44;
+            return tableBatchBuilder.getBatch({
+              jsonpath: _jsonpath
+            });
 
           case 44:
-            _context.prev = 44;
-            _context.t0 = _context["catch"](31);
-            _didIteratorError2 = true;
-            _iteratorError2 = _context.t0;
+            _context.next = 38;
+            break;
+
+          case 46:
+            _context.next = 51;
+            break;
 
           case 48:
             _context.prev = 48;
-            _context.prev = 49;
+            _context.t0 = _context["catch"](36);
 
-            if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
-              _iterator2["return"]();
-            }
+            _iterator2.e(_context.t0);
 
           case 51:
             _context.prev = 51;
 
-            if (!_didIteratorError2) {
-              _context.next = 54;
-              break;
-            }
+            _iterator2.f();
 
-            throw _iteratorError2;
-
-          case 54:
             return _context.finish(51);
 
-          case 55:
-            return _context.finish(48);
-
-          case 56:
-            tableBatchBuilder.chunkComplete();
+          case 54:
+            tableBatchBuilder.chunkComplete(chunk);
 
             if (!tableBatchBuilder.isFull()) {
-              _context.next = 60;
+              _context.next = 58;
               break;
             }
 
-            _context.next = 60;
-            return tableBatchBuilder.getNormalizedBatch();
+            _context.next = 58;
+            return tableBatchBuilder.getBatch({
+              jsonpath: _jsonpath
+            });
 
-          case 60:
+          case 58:
             _iteratorNormalCompletion = true;
-            _context.next = 11;
+            _context.next = 13;
+            break;
+
+          case 61:
+            _context.next = 67;
             break;
 
           case 63:
-            _context.next = 69;
-            break;
-
-          case 65:
-            _context.prev = 65;
-            _context.t1 = _context["catch"](9);
+            _context.prev = 63;
+            _context.t1 = _context["catch"](11);
             _didIteratorError = true;
             _iteratorError = _context.t1;
 
-          case 69:
-            _context.prev = 69;
-            _context.prev = 70;
+          case 67:
+            _context.prev = 67;
+            _context.prev = 68;
 
             if (!(!_iteratorNormalCompletion && _iterator["return"] != null)) {
-              _context.next = 74;
+              _context.next = 72;
               break;
             }
 
-            _context.next = 74;
+            _context.next = 72;
             return Object(awaitAsyncGenerator["a" /* default */])(_iterator["return"]());
 
-          case 74:
-            _context.prev = 74;
+          case 72:
+            _context.prev = 72;
 
             if (!_didIteratorError) {
-              _context.next = 77;
+              _context.next = 75;
               break;
             }
 
             throw _iteratorError;
 
+          case 75:
+            return _context.finish(72);
+
+          case 76:
+            return _context.finish(67);
+
           case 77:
-            return _context.finish(74);
-
-          case 78:
-            return _context.finish(69);
-
-          case 79:
-            batch = tableBatchBuilder.getNormalizedBatch();
+            jsonpath = parser.getStreamingJsonPathAsString();
+            batch = tableBatchBuilder.getBatch({
+              jsonpath: jsonpath
+            });
 
             if (!batch) {
-              _context.next = 83;
+              _context.next = 82;
               break;
             }
 
-            _context.next = 83;
+            _context.next = 82;
             return batch;
 
-          case 83:
-            if (!_rootObjectBatches) {
-              _context.next = 87;
+          case 82:
+            if (!metadata) {
+              _context.next = 86;
               break;
             }
 
             finalBatch = {
+              batchType: 'final-result',
+              container: parser.getPartialResult(),
+              jsonpath: parser.getStreamingJsonPathAsString(),
+              data: [],
+              schema: null
+            };
+            _context.next = 86;
+            return finalBatch;
+
+          case 86:
+            if (!_rootObjectBatches) {
+              _context.next = 90;
+              break;
+            }
+
+            _finalBatch = {
               batchType: 'root-object-batch-complete',
               container: parser.getPartialResult(),
               data: [],
               schema: null
             };
-            _context.next = 87;
-            return finalBatch;
+            _context.next = 90;
+            return _finalBatch;
 
-          case 87:
+          case 90:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[9, 65, 69, 79], [31, 44, 48, 56], [49,, 51, 55], [70,, 74, 78]]);
+    }, _callee, null, [[11, 63, 67, 77], [36, 48, 51, 54], [68,, 72, 76]]);
   }));
   return _parseJSONInBatches.apply(this, arguments);
 }
@@ -17367,23 +18364,32 @@ function json_loader_objectSpread(target) {
 
 
 
-var json_loader_VERSION =  true ? "2.1.6" : undefined;
+var json_loader_VERSION =  true ? "2.2.5" : undefined;
+var JSONLoaderOptions = {
+  json: {
+    TableBatch: row_table_batch_RowTableBatch,
+    batchSize: 'auto',
+    _rootObjectBatches: false,
+    table: false,
+    jsonpaths: []
+  }
+};
 var JSONLoader = {
   id: 'json',
   name: 'JSON',
   version: json_loader_VERSION,
-  extensions: ['json'],
-  mimeType: 'text/json',
+  extensions: ['json', 'geojson'],
+  mimeTypes: ['text/json'],
   category: 'table',
   testText: null,
   text: true,
   parse: parse,
   parseTextSync: parseTextSync,
   parseInBatches: parseInBatches,
-  options: {
+  options: JSONLoaderOptions,
+  deprecatedOptions: {
     json: {
-      TableBatch: row_table_batch_RowTableBatch,
-      batchSize: 'auto'
+      _rootObjectBatches: 'metadata'
     }
   }
 };
@@ -17411,8 +18417,8 @@ function _parse() {
 }
 
 function parseTextSync(text, options) {
-  options = json_loader_objectSpread({}, JSONLoader.options, {}, options);
-  options.json = json_loader_objectSpread({}, JSONLoader.options.json, {}, options.json);
+  options = json_loader_objectSpread(json_loader_objectSpread({}, JSONLoaderOptions), options);
+  options.json = json_loader_objectSpread(json_loader_objectSpread({}, JSONLoaderOptions.json), options.json);
   return parseJSONSync(text, options);
 }
 
@@ -17426,8 +18432,8 @@ function _parseInBatches() {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            options = json_loader_objectSpread({}, JSONLoader.options, {}, options);
-            options.json = json_loader_objectSpread({}, JSONLoader.options.json, {}, options.json);
+            options = json_loader_objectSpread(json_loader_objectSpread({}, JSONLoaderOptions), options);
+            options.json = json_loader_objectSpread(json_loader_objectSpread({}, JSONLoaderOptions.json), options.json);
             return _context2.abrupt("return", parseJSONInBatches(asyncIterator, options));
 
           case 3:
@@ -17440,7 +18446,7 @@ function _parseInBatches() {
   return _parseInBatches.apply(this, arguments);
 }
 // CONCATENATED MODULE: ../modules/earthengine-layers/src/earth-engine-layer.js
-function _toConsumableArray(arr){return _arrayWithoutHoles(arr)||_iterableToArray(arr)||_unsupportedIterableToArray(arr)||_nonIterableSpread();}function _nonIterableSpread(){throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}function _unsupportedIterableToArray(o,minLen){if(!o)return;if(typeof o==="string")return _arrayLikeToArray(o,minLen);var n=Object.prototype.toString.call(o).slice(8,-1);if(n==="Object"&&o.constructor)n=o.constructor.name;if(n==="Map"||n==="Set")return Array.from(o);if(n==="Arguments"||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))return _arrayLikeToArray(o,minLen);}function _iterableToArray(iter){if(typeof Symbol!=="undefined"&&Symbol.iterator in Object(iter))return Array.from(iter);}function _arrayWithoutHoles(arr){if(Array.isArray(arr))return _arrayLikeToArray(arr);}function _arrayLikeToArray(arr,len){if(len==null||len>arr.length)len=arr.length;for(var i=0,arr2=new Array(len);i<len;i++){arr2[i]=arr[i];}return arr2;}function earth_engine_layer_asyncGeneratorStep(gen,resolve,reject,_next,_throw,key,arg){try{var info=gen[key](arg);var value=info.value;}catch(error){reject(error);return;}if(info.done){resolve(value);}else{Promise.resolve(value).then(_next,_throw);}}function earth_engine_layer_asyncToGenerator(fn){return function(){var self=this,args=arguments;return new Promise(function(resolve,reject){var gen=fn.apply(self,args);function _next(value){earth_engine_layer_asyncGeneratorStep(gen,resolve,reject,_next,_throw,"next",value);}function _throw(err){earth_engine_layer_asyncGeneratorStep(gen,resolve,reject,_next,_throw,"throw",err);}_next(undefined);});};}function _inheritsLoose(subClass,superClass){subClass.prototype=Object.create(superClass.prototype);subClass.prototype.constructor=subClass;subClass.__proto__=superClass;}/* global createImageBitmap */// Promisify ee apis
+function _toConsumableArray(arr){return _arrayWithoutHoles(arr)||_iterableToArray(arr)||earth_engine_layer_unsupportedIterableToArray(arr)||_nonIterableSpread();}function _nonIterableSpread(){throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}function earth_engine_layer_unsupportedIterableToArray(o,minLen){if(!o)return;if(typeof o==="string")return earth_engine_layer_arrayLikeToArray(o,minLen);var n=Object.prototype.toString.call(o).slice(8,-1);if(n==="Object"&&o.constructor)n=o.constructor.name;if(n==="Map"||n==="Set")return Array.from(o);if(n==="Arguments"||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))return earth_engine_layer_arrayLikeToArray(o,minLen);}function _iterableToArray(iter){if(typeof Symbol!=="undefined"&&Symbol.iterator in Object(iter))return Array.from(iter);}function _arrayWithoutHoles(arr){if(Array.isArray(arr))return earth_engine_layer_arrayLikeToArray(arr);}function earth_engine_layer_arrayLikeToArray(arr,len){if(len==null||len>arr.length)len=arr.length;for(var i=0,arr2=new Array(len);i<len;i++){arr2[i]=arr[i];}return arr2;}function earth_engine_layer_asyncGeneratorStep(gen,resolve,reject,_next,_throw,key,arg){try{var info=gen[key](arg);var value=info.value;}catch(error){reject(error);return;}if(info.done){resolve(value);}else{Promise.resolve(value).then(_next,_throw);}}function earth_engine_layer_asyncToGenerator(fn){return function(){var self=this,args=arguments;return new Promise(function(resolve,reject){var gen=fn.apply(self,args);function _next(value){earth_engine_layer_asyncGeneratorStep(gen,resolve,reject,_next,_throw,"next",value);}function _throw(err){earth_engine_layer_asyncGeneratorStep(gen,resolve,reject,_next,_throw,"throw",err);}_next(undefined);});};}function _inheritsLoose(subClass,superClass){subClass.prototype=Object.create(superClass.prototype);subClass.prototype.constructor=subClass;subClass.__proto__=superClass;}/* global createImageBitmap */// Promisify ee apis
 // Global access token, to allow single EE API initialization if using multiple
 // layers
 var accessToken;var earth_engine_layer_defaultProps=Object.assign(Object.assign(Object.assign({},tile_layer_TileLayer.defaultProps),geojson_layer_GeoJsonLayer.defaultProps),{},{// data prop is unused
@@ -17461,6 +18467,1295 @@ if(Array.isArray(props.eeObject)&&props.eeObject.length===0){eeObject=null;}this
 // called
 _context4.next=18;return promisifyEEMethod(eeObject,'getDownloadURL','json',['.geo'].concat(_toConsumableArray(selectors)),'');case 18:geojsonUrl=_context4.sent;_context4.next=21;return Object(load["a" /* load */])(geojsonUrl,JSONLoader);case 21:geojsonData=_context4.sent;this.setState({geojsonData:geojsonData});_context4.next=26;break;case 25:renderMethod='imageTiles';case 26:_context4.next=28;return promisifyEEMethod(eeObject,'getMap',props.visParams);case 28:_yield$promisifyEEMet=_context4.sent;mapid=_yield$promisifyEEMet.mapid;urlFormat=_yield$promisifyEEMet.urlFormat;this.setState({mapid:mapid,urlFormat:urlFormat,renderMethod:renderMethod});case 32:case"end":return _context4.stop();}}},_callee4,this);}));function _updateEEVisParams(_x6,_x7,_x8){return _updateEEVisParams2.apply(this,arguments);}return _updateEEVisParams;}();_proto.getTileData=function getTileData(options){var renderMethod=this.state.renderMethod;if(renderMethod==='filmstrip'){return this.getFilmstripTileData(options);}return this.getImageTileData(options);};_proto.getImageTileData=/*#__PURE__*/function(){var _getImageTileData=earth_engine_layer_asyncToGenerator(/*#__PURE__*/regenerator_default.a.mark(function _callee5(_ref3){var x,y,z,urlFormat,imageUrl,image;return regenerator_default.a.wrap(function _callee5$(_context5){while(1){switch(_context5.prev=_context5.next){case 0:x=_ref3.x,y=_ref3.y,z=_ref3.z;urlFormat=this.state.urlFormat;if(urlFormat){_context5.next=4;break;}return _context5.abrupt("return",null);case 4:imageUrl=urlFormat.replace('{x}',x).replace('{y}',y).replace('{z}',z);_context5.next=7;return Object(load["a" /* load */])(imageUrl,image_loader);case 7:image=_context5.sent;return _context5.abrupt("return",Promise.all([image]));case 9:case"end":return _context5.stop();}}},_callee5,this);}));function getImageTileData(_x9){return _getImageTileData.apply(this,arguments);}return getImageTileData;}();_proto.getFilmstripTileData=/*#__PURE__*/function(){var _getFilmstripTileData=earth_engine_layer_asyncToGenerator(/*#__PURE__*/regenerator_default.a.mark(function _callee6(_ref4){var bbox,eeObject,visParams,west,north,east,south,TILE_SIZE,region,filmArgs,imageUrl,imageOptions,image,nFrames,slices,i,imageBounds;return regenerator_default.a.wrap(function _callee6$(_context6){while(1){switch(_context6.prev=_context6.next){case 0:bbox=_ref4.bbox;eeObject=this.state.eeObject;visParams=this.props.visParams;west=bbox.west,north=bbox.north,east=bbox.east,south=bbox.south;TILE_SIZE=256;// Set geodesic=false to prevent horizontal lines from projection issues
 region=browser_default.a.Geometry.Rectangle([west,south,east,north],'EPSG:4326',false);filmArgs=Object.assign(Object.assign({},visParams),{},{dimensions:[TILE_SIZE,TILE_SIZE],region:region,crs:'EPSG:3857'});_context6.next=9;return promisifyEEMethod(eeObject,'getFilmstripThumbURL',filmArgs);case 9:imageUrl=_context6.sent;imageOptions={image:{type:'imagebitmap'}};_context6.next=13;return Object(load["a" /* load */])(imageUrl,image_loader,imageOptions);case 13:image=_context6.sent;nFrames=image.height/TILE_SIZE;slices=[];for(i=0;i<nFrames;i++){imageBounds=[0,i*TILE_SIZE,TILE_SIZE,TILE_SIZE];slices.push(createImageBitmap.apply(void 0,[image].concat(imageBounds)));}this.setState({nFrames:nFrames});return _context6.abrupt("return",Promise.all(slices));case 19:case"end":return _context6.stop();}}},_callee6,this);}));function getFilmstripTileData(_x10){return _getFilmstripTileData.apply(this,arguments);}return getFilmstripTileData;}();_proto._renderGeoJsonLayer=function _renderGeoJsonLayer(){var _this$state=this.state,mapid=_this$state.mapid,geojsonData=_this$state.geojsonData;var _this$props=this.props,stroked=_this$props.stroked,filled=_this$props.filled,extruded=_this$props.extruded,wireframe=_this$props.wireframe,lineWidthUnits=_this$props.lineWidthUnits,lineWidthScale=_this$props.lineWidthScale,lineWidthMinPixels=_this$props.lineWidthMinPixels,lineWidthMaxPixels=_this$props.lineWidthMaxPixels,lineJointRounded=_this$props.lineJointRounded,lineMiterLimit=_this$props.lineMiterLimit,elevationScale=_this$props.elevationScale,pointRadiusScale=_this$props.pointRadiusScale,pointRadiusMinPixels=_this$props.pointRadiusMinPixels,pointRadiusMaxPixels=_this$props.pointRadiusMaxPixels,getLineColor=_this$props.getLineColor,getFillColor=_this$props.getFillColor,getRadius=_this$props.getRadius,getLineWidth=_this$props.getLineWidth,getElevation=_this$props.getElevation,material=_this$props.material;if(!geojsonData){return null;}return new geojson_layer_GeoJsonLayer(this.getSubLayerProps({id:mapid}),{data:geojsonData,stroked:stroked,filled:filled,extruded:extruded,wireframe:wireframe,lineWidthUnits:lineWidthUnits,lineWidthScale:lineWidthScale,lineWidthMinPixels:lineWidthMinPixels,lineWidthMaxPixels:lineWidthMaxPixels,lineJointRounded:lineJointRounded,lineMiterLimit:lineMiterLimit,elevationScale:elevationScale,pointRadiusScale:pointRadiusScale,pointRadiusMinPixels:pointRadiusMinPixels,pointRadiusMaxPixels:pointRadiusMaxPixels,getLineColor:getLineColor,getFillColor:getFillColor,getRadius:getRadius,getLineWidth:getLineWidth,getElevation:getElevation,material:material});};_proto.renderLayers=function renderLayers(){var _this=this;var _this$state2=this.state,mapid=_this$state2.mapid,_this$state2$frame=_this$state2.frame,frame=_this$state2$frame===void 0?0:_this$state2$frame,renderMethod=_this$state2.renderMethod;var _this$props2=this.props,refinementStrategy=_this$props2.refinementStrategy,onViewportLoad=_this$props2.onViewportLoad,onTileLoad=_this$props2.onTileLoad,onTileError=_this$props2.onTileError,maxZoom=_this$props2.maxZoom,minZoom=_this$props2.minZoom,maxCacheSize=_this$props2.maxCacheSize,maxCacheByteSize=_this$props2.maxCacheByteSize;return mapid&&(renderMethod==='vector'?this._renderGeoJsonLayer():new tile_layer_TileLayer(this.getSubLayerProps({id:mapid}),{refinementStrategy:refinementStrategy,onViewportLoad:onViewportLoad,onTileLoad:onTileLoad,onTileError:onTileError,maxZoom:maxZoom,minZoom:minZoom,maxCacheSize:maxCacheSize,maxCacheByteSize:maxCacheByteSize,frame:frame,getTileData:function getTileData(options){return _this.getTileData(options);},renderSubLayers:function renderSubLayers(props){var data=props.data,tile=props.tile;var _tile$bbox=tile.bbox,west=_tile$bbox.west,south=_tile$bbox.south,east=_tile$bbox.east,north=_tile$bbox.north;var bounds=[west,south,east,north];if(!data){return null;}var image;if(Array.isArray(data)){image=data[frame];}else if(data){image=data.then(function(result){return result&&result[frame];});}return image&&new bitmap_layer_BitmapLayer(Object.assign(Object.assign({},props),{},{image:image,bounds:bounds}));}}));};return EarthEngineLayer;}(composite_layer_CompositeLayer);earth_engine_layer_EarthEngineLayer.layerName='EarthEngineLayer';earth_engine_layer_EarthEngineLayer.defaultProps=earth_engine_layer_defaultProps;
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es7.array.includes.js
+var es7_array_includes = __webpack_require__("gu/5");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.string.includes.js
+var es6_string_includes = __webpack_require__("eoYm");
+
+// EXTERNAL MODULE: ./node_modules/@luma.gl/gltools/dist/esm/index.js + 1 modules
+var dist_esm = __webpack_require__("iein");
+
+// CONCATENATED MODULE: ./node_modules/@deck.gl/mesh-layers/dist/esm/utils/matrix.js
+
+
+
+
+
+
+var RADIAN_PER_DEGREE = Math.PI / 180;
+var modelMatrix = new Float32Array(16);
+var valueArray = new Float32Array(12);
+
+function calculateTransformMatrix(targetMatrix, orientation, scale) {
+  var pitch = orientation[0] * RADIAN_PER_DEGREE;
+  var yaw = orientation[1] * RADIAN_PER_DEGREE;
+  var roll = orientation[2] * RADIAN_PER_DEGREE;
+  var sr = Math.sin(roll);
+  var sp = Math.sin(pitch);
+  var sw = Math.sin(yaw);
+  var cr = Math.cos(roll);
+  var cp = Math.cos(pitch);
+  var cw = Math.cos(yaw);
+  var scx = scale[0];
+  var scy = scale[1];
+  var scz = scale[2];
+  targetMatrix[0] = scx * cw * cp;
+  targetMatrix[1] = scx * sw * cp;
+  targetMatrix[2] = scx * -sp;
+  targetMatrix[3] = scy * (-sw * cr + cw * sp * sr);
+  targetMatrix[4] = scy * (cw * cr + sw * sp * sr);
+  targetMatrix[5] = scy * cp * sr;
+  targetMatrix[6] = scz * (sw * sr + cw * sp * cr);
+  targetMatrix[7] = scz * (-cw * sr + sw * sp * cr);
+  targetMatrix[8] = scz * cp * cr;
+}
+
+function getExtendedMat3FromMat4(mat4) {
+  mat4[0] = mat4[0];
+  mat4[1] = mat4[1];
+  mat4[2] = mat4[2];
+  mat4[3] = mat4[4];
+  mat4[4] = mat4[5];
+  mat4[5] = mat4[6];
+  mat4[6] = mat4[8];
+  mat4[7] = mat4[9];
+  mat4[8] = mat4[10];
+  mat4[9] = mat4[12];
+  mat4[10] = mat4[13];
+  mat4[11] = mat4[14];
+  return mat4.subarray(0, 12);
+}
+
+var MATRIX_ATTRIBUTES = {
+  size: 12,
+  accessor: ['getOrientation', 'getScale', 'getTranslation', 'getTransformMatrix'],
+  shaderAttributes: {
+    instanceModelMatrix__LOCATION_0: {
+      size: 3,
+      elementOffset: 0
+    },
+    instanceModelMatrix__LOCATION_1: {
+      size: 3,
+      elementOffset: 3
+    },
+    instanceModelMatrix__LOCATION_2: {
+      size: 3,
+      elementOffset: 6
+    },
+    instanceTranslation: {
+      size: 3,
+      elementOffset: 9
+    }
+  },
+  update: function update(attribute, _ref) {
+    var startRow = _ref.startRow,
+        endRow = _ref.endRow;
+    var _this$props = this.props,
+        data = _this$props.data,
+        getOrientation = _this$props.getOrientation,
+        getScale = _this$props.getScale,
+        getTranslation = _this$props.getTranslation,
+        getTransformMatrix = _this$props.getTransformMatrix;
+    var arrayMatrix = Array.isArray(getTransformMatrix);
+    var constantMatrix = arrayMatrix && getTransformMatrix.length === 16;
+    var constantScale = Array.isArray(getScale);
+    var constantOrientation = Array.isArray(getOrientation);
+    var constantTranslation = Array.isArray(getTranslation);
+    var hasMatrix = constantMatrix || !arrayMatrix && Boolean(getTransformMatrix(data[0]));
+
+    if (hasMatrix) {
+      attribute.constant = constantMatrix;
+    } else {
+      attribute.constant = constantOrientation && constantScale && constantTranslation;
+    }
+
+    var instanceModelMatrixData = attribute.value;
+
+    if (attribute.constant) {
+      var matrix;
+
+      if (hasMatrix) {
+        modelMatrix.set(getTransformMatrix);
+        matrix = getExtendedMat3FromMat4(modelMatrix);
+      } else {
+        matrix = valueArray;
+        var orientation = getOrientation;
+        var scale = getScale;
+        calculateTransformMatrix(matrix, orientation, scale);
+        matrix.set(getTranslation, 9);
+      }
+
+      attribute.value = new Float32Array(matrix);
+    } else {
+      var i = startRow * attribute.size;
+
+      var _createIterable = Object(iterable_utils["a" /* createIterable */])(data, startRow, endRow),
+          iterable = _createIterable.iterable,
+          objectInfo = _createIterable.objectInfo;
+
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = iterable[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var object = _step.value;
+          objectInfo.index++;
+
+          var _matrix = void 0;
+
+          if (hasMatrix) {
+            modelMatrix.set(constantMatrix ? getTransformMatrix : getTransformMatrix(object, objectInfo));
+            _matrix = getExtendedMat3FromMat4(modelMatrix);
+          } else {
+            _matrix = valueArray;
+
+            var _orientation = constantOrientation ? getOrientation : getOrientation(object, objectInfo);
+
+            var _scale = constantScale ? getScale : getScale(object, objectInfo);
+
+            calculateTransformMatrix(_matrix, _orientation, _scale);
+
+            _matrix.set(constantTranslation ? getTranslation : getTranslation(object, objectInfo), 9);
+          }
+
+          instanceModelMatrixData[i++] = _matrix[0];
+          instanceModelMatrixData[i++] = _matrix[1];
+          instanceModelMatrixData[i++] = _matrix[2];
+          instanceModelMatrixData[i++] = _matrix[3];
+          instanceModelMatrixData[i++] = _matrix[4];
+          instanceModelMatrixData[i++] = _matrix[5];
+          instanceModelMatrixData[i++] = _matrix[6];
+          instanceModelMatrixData[i++] = _matrix[7];
+          instanceModelMatrixData[i++] = _matrix[8];
+          instanceModelMatrixData[i++] = _matrix[9];
+          instanceModelMatrixData[i++] = _matrix[10];
+          instanceModelMatrixData[i++] = _matrix[11];
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+            _iterator["return"]();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+    }
+  }
+};
+function shouldComposeModelMatrix(viewport, coordinateSystem) {
+  return coordinateSystem === constants["a" /* COORDINATE_SYSTEM */].CARTESIAN || coordinateSystem === constants["a" /* COORDINATE_SYSTEM */].METER_OFFSETS || coordinateSystem === constants["a" /* COORDINATE_SYSTEM */].DEFAULT && !viewport.isGeospatial;
+}
+// CONCATENATED MODULE: ./node_modules/@deck.gl/mesh-layers/dist/esm/simple-mesh-layer/simple-mesh-layer-vertex.glsl.js
+/* harmony default export */ var simple_mesh_layer_vertex_glsl = ("#version 300 es\n#define SHADER_NAME simple-mesh-layer-vs\nuniform float sizeScale;\nuniform bool composeModelMatrix;\nin vec3 positions;\nin vec3 normals;\nin vec2 texCoords;\nin vec3 instancePositions;\nin vec3 instancePositions64Low;\nin vec4 instanceColors;\nin vec3 instancePickingColors;\nin mat3 instanceModelMatrix;\nin vec3 instanceTranslation;\nout vec2 vTexCoord;\nout vec3 cameraPosition;\nout vec3 normals_commonspace;\nout vec4 position_commonspace;\nout vec4 vColor;\n\nvoid main(void) {\n  geometry.worldPosition = instancePositions;\n  geometry.uv = texCoords;\n  geometry.pickingColor = instancePickingColors;\n\n  vTexCoord = texCoords;\n  cameraPosition = project_uCameraPosition;\n  normals_commonspace = project_normal(instanceModelMatrix * normals);\n  vColor = instanceColors;\n  geometry.normal = normals_commonspace;\n\n  vec3 pos = (instanceModelMatrix * positions) * sizeScale + instanceTranslation;\n\n  if (composeModelMatrix) {\n    DECKGL_FILTER_SIZE(pos, geometry);\n    gl_Position = project_position_to_clipspace(pos + instancePositions, instancePositions64Low, vec3(0.0), position_commonspace);\n  }\n  else {\n    pos = project_size(pos);\n    DECKGL_FILTER_SIZE(pos, geometry);\n    gl_Position = project_position_to_clipspace(instancePositions, instancePositions64Low, pos, position_commonspace);\n  }\n\n  geometry.position = position_commonspace;\n  DECKGL_FILTER_GL_POSITION(gl_Position, geometry);\n\n  DECKGL_FILTER_COLOR(vColor, geometry);\n}\n");
+// CONCATENATED MODULE: ./node_modules/@deck.gl/mesh-layers/dist/esm/simple-mesh-layer/simple-mesh-layer-fragment.glsl.js
+/* harmony default export */ var simple_mesh_layer_fragment_glsl = ("#version 300 es\n#define SHADER_NAME simple-mesh-layer-fs\n\nprecision highp float;\n\nuniform bool hasTexture;\nuniform sampler2D sampler;\nuniform bool flatShading;\nuniform float opacity;\n\nin vec2 vTexCoord;\nin vec3 cameraPosition;\nin vec3 normals_commonspace;\nin vec4 position_commonspace;\nin vec4 vColor;\n\nout vec4 fragColor;\n\nvoid main(void) {\n  geometry.uv = vTexCoord;\n\n  vec3 normal;\n  if (flatShading) {\n#ifdef DERIVATIVES_AVAILABLE\n    normal = normalize(cross(dFdx(position_commonspace.xyz), dFdy(position_commonspace.xyz)));\n#else\n    normal = vec3(0.0, 0.0, 1.0);\n#endif\n  } else {\n    normal = normals_commonspace;\n  }\n\n  vec4 color = hasTexture ? texture(sampler, vTexCoord) : vColor;\n  vec3 lightColor = lighting_getLightColor(color.rgb, cameraPosition, position_commonspace.xyz, normal);\n  fragColor = vec4(lightColor, color.a * opacity);\n\n  DECKGL_FILTER_COLOR(fragColor, geometry);\n}\n");
+// CONCATENATED MODULE: ./node_modules/@deck.gl/mesh-layers/dist/esm/simple-mesh-layer/simple-mesh-layer.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function getTextureFromData(gl, data, opts) {
+  if (data instanceof texture_2d["a" /* default */]) {
+    return data;
+  }
+
+  return new texture_2d["a" /* default */](gl, Object.assign({
+    data: data
+  }, opts));
+}
+
+function validateGeometryAttributes(attributes) {
+  log["a" /* default */].assert(attributes.positions || attributes.POSITION, 'SimpleMeshLayer requires "postions" or "POSITION" attribute in mesh property.');
+}
+
+function simple_mesh_layer_getGeometry(data) {
+  if (data.attributes) {
+    validateGeometryAttributes(data.attributes);
+
+    if (data instanceof geometry_Geometry) {
+      return data;
+    } else {
+      return new geometry_Geometry(data);
+    }
+  } else if (data.positions || data.POSITION) {
+    validateGeometryAttributes(data);
+    return new geometry_Geometry({
+      attributes: data
+    });
+  }
+
+  throw Error('Invalid mesh');
+}
+
+var simple_mesh_layer_DEFAULT_COLOR = [0, 0, 0, 255];
+var simple_mesh_layer_defaultProps = {
+  mesh: {
+    value: null,
+    type: 'object',
+    async: true
+  },
+  texture: {
+    type: 'object',
+    value: null,
+    async: true
+  },
+  sizeScale: {
+    type: 'number',
+    value: 1,
+    min: 0
+  },
+  parameters: {
+    depthTest: true,
+    depthFunc: 515
+  },
+  _instanced: true,
+  wireframe: false,
+  material: true,
+  getPosition: {
+    type: 'accessor',
+    value: function value(x) {
+      return x.position;
+    }
+  },
+  getColor: {
+    type: 'accessor',
+    value: simple_mesh_layer_DEFAULT_COLOR
+  },
+  getOrientation: {
+    type: 'accessor',
+    value: [0, 0, 0]
+  },
+  getScale: {
+    type: 'accessor',
+    value: [1, 1, 1]
+  },
+  getTranslation: {
+    type: 'accessor',
+    value: [0, 0, 0]
+  },
+  getTransformMatrix: {
+    type: 'accessor',
+    value: []
+  }
+};
+
+var simple_mesh_layer_SimpleMeshLayer = function (_Layer) {
+  Object(inherits["a" /* default */])(SimpleMeshLayer, _Layer);
+
+  function SimpleMeshLayer() {
+    Object(classCallCheck["a" /* default */])(this, SimpleMeshLayer);
+
+    return Object(possibleConstructorReturn["a" /* default */])(this, Object(getPrototypeOf["a" /* default */])(SimpleMeshLayer).apply(this, arguments));
+  }
+
+  Object(createClass["a" /* default */])(SimpleMeshLayer, [{
+    key: "getShaders",
+    value: function getShaders() {
+      var transpileToGLSL100 = !Object(dist_esm["f" /* isWebGL2 */])(this.context.gl);
+      var defines = {};
+
+      if (Object(features_features["b" /* hasFeature */])(this.context.gl, webgl_features_table["a" /* FEATURES */].GLSL_DERIVATIVES)) {
+        defines.DERIVATIVES_AVAILABLE = 1;
+      }
+
+      return Object(esm_get["a" /* default */])(Object(getPrototypeOf["a" /* default */])(SimpleMeshLayer.prototype), "getShaders", this).call(this, {
+        vs: simple_mesh_layer_vertex_glsl,
+        fs: simple_mesh_layer_fragment_glsl,
+        modules: [project32["a" /* default */], phong_lighting["b" /* phongLighting */], picking["a" /* default */]],
+        transpileToGLSL100: transpileToGLSL100,
+        defines: defines
+      });
+    }
+  }, {
+    key: "initializeState",
+    value: function initializeState() {
+      var attributeManager = this.getAttributeManager();
+      attributeManager.addInstanced({
+        instancePositions: {
+          transition: true,
+          type: 5130,
+          fp64: this.use64bitPositions(),
+          size: 3,
+          accessor: 'getPosition'
+        },
+        instanceColors: {
+          type: 5121,
+          transition: true,
+          size: this.props.colorFormat.length,
+          normalized: true,
+          accessor: 'getColor',
+          defaultValue: [0, 0, 0, 255]
+        },
+        instanceModelMatrix: MATRIX_ATTRIBUTES
+      });
+      this.setState({
+        emptyTexture: new texture_2d["a" /* default */](this.context.gl, {
+          data: new Uint8Array(4),
+          width: 1,
+          height: 1
+        })
+      });
+    }
+  }, {
+    key: "updateState",
+    value: function updateState(_ref) {
+      var props = _ref.props,
+          oldProps = _ref.oldProps,
+          changeFlags = _ref.changeFlags;
+
+      Object(esm_get["a" /* default */])(Object(getPrototypeOf["a" /* default */])(SimpleMeshLayer.prototype), "updateState", this).call(this, {
+        props: props,
+        oldProps: oldProps,
+        changeFlags: changeFlags
+      });
+
+      if (props.mesh !== oldProps.mesh || changeFlags.extensionsChanged) {
+        if (this.state.model) {
+          this.state.model["delete"]();
+        }
+
+        if (props.mesh) {
+          this.setState({
+            model: this.getModel(props.mesh)
+          });
+          var attributes = props.mesh.attributes || props.mesh;
+          this.setState({
+            hasNormals: Boolean(attributes.NORMAL || attributes.normals)
+          });
+        }
+
+        this.getAttributeManager().invalidateAll();
+      }
+
+      if (props.texture !== oldProps.texture) {
+        this.setTexture(props.texture);
+      }
+
+      if (this.state.model) {
+        this.state.model.setDrawMode(this.props.wireframe ? 3 : 4);
+      }
+    }
+  }, {
+    key: "finalizeState",
+    value: function finalizeState() {
+      Object(esm_get["a" /* default */])(Object(getPrototypeOf["a" /* default */])(SimpleMeshLayer.prototype), "finalizeState", this).call(this);
+
+      this.state.emptyTexture["delete"]();
+
+      if (this.state.texture) {
+        this.state.texture["delete"]();
+      }
+    }
+  }, {
+    key: "draw",
+    value: function draw(_ref2) {
+      var uniforms = _ref2.uniforms;
+
+      if (!this.state.model) {
+        return;
+      }
+
+      var viewport = this.context.viewport;
+      var _this$props = this.props,
+          sizeScale = _this$props.sizeScale,
+          coordinateSystem = _this$props.coordinateSystem,
+          _instanced = _this$props._instanced;
+      this.state.model.draw({
+        uniforms: Object.assign({}, uniforms, {
+          sizeScale: sizeScale,
+          composeModelMatrix: !_instanced || shouldComposeModelMatrix(viewport, coordinateSystem),
+          flatShading: !this.state.hasNormals
+        })
+      });
+    }
+  }, {
+    key: "getModel",
+    value: function getModel(mesh) {
+      var model = new lib_model["a" /* default */](this.context.gl, Object.assign({}, this.getShaders(), {
+        id: this.props.id,
+        geometry: simple_mesh_layer_getGeometry(mesh),
+        isInstanced: true
+      }));
+      var _this$state = this.state,
+          texture = _this$state.texture,
+          emptyTexture = _this$state.emptyTexture;
+      model.setUniforms({
+        sampler: texture || emptyTexture,
+        hasTexture: Boolean(texture)
+      });
+      return model;
+    }
+  }, {
+    key: "setTexture",
+    value: function setTexture(image) {
+      var gl = this.context.gl;
+      var _this$state2 = this.state,
+          emptyTexture = _this$state2.emptyTexture,
+          model = _this$state2.model;
+
+      if (this.state.texture) {
+        this.state.texture["delete"]();
+      }
+
+      var texture = image ? getTextureFromData(gl, image) : null;
+      this.setState({
+        texture: texture
+      });
+
+      if (model) {
+        model.setUniforms({
+          sampler: texture || emptyTexture,
+          hasTexture: Boolean(texture)
+        });
+      }
+    }
+  }]);
+
+  return SimpleMeshLayer;
+}(lib_layer["a" /* default */]);
+
+
+simple_mesh_layer_SimpleMeshLayer.layerName = 'SimpleMeshLayer';
+simple_mesh_layer_SimpleMeshLayer.defaultProps = simple_mesh_layer_defaultProps;
+// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/viewports/web-mercator-viewport.js
+var web_mercator_viewport = __webpack_require__("zGfa");
+
+// CONCATENATED MODULE: ./node_modules/babel-preset-gatsby/node_modules/@babel/runtime/helpers/esm/classCallCheck.js
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+// CONCATENATED MODULE: ./node_modules/babel-preset-gatsby/node_modules/@babel/runtime/helpers/esm/createClass.js
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
+
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
+// CONCATENATED MODULE: ./node_modules/@mapbox/martini/index.js
+
+
+
+
+
+
+
+var martini_Martini = /*#__PURE__*/function () {
+  function Martini() {
+    var gridSize = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 257;
+
+    _classCallCheck(this, Martini);
+
+    this.gridSize = gridSize;
+    var tileSize = gridSize - 1;
+    if (tileSize & tileSize - 1) throw new Error("Expected grid size to be 2^n+1, got ".concat(gridSize, "."));
+    this.numTriangles = tileSize * tileSize * 2 - 2;
+    this.numParentTriangles = this.numTriangles - tileSize * tileSize;
+    this.indices = new Uint32Array(this.gridSize * this.gridSize); // coordinates for all possible triangles in an RTIN tile
+
+    this.coords = new Uint16Array(this.numTriangles * 4); // get triangle coordinates from its index in an implicit binary tree
+
+    for (var i = 0; i < this.numTriangles; i++) {
+      var id = i + 2;
+      var ax = 0,
+          ay = 0,
+          bx = 0,
+          by = 0,
+          cx = 0,
+          cy = 0;
+
+      if (id & 1) {
+        bx = by = cx = tileSize; // bottom-left triangle
+      } else {
+        ax = ay = cy = tileSize; // top-right triangle
+      }
+
+      while ((id >>= 1) > 1) {
+        var mx = ax + bx >> 1;
+        var my = ay + by >> 1;
+
+        if (id & 1) {
+          // left half
+          bx = ax;
+          by = ay;
+          ax = cx;
+          ay = cy;
+        } else {
+          // right half
+          ax = bx;
+          ay = by;
+          bx = cx;
+          by = cy;
+        }
+
+        cx = mx;
+        cy = my;
+      }
+
+      var k = i * 4;
+      this.coords[k + 0] = ax;
+      this.coords[k + 1] = ay;
+      this.coords[k + 2] = bx;
+      this.coords[k + 3] = by;
+    }
+  }
+
+  _createClass(Martini, [{
+    key: "createTile",
+    value: function createTile(terrain) {
+      return new martini_Tile(terrain, this);
+    }
+  }]);
+
+  return Martini;
+}();
+
+
+
+var martini_Tile = /*#__PURE__*/function () {
+  function Tile(terrain, martini) {
+    _classCallCheck(this, Tile);
+
+    var size = martini.gridSize;
+    if (terrain.length !== size * size) throw new Error("Expected terrain data of length ".concat(size * size, " (").concat(size, " x ").concat(size, "), got ").concat(terrain.length, "."));
+    this.terrain = terrain;
+    this.martini = martini;
+    this.errors = new Float32Array(terrain.length);
+    this.update();
+  }
+
+  _createClass(Tile, [{
+    key: "update",
+    value: function update() {
+      var _this$martini = this.martini,
+          numTriangles = _this$martini.numTriangles,
+          numParentTriangles = _this$martini.numParentTriangles,
+          coords = _this$martini.coords,
+          size = _this$martini.gridSize;
+      var terrain = this.terrain,
+          errors = this.errors; // iterate over all possible triangles, starting from the smallest level
+
+      for (var i = numTriangles - 1; i >= 0; i--) {
+        var k = i * 4;
+        var ax = coords[k + 0];
+        var ay = coords[k + 1];
+        var bx = coords[k + 2];
+        var by = coords[k + 3];
+        var mx = ax + bx >> 1;
+        var my = ay + by >> 1;
+        var cx = mx + my - ay;
+        var cy = my + ax - mx; // calculate error in the middle of the long edge of the triangle
+
+        var interpolatedHeight = (terrain[ay * size + ax] + terrain[by * size + bx]) / 2;
+        var middleIndex = my * size + mx;
+        var middleError = Math.abs(interpolatedHeight - terrain[middleIndex]);
+        errors[middleIndex] = Math.max(errors[middleIndex], middleError);
+
+        if (i < numParentTriangles) {
+          // bigger triangles; accumulate error with children
+          var leftChildIndex = (ay + cy >> 1) * size + (ax + cx >> 1);
+          var rightChildIndex = (by + cy >> 1) * size + (bx + cx >> 1);
+          errors[middleIndex] = Math.max(errors[middleIndex], errors[leftChildIndex], errors[rightChildIndex]);
+        }
+      }
+    }
+  }, {
+    key: "getMesh",
+    value: function getMesh() {
+      var maxError = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+      var _this$martini2 = this.martini,
+          size = _this$martini2.gridSize,
+          indices = _this$martini2.indices;
+      var errors = this.errors;
+      var numVertices = 0;
+      var numTriangles = 0;
+      var max = size - 1; // use an index grid to keep track of vertices that were already used to avoid duplication
+
+      indices.fill(0); // retrieve mesh in two stages that both traverse the error map:
+      // - countElements: find used vertices (and assign each an index), and count triangles (for minimum allocation)
+      // - processTriangle: fill the allocated vertices & triangles typed arrays
+
+      function countElements(ax, ay, bx, by, cx, cy) {
+        var mx = ax + bx >> 1;
+        var my = ay + by >> 1;
+
+        if (Math.abs(ax - cx) + Math.abs(ay - cy) > 1 && errors[my * size + mx] > maxError) {
+          countElements(cx, cy, ax, ay, mx, my);
+          countElements(bx, by, cx, cy, mx, my);
+        } else {
+          indices[ay * size + ax] = indices[ay * size + ax] || ++numVertices;
+          indices[by * size + bx] = indices[by * size + bx] || ++numVertices;
+          indices[cy * size + cx] = indices[cy * size + cx] || ++numVertices;
+          numTriangles++;
+        }
+      }
+
+      countElements(0, 0, max, max, max, 0);
+      countElements(max, max, 0, 0, 0, max);
+      var vertices = new Uint16Array(numVertices * 2);
+      var triangles = new Uint32Array(numTriangles * 3);
+      var triIndex = 0;
+
+      function processTriangle(ax, ay, bx, by, cx, cy) {
+        var mx = ax + bx >> 1;
+        var my = ay + by >> 1;
+
+        if (Math.abs(ax - cx) + Math.abs(ay - cy) > 1 && errors[my * size + mx] > maxError) {
+          // triangle doesn't approximate the surface well enough; drill down further
+          processTriangle(cx, cy, ax, ay, mx, my);
+          processTriangle(bx, by, cx, cy, mx, my);
+        } else {
+          // add a triangle
+          var a = indices[ay * size + ax] - 1;
+          var b = indices[by * size + bx] - 1;
+          var c = indices[cy * size + cx] - 1;
+          vertices[2 * a] = ax;
+          vertices[2 * a + 1] = ay;
+          vertices[2 * b] = bx;
+          vertices[2 * b + 1] = by;
+          vertices[2 * c] = cx;
+          vertices[2 * c + 1] = cy;
+          triangles[triIndex++] = a;
+          triangles[triIndex++] = b;
+          triangles[triIndex++] = c;
+        }
+      }
+
+      processTriangle(0, 0, max, max, max, 0);
+      processTriangle(max, max, 0, 0, 0, max);
+      return {
+        vertices: vertices,
+        triangles: triangles
+      };
+    }
+  }]);
+
+  return Tile;
+}();
+// CONCATENATED MODULE: ./node_modules/@loaders.gl/loader-utils/dist/esm/categories/mesh/mesh-utils.js
+function getMeshSize(attributes) {
+  var size = 0;
+
+  for (var attributeName in attributes) {
+    var attribute = attributes[attributeName];
+
+    if (ArrayBuffer.isView(attribute)) {
+      size += attribute.byteLength * attribute.BYTES_PER_ELEMENT;
+    }
+  }
+
+  return size;
+}
+function getMeshBoundingBox(attributes) {
+  if (!attributes || !attributes.POSITION) {
+    return null;
+  }
+
+  var minX = Infinity;
+  var minY = Infinity;
+  var minZ = Infinity;
+  var maxX = -Infinity;
+  var maxY = -Infinity;
+  var maxZ = -Infinity;
+  var positions = attributes.POSITION.value;
+  var len = positions && positions.length;
+
+  if (!len) {
+    return null;
+  }
+
+  for (var i = 0; i < len; i += 3) {
+    var x = positions[i];
+    var y = positions[i + 1];
+    var z = positions[i + 2];
+    minX = x < minX ? x : minX;
+    minY = y < minY ? y : minY;
+    minZ = z < minZ ? z : minZ;
+    maxX = x > maxX ? x : maxX;
+    maxY = y > maxY ? y : maxY;
+    maxZ = z > maxZ ? z : maxZ;
+  }
+
+  return [[minX, minY, minZ], [maxX, maxY, maxZ]];
+}
+// CONCATENATED MODULE: ./node_modules/@loaders.gl/terrain/dist/esm/lib/parse-terrain.js
+
+
+
+
+
+
+
+function getTerrain(imageData, tileSize, elevationDecoder) {
+  var rScaler = elevationDecoder.rScaler,
+      bScaler = elevationDecoder.bScaler,
+      gScaler = elevationDecoder.gScaler,
+      offset = elevationDecoder.offset;
+  var gridSize = tileSize + 1;
+  var terrain = new Float32Array(gridSize * gridSize);
+
+  for (var i = 0, y = 0; y < tileSize; y++) {
+    for (var x = 0; x < tileSize; x++, i++) {
+      var k = i * 4;
+      var r = imageData[k + 0];
+      var g = imageData[k + 1];
+      var b = imageData[k + 2];
+      terrain[i + y] = r * rScaler + g * gScaler + b * bScaler + offset;
+    }
+  }
+
+  for (var _i = gridSize * (gridSize - 1), _x = 0; _x < gridSize - 1; _x++, _i++) {
+    terrain[_i] = terrain[_i - gridSize];
+  }
+
+  for (var _i2 = gridSize - 1, _y = 0; _y < gridSize; _y++, _i2 += gridSize) {
+    terrain[_i2] = terrain[_i2 - 1];
+  }
+
+  return terrain;
+}
+
+function getMeshAttributes(vertices, terrain, tileSize, bounds) {
+  var gridSize = tileSize + 1;
+  var numOfVerticies = vertices.length / 2;
+  var positions = new Float32Array(numOfVerticies * 3);
+  var texCoords = new Float32Array(numOfVerticies * 2);
+
+  var _ref = bounds || [0, 0, tileSize, tileSize],
+      _ref2 = Object(slicedToArray["a" /* default */])(_ref, 4),
+      minX = _ref2[0],
+      minY = _ref2[1],
+      maxX = _ref2[2],
+      maxY = _ref2[3];
+
+  var xScale = (maxX - minX) / tileSize;
+  var yScale = (maxY - minY) / tileSize;
+
+  for (var i = 0; i < numOfVerticies; i++) {
+    var x = vertices[i * 2];
+    var y = vertices[i * 2 + 1];
+    var pixelIdx = y * gridSize + x;
+    positions[3 * i + 0] = x * xScale + minX;
+    positions[3 * i + 1] = -y * yScale + maxY;
+    positions[3 * i + 2] = terrain[pixelIdx];
+    texCoords[2 * i + 0] = x / tileSize;
+    texCoords[2 * i + 1] = y / tileSize;
+  }
+
+  return {
+    POSITION: {
+      value: positions,
+      size: 3
+    },
+    TEXCOORD_0: {
+      value: texCoords,
+      size: 2
+    }
+  };
+}
+
+function getMartiniTileMesh(terrainImage, terrainOptions) {
+  if (terrainImage === null) {
+    return null;
+  }
+
+  var meshMaxError = terrainOptions.meshMaxError,
+      bounds = terrainOptions.bounds,
+      elevationDecoder = terrainOptions.elevationDecoder;
+  var data = terrainImage.data;
+  var tileSize = terrainImage.width;
+  var gridSize = tileSize + 1;
+  var terrain = getTerrain(data, tileSize, elevationDecoder);
+  var martini = new martini_Martini(gridSize);
+  var tile = martini.createTile(terrain);
+
+  var _tile$getMesh = tile.getMesh(meshMaxError),
+      vertices = _tile$getMesh.vertices,
+      triangles = _tile$getMesh.triangles;
+
+  var attributes = getMeshAttributes(vertices, terrain, tileSize, bounds);
+  return {
+    loaderData: {
+      header: {}
+    },
+    header: {
+      vertexCount: triangles.length,
+      boundingBox: getMeshBoundingBox(attributes)
+    },
+    mode: 4,
+    indices: {
+      value: triangles,
+      size: 1
+    },
+    attributes: attributes
+  };
+}
+
+function parse_terrain_loadTerrain(_x2, _x3, _x4) {
+  return _loadTerrain.apply(this, arguments);
+}
+
+function _loadTerrain() {
+  _loadTerrain = Object(asyncToGenerator["a" /* default */])(regenerator_default.a.mark(function _callee(arrayBuffer, options, context) {
+    var image;
+    return regenerator_default.a.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            options.image = options.image || {};
+            options.image.type = 'data';
+            _context.next = 4;
+            return context.parse(arrayBuffer, options, options.baseUri);
+
+          case 4:
+            image = _context.sent;
+            return _context.abrupt("return", getMartiniTileMesh(image, options.terrain));
+
+          case 6:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _loadTerrain.apply(this, arguments);
+}
+// CONCATENATED MODULE: ./node_modules/@loaders.gl/terrain/dist/esm/terrain-loader.js
+
+
+
+
+
+
+
+
+
+
+
+
+function terrain_loader_ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    if (enumerableOnly) symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    });
+    keys.push.apply(keys, symbols);
+  }
+
+  return keys;
+}
+
+function terrain_loader_objectSpread(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
+    if (i % 2) {
+      terrain_loader_ownKeys(Object(source), true).forEach(function (key) {
+        Object(defineProperty["a" /* default */])(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      terrain_loader_ownKeys(Object(source)).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+
+  return target;
+}
+
+
+var terrain_loader_VERSION =  true ? "2.1.2" : undefined;
+var TerrainWorkerLoader = {
+  id: 'terrain',
+  name: 'Terrain',
+  version: terrain_loader_VERSION,
+  extensions: ['png', 'pngraw'],
+  mimeType: 'image/png',
+  options: {
+    terrain: {
+      workerUrl: "https://unpkg.com/@loaders.gl/terrain@".concat(terrain_loader_VERSION, "/dist/terrain-loader.worker.js"),
+      meshMaxError: 10,
+      elevationDecoder: {
+        rScaler: 1,
+        gScaler: 0,
+        bScaler: 0,
+        offset: 0
+      }
+    }
+  }
+};
+var TerrainLoader = terrain_loader_objectSpread({}, TerrainWorkerLoader, {
+  parse: parse_terrain_loadTerrain
+});
+// CONCATENATED MODULE: ./node_modules/@deck.gl/geo-layers/dist/esm/terrain-layer/terrain-layer.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function terrain_layer_ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    if (enumerableOnly) symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    });
+    keys.push.apply(keys, symbols);
+  }
+
+  return keys;
+}
+
+function terrain_layer_objectSpread(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
+    if (i % 2) {
+      terrain_layer_ownKeys(Object(source), true).forEach(function (key) {
+        Object(defineProperty["a" /* default */])(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      terrain_layer_ownKeys(Object(source)).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+
+  return target;
+}
+
+
+
+
+
+
+
+
+var DUMMY_DATA = [1];
+
+var terrain_layer_defaultProps = terrain_layer_objectSpread({}, tile_layer_TileLayer.defaultProps, {
+  elevationData: urlType,
+  texture: urlType,
+  meshMaxError: {
+    type: 'number',
+    value: 4.0
+  },
+  bounds: {
+    type: 'array',
+    value: null,
+    optional: true,
+    compare: true
+  },
+  color: {
+    type: 'color',
+    value: [255, 255, 255]
+  },
+  elevationDecoder: {
+    type: 'object',
+    value: {
+      rScaler: 1,
+      gScaler: 0,
+      bScaler: 0,
+      offset: 0
+    }
+  },
+  workerUrl: {
+    type: 'string',
+    value: null
+  },
+  wireframe: false,
+  material: true
+});
+
+function urlTemplateToUpdateTrigger(template) {
+  if (Array.isArray(template)) {
+    return template.join(';');
+  }
+
+  return template;
+}
+
+var terrain_layer_TerrainLayer = function (_CompositeLayer) {
+  Object(inherits["a" /* default */])(TerrainLayer, _CompositeLayer);
+
+  function TerrainLayer() {
+    Object(classCallCheck["a" /* default */])(this, TerrainLayer);
+
+    return Object(possibleConstructorReturn["a" /* default */])(this, Object(getPrototypeOf["a" /* default */])(TerrainLayer).apply(this, arguments));
+  }
+
+  Object(createClass["a" /* default */])(TerrainLayer, [{
+    key: "updateState",
+    value: function updateState(_ref) {
+      var props = _ref.props,
+          oldProps = _ref.oldProps;
+      var elevationDataChanged = props.elevationData !== oldProps.elevationData;
+
+      if (elevationDataChanged) {
+        var elevationData = props.elevationData;
+        var isTiled = elevationData && (Array.isArray(elevationData) || elevationData.includes('{x}') && elevationData.includes('{y}'));
+        this.setState({
+          isTiled: isTiled
+        });
+      }
+
+      var shouldReload = elevationDataChanged || props.meshMaxError !== oldProps.meshMaxError || props.elevationDecoder !== oldProps.elevationDecoder || props.bounds !== oldProps.bounds;
+
+      if (!this.state.isTiled && shouldReload) {
+        var terrain = this.loadTerrain(props);
+        this.setState({
+          terrain: terrain
+        });
+      }
+    }
+  }, {
+    key: "loadTerrain",
+    value: function loadTerrain(_ref2) {
+      var elevationData = _ref2.elevationData,
+          bounds = _ref2.bounds,
+          elevationDecoder = _ref2.elevationDecoder,
+          meshMaxError = _ref2.meshMaxError,
+          workerUrl = _ref2.workerUrl;
+
+      if (!elevationData) {
+        return null;
+      }
+
+      var options = {
+        terrain: {
+          bounds: bounds,
+          meshMaxError: meshMaxError,
+          elevationDecoder: elevationDecoder
+        }
+      };
+
+      if (workerUrl !== null) {
+        options.terrain.workerUrl = workerUrl;
+      }
+
+      return Object(load["a" /* load */])(elevationData, TerrainLoader, options);
+    }
+  }, {
+    key: "getTiledTerrainData",
+    value: function getTiledTerrainData(tile) {
+      var _this$props = this.props,
+          elevationData = _this$props.elevationData,
+          texture = _this$props.texture,
+          elevationDecoder = _this$props.elevationDecoder,
+          meshMaxError = _this$props.meshMaxError,
+          workerUrl = _this$props.workerUrl;
+      var dataUrl = getURLFromTemplate(elevationData, tile);
+      var textureUrl = getURLFromTemplate(texture, tile);
+      var bbox = tile.bbox,
+          z = tile.z;
+      var viewport = new web_mercator_viewport["a" /* default */]({
+        longitude: (bbox.west + bbox.east) / 2,
+        latitude: (bbox.north + bbox.south) / 2,
+        zoom: z
+      });
+      var bottomLeft = viewport.projectFlat([bbox.west, bbox.south]);
+      var topRight = viewport.projectFlat([bbox.east, bbox.north]);
+      var bounds = [bottomLeft[0], bottomLeft[1], topRight[0], topRight[1]];
+      var terrain = this.loadTerrain({
+        elevationData: dataUrl,
+        bounds: bounds,
+        elevationDecoder: elevationDecoder,
+        meshMaxError: meshMaxError,
+        workerUrl: workerUrl
+      });
+      var surface = textureUrl ? Object(load["a" /* load */])(textureUrl)["catch"](function (_) {
+        return null;
+      }) : Promise.resolve(null);
+      return Promise.all([terrain, surface]);
+    }
+  }, {
+    key: "renderSubLayers",
+    value: function renderSubLayers(props) {
+      var SubLayerClass = this.getSubLayerClass('mesh', simple_mesh_layer_SimpleMeshLayer);
+      var data = props.data,
+          color = props.color;
+      var mesh = null;
+      var texture = null;
+
+      if (Array.isArray(data)) {
+        mesh = data[0];
+        texture = data[1];
+      } else if (data) {
+        mesh = data.then(function (result) {
+          return result && result[0];
+        });
+        texture = data.then(function (result) {
+          return result && result[1];
+        });
+      }
+
+      return new SubLayerClass(props, {
+        data: DUMMY_DATA,
+        mesh: mesh,
+        texture: texture,
+        coordinateSystem: constants["a" /* COORDINATE_SYSTEM */].CARTESIAN,
+        getPosition: function getPosition(d) {
+          return [0, 0, 0];
+        },
+        getColor: color
+      });
+    }
+  }, {
+    key: "onViewportLoad",
+    value: function onViewportLoad(data) {
+      if (!data || data.length === 0 || data.every(function (x) {
+        return !x;
+      })) {
+        return;
+      }
+
+      var zRange = this.state.zRange;
+      var ranges = data.map(function (arr) {
+        var bounds = arr[0].header.boundingBox;
+        return bounds.map(function (bound) {
+          return bound[2];
+        });
+      });
+      var minZ = Math.min.apply(Math, Object(toConsumableArray["a" /* default */])(ranges.map(function (x) {
+        return x[0];
+      })));
+      var maxZ = Math.max.apply(Math, Object(toConsumableArray["a" /* default */])(ranges.map(function (x) {
+        return x[1];
+      })));
+
+      if (!zRange || minZ < zRange[0] || maxZ > zRange[1]) {
+        this.setState({
+          zRange: [minZ, maxZ]
+        });
+      }
+    }
+  }, {
+    key: "renderLayers",
+    value: function renderLayers() {
+      var _this$props2 = this.props,
+          color = _this$props2.color,
+          material = _this$props2.material,
+          elevationData = _this$props2.elevationData,
+          texture = _this$props2.texture,
+          wireframe = _this$props2.wireframe,
+          meshMaxError = _this$props2.meshMaxError,
+          elevationDecoder = _this$props2.elevationDecoder;
+
+      if (this.state.isTiled) {
+        return new tile_layer_TileLayer(this.getSubLayerProps({
+          id: 'tiles'
+        }), {
+          wireframe: wireframe,
+          color: color,
+          material: material,
+          getTileData: this.getTiledTerrainData.bind(this),
+          renderSubLayers: this.renderSubLayers.bind(this),
+          updateTriggers: {
+            getTileData: {
+              elevationData: urlTemplateToUpdateTrigger(elevationData),
+              texture: urlTemplateToUpdateTrigger(texture),
+              meshMaxError: meshMaxError,
+              elevationDecoder: elevationDecoder
+            }
+          },
+          onViewportLoad: this.onViewportLoad.bind(this),
+          zRange: this.state.zRange || null
+        });
+      }
+
+      var SubLayerClass = this.getSubLayerClass('mesh', simple_mesh_layer_SimpleMeshLayer);
+      return new SubLayerClass(this.getSubLayerProps({
+        id: 'mesh'
+      }), {
+        data: DUMMY_DATA,
+        mesh: this.state.terrain,
+        texture: texture,
+        _instanced: false,
+        getPosition: function getPosition(d) {
+          return [0, 0, 0];
+        },
+        getColor: color,
+        material: material,
+        wireframe: wireframe
+      });
+    }
+  }]);
+
+  return TerrainLayer;
+}(composite_layer_CompositeLayer);
+
+
+terrain_layer_TerrainLayer.layerName = 'TerrainLayer';
+terrain_layer_TerrainLayer.defaultProps = terrain_layer_defaultProps;
+// CONCATENATED MODULE: ../modules/earthengine-layers/src/earth-engine-terrain-layer.js
+function earth_engine_terrain_layer_asyncGeneratorStep(gen,resolve,reject,_next,_throw,key,arg){try{var info=gen[key](arg);var value=info.value;}catch(error){reject(error);return;}if(info.done){resolve(value);}else{Promise.resolve(value).then(_next,_throw);}}function earth_engine_terrain_layer_asyncToGenerator(fn){return function(){var self=this,args=arguments;return new Promise(function(resolve,reject){var gen=fn.apply(self,args);function _next(value){earth_engine_terrain_layer_asyncGeneratorStep(gen,resolve,reject,_next,_throw,"next",value);}function _throw(err){earth_engine_terrain_layer_asyncGeneratorStep(gen,resolve,reject,_next,_throw,"throw",err);}_next(undefined);});};}function earth_engine_terrain_layer_inheritsLoose(subClass,superClass){subClass.prototype=Object.create(superClass.prototype);subClass.prototype.constructor=subClass;subClass.__proto__=superClass;}// Promisify ee apis
+/**
+ * Decoder for Terrarium encoding
+ */var ELEVATION_DECODER={rScaler:256,gScaler:1,bScaler:1/256,offset:-32768};// Global access token, to allow single EE API initialization if using multiple
+// layers
+var earth_engine_terrain_layer_accessToken;var earth_engine_terrain_layer_defaultProps=Object.assign(Object.assign({},tile_layer_TileLayer.defaultProps),{},{// data prop is unused
+data:{type:'object',value:null},token:{type:'string',value:null},eeObject:{type:'object',value:null},eeTerrainObject:{type:'object',value:null},visParams:{type:'object',value:null,equal:deepEqual},refinementStrategy:'no-overlap'});var earth_engine_terrain_layer_EarthEngineTerrainLayer=/*#__PURE__*/function(_CompositeLayer){earth_engine_terrain_layer_inheritsLoose(EarthEngineTerrainLayer,_CompositeLayer);function EarthEngineTerrainLayer(){return _CompositeLayer.apply(this,arguments)||this;}// helper function to initialize EE API
+EarthEngineTerrainLayer.initializeEEApi=/*#__PURE__*/function(){var _initializeEEApi2=earth_engine_terrain_layer_asyncToGenerator(/*#__PURE__*/regenerator_default.a.mark(function _callee(_ref){var clientId,token;return regenerator_default.a.wrap(function _callee$(_context){while(1){switch(_context.prev=_context.next){case 0:clientId=_ref.clientId,token=_ref.token;_context.next=3;return ee_api_initializeEEApi({clientId:clientId,token:token});case 3:case"end":return _context.stop();}}},_callee);}));function initializeEEApi(_x){return _initializeEEApi2.apply(this,arguments);}return initializeEEApi;}();var _proto=EarthEngineTerrainLayer.prototype;_proto.initializeState=function initializeState(){this.state={};}// Note - Layer.updateState is not async. But it lets us `await` the initialization below
+;_proto.updateState=/*#__PURE__*/function(){var _updateState=earth_engine_terrain_layer_asyncToGenerator(/*#__PURE__*/regenerator_default.a.mark(function _callee2(_ref2){var props,oldProps,changeFlags;return regenerator_default.a.wrap(function _callee2$(_context2){while(1){switch(_context2.prev=_context2.next){case 0:props=_ref2.props,oldProps=_ref2.oldProps,changeFlags=_ref2.changeFlags;_context2.next=3;return this._updateToken(props,oldProps,changeFlags);case 3:this._updateEEObject(props,oldProps,changeFlags);_context2.next=6;return this._updateEEVisParams(props,oldProps,changeFlags);case 6:case"end":return _context2.stop();}}},_callee2,this);}));function updateState(_x2){return _updateState.apply(this,arguments);}return updateState;}();_proto._updateToken=/*#__PURE__*/function(){var _updateToken2=earth_engine_terrain_layer_asyncToGenerator(/*#__PURE__*/regenerator_default.a.mark(function _callee3(props,oldProps,changeFlags){var token;return regenerator_default.a.wrap(function _callee3$(_context3){while(1){switch(_context3.prev=_context3.next){case 0:if(!(!props.token||props.token===earth_engine_terrain_layer_accessToken)){_context3.next=2;break;}return _context3.abrupt("return");case 2:token=props.token;_context3.next=5;return ee_api_initializeEEApi({token:token});case 5:earth_engine_terrain_layer_accessToken=token;case 6:case"end":return _context3.stop();}}},_callee3);}));function _updateToken(_x3,_x4,_x5){return _updateToken2.apply(this,arguments);}return _updateToken;}();_proto._updateEEObject=function _updateEEObject(props,oldProps,changeFlags){if(props.eeObject===oldProps.eeObject&&props.eeTerrainObject===oldProps.eeTerrainObject){return;}var eeObject;var eeTerrainObject;// If a string, assume a JSON-serialized EE object.
+if(typeof props.eeObject==='string'){eeObject=browser_default.a.Deserializer.fromJSON(props.eeObject);}else{eeObject=props.eeObject;}if(typeof props.eeTerrainObject==='string'){eeTerrainObject=browser_default.a.Deserializer.fromJSON(props.eeTerrainObject);}else{eeTerrainObject=props.eeTerrainObject;}if(eeTerrainObject){// Quantize eeTerrainObject
+var added=eeTerrainObject.add(32768);var red=added.divide(256).floor();var green=added.mod(256).floor();var blue=added.subtract(added.floor()).multiply(255).floor();eeTerrainObject=browser_default.a.Image.rgb(red,green,blue);}// TODO - what case is this handling
+if(Array.isArray(props.eeObject)&&props.eeObject.length===0){eeObject=null;}this.setState({eeObject:eeObject,eeTerrainObject:eeTerrainObject});};_proto._updateEEVisParams=/*#__PURE__*/function(){var _updateEEVisParams2=earth_engine_terrain_layer_asyncToGenerator(/*#__PURE__*/regenerator_default.a.mark(function _callee4(props,oldProps,changeFlags){var _this$state,eeObject,eeTerrainObject,_yield$promisifyEEMet,mapid,urlFormat,_yield$promisifyEEMet2,meshMapid,meshUrlFormat;return regenerator_default.a.wrap(function _callee4$(_context4){while(1){switch(_context4.prev=_context4.next){case 0:if(!(props.visParams===oldProps.visParams&&props.eeObject===oldProps.eeObject&&props.eeTerrainObject===oldProps.eeTerrainObject)){_context4.next=2;break;}return _context4.abrupt("return");case 2:_this$state=this.state,eeObject=_this$state.eeObject,eeTerrainObject=_this$state.eeTerrainObject;if(eeObject){_context4.next=5;break;}return _context4.abrupt("return");case 5:if(eeObject.getMap){_context4.next=7;break;}throw new Error('eeObject must have a getMap() method');case 7:_context4.next=9;return promisifyEEMethod(eeObject,'getMap',props.visParams);case 9:_yield$promisifyEEMet=_context4.sent;mapid=_yield$promisifyEEMet.mapid;urlFormat=_yield$promisifyEEMet.urlFormat;_context4.next=14;return promisifyEEMethod(eeTerrainObject,'getMap',{min:0,max:255,format:'png'});case 14:_yield$promisifyEEMet2=_context4.sent;meshMapid=_yield$promisifyEEMet2.mapid;meshUrlFormat=_yield$promisifyEEMet2.urlFormat;this.setState({mapid:mapid,urlFormat:urlFormat,meshMapid:meshMapid,meshUrlFormat:meshUrlFormat});case 18:case"end":return _context4.stop();}}},_callee4,this);}));function _updateEEVisParams(_x6,_x7,_x8){return _updateEEVisParams2.apply(this,arguments);}return _updateEEVisParams;}();_proto.renderLayers=function renderLayers(){var _this$state2=this.state,mapid=_this$state2.mapid,urlFormat=_this$state2.urlFormat,meshMapid=_this$state2.meshMapid,meshUrlFormat=_this$state2.meshUrlFormat;return mapid&&meshMapid&&new terrain_layer_TerrainLayer(this.getSubLayerProps({id:mapid}),{elevationData:meshUrlFormat,texture:urlFormat,elevationDecoder:ELEVATION_DECODER,meshMaxError:10});};return EarthEngineTerrainLayer;}(composite_layer_CompositeLayer);earth_engine_terrain_layer_EarthEngineTerrainLayer.layerName='EarthEngineTerrainLayer';earth_engine_terrain_layer_EarthEngineTerrainLayer.defaultProps=earth_engine_terrain_layer_defaultProps;
 // CONCATENATED MODULE: ../modules/earthengine-layers/src/index.js
 // Layers
 
@@ -24123,6 +26418,21 @@ var TypedArrayManager = function () {
 
 /***/ }),
 
+/***/ "bNpn":
+/***/ (function(module, exports, __webpack_require__) {
+
+// 19.1.2.11 Object.isExtensible(O)
+var isObject = __webpack_require__("BjK0");
+
+__webpack_require__("939a")('isExtensible', function ($isExtensible) {
+  return function isExtensible(it) {
+    return isObject(it) ? $isExtensible ? $isExtensible(it) : true : false;
+  };
+});
+
+
+/***/ }),
+
 /***/ "bY1G":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -25344,6 +27654,435 @@ var isWorker = typeof importScripts === 'function';
 var matches = typeof process !== 'undefined' && process.version && process.version.match(/v([0-9]*)/);
 var nodeVersion = matches && parseFloat(matches[1]) || 0;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("yLpj"), __webpack_require__("8oxB")))
+
+/***/ }),
+
+/***/ "e/LK":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Viewport; });
+/* harmony import */ var core_js_modules_es6_math_log2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("QNMc");
+/* harmony import */ var core_js_modules_es6_math_log2__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_math_log2__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_es6_object_assign__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("E5k/");
+/* harmony import */ var core_js_modules_es6_object_assign__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_object_assign__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var core_js_modules_es6_number_constructor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("YBKJ");
+/* harmony import */ var core_js_modules_es6_number_constructor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_number_constructor__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var core_js_modules_es6_number_is_finite__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("9ZhD");
+/* harmony import */ var core_js_modules_es6_number_is_finite__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_number_is_finite__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var core_js_modules_es6_function_bind__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__("n7j8");
+/* harmony import */ var core_js_modules_es6_function_bind__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_function_bind__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _babel_runtime_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__("8j0Q");
+/* harmony import */ var _babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__("QDMQ");
+/* harmony import */ var _babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__("ls4f");
+/* harmony import */ var _utils_log__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__("Jh/b");
+/* harmony import */ var _utils_math_utils__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__("F8bt");
+/* harmony import */ var math_gl__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__("c9N0");
+/* harmony import */ var gl_matrix_mat4__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__("ZaHm");
+/* harmony import */ var _math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__("v88f");
+/* harmony import */ var _lib_constants__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__("V3d6");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var DEGREES_TO_RADIANS = Math.PI / 180;
+var IDENTITY = Object(_utils_math_utils__WEBPACK_IMPORTED_MODULE_9__[/* createMat4 */ "a"])();
+var ZERO_VECTOR = [0, 0, 0];
+var DEFAULT_ZOOM = 0;
+var DEFAULT_DISTANCE_SCALES = {
+  unitsPerMeter: [1, 1, 1],
+  metersPerUnit: [1, 1, 1]
+};
+
+var Viewport = function () {
+  function Viewport() {
+    var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    Object(_babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_6__[/* default */ "a"])(this, Viewport);
+
+    var _opts$id = opts.id,
+        id = _opts$id === void 0 ? null : _opts$id,
+        _opts$x = opts.x,
+        x = _opts$x === void 0 ? 0 : _opts$x,
+        _opts$y = opts.y,
+        y = _opts$y === void 0 ? 0 : _opts$y,
+        _opts$width = opts.width,
+        width = _opts$width === void 0 ? 1 : _opts$width,
+        _opts$height = opts.height,
+        height = _opts$height === void 0 ? 1 : _opts$height;
+    this.id = id || this.constructor.displayName || 'viewport';
+    this.x = x;
+    this.y = y;
+    this.width = width || 1;
+    this.height = height || 1;
+    this._frustumPlanes = {};
+
+    this._initViewMatrix(opts);
+
+    this._initProjectionMatrix(opts);
+
+    this._initPixelMatrices();
+
+    this.equals = this.equals.bind(this);
+    this.project = this.project.bind(this);
+    this.unproject = this.unproject.bind(this);
+    this.projectPosition = this.projectPosition.bind(this);
+    this.unprojectPosition = this.unprojectPosition.bind(this);
+    this.projectFlat = this.projectFlat.bind(this);
+    this.unprojectFlat = this.unprojectFlat.bind(this);
+  }
+
+  Object(_babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_7__[/* default */ "a"])(Viewport, [{
+    key: "equals",
+    value: function equals(viewport) {
+      if (!(viewport instanceof Viewport)) {
+        return false;
+      }
+
+      return viewport.width === this.width && viewport.height === this.height && viewport.scale === this.scale && Object(math_gl__WEBPACK_IMPORTED_MODULE_10__[/* equals */ "e"])(viewport.projectionMatrix, this.projectionMatrix) && Object(math_gl__WEBPACK_IMPORTED_MODULE_10__[/* equals */ "e"])(viewport.viewMatrix, this.viewMatrix);
+    }
+  }, {
+    key: "project",
+    value: function project(xyz) {
+      var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+          _ref$topLeft = _ref.topLeft,
+          topLeft = _ref$topLeft === void 0 ? true : _ref$topLeft;
+
+      var worldPosition = this.projectPosition(xyz);
+      var coord = Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_12__[/* worldToPixels */ "o"])(worldPosition, this.pixelProjectionMatrix);
+
+      var _coord = Object(_babel_runtime_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"])(coord, 2),
+          x = _coord[0],
+          y = _coord[1];
+
+      var y2 = topLeft ? y : this.height - y;
+      return xyz.length === 2 ? [x, y2] : [x, y2, coord[2]];
+    }
+  }, {
+    key: "unproject",
+    value: function unproject(xyz) {
+      var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+          _ref2$topLeft = _ref2.topLeft,
+          topLeft = _ref2$topLeft === void 0 ? true : _ref2$topLeft,
+          targetZ = _ref2.targetZ;
+
+      var _xyz = Object(_babel_runtime_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"])(xyz, 3),
+          x = _xyz[0],
+          y = _xyz[1],
+          z = _xyz[2];
+
+      var y2 = topLeft ? y : this.height - y;
+      var targetZWorld = targetZ && targetZ * this.distanceScales.unitsPerMeter[2];
+      var coord = Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_12__[/* pixelsToWorld */ "m"])([x, y2, z], this.pixelUnprojectionMatrix, targetZWorld);
+
+      var _this$unprojectPositi = this.unprojectPosition(coord),
+          _this$unprojectPositi2 = Object(_babel_runtime_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"])(_this$unprojectPositi, 3),
+          X = _this$unprojectPositi2[0],
+          Y = _this$unprojectPositi2[1],
+          Z = _this$unprojectPositi2[2];
+
+      if (Number.isFinite(z)) {
+        return [X, Y, Z];
+      }
+
+      return Number.isFinite(targetZ) ? [X, Y, targetZ] : [X, Y];
+    }
+  }, {
+    key: "projectPosition",
+    value: function projectPosition(xyz) {
+      var _this$projectFlat = this.projectFlat(xyz),
+          _this$projectFlat2 = Object(_babel_runtime_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"])(_this$projectFlat, 2),
+          X = _this$projectFlat2[0],
+          Y = _this$projectFlat2[1];
+
+      var Z = (xyz[2] || 0) * this.distanceScales.unitsPerMeter[2];
+      return [X, Y, Z];
+    }
+  }, {
+    key: "unprojectPosition",
+    value: function unprojectPosition(xyz) {
+      var _this$unprojectFlat = this.unprojectFlat(xyz),
+          _this$unprojectFlat2 = Object(_babel_runtime_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"])(_this$unprojectFlat, 2),
+          X = _this$unprojectFlat2[0],
+          Y = _this$unprojectFlat2[1];
+
+      var Z = (xyz[2] || 0) * this.distanceScales.metersPerUnit[2];
+      return [X, Y, Z];
+    }
+  }, {
+    key: "projectFlat",
+    value: function projectFlat(xyz) {
+      if (this.isGeospatial) {
+        return Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_12__[/* lngLatToWorld */ "k"])(xyz);
+      }
+
+      return xyz;
+    }
+  }, {
+    key: "unprojectFlat",
+    value: function unprojectFlat(xyz) {
+      if (this.isGeospatial) {
+        return Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_12__[/* worldToLngLat */ "n"])(xyz);
+      }
+
+      return xyz;
+    }
+  }, {
+    key: "getDistanceScales",
+    value: function getDistanceScales() {
+      var coordinateOrigin = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+      if (coordinateOrigin) {
+        return Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_12__[/* getDistanceScales */ "f"])({
+          longitude: coordinateOrigin[0],
+          latitude: coordinateOrigin[1],
+          highPrecision: true
+        });
+      }
+
+      return this.distanceScales;
+    }
+  }, {
+    key: "containsPixel",
+    value: function containsPixel(_ref3) {
+      var x = _ref3.x,
+          y = _ref3.y,
+          _ref3$width = _ref3.width,
+          width = _ref3$width === void 0 ? 1 : _ref3$width,
+          _ref3$height = _ref3.height,
+          height = _ref3$height === void 0 ? 1 : _ref3$height;
+      return x < this.x + this.width && this.x < x + width && y < this.y + this.height && this.y < y + height;
+    }
+  }, {
+    key: "getFrustumPlanes",
+    value: function getFrustumPlanes() {
+      if (this._frustumPlanes.near) {
+        return this._frustumPlanes;
+      }
+
+      var _this$projectionProps = this.projectionProps,
+          near = _this$projectionProps.near,
+          far = _this$projectionProps.far,
+          fovyRadians = _this$projectionProps.fovyRadians,
+          aspect = _this$projectionProps.aspect;
+      Object.assign(this._frustumPlanes, Object(_utils_math_utils__WEBPACK_IMPORTED_MODULE_9__[/* getFrustumPlanes */ "c"])({
+        aspect: aspect,
+        near: near,
+        far: far,
+        fovyRadians: fovyRadians,
+        position: this.cameraPosition,
+        direction: this.cameraDirection,
+        up: this.cameraUp,
+        right: this.cameraRight
+      }));
+      return this._frustumPlanes;
+    }
+  }, {
+    key: "getCameraPosition",
+    value: function getCameraPosition() {
+      return this.cameraPosition;
+    }
+  }, {
+    key: "getCameraDirection",
+    value: function getCameraDirection() {
+      return this.cameraDirection;
+    }
+  }, {
+    key: "getCameraUp",
+    value: function getCameraUp() {
+      return this.cameraUp;
+    }
+  }, {
+    key: "_createProjectionMatrix",
+    value: function _createProjectionMatrix(_ref4) {
+      var orthographic = _ref4.orthographic,
+          fovyRadians = _ref4.fovyRadians,
+          aspect = _ref4.aspect,
+          focalDistance = _ref4.focalDistance,
+          near = _ref4.near,
+          far = _ref4.far;
+      return orthographic ? new math_gl__WEBPACK_IMPORTED_MODULE_10__[/* Matrix4 */ "a"]().orthographic({
+        fovy: fovyRadians,
+        aspect: aspect,
+        focalDistance: focalDistance,
+        near: near,
+        far: far
+      }) : new math_gl__WEBPACK_IMPORTED_MODULE_10__[/* Matrix4 */ "a"]().perspective({
+        fovy: fovyRadians,
+        aspect: aspect,
+        near: near,
+        far: far
+      });
+    }
+  }, {
+    key: "_initViewMatrix",
+    value: function _initViewMatrix(opts) {
+      var _opts$viewMatrix = opts.viewMatrix,
+          viewMatrix = _opts$viewMatrix === void 0 ? IDENTITY : _opts$viewMatrix,
+          _opts$longitude = opts.longitude,
+          longitude = _opts$longitude === void 0 ? null : _opts$longitude,
+          _opts$latitude = opts.latitude,
+          latitude = _opts$latitude === void 0 ? null : _opts$latitude,
+          _opts$zoom = opts.zoom,
+          zoom = _opts$zoom === void 0 ? null : _opts$zoom,
+          _opts$position = opts.position,
+          position = _opts$position === void 0 ? null : _opts$position,
+          _opts$modelMatrix = opts.modelMatrix,
+          modelMatrix = _opts$modelMatrix === void 0 ? null : _opts$modelMatrix,
+          _opts$focalDistance = opts.focalDistance,
+          focalDistance = _opts$focalDistance === void 0 ? 1 : _opts$focalDistance,
+          _opts$distanceScales = opts.distanceScales,
+          distanceScales = _opts$distanceScales === void 0 ? null : _opts$distanceScales;
+      this.isGeospatial = Number.isFinite(latitude) && Number.isFinite(longitude);
+      this.zoom = zoom;
+
+      if (!Number.isFinite(this.zoom)) {
+        this.zoom = this.isGeospatial ? Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_12__[/* getMeterZoom */ "h"])({
+          latitude: latitude
+        }) + Math.log2(focalDistance) : DEFAULT_ZOOM;
+      }
+
+      var scale = Math.pow(2, this.zoom);
+      this.scale = scale;
+      this.distanceScales = this.isGeospatial ? Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_12__[/* getDistanceScales */ "f"])({
+        latitude: latitude,
+        longitude: longitude
+      }) : distanceScales || DEFAULT_DISTANCE_SCALES;
+      this.focalDistance = focalDistance;
+      this.distanceScales.metersPerUnit = new math_gl__WEBPACK_IMPORTED_MODULE_10__[/* Vector3 */ "b"](this.distanceScales.metersPerUnit);
+      this.distanceScales.unitsPerMeter = new math_gl__WEBPACK_IMPORTED_MODULE_10__[/* Vector3 */ "b"](this.distanceScales.unitsPerMeter);
+      this.position = ZERO_VECTOR;
+      this.meterOffset = ZERO_VECTOR;
+
+      if (position) {
+        this.position = position;
+        this.modelMatrix = modelMatrix;
+        this.meterOffset = modelMatrix ? modelMatrix.transformVector(position) : position;
+      }
+
+      if (this.isGeospatial) {
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.center = this._getCenterInWorld({
+          longitude: longitude,
+          latitude: latitude
+        });
+      } else {
+        this.center = position ? this.projectPosition(position) : [0, 0, 0];
+      }
+
+      this.viewMatrixUncentered = viewMatrix;
+      this.viewMatrix = new math_gl__WEBPACK_IMPORTED_MODULE_10__[/* Matrix4 */ "a"]().multiplyRight(this.viewMatrixUncentered).translate(new math_gl__WEBPACK_IMPORTED_MODULE_10__[/* Vector3 */ "b"](this.center || ZERO_VECTOR).negate());
+    }
+  }, {
+    key: "_getCenterInWorld",
+    value: function _getCenterInWorld(_ref5) {
+      var longitude = _ref5.longitude,
+          latitude = _ref5.latitude;
+      var meterOffset = this.meterOffset,
+          distanceScales = this.distanceScales;
+      var center2d = this.projectFlat([longitude, latitude]);
+      var center = new math_gl__WEBPACK_IMPORTED_MODULE_10__[/* Vector3 */ "b"](center2d[0], center2d[1], 0);
+
+      if (meterOffset) {
+        var commonPosition = new math_gl__WEBPACK_IMPORTED_MODULE_10__[/* Vector3 */ "b"](meterOffset).scale(distanceScales.unitsPerMeter);
+        center.add(commonPosition);
+      }
+
+      return center;
+    }
+  }, {
+    key: "_initProjectionMatrix",
+    value: function _initProjectionMatrix(opts) {
+      var _opts$projectionMatri = opts.projectionMatrix,
+          projectionMatrix = _opts$projectionMatri === void 0 ? null : _opts$projectionMatri,
+          _opts$orthographic = opts.orthographic,
+          orthographic = _opts$orthographic === void 0 ? false : _opts$orthographic,
+          fovyRadians = opts.fovyRadians,
+          _opts$fovy = opts.fovy,
+          fovy = _opts$fovy === void 0 ? 75 : _opts$fovy,
+          _opts$near = opts.near,
+          near = _opts$near === void 0 ? 0.1 : _opts$near,
+          _opts$far = opts.far,
+          far = _opts$far === void 0 ? 1000 : _opts$far,
+          _opts$focalDistance2 = opts.focalDistance,
+          focalDistance = _opts$focalDistance2 === void 0 ? 1 : _opts$focalDistance2;
+      this.projectionProps = {
+        orthographic: orthographic,
+        fovyRadians: fovyRadians || fovy * DEGREES_TO_RADIANS,
+        aspect: this.width / this.height,
+        focalDistance: focalDistance,
+        near: near,
+        far: far
+      };
+      this.projectionMatrix = projectionMatrix || this._createProjectionMatrix(this.projectionProps);
+    }
+  }, {
+    key: "_initPixelMatrices",
+    value: function _initPixelMatrices() {
+      var vpm = Object(_utils_math_utils__WEBPACK_IMPORTED_MODULE_9__[/* createMat4 */ "a"])();
+      gl_matrix_mat4__WEBPACK_IMPORTED_MODULE_11__[/* multiply */ "g"](vpm, vpm, this.projectionMatrix);
+      gl_matrix_mat4__WEBPACK_IMPORTED_MODULE_11__[/* multiply */ "g"](vpm, vpm, this.viewMatrix);
+      this.viewProjectionMatrix = vpm;
+      this.viewMatrixInverse = gl_matrix_mat4__WEBPACK_IMPORTED_MODULE_11__[/* invert */ "e"]([], this.viewMatrix) || this.viewMatrix;
+
+      var _extractCameraVectors = Object(_utils_math_utils__WEBPACK_IMPORTED_MODULE_9__[/* extractCameraVectors */ "b"])({
+        viewMatrix: this.viewMatrix,
+        viewMatrixInverse: this.viewMatrixInverse
+      }),
+          eye = _extractCameraVectors.eye,
+          direction = _extractCameraVectors.direction,
+          up = _extractCameraVectors.up,
+          right = _extractCameraVectors.right;
+
+      this.cameraPosition = eye;
+      this.cameraDirection = direction;
+      this.cameraUp = up;
+      this.cameraRight = right;
+      var viewportMatrix = Object(_utils_math_utils__WEBPACK_IMPORTED_MODULE_9__[/* createMat4 */ "a"])();
+      var pixelProjectionMatrix = Object(_utils_math_utils__WEBPACK_IMPORTED_MODULE_9__[/* createMat4 */ "a"])();
+      gl_matrix_mat4__WEBPACK_IMPORTED_MODULE_11__[/* scale */ "n"](viewportMatrix, viewportMatrix, [this.width / 2, -this.height / 2, 1]);
+      gl_matrix_mat4__WEBPACK_IMPORTED_MODULE_11__[/* translate */ "o"](viewportMatrix, viewportMatrix, [1, -1, 0]);
+      gl_matrix_mat4__WEBPACK_IMPORTED_MODULE_11__[/* multiply */ "g"](pixelProjectionMatrix, viewportMatrix, this.viewProjectionMatrix);
+      this.pixelProjectionMatrix = pixelProjectionMatrix;
+      this.viewportMatrix = viewportMatrix;
+      this.pixelUnprojectionMatrix = gl_matrix_mat4__WEBPACK_IMPORTED_MODULE_11__[/* invert */ "e"](Object(_utils_math_utils__WEBPACK_IMPORTED_MODULE_9__[/* createMat4 */ "a"])(), this.pixelProjectionMatrix);
+
+      if (!this.pixelUnprojectionMatrix) {
+        _utils_log__WEBPACK_IMPORTED_MODULE_8__[/* default */ "a"].warn('Pixel project matrix not invertible')();
+      }
+    }
+  }, {
+    key: "metersPerPixel",
+    get: function get() {
+      return this.distanceScales.metersPerUnit[2] / this.scale;
+    }
+  }, {
+    key: "projectionMode",
+    get: function get() {
+      if (this.isGeospatial) {
+        return this.zoom < 12 ? _lib_constants__WEBPACK_IMPORTED_MODULE_13__[/* PROJECTION_MODE */ "c"].WEB_MERCATOR : _lib_constants__WEBPACK_IMPORTED_MODULE_13__[/* PROJECTION_MODE */ "c"].WEB_MERCATOR_AUTO_OFFSET;
+      }
+
+      return _lib_constants__WEBPACK_IMPORTED_MODULE_13__[/* PROJECTION_MODE */ "c"].IDENTITY;
+    }
+  }]);
+
+  return Viewport;
+}();
+
+
+Viewport.displayName = 'Viewport';
 
 /***/ }),
 
@@ -33129,6 +35868,41 @@ $export($export.S, 'Number', { MAX_SAFE_INTEGER: 0x1fffffffffffff });
 
 /***/ }),
 
+/***/ "mgqj":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global, process) {/* unused harmony export self */
+/* unused harmony export window */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return global_; });
+/* unused harmony export document */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return isBrowser; });
+/* unused harmony export isWorker */
+/* unused harmony export nodeVersion */
+/* harmony import */ var core_js_modules_es6_regexp_match__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("Ll4R");
+/* harmony import */ var core_js_modules_es6_regexp_match__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_regexp_match__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_helpers_esm_typeof__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("0QZy");
+
+
+var globals = {
+  self: typeof self !== 'undefined' && self,
+  window: typeof window !== 'undefined' && window,
+  global: typeof global !== 'undefined' && global,
+  document: typeof document !== 'undefined' && document
+};
+var self_ = globals.self || globals.window || globals.global;
+var window_ = globals.window || globals.self || globals.global;
+var global_ = globals.global || globals.self || globals.window;
+var document_ = globals.document || {};
+
+var isBrowser = (typeof process === "undefined" ? "undefined" : Object(_babel_runtime_helpers_esm_typeof__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"])(process)) !== 'object' || String(process) !== '[object process]' || process.browser;
+var isWorker = typeof importScripts === 'function';
+var matches = typeof process !== 'undefined' && process.version && process.version.match(/v([0-9]*)/);
+var nodeVersion = matches && parseFloat(matches[1]) || 0;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("yLpj"), __webpack_require__("8oxB")))
+
+/***/ }),
+
 /***/ "n+fv":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -34428,6 +37202,60 @@ $export($export.P + $export.F * __webpack_require__("96qb")(function () {
     var O = toObject(this);
     var pv = toPrimitive(O);
     return typeof pv == 'number' && !isFinite(pv) ? null : O.toISOString();
+  }
+});
+
+
+/***/ }),
+
+/***/ "nWfQ":
+/***/ (function(module, exports, __webpack_require__) {
+
+// 26.1.2 Reflect.construct(target, argumentsList [, newTarget])
+var $export = __webpack_require__("P8UN");
+var create = __webpack_require__("nsRs");
+var aFunction = __webpack_require__("nONw");
+var anObject = __webpack_require__("1a8y");
+var isObject = __webpack_require__("BjK0");
+var fails = __webpack_require__("96qb");
+var bind = __webpack_require__("16Xr");
+var rConstruct = (__webpack_require__("emib").Reflect || {}).construct;
+
+// MS Edge supports only 2 arguments and argumentsList argument is optional
+// FF Nightly sets third argument as `new.target`, but does not create `this` from it
+var NEW_TARGET_BUG = fails(function () {
+  function F() { /* empty */ }
+  return !(rConstruct(function () { /* empty */ }, [], F) instanceof F);
+});
+var ARGS_BUG = !fails(function () {
+  rConstruct(function () { /* empty */ });
+});
+
+$export($export.S + $export.F * (NEW_TARGET_BUG || ARGS_BUG), 'Reflect', {
+  construct: function construct(Target, args /* , newTarget */) {
+    aFunction(Target);
+    anObject(args);
+    var newTarget = arguments.length < 3 ? Target : aFunction(arguments[2]);
+    if (ARGS_BUG && !NEW_TARGET_BUG) return rConstruct(Target, args, newTarget);
+    if (Target == newTarget) {
+      // w/o altered newTarget, optimization for 0-4 arguments
+      switch (args.length) {
+        case 0: return new Target();
+        case 1: return new Target(args[0]);
+        case 2: return new Target(args[0], args[1]);
+        case 3: return new Target(args[0], args[1], args[2]);
+        case 4: return new Target(args[0], args[1], args[2], args[3]);
+      }
+      // w/o altered newTarget, lot of arguments case
+      var $args = [null];
+      $args.push.apply($args, args);
+      return new (bind.apply(Target, $args))();
+    }
+    // with altered newTarget, not support built-in constructors
+    var proto = newTarget.prototype;
+    var instance = create(isObject(proto) ? proto : Object.prototype);
+    var result = Function.apply.call(Target, instance, args);
+    return isObject(result) ? result : instance;
   }
 });
 
@@ -41983,427 +44811,9 @@ var flatten = __webpack_require__("Zk56");
 // EXTERNAL MODULE: ./node_modules/@probe.gl/stats/dist/esm/index.js + 2 modules
 var esm = __webpack_require__("laie");
 
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.math.log2.js
-var es6_math_log2 = __webpack_require__("QNMc");
+// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/viewports/viewport.js
+var viewports_viewport = __webpack_require__("e/LK");
 
-// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/utils/math-utils.js
-var math_utils = __webpack_require__("F8bt");
-
-// EXTERNAL MODULE: ./node_modules/math.gl/dist/esm/index.js
-var dist_esm = __webpack_require__("c9N0");
-
-// EXTERNAL MODULE: ./node_modules/gl-matrix/esm/mat4.js
-var mat4 = __webpack_require__("ZaHm");
-
-// EXTERNAL MODULE: ./node_modules/@math.gl/web-mercator/dist/esm/index.js + 8 modules
-var web_mercator_dist_esm = __webpack_require__("v88f");
-
-// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/lib/constants.js
-var lib_constants = __webpack_require__("V3d6");
-
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/viewports/viewport.js
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var DEGREES_TO_RADIANS = Math.PI / 180;
-var IDENTITY = Object(math_utils["a" /* createMat4 */])();
-var ZERO_VECTOR = [0, 0, 0];
-var DEFAULT_ZOOM = 0;
-var DEFAULT_DISTANCE_SCALES = {
-  unitsPerMeter: [1, 1, 1],
-  metersPerUnit: [1, 1, 1]
-};
-
-var viewport_Viewport = function () {
-  function Viewport() {
-    var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-    Object(classCallCheck["a" /* default */])(this, Viewport);
-
-    var _opts$id = opts.id,
-        id = _opts$id === void 0 ? null : _opts$id,
-        _opts$x = opts.x,
-        x = _opts$x === void 0 ? 0 : _opts$x,
-        _opts$y = opts.y,
-        y = _opts$y === void 0 ? 0 : _opts$y,
-        _opts$width = opts.width,
-        width = _opts$width === void 0 ? 1 : _opts$width,
-        _opts$height = opts.height,
-        height = _opts$height === void 0 ? 1 : _opts$height;
-    this.id = id || this.constructor.displayName || 'viewport';
-    this.x = x;
-    this.y = y;
-    this.width = width || 1;
-    this.height = height || 1;
-    this._frustumPlanes = {};
-
-    this._initViewMatrix(opts);
-
-    this._initProjectionMatrix(opts);
-
-    this._initPixelMatrices();
-
-    this.equals = this.equals.bind(this);
-    this.project = this.project.bind(this);
-    this.unproject = this.unproject.bind(this);
-    this.projectPosition = this.projectPosition.bind(this);
-    this.unprojectPosition = this.unprojectPosition.bind(this);
-    this.projectFlat = this.projectFlat.bind(this);
-    this.unprojectFlat = this.unprojectFlat.bind(this);
-  }
-
-  Object(createClass["a" /* default */])(Viewport, [{
-    key: "equals",
-    value: function equals(viewport) {
-      if (!(viewport instanceof Viewport)) {
-        return false;
-      }
-
-      return viewport.width === this.width && viewport.height === this.height && viewport.scale === this.scale && Object(dist_esm["e" /* equals */])(viewport.projectionMatrix, this.projectionMatrix) && Object(dist_esm["e" /* equals */])(viewport.viewMatrix, this.viewMatrix);
-    }
-  }, {
-    key: "project",
-    value: function project(xyz) {
-      var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
-          _ref$topLeft = _ref.topLeft,
-          topLeft = _ref$topLeft === void 0 ? true : _ref$topLeft;
-
-      var worldPosition = this.projectPosition(xyz);
-      var coord = Object(web_mercator_dist_esm["o" /* worldToPixels */])(worldPosition, this.pixelProjectionMatrix);
-
-      var _coord = Object(slicedToArray["a" /* default */])(coord, 2),
-          x = _coord[0],
-          y = _coord[1];
-
-      var y2 = topLeft ? y : this.height - y;
-      return xyz.length === 2 ? [x, y2] : [x, y2, coord[2]];
-    }
-  }, {
-    key: "unproject",
-    value: function unproject(xyz) {
-      var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
-          _ref2$topLeft = _ref2.topLeft,
-          topLeft = _ref2$topLeft === void 0 ? true : _ref2$topLeft,
-          targetZ = _ref2.targetZ;
-
-      var _xyz = Object(slicedToArray["a" /* default */])(xyz, 3),
-          x = _xyz[0],
-          y = _xyz[1],
-          z = _xyz[2];
-
-      var y2 = topLeft ? y : this.height - y;
-      var targetZWorld = targetZ && targetZ * this.distanceScales.unitsPerMeter[2];
-      var coord = Object(web_mercator_dist_esm["m" /* pixelsToWorld */])([x, y2, z], this.pixelUnprojectionMatrix, targetZWorld);
-
-      var _this$unprojectPositi = this.unprojectPosition(coord),
-          _this$unprojectPositi2 = Object(slicedToArray["a" /* default */])(_this$unprojectPositi, 3),
-          X = _this$unprojectPositi2[0],
-          Y = _this$unprojectPositi2[1],
-          Z = _this$unprojectPositi2[2];
-
-      if (Number.isFinite(z)) {
-        return [X, Y, Z];
-      }
-
-      return Number.isFinite(targetZ) ? [X, Y, targetZ] : [X, Y];
-    }
-  }, {
-    key: "projectPosition",
-    value: function projectPosition(xyz) {
-      var _this$projectFlat = this.projectFlat(xyz),
-          _this$projectFlat2 = Object(slicedToArray["a" /* default */])(_this$projectFlat, 2),
-          X = _this$projectFlat2[0],
-          Y = _this$projectFlat2[1];
-
-      var Z = (xyz[2] || 0) * this.distanceScales.unitsPerMeter[2];
-      return [X, Y, Z];
-    }
-  }, {
-    key: "unprojectPosition",
-    value: function unprojectPosition(xyz) {
-      var _this$unprojectFlat = this.unprojectFlat(xyz),
-          _this$unprojectFlat2 = Object(slicedToArray["a" /* default */])(_this$unprojectFlat, 2),
-          X = _this$unprojectFlat2[0],
-          Y = _this$unprojectFlat2[1];
-
-      var Z = (xyz[2] || 0) * this.distanceScales.metersPerUnit[2];
-      return [X, Y, Z];
-    }
-  }, {
-    key: "projectFlat",
-    value: function projectFlat(xyz) {
-      if (this.isGeospatial) {
-        return Object(web_mercator_dist_esm["k" /* lngLatToWorld */])(xyz);
-      }
-
-      return xyz;
-    }
-  }, {
-    key: "unprojectFlat",
-    value: function unprojectFlat(xyz) {
-      if (this.isGeospatial) {
-        return Object(web_mercator_dist_esm["n" /* worldToLngLat */])(xyz);
-      }
-
-      return xyz;
-    }
-  }, {
-    key: "getDistanceScales",
-    value: function getDistanceScales() {
-      var coordinateOrigin = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-
-      if (coordinateOrigin) {
-        return Object(web_mercator_dist_esm["f" /* getDistanceScales */])({
-          longitude: coordinateOrigin[0],
-          latitude: coordinateOrigin[1],
-          highPrecision: true
-        });
-      }
-
-      return this.distanceScales;
-    }
-  }, {
-    key: "containsPixel",
-    value: function containsPixel(_ref3) {
-      var x = _ref3.x,
-          y = _ref3.y,
-          _ref3$width = _ref3.width,
-          width = _ref3$width === void 0 ? 1 : _ref3$width,
-          _ref3$height = _ref3.height,
-          height = _ref3$height === void 0 ? 1 : _ref3$height;
-      return x < this.x + this.width && this.x < x + width && y < this.y + this.height && this.y < y + height;
-    }
-  }, {
-    key: "getFrustumPlanes",
-    value: function getFrustumPlanes() {
-      if (this._frustumPlanes.near) {
-        return this._frustumPlanes;
-      }
-
-      var _this$projectionProps = this.projectionProps,
-          near = _this$projectionProps.near,
-          far = _this$projectionProps.far,
-          fovyRadians = _this$projectionProps.fovyRadians,
-          aspect = _this$projectionProps.aspect;
-      Object.assign(this._frustumPlanes, Object(math_utils["c" /* getFrustumPlanes */])({
-        aspect: aspect,
-        near: near,
-        far: far,
-        fovyRadians: fovyRadians,
-        position: this.cameraPosition,
-        direction: this.cameraDirection,
-        up: this.cameraUp,
-        right: this.cameraRight
-      }));
-      return this._frustumPlanes;
-    }
-  }, {
-    key: "getCameraPosition",
-    value: function getCameraPosition() {
-      return this.cameraPosition;
-    }
-  }, {
-    key: "getCameraDirection",
-    value: function getCameraDirection() {
-      return this.cameraDirection;
-    }
-  }, {
-    key: "getCameraUp",
-    value: function getCameraUp() {
-      return this.cameraUp;
-    }
-  }, {
-    key: "_createProjectionMatrix",
-    value: function _createProjectionMatrix(_ref4) {
-      var orthographic = _ref4.orthographic,
-          fovyRadians = _ref4.fovyRadians,
-          aspect = _ref4.aspect,
-          focalDistance = _ref4.focalDistance,
-          near = _ref4.near,
-          far = _ref4.far;
-      return orthographic ? new dist_esm["a" /* Matrix4 */]().orthographic({
-        fovy: fovyRadians,
-        aspect: aspect,
-        focalDistance: focalDistance,
-        near: near,
-        far: far
-      }) : new dist_esm["a" /* Matrix4 */]().perspective({
-        fovy: fovyRadians,
-        aspect: aspect,
-        near: near,
-        far: far
-      });
-    }
-  }, {
-    key: "_initViewMatrix",
-    value: function _initViewMatrix(opts) {
-      var _opts$viewMatrix = opts.viewMatrix,
-          viewMatrix = _opts$viewMatrix === void 0 ? IDENTITY : _opts$viewMatrix,
-          _opts$longitude = opts.longitude,
-          longitude = _opts$longitude === void 0 ? null : _opts$longitude,
-          _opts$latitude = opts.latitude,
-          latitude = _opts$latitude === void 0 ? null : _opts$latitude,
-          _opts$zoom = opts.zoom,
-          zoom = _opts$zoom === void 0 ? null : _opts$zoom,
-          _opts$position = opts.position,
-          position = _opts$position === void 0 ? null : _opts$position,
-          _opts$modelMatrix = opts.modelMatrix,
-          modelMatrix = _opts$modelMatrix === void 0 ? null : _opts$modelMatrix,
-          _opts$focalDistance = opts.focalDistance,
-          focalDistance = _opts$focalDistance === void 0 ? 1 : _opts$focalDistance,
-          _opts$distanceScales = opts.distanceScales,
-          distanceScales = _opts$distanceScales === void 0 ? null : _opts$distanceScales;
-      this.isGeospatial = Number.isFinite(latitude) && Number.isFinite(longitude);
-      this.zoom = zoom;
-
-      if (!Number.isFinite(this.zoom)) {
-        this.zoom = this.isGeospatial ? Object(web_mercator_dist_esm["h" /* getMeterZoom */])({
-          latitude: latitude
-        }) + Math.log2(focalDistance) : DEFAULT_ZOOM;
-      }
-
-      var scale = Math.pow(2, this.zoom);
-      this.scale = scale;
-      this.distanceScales = this.isGeospatial ? Object(web_mercator_dist_esm["f" /* getDistanceScales */])({
-        latitude: latitude,
-        longitude: longitude
-      }) : distanceScales || DEFAULT_DISTANCE_SCALES;
-      this.focalDistance = focalDistance;
-      this.distanceScales.metersPerUnit = new dist_esm["b" /* Vector3 */](this.distanceScales.metersPerUnit);
-      this.distanceScales.unitsPerMeter = new dist_esm["b" /* Vector3 */](this.distanceScales.unitsPerMeter);
-      this.position = ZERO_VECTOR;
-      this.meterOffset = ZERO_VECTOR;
-
-      if (position) {
-        this.position = position;
-        this.modelMatrix = modelMatrix;
-        this.meterOffset = modelMatrix ? modelMatrix.transformVector(position) : position;
-      }
-
-      if (this.isGeospatial) {
-        this.longitude = longitude;
-        this.latitude = latitude;
-        this.center = this._getCenterInWorld({
-          longitude: longitude,
-          latitude: latitude
-        });
-      } else {
-        this.center = position ? this.projectPosition(position) : [0, 0, 0];
-      }
-
-      this.viewMatrixUncentered = viewMatrix;
-      this.viewMatrix = new dist_esm["a" /* Matrix4 */]().multiplyRight(this.viewMatrixUncentered).translate(new dist_esm["b" /* Vector3 */](this.center || ZERO_VECTOR).negate());
-    }
-  }, {
-    key: "_getCenterInWorld",
-    value: function _getCenterInWorld(_ref5) {
-      var longitude = _ref5.longitude,
-          latitude = _ref5.latitude;
-      var meterOffset = this.meterOffset,
-          distanceScales = this.distanceScales;
-      var center2d = this.projectFlat([longitude, latitude]);
-      var center = new dist_esm["b" /* Vector3 */](center2d[0], center2d[1], 0);
-
-      if (meterOffset) {
-        var commonPosition = new dist_esm["b" /* Vector3 */](meterOffset).scale(distanceScales.unitsPerMeter);
-        center.add(commonPosition);
-      }
-
-      return center;
-    }
-  }, {
-    key: "_initProjectionMatrix",
-    value: function _initProjectionMatrix(opts) {
-      var _opts$projectionMatri = opts.projectionMatrix,
-          projectionMatrix = _opts$projectionMatri === void 0 ? null : _opts$projectionMatri,
-          _opts$orthographic = opts.orthographic,
-          orthographic = _opts$orthographic === void 0 ? false : _opts$orthographic,
-          fovyRadians = opts.fovyRadians,
-          _opts$fovy = opts.fovy,
-          fovy = _opts$fovy === void 0 ? 75 : _opts$fovy,
-          _opts$near = opts.near,
-          near = _opts$near === void 0 ? 0.1 : _opts$near,
-          _opts$far = opts.far,
-          far = _opts$far === void 0 ? 1000 : _opts$far,
-          _opts$focalDistance2 = opts.focalDistance,
-          focalDistance = _opts$focalDistance2 === void 0 ? 1 : _opts$focalDistance2;
-      this.projectionProps = {
-        orthographic: orthographic,
-        fovyRadians: fovyRadians || fovy * DEGREES_TO_RADIANS,
-        aspect: this.width / this.height,
-        focalDistance: focalDistance,
-        near: near,
-        far: far
-      };
-      this.projectionMatrix = projectionMatrix || this._createProjectionMatrix(this.projectionProps);
-    }
-  }, {
-    key: "_initPixelMatrices",
-    value: function _initPixelMatrices() {
-      var vpm = Object(math_utils["a" /* createMat4 */])();
-      mat4["g" /* multiply */](vpm, vpm, this.projectionMatrix);
-      mat4["g" /* multiply */](vpm, vpm, this.viewMatrix);
-      this.viewProjectionMatrix = vpm;
-      this.viewMatrixInverse = mat4["e" /* invert */]([], this.viewMatrix) || this.viewMatrix;
-
-      var _extractCameraVectors = Object(math_utils["b" /* extractCameraVectors */])({
-        viewMatrix: this.viewMatrix,
-        viewMatrixInverse: this.viewMatrixInverse
-      }),
-          eye = _extractCameraVectors.eye,
-          direction = _extractCameraVectors.direction,
-          up = _extractCameraVectors.up,
-          right = _extractCameraVectors.right;
-
-      this.cameraPosition = eye;
-      this.cameraDirection = direction;
-      this.cameraUp = up;
-      this.cameraRight = right;
-      var viewportMatrix = Object(math_utils["a" /* createMat4 */])();
-      var pixelProjectionMatrix = Object(math_utils["a" /* createMat4 */])();
-      mat4["n" /* scale */](viewportMatrix, viewportMatrix, [this.width / 2, -this.height / 2, 1]);
-      mat4["o" /* translate */](viewportMatrix, viewportMatrix, [1, -1, 0]);
-      mat4["g" /* multiply */](pixelProjectionMatrix, viewportMatrix, this.viewProjectionMatrix);
-      this.pixelProjectionMatrix = pixelProjectionMatrix;
-      this.viewportMatrix = viewportMatrix;
-      this.pixelUnprojectionMatrix = mat4["e" /* invert */](Object(math_utils["a" /* createMat4 */])(), this.pixelProjectionMatrix);
-
-      if (!this.pixelUnprojectionMatrix) {
-        log["a" /* default */].warn('Pixel project matrix not invertible')();
-      }
-    }
-  }, {
-    key: "metersPerPixel",
-    get: function get() {
-      return this.distanceScales.metersPerUnit[2] / this.scale;
-    }
-  }, {
-    key: "projectionMode",
-    get: function get() {
-      if (this.isGeospatial) {
-        return this.zoom < 12 ? lib_constants["c" /* PROJECTION_MODE */].WEB_MERCATOR : lib_constants["c" /* PROJECTION_MODE */].WEB_MERCATOR_AUTO_OFFSET;
-      }
-
-      return lib_constants["c" /* PROJECTION_MODE */].IDENTITY;
-    }
-  }]);
-
-  return Viewport;
-}();
-
-
-viewport_Viewport.displayName = 'Viewport';
 // EXTERNAL MODULE: ./node_modules/@luma.gl/engine/dist/esm/lib/program-manager.js + 8 modules
 var program_manager = __webpack_require__("haqy");
 
@@ -42416,7 +44826,7 @@ var fs = "\n#define SMOOTH_EDGE_RADIUS 0.5\n\nstruct FragmentGeometry {\n  vec2 
   fs: fs
 });
 // EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/shaderlib/project/project.js + 2 modules
-var project_project = __webpack_require__("hJkN");
+var project = __webpack_require__("hJkN");
 
 // CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/shaderlib/index.js
 
@@ -42429,7 +44839,7 @@ var project_project = __webpack_require__("hJkN");
 
 
 
-var DEFAULT_MODULES = [geometry, project_project["a" /* default */]];
+var DEFAULT_MODULES = [geometry, project["a" /* default */]];
 var SHADER_HOOKS = ['vs:DECKGL_FILTER_SIZE(inout vec3 size, VertexGeometry geometry)', 'vs:DECKGL_FILTER_GL_POSITION(inout vec4 position, VertexGeometry geometry)', 'vs:DECKGL_FILTER_COLOR(inout vec4 color, VertexGeometry geometry)', 'fs:DECKGL_FILTER_COLOR(inout vec4 color, FragmentGeometry geometry)'];
 function createProgramManager(gl) {
   var programManager = program_manager["a" /* default */].getDefaultProgramManager(gl);
@@ -42545,7 +44955,7 @@ var layer_manager_LayerManager = function () {
       stats: stats || new esm["b" /* Stats */]({
         id: 'deck.gl'
       }),
-      viewport: viewport || new viewport_Viewport({
+      viewport: viewport || new viewports_viewport["a" /* default */]({
         id: 'DEFAULT-INITIAL-VIEWPORT'
       }),
       timeline: timeline || new timeline_Timeline()
@@ -43378,8 +45788,8 @@ var view_View = function () {
         _props$viewportInstan = props.viewportInstance,
         viewportInstance = _props$viewportInstan === void 0 ? null : _props$viewportInstan,
         _props$type = props.type,
-        type = _props$type === void 0 ? viewport_Viewport : _props$type;
-    Object(assert["a" /* default */])(!viewportInstance || viewportInstance instanceof viewport_Viewport);
+        type = _props$type === void 0 ? viewports_viewport["a" /* default */] : _props$type;
+    Object(assert["a" /* default */])(!viewportInstance || viewportInstance instanceof viewports_viewport["a" /* default */]);
     this.viewportInstance = viewportInstance;
     this.id = id || this.constructor.displayName || 'view';
     this.type = type;
@@ -43530,237 +45940,15 @@ var view_View = function () {
 }();
 
 
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.object.freeze.js
-var es6_object_freeze = __webpack_require__("DrhF");
+// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/viewports/web-mercator-viewport.js
+var web_mercator_viewport = __webpack_require__("zGfa");
 
-// EXTERNAL MODULE: ./node_modules/gl-matrix/esm/vec2.js
-var vec2 = __webpack_require__("ZxFD");
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.math.log2.js
+var es6_math_log2 = __webpack_require__("QNMc");
 
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/viewports/web-mercator-viewport.js
+// EXTERNAL MODULE: ./node_modules/math.gl/dist/esm/index.js
+var dist_esm = __webpack_require__("c9N0");
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function ownKeys(object, enumerableOnly) {
-  var keys = Object.keys(object);
-
-  if (Object.getOwnPropertySymbols) {
-    var symbols = Object.getOwnPropertySymbols(object);
-    if (enumerableOnly) symbols = symbols.filter(function (sym) {
-      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-    });
-    keys.push.apply(keys, symbols);
-  }
-
-  return keys;
-}
-
-function _objectSpread(target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i] != null ? arguments[i] : {};
-
-    if (i % 2) {
-      ownKeys(Object(source), true).forEach(function (key) {
-        Object(defineProperty["a" /* default */])(target, key, source[key]);
-      });
-    } else if (Object.getOwnPropertyDescriptors) {
-      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-    } else {
-      ownKeys(Object(source)).forEach(function (key) {
-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-      });
-    }
-  }
-
-  return target;
-}
-
-
-
-
-
-
-var web_mercator_viewport_WebMercatorViewport = function (_Viewport) {
-  Object(inherits["a" /* default */])(WebMercatorViewport, _Viewport);
-
-  function WebMercatorViewport() {
-    var _this;
-
-    var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-    Object(classCallCheck["a" /* default */])(this, WebMercatorViewport);
-
-    var _opts$latitude = opts.latitude,
-        latitude = _opts$latitude === void 0 ? 0 : _opts$latitude,
-        _opts$longitude = opts.longitude,
-        longitude = _opts$longitude === void 0 ? 0 : _opts$longitude,
-        _opts$zoom = opts.zoom,
-        zoom = _opts$zoom === void 0 ? 11 : _opts$zoom,
-        _opts$pitch = opts.pitch,
-        pitch = _opts$pitch === void 0 ? 0 : _opts$pitch,
-        _opts$bearing = opts.bearing,
-        bearing = _opts$bearing === void 0 ? 0 : _opts$bearing,
-        _opts$nearZMultiplier = opts.nearZMultiplier,
-        nearZMultiplier = _opts$nearZMultiplier === void 0 ? 0.1 : _opts$nearZMultiplier,
-        _opts$farZMultiplier = opts.farZMultiplier,
-        farZMultiplier = _opts$farZMultiplier === void 0 ? 1.01 : _opts$farZMultiplier,
-        _opts$orthographic = opts.orthographic,
-        orthographic = _opts$orthographic === void 0 ? false : _opts$orthographic,
-        _opts$repeat = opts.repeat,
-        repeat = _opts$repeat === void 0 ? false : _opts$repeat,
-        _opts$worldOffset = opts.worldOffset,
-        worldOffset = _opts$worldOffset === void 0 ? 0 : _opts$worldOffset;
-    var width = opts.width,
-        height = opts.height,
-        _opts$altitude = opts.altitude,
-        altitude = _opts$altitude === void 0 ? 1.5 : _opts$altitude;
-    var scale = Math.pow(2, zoom);
-    width = width || 1;
-    height = height || 1;
-    altitude = Math.max(0.75, altitude);
-
-    var _getProjectionParamet = Object(web_mercator_dist_esm["i" /* getProjectionParameters */])({
-      width: width,
-      height: height,
-      pitch: pitch,
-      altitude: altitude,
-      nearZMultiplier: nearZMultiplier,
-      farZMultiplier: farZMultiplier
-    }),
-        fov = _getProjectionParamet.fov,
-        aspect = _getProjectionParamet.aspect,
-        focalDistance = _getProjectionParamet.focalDistance,
-        near = _getProjectionParamet.near,
-        far = _getProjectionParamet.far;
-
-    var viewMatrixUncentered = Object(web_mercator_dist_esm["j" /* getViewMatrix */])({
-      height: height,
-      pitch: pitch,
-      bearing: bearing,
-      scale: scale,
-      altitude: altitude
-    });
-
-    if (worldOffset) {
-      var viewOffset = new dist_esm["a" /* Matrix4 */]().translate([512 * worldOffset, 0, 0]);
-      viewMatrixUncentered = viewOffset.multiplyLeft(viewMatrixUncentered);
-    }
-
-    var viewportOpts = Object.assign({}, opts, {
-      width: width,
-      height: height,
-      viewMatrix: viewMatrixUncentered,
-      longitude: longitude,
-      latitude: latitude,
-      zoom: zoom,
-      orthographic: orthographic,
-      fovyRadians: fov,
-      aspect: aspect,
-      focalDistance: orthographic ? focalDistance : 1,
-      near: near,
-      far: far
-    });
-    _this = Object(possibleConstructorReturn["a" /* default */])(this, Object(getPrototypeOf["a" /* default */])(WebMercatorViewport).call(this, viewportOpts));
-    _this.latitude = latitude;
-    _this.longitude = longitude;
-    _this.zoom = zoom;
-    _this.pitch = pitch;
-    _this.bearing = bearing;
-    _this.altitude = altitude;
-    _this.orthographic = orthographic;
-    _this._subViewports = repeat ? [] : null;
-    Object.freeze(Object(assertThisInitialized["a" /* default */])(_this));
-    return _this;
-  }
-
-  Object(createClass["a" /* default */])(WebMercatorViewport, [{
-    key: "addMetersToLngLat",
-    value: function addMetersToLngLat(lngLatZ, xyz) {
-      return Object(web_mercator_dist_esm["b" /* addMetersToLngLat */])(lngLatZ, xyz);
-    }
-  }, {
-    key: "getMapCenterByLngLatPosition",
-    value: function getMapCenterByLngLatPosition(_ref) {
-      var lngLat = _ref.lngLat,
-          pos = _ref.pos;
-      var fromLocation = Object(web_mercator_dist_esm["m" /* pixelsToWorld */])(pos, this.pixelUnprojectionMatrix);
-      var toLocation = this.projectFlat(lngLat);
-      var translate = vec2["a" /* add */]([], toLocation, vec2["d" /* negate */]([], fromLocation));
-      var newCenter = vec2["a" /* add */]([], this.center, translate);
-      return this.unprojectFlat(newCenter);
-    }
-  }, {
-    key: "fitBounds",
-    value: function fitBounds(bounds) {
-      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var width = this.width,
-          height = this.height;
-
-      var _fitBounds2 = Object(web_mercator_dist_esm["d" /* fitBounds */])(Object.assign({
-        width: width,
-        height: height,
-        bounds: bounds
-      }, options)),
-          longitude = _fitBounds2.longitude,
-          latitude = _fitBounds2.latitude,
-          zoom = _fitBounds2.zoom;
-
-      return new WebMercatorViewport({
-        width: width,
-        height: height,
-        longitude: longitude,
-        latitude: latitude,
-        zoom: zoom
-      });
-    }
-  }, {
-    key: "subViewports",
-    get: function get() {
-      if (this._subViewports && !this._subViewports.length) {
-        var topLeft = this.unproject([0, 0]);
-        var topRight = this.unproject([this.width, 0]);
-        var bottomLeft = this.unproject([0, this.height]);
-        var bottomRight = this.unproject([this.width, this.height]);
-        var minLon = Math.min(topLeft[0], topRight[0], bottomLeft[0], bottomRight[0]);
-        var maxLon = Math.max(topLeft[0], topRight[0], bottomLeft[0], bottomRight[0]);
-        var minOffset = Math.floor((minLon + 180) / 360);
-        var maxOffset = Math.ceil((maxLon - 180) / 360);
-
-        for (var x = minOffset; x <= maxOffset; x++) {
-          var offsetViewport = x ? new WebMercatorViewport(_objectSpread({}, this, {
-            worldOffset: x
-          })) : this;
-
-          this._subViewports.push(offsetViewport);
-        }
-      }
-
-      return this._subViewports;
-    }
-  }]);
-
-  return WebMercatorViewport;
-}(viewport_Viewport);
-
-
-web_mercator_viewport_WebMercatorViewport.displayName = 'WebMercatorViewport';
 // CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/transitions/transition-interpolator.js
 
 
@@ -44701,6 +46889,9 @@ var view_state_ViewState = function () {
 }();
 
 
+// EXTERNAL MODULE: ./node_modules/@math.gl/web-mercator/dist/esm/index.js + 8 modules
+var web_mercator_dist_esm = __webpack_require__("v88f");
+
 // CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/controllers/map-controller.js
 
 
@@ -45219,7 +47410,7 @@ var map_view_MapView = function (_View) {
     Object(classCallCheck["a" /* default */])(this, MapView);
 
     return Object(possibleConstructorReturn["a" /* default */])(this, Object(getPrototypeOf["a" /* default */])(MapView).call(this, Object.assign({}, props, {
-      type: web_mercator_viewport_WebMercatorViewport
+      type: web_mercator_viewport["a" /* default */]
     })));
   }
 
@@ -45721,7 +47912,7 @@ var framebuffer = __webpack_require__("11Ib");
 
 
 
-function shadow_pass_ownKeys(object, enumerableOnly) {
+function ownKeys(object, enumerableOnly) {
   var keys = Object.keys(object);
 
   if (Object.getOwnPropertySymbols) {
@@ -45735,18 +47926,18 @@ function shadow_pass_ownKeys(object, enumerableOnly) {
   return keys;
 }
 
-function shadow_pass_objectSpread(target) {
+function _objectSpread(target) {
   for (var i = 1; i < arguments.length; i++) {
     var source = arguments[i] != null ? arguments[i] : {};
 
     if (i % 2) {
-      shadow_pass_ownKeys(Object(source), true).forEach(function (key) {
+      ownKeys(Object(source), true).forEach(function (key) {
         Object(defineProperty["a" /* default */])(target, key, source[key]);
       });
     } else if (Object.getOwnPropertyDescriptors) {
       Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
     } else {
-      shadow_pass_ownKeys(Object(source)).forEach(function (key) {
+      ownKeys(Object(source)).forEach(function (key) {
         Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
       });
     }
@@ -45812,7 +48003,7 @@ var shadow_pass_ShadowPass = function (_LayersPass) {
           });
         }
 
-        Object(esm_get["a" /* default */])(Object(getPrototypeOf["a" /* default */])(ShadowPass.prototype), "render", _this2).call(_this2, shadow_pass_objectSpread({}, params, {
+        Object(esm_get["a" /* default */])(Object(getPrototypeOf["a" /* default */])(ShadowPass.prototype), "render", _this2).call(_this2, _objectSpread({}, params, {
           target: target,
           pass: 'shadow'
         }));
@@ -45856,6 +48047,9 @@ var shadow_pass_ShadowPass = function (_LayersPass) {
 
 // EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/toConsumableArray.js + 3 modules
 var toConsumableArray = __webpack_require__("t8Zj");
+
+// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/lib/constants.js
+var lib_constants = __webpack_require__("V3d6");
 
 // EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/utils/memoize.js
 var memoize = __webpack_require__("OIVS");
@@ -46016,7 +48210,7 @@ function createShadowUniforms() {
 
 /* harmony default export */ var shadow = ({
   name: 'shadow',
-  dependencies: [project_project["a" /* default */]],
+  dependencies: [project["a" /* default */]],
   vs: shadow_vs,
   fs: shadow_fs,
   inject: {
@@ -52555,6 +54749,275 @@ var model_Model = function () {
 }();
 
 
+
+/***/ }),
+
+/***/ "zGfa":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return WebMercatorViewport; });
+/* harmony import */ var core_js_modules_es6_object_freeze__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("DrhF");
+/* harmony import */ var core_js_modules_es6_object_freeze__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_object_freeze__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_es6_object_assign__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("E5k/");
+/* harmony import */ var core_js_modules_es6_object_assign__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_object_assign__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var core_js_modules_es6_string_repeat__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("ZiRl");
+/* harmony import */ var core_js_modules_es6_string_repeat__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_string_repeat__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var core_js_modules_es6_object_define_property__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("R48M");
+/* harmony import */ var core_js_modules_es6_object_define_property__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_object_define_property__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var core_js_modules_es6_object_define_properties__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__("+ar0");
+/* harmony import */ var core_js_modules_es6_object_define_properties__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_object_define_properties__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var core_js_modules_es7_object_get_own_property_descriptors__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__("xtjI");
+/* harmony import */ var core_js_modules_es7_object_get_own_property_descriptors__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es7_object_get_own_property_descriptors__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var core_js_modules_es6_array_for_each__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__("JHok");
+/* harmony import */ var core_js_modules_es6_array_for_each__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_array_for_each__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var core_js_modules_es6_array_filter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__("OeI1");
+/* harmony import */ var core_js_modules_es6_array_filter__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_array_filter__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var core_js_modules_es6_symbol__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__("4DPX");
+/* harmony import */ var core_js_modules_es6_symbol__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_symbol__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var core_js_modules_web_dom_iterable__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__("rzGZ");
+/* harmony import */ var core_js_modules_web_dom_iterable__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_iterable__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var core_js_modules_es6_array_iterator__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__("Dq+y");
+/* harmony import */ var core_js_modules_es6_array_iterator__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_array_iterator__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var core_js_modules_es6_object_to_string__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__("8npG");
+/* harmony import */ var core_js_modules_es6_object_to_string__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_object_to_string__WEBPACK_IMPORTED_MODULE_11__);
+/* harmony import */ var core_js_modules_es6_object_keys__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__("Ggvi");
+/* harmony import */ var core_js_modules_es6_object_keys__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_object_keys__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var _babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__("FqMR");
+/* harmony import */ var _babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__("QDMQ");
+/* harmony import */ var _babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__("ls4f");
+/* harmony import */ var _babel_runtime_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__("L6So");
+/* harmony import */ var _babel_runtime_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__("Ccfo");
+/* harmony import */ var _babel_runtime_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__("uRdJ");
+/* harmony import */ var _babel_runtime_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__("x364");
+/* harmony import */ var _viewport__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__("e/LK");
+/* harmony import */ var _math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__("v88f");
+/* harmony import */ var gl_matrix_vec2__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__("ZxFD");
+/* harmony import */ var math_gl__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__("c9N0");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    if (enumerableOnly) symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    });
+    keys.push.apply(keys, symbols);
+  }
+
+  return keys;
+}
+
+function _objectSpread(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
+    if (i % 2) {
+      ownKeys(Object(source), true).forEach(function (key) {
+        Object(_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_13__[/* default */ "a"])(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      ownKeys(Object(source)).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+
+  return target;
+}
+
+
+
+
+
+
+var WebMercatorViewport = function (_Viewport) {
+  Object(_babel_runtime_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_19__[/* default */ "a"])(WebMercatorViewport, _Viewport);
+
+  function WebMercatorViewport() {
+    var _this;
+
+    var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    Object(_babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_14__[/* default */ "a"])(this, WebMercatorViewport);
+
+    var _opts$latitude = opts.latitude,
+        latitude = _opts$latitude === void 0 ? 0 : _opts$latitude,
+        _opts$longitude = opts.longitude,
+        longitude = _opts$longitude === void 0 ? 0 : _opts$longitude,
+        _opts$zoom = opts.zoom,
+        zoom = _opts$zoom === void 0 ? 11 : _opts$zoom,
+        _opts$pitch = opts.pitch,
+        pitch = _opts$pitch === void 0 ? 0 : _opts$pitch,
+        _opts$bearing = opts.bearing,
+        bearing = _opts$bearing === void 0 ? 0 : _opts$bearing,
+        _opts$nearZMultiplier = opts.nearZMultiplier,
+        nearZMultiplier = _opts$nearZMultiplier === void 0 ? 0.1 : _opts$nearZMultiplier,
+        _opts$farZMultiplier = opts.farZMultiplier,
+        farZMultiplier = _opts$farZMultiplier === void 0 ? 1.01 : _opts$farZMultiplier,
+        _opts$orthographic = opts.orthographic,
+        orthographic = _opts$orthographic === void 0 ? false : _opts$orthographic,
+        _opts$repeat = opts.repeat,
+        repeat = _opts$repeat === void 0 ? false : _opts$repeat,
+        _opts$worldOffset = opts.worldOffset,
+        worldOffset = _opts$worldOffset === void 0 ? 0 : _opts$worldOffset;
+    var width = opts.width,
+        height = opts.height,
+        _opts$altitude = opts.altitude,
+        altitude = _opts$altitude === void 0 ? 1.5 : _opts$altitude;
+    var scale = Math.pow(2, zoom);
+    width = width || 1;
+    height = height || 1;
+    altitude = Math.max(0.75, altitude);
+
+    var _getProjectionParamet = Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_21__[/* getProjectionParameters */ "i"])({
+      width: width,
+      height: height,
+      pitch: pitch,
+      altitude: altitude,
+      nearZMultiplier: nearZMultiplier,
+      farZMultiplier: farZMultiplier
+    }),
+        fov = _getProjectionParamet.fov,
+        aspect = _getProjectionParamet.aspect,
+        focalDistance = _getProjectionParamet.focalDistance,
+        near = _getProjectionParamet.near,
+        far = _getProjectionParamet.far;
+
+    var viewMatrixUncentered = Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_21__[/* getViewMatrix */ "j"])({
+      height: height,
+      pitch: pitch,
+      bearing: bearing,
+      scale: scale,
+      altitude: altitude
+    });
+
+    if (worldOffset) {
+      var viewOffset = new math_gl__WEBPACK_IMPORTED_MODULE_23__[/* Matrix4 */ "a"]().translate([512 * worldOffset, 0, 0]);
+      viewMatrixUncentered = viewOffset.multiplyLeft(viewMatrixUncentered);
+    }
+
+    var viewportOpts = Object.assign({}, opts, {
+      width: width,
+      height: height,
+      viewMatrix: viewMatrixUncentered,
+      longitude: longitude,
+      latitude: latitude,
+      zoom: zoom,
+      orthographic: orthographic,
+      fovyRadians: fov,
+      aspect: aspect,
+      focalDistance: orthographic ? focalDistance : 1,
+      near: near,
+      far: far
+    });
+    _this = Object(_babel_runtime_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_16__[/* default */ "a"])(this, Object(_babel_runtime_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_17__[/* default */ "a"])(WebMercatorViewport).call(this, viewportOpts));
+    _this.latitude = latitude;
+    _this.longitude = longitude;
+    _this.zoom = zoom;
+    _this.pitch = pitch;
+    _this.bearing = bearing;
+    _this.altitude = altitude;
+    _this.orthographic = orthographic;
+    _this._subViewports = repeat ? [] : null;
+    Object.freeze(Object(_babel_runtime_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_18__[/* default */ "a"])(_this));
+    return _this;
+  }
+
+  Object(_babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_15__[/* default */ "a"])(WebMercatorViewport, [{
+    key: "addMetersToLngLat",
+    value: function addMetersToLngLat(lngLatZ, xyz) {
+      return Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_21__[/* addMetersToLngLat */ "b"])(lngLatZ, xyz);
+    }
+  }, {
+    key: "getMapCenterByLngLatPosition",
+    value: function getMapCenterByLngLatPosition(_ref) {
+      var lngLat = _ref.lngLat,
+          pos = _ref.pos;
+      var fromLocation = Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_21__[/* pixelsToWorld */ "m"])(pos, this.pixelUnprojectionMatrix);
+      var toLocation = this.projectFlat(lngLat);
+      var translate = gl_matrix_vec2__WEBPACK_IMPORTED_MODULE_22__[/* add */ "a"]([], toLocation, gl_matrix_vec2__WEBPACK_IMPORTED_MODULE_22__[/* negate */ "d"]([], fromLocation));
+      var newCenter = gl_matrix_vec2__WEBPACK_IMPORTED_MODULE_22__[/* add */ "a"]([], this.center, translate);
+      return this.unprojectFlat(newCenter);
+    }
+  }, {
+    key: "fitBounds",
+    value: function fitBounds(bounds) {
+      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      var width = this.width,
+          height = this.height;
+
+      var _fitBounds2 = Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_21__[/* fitBounds */ "d"])(Object.assign({
+        width: width,
+        height: height,
+        bounds: bounds
+      }, options)),
+          longitude = _fitBounds2.longitude,
+          latitude = _fitBounds2.latitude,
+          zoom = _fitBounds2.zoom;
+
+      return new WebMercatorViewport({
+        width: width,
+        height: height,
+        longitude: longitude,
+        latitude: latitude,
+        zoom: zoom
+      });
+    }
+  }, {
+    key: "subViewports",
+    get: function get() {
+      if (this._subViewports && !this._subViewports.length) {
+        var topLeft = this.unproject([0, 0]);
+        var topRight = this.unproject([this.width, 0]);
+        var bottomLeft = this.unproject([0, this.height]);
+        var bottomRight = this.unproject([this.width, this.height]);
+        var minLon = Math.min(topLeft[0], topRight[0], bottomLeft[0], bottomRight[0]);
+        var maxLon = Math.max(topLeft[0], topRight[0], bottomLeft[0], bottomRight[0]);
+        var minOffset = Math.floor((minLon + 180) / 360);
+        var maxOffset = Math.ceil((maxLon - 180) / 360);
+
+        for (var x = minOffset; x <= maxOffset; x++) {
+          var offsetViewport = x ? new WebMercatorViewport(_objectSpread({}, this, {
+            worldOffset: x
+          })) : this;
+
+          this._subViewports.push(offsetViewport);
+        }
+      }
+
+      return this._subViewports;
+    }
+  }]);
+
+  return WebMercatorViewport;
+}(_viewport__WEBPACK_IMPORTED_MODULE_20__[/* default */ "a"]);
+
+
+WebMercatorViewport.displayName = 'WebMercatorViewport';
 
 /***/ }),
 

@@ -5512,21 +5512,6 @@ var setRTLTextPlugin = mapbox_gl_default.a ? mapbox_gl_default.a.setRTLTextPlugi
 
 /***/ }),
 
-/***/ "bNpn":
-/***/ (function(module, exports, __webpack_require__) {
-
-// 19.1.2.11 Object.isExtensible(O)
-var isObject = __webpack_require__("BjK0");
-
-__webpack_require__("939a")('isExtensible', function ($isExtensible) {
-  return function isExtensible(it) {
-    return isObject(it) ? $isExtensible ? $isExtensible(it) : true : false;
-  };
-});
-
-
-/***/ }),
-
 /***/ "jYz7":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
