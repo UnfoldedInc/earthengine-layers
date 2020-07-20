@@ -135,9 +135,8 @@ The EarthEngine source used for rendering imagery on top of terrain.
 Either an EarthEngine JavaScript API object, or a serialized string representing
 an object (created with, e.g. `ee.Image.serialize()`).
 
-By default, `getMap` is called on the object, and image tiles are displayed
-representing the object. If you supply an `ImageCollection` object, you can pass
-`true` to the `animate` prop to animate the rendering.
+This source is expected to be a raster image whose data value represents
+elevations in meters.
 
 ##### `eeTerrainObject` (EarthEngine Object|String)
 
@@ -149,8 +148,7 @@ Either an EarthEngine JavaScript API object, or a serialized string representing
 an object (created with, e.g. `ee.Image.serialize()`).
 
 By default, `getMap` is called on the object, and image tiles are displayed
-representing the object. If you supply an `ImageCollection` object, you can pass
-`true` to the `animate` prop to animate the rendering.
+representing the object.
 
 ##### `visParams` (Object, optional)
 
@@ -164,33 +162,6 @@ objects.
 
 [visparams-docs]: https://developers.google.com/earth-engine/image_visualization
 [style-fn]: https://developers.google.com/earth-engine/api_docs#ee.featurecollection.style
-
-### Render Options
-
-##### `animate` (Boolean, optional)
-
-- Default: `false`
-
-If `true`, render an animated ImageCollection.
-
-Rendering an animation is only possible for `ee.ImageCollection` objects; an
-error will be produced if `animate` is set to `true` when another object type is
-passed.
-
-The `ImageCollection` should be filtered and sorted in the order desired for the
-animation. If an `ImageCollection` contains 20 images, the animation will
-contain those images as individual frames of the animation, in the same order.
-Earth Engine has an upper limit of 100 animation frames.
-
-##### `animationSpeed` (Number, optional)
-
-- Default: `12`
-
-If `animate` is `true`, `animationSpeed` represents the number of frames per
-second. Keeping this constant implies that animations will play at the same
-speed; an `ImageCollection` with more frames will have a longer loop than one
-with fewer frames.
-
 
 ## Source
 

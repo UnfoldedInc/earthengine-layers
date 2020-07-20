@@ -1,10 +1,7 @@
-/* global createImageBitmap */
 import {CompositeLayer} from '@deck.gl/core';
 import {TileLayer, TerrainLayer} from '@deck.gl/geo-layers';
 import ee from '@google/earthengine';
 import {initializeEEApi} from './ee-api'; // Promisify ee apis
-import {load} from '@loaders.gl/core';
-import {ImageLoader} from '@loaders.gl/images';
 import {deepEqual, promisifyEEMethod} from './utils';
 
 /**
@@ -29,10 +26,6 @@ const defaultProps = {
   eeObject: {type: 'object', value: null},
   eeTerrainObject: {type: 'object', value: null},
   visParams: {type: 'object', value: null, equal: deepEqual},
-  // Force animation; animation is on by default when ImageCollection passed
-  animate: false,
-  // Frames per second
-  animationSpeed: 12,
   refinementStrategy: 'no-overlap'
 };
 
@@ -115,12 +108,6 @@ export default class EarthEngineTerrainLayer extends CompositeLayer {
       eeTerrainObject = ee.Image.rgb(red, green, blue);
     }
 
-    if (eeObject && props.animate) {
-      // Force to be ee.ImageCollection. Sometimes deserializes as
-      // FeatureCollection
-      eeObject = ee.ImageCollection(eeObject);
-    }
-
     // TODO - what case is this handling
     if (Array.isArray(props.eeObject) && props.eeObject.length === 0) {
       eeObject = null;
@@ -137,7 +124,6 @@ export default class EarthEngineTerrainLayer extends CompositeLayer {
     ) {
       return;
     }
-    const {animate} = props;
 
     const {eeObject, eeTerrainObject} = this.state;
     if (!eeObject) {
@@ -146,16 +132,6 @@ export default class EarthEngineTerrainLayer extends CompositeLayer {
 
     if (!eeObject.getMap) {
       throw new Error('eeObject must have a getMap() method');
-    }
-
-    let renderMethod;
-    if (animate) {
-      renderMethod = 'filmstrip';
-      if (!eeObject.getFilmstripThumbURL) {
-        throw new Error('eeObject must have a getFilmstripThumbURL method to animate.');
-      }
-    } else {
-      renderMethod = 'imageTiles';
     }
 
     // Evaluate map
@@ -173,62 +149,7 @@ export default class EarthEngineTerrainLayer extends CompositeLayer {
       }
     );
 
-    this.setState({mapid, urlFormat, meshMapid, meshUrlFormat, renderMethod});
-  }
-
-  getTileData(options) {
-    const {renderMethod} = this.state;
-    if (renderMethod === 'filmstrip') {
-      return this.getFilmstripTileData(options);
-    }
-
-    return this.getImageTileData(options);
-  }
-
-  async getImageTileData({x, y, z}) {
-    const {urlFormat} = this.state;
-    if (!urlFormat) {
-      return null;
-    }
-
-    const imageUrl = urlFormat
-      .replace('{x}', x)
-      .replace('{y}', y)
-      .replace('{z}', z);
-
-    const image = await load(imageUrl, ImageLoader);
-    // Return Array for compatible API with getFilmstripTileData
-    return Promise.all([image]);
-  }
-
-  async getFilmstripTileData({bbox}) {
-    const {eeObject} = this.state;
-    const {visParams} = this.props;
-    const {west, north, east, south} = bbox;
-    const TILE_SIZE = 256;
-
-    // Set geodesic=false to prevent horizontal lines from projection issues
-    const region = ee.Geometry.Rectangle([west, south, east, north], 'EPSG:4326', false);
-    const filmArgs = {
-      ...visParams,
-      dimensions: [TILE_SIZE, TILE_SIZE],
-      region,
-      crs: 'EPSG:3857'
-    };
-    const imageUrl = await promisifyEEMethod(eeObject, 'getFilmstripThumbURL', filmArgs);
-
-    const imageOptions = {image: {type: 'imagebitmap'}};
-    const image = await load(imageUrl, ImageLoader, imageOptions);
-    const nFrames = image.height / TILE_SIZE;
-
-    const slices = [];
-    for (let i = 0; i < nFrames; i++) {
-      const imageBounds = [0, i * TILE_SIZE, TILE_SIZE, TILE_SIZE];
-      slices.push(createImageBitmap(image, ...imageBounds));
-    }
-
-    this.setState({nFrames});
-    return Promise.all(slices);
+    this.setState({mapid, urlFormat, meshMapid, meshUrlFormat});
   }
 
   renderLayers() {
