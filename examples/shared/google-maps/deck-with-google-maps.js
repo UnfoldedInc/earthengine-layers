@@ -31,8 +31,13 @@ function loadGoogleMapApi(apiKey, onComplete) {
 export default class DeckWithGoogleMaps extends Component {
   constructor(props) {
     super(props);
+
+    let googleMapsLoaded = false;
+    if (typeof window !== 'undefined') {
+      googleMapsLoaded = window.google && window.google.maps;
+    }
     this.state = {
-      googleMapsLoaded: window.google && window.google.maps
+      googleMapsLoaded
     };
   }
 
