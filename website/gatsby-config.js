@@ -88,7 +88,7 @@ module.exports = {
           },
           {
             title: 'Terrain',
-            image: 'images/intl-boundaries.jpg',
+            image: 'images/terrain.jpg',
             componentUrl: resolve(__dirname, '../examples/terrain/app.js'),
             path: 'examples/terrain'
           }
