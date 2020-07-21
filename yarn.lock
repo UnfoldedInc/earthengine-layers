@@ -932,6 +932,11 @@
     long "^3.2.0"
     math.gl "^3.2.1"
 
+"@deck.gl/google-maps@^8.2.3":
+  version "8.2.3"
+  resolved "https://registry.yarnpkg.com/@deck.gl/google-maps/-/google-maps-8.2.3.tgz#7deb2a60e61afe5a18d8d91768f9190974fb345b"
+  integrity sha512-bdLOMaAkHMENPO6VWmT/9LwrsIs3Gj8BiAvWYVqtLED5UUWhlm7bEFQfOrO67UNx75ZLHs1Mp2O7Sa9UHeXk5Q==
+
 "@deck.gl/layers@^8.1.1", "@deck.gl/layers@^8.2.0":
   version "8.2.0"
   resolved "https://registry.yarnpkg.com/@deck.gl/layers/-/layers-8.2.0.tgz#a674ae9102fe9e125b6c480b97cdfde21c9a5d90"

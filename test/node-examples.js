@@ -80,8 +80,8 @@ async function yarnAndLaunchWebpack() {
 
 function checkMapboxToken() {
   // eslint-disable-next-line
-  if (process.env.MapboxAccessToken === undefined) {
-    console.log('\x1b[31m%s\x1b[0m', 'Need set MapboxAccessToken!');
+  if (process.env.GoogleMapsAPIKey === undefined) {
+    console.log('\x1b[31m%s\x1b[0m', 'Need set GoogleMapsAPIKey!');
     process.exit(1); //eslint-disable-line
   }
 }

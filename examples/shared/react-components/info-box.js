@@ -31,21 +31,19 @@ const StyledEELogo = styled.div`
 `;
 const InfoBox = ({title = 'Example', children}) => {
   return (
-    <div style={{position: 'relative', width: '100%', height: '100%'}}>
-      <StyledPanel>
-        <h3>
-          {title} <StyledEELogo />
-        </h3>
-        {children}
-        <p>
-          <small>
-            To run this demo, you need to sign in with an{' '}
-            <a href="https://earthengine.google.com/signup/">Earth Engine-enabled</a> Google
-            Account. Loading EE data may take some time.
-          </small>
-        </p>
-      </StyledPanel>
-    </div>
+    <StyledPanel>
+      <h3>
+        {title} <StyledEELogo />
+      </h3>
+      {children}
+      <p>
+        <small>
+          To run this demo, you need to sign in with an{' '}
+          <a href="https://earthengine.google.com/signup/">Earth Engine-enabled</a> Google Account.
+          Loading EE data may take some time.
+        </small>
+      </p>
+    </StyledPanel>
   );
 };
 
