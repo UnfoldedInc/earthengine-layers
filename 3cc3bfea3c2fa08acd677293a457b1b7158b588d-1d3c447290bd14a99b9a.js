@@ -8093,7 +8093,7 @@ function getWorldPosition(position, _ref) {
       return lngLatZToWorldPosition([x + coordinateOrigin[0], y + coordinateOrigin[1], z + (coordinateOrigin[2] || 0)], viewport, offsetMode);
 
     case constants["a" /* COORDINATE_SYSTEM */].METER_OFFSETS:
-      return lngLatZToWorldPosition(Object(web_mercator_dist_esm["b" /* addMetersToLngLat */])(coordinateOrigin, [x, y, z]), viewport, offsetMode);
+      return lngLatZToWorldPosition(Object(web_mercator_dist_esm["a" /* addMetersToLngLat */])(coordinateOrigin, [x, y, z]), viewport, offsetMode);
 
     case constants["a" /* COORDINATE_SYSTEM */].CARTESIAN:
     default:
@@ -9249,7 +9249,7 @@ var layer_Layer = function (_Component) {
         coordinateSystem: this.props.coordinateSystem
       });
 
-      var _worldToPixels = Object(web_mercator_dist_esm["o" /* worldToPixels */])(worldPosition, viewport.pixelProjectionMatrix),
+      var _worldToPixels = Object(web_mercator_dist_esm["l" /* worldToPixels */])(worldPosition, viewport.pixelProjectionMatrix),
           _worldToPixels2 = Object(slicedToArray["a" /* default */])(_worldToPixels, 3),
           x = _worldToPixels2[0],
           y = _worldToPixels2[1],
@@ -10478,6 +10478,38 @@ var Resource = function () {
 }();
 
 
+
+/***/ }),
+
+/***/ "LDVv":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return deepEqual; });
+/* harmony import */ var core_js_modules_es6_array_is_array__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("MIFh");
+/* harmony import */ var core_js_modules_es6_array_is_array__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_array_is_array__WEBPACK_IMPORTED_MODULE_0__);
+
+function deepEqual(a, b) {
+  if (a === b) {
+    return true;
+  }
+
+  if (!a || !b) {
+    return false;
+  }
+
+  for (var key in a) {
+    var aValue = a[key];
+    var bValue = b[key];
+    var equals = aValue === bValue || Array.isArray(aValue) && Array.isArray(bValue) && deepEqual(aValue, bValue);
+
+    if (!equals) {
+      return false;
+    }
+  }
+
+  return true;
+}
 
 /***/ }),
 
@@ -14169,7 +14201,7 @@ function getBoundingBox(viewport, zRange) {
 }
 
 function getOSMTileIndex(lngLat, scale) {
-  var _lngLatToWorld = Object(esm["k" /* lngLatToWorld */])(lngLat),
+  var _lngLatToWorld = Object(esm["h" /* lngLatToWorld */])(lngLat),
       _lngLatToWorld2 = Object(slicedToArray["a" /* default */])(_lngLatToWorld, 2),
       x = _lngLatToWorld2[0],
       y = _lngLatToWorld2[1];
@@ -27759,7 +27791,7 @@ var Viewport = function () {
           topLeft = _ref$topLeft === void 0 ? true : _ref$topLeft;
 
       var worldPosition = this.projectPosition(xyz);
-      var coord = Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_12__[/* worldToPixels */ "o"])(worldPosition, this.pixelProjectionMatrix);
+      var coord = Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_12__[/* worldToPixels */ "l"])(worldPosition, this.pixelProjectionMatrix);
 
       var _coord = Object(_babel_runtime_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"])(coord, 2),
           x = _coord[0],
@@ -27783,7 +27815,7 @@ var Viewport = function () {
 
       var y2 = topLeft ? y : this.height - y;
       var targetZWorld = targetZ && targetZ * this.distanceScales.unitsPerMeter[2];
-      var coord = Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_12__[/* pixelsToWorld */ "m"])([x, y2, z], this.pixelUnprojectionMatrix, targetZWorld);
+      var coord = Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_12__[/* pixelsToWorld */ "j"])([x, y2, z], this.pixelUnprojectionMatrix, targetZWorld);
 
       var _this$unprojectPositi = this.unprojectPosition(coord),
           _this$unprojectPositi2 = Object(_babel_runtime_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"])(_this$unprojectPositi, 3),
@@ -27823,7 +27855,7 @@ var Viewport = function () {
     key: "projectFlat",
     value: function projectFlat(xyz) {
       if (this.isGeospatial) {
-        return Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_12__[/* lngLatToWorld */ "k"])(xyz);
+        return Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_12__[/* lngLatToWorld */ "h"])(xyz);
       }
 
       return xyz;
@@ -27832,7 +27864,7 @@ var Viewport = function () {
     key: "unprojectFlat",
     value: function unprojectFlat(xyz) {
       if (this.isGeospatial) {
-        return Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_12__[/* worldToLngLat */ "n"])(xyz);
+        return Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_12__[/* worldToLngLat */ "k"])(xyz);
       }
 
       return xyz;
@@ -27843,7 +27875,7 @@ var Viewport = function () {
       var coordinateOrigin = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
       if (coordinateOrigin) {
-        return Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_12__[/* getDistanceScales */ "f"])({
+        return Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_12__[/* getDistanceScales */ "d"])({
           longitude: coordinateOrigin[0],
           latitude: coordinateOrigin[1],
           highPrecision: true
@@ -27947,14 +27979,14 @@ var Viewport = function () {
       this.zoom = zoom;
 
       if (!Number.isFinite(this.zoom)) {
-        this.zoom = this.isGeospatial ? Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_12__[/* getMeterZoom */ "h"])({
+        this.zoom = this.isGeospatial ? Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_12__[/* getMeterZoom */ "e"])({
           latitude: latitude
         }) + Math.log2(focalDistance) : DEFAULT_ZOOM;
       }
 
       var scale = Math.pow(2, this.zoom);
       this.scale = scale;
-      this.distanceScales = this.isGeospatial ? Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_12__[/* getDistanceScales */ "f"])({
+      this.distanceScales = this.isGeospatial ? Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_12__[/* getDistanceScales */ "d"])({
         latitude: latitude,
         longitude: longitude
       }) : distanceScales || DEFAULT_DISTANCE_SCALES;
@@ -28150,1256 +28182,6 @@ if (NATIVE_WEAK_MAP && IS_IE11) {
     });
   });
 }
-
-
-/***/ }),
-
-/***/ "ei+1":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// EXPORTS
-__webpack_require__.d(__webpack_exports__, "a", function() { return /* reexport */ event_manager_EventManager; });
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es7.symbol.async-iterator.js
-var es7_symbol_async_iterator = __webpack_require__("m210");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.symbol.js
-var es6_symbol = __webpack_require__("4DPX");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.object.keys.js
-var es6_object_keys = __webpack_require__("Ggvi");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.array.for-each.js
-var es6_array_for_each = __webpack_require__("JHok");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.function.bind.js
-var es6_function_bind = __webpack_require__("n7j8");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/web.dom.iterable.js
-var web_dom_iterable = __webpack_require__("rzGZ");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.array.iterator.js
-var es6_array_iterator = __webpack_require__("Dq+y");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.object.to-string.js
-var es6_object_to_string = __webpack_require__("8npG");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.string.iterator.js
-var es6_string_iterator = __webpack_require__("YbXK");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.map.js
-var es6_map = __webpack_require__("xJgp");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.object.assign.js
-var es6_object_assign = __webpack_require__("E5k/");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/slicedToArray.js + 3 modules
-var slicedToArray = __webpack_require__("8j0Q");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/classCallCheck.js
-var classCallCheck = __webpack_require__("QDMQ");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/createClass.js
-var createClass = __webpack_require__("ls4f");
-
-// EXTERNAL MODULE: ./node_modules/hammerjs/hammer.js
-var hammer = __webpack_require__("yLV6");
-var hammer_default = /*#__PURE__*/__webpack_require__.n(hammer);
-
-// CONCATENATED MODULE: ./node_modules/mjolnir.js/dist/esm/utils/hammer-overrides.js
-var INPUT_START = 1;
-var INPUT_MOVE = 2;
-var INPUT_END = 4;
-var MOUSE_INPUT_MAP = {
-  mousedown: INPUT_START,
-  mousemove: INPUT_MOVE,
-  mouseup: INPUT_END
-};
-
-function some(array, predict) {
-  for (var i = 0; i < array.length; i++) {
-    if (predict(array[i])) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
-function enhancePointerEventInput(PointerEventInput) {
-  var oldHandler = PointerEventInput.prototype.handler;
-
-  PointerEventInput.prototype.handler = function handler(ev) {
-    var store = this.store;
-
-    if (ev.button > 0) {
-      if (!some(store, function (e) {
-        return e.pointerId === ev.pointerId;
-      })) {
-        store.push(ev);
-      }
-    }
-
-    oldHandler.call(this, ev);
-  };
-}
-function enhanceMouseInput(MouseInput) {
-  MouseInput.prototype.handler = function handler(ev) {
-    var eventType = MOUSE_INPUT_MAP[ev.type];
-
-    if (eventType & INPUT_START && ev.button >= 0) {
-      this.pressed = true;
-    }
-
-    if (eventType & INPUT_MOVE && ev.which === 0) {
-      eventType = INPUT_END;
-    }
-
-    if (!this.pressed) {
-      return;
-    }
-
-    if (eventType & INPUT_END) {
-      this.pressed = false;
-    }
-
-    this.callback(this.manager, eventType, {
-      pointers: [ev],
-      changedPointers: [ev],
-      pointerType: 'mouse',
-      srcEvent: ev
-    });
-  };
-}
-// CONCATENATED MODULE: ./node_modules/mjolnir.js/dist/esm/utils/hammer.browser.js
-
-
-enhancePointerEventInput(hammer_default.a.PointerEventInput);
-enhanceMouseInput(hammer_default.a.MouseInput);
-var Manager = hammer_default.a.Manager;
-/* harmony default export */ var hammer_browser = (hammer_default.a);
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.array.index-of.js
-var es6_array_index_of = __webpack_require__("sc67");
-
-// CONCATENATED MODULE: ./node_modules/mjolnir.js/dist/esm/constants.js
-
-var RECOGNIZERS = hammer_browser ? [[hammer_browser.Rotate, {
-  enable: false
-}], [hammer_browser.Pinch, {
-  enable: false
-}], [hammer_browser.Swipe, {
-  enable: false
-}], [hammer_browser.Pan, {
-  threshold: 0,
-  enable: false
-}], [hammer_browser.Press, {
-  enable: false
-}], [hammer_browser.Tap, {
-  event: 'doubletap',
-  taps: 2,
-  enable: false
-}], [hammer_browser.Tap, {
-  event: 'anytap',
-  enable: false
-}], [hammer_browser.Tap, {
-  enable: false
-}]] : null;
-var RECOGNIZER_COMPATIBLE_MAP = {
-  rotate: ['pinch'],
-  pinch: ['pan'],
-  pan: ['press', 'doubletap', 'anytap', 'tap'],
-  doubletap: ['anytap'],
-  anytap: ['tap']
-};
-var RECOGNIZER_FALLBACK_MAP = {
-  doubletap: ['tap']
-};
-var BASIC_EVENT_ALIASES = {
-  pointerdown: 'pointerdown',
-  pointermove: 'pointermove',
-  pointerup: 'pointerup',
-  touchstart: 'pointerdown',
-  touchmove: 'pointermove',
-  touchend: 'pointerup',
-  mousedown: 'pointerdown',
-  mousemove: 'pointermove',
-  mouseup: 'pointerup'
-};
-var INPUT_EVENT_TYPES = {
-  KEY_EVENTS: ['keydown', 'keyup'],
-  MOUSE_EVENTS: ['mousedown', 'mousemove', 'mouseup', 'mouseover', 'mouseout', 'mouseleave'],
-  WHEEL_EVENTS: ['wheel', 'mousewheel', 'DOMMouseScroll']
-};
-var EVENT_RECOGNIZER_MAP = {
-  tap: 'tap',
-  anytap: 'anytap',
-  doubletap: 'doubletap',
-  press: 'press',
-  pinch: 'pinch',
-  pinchin: 'pinch',
-  pinchout: 'pinch',
-  pinchstart: 'pinch',
-  pinchmove: 'pinch',
-  pinchend: 'pinch',
-  pinchcancel: 'pinch',
-  rotate: 'rotate',
-  rotatestart: 'rotate',
-  rotatemove: 'rotate',
-  rotateend: 'rotate',
-  rotatecancel: 'rotate',
-  pan: 'pan',
-  panstart: 'pan',
-  panmove: 'pan',
-  panup: 'pan',
-  pandown: 'pan',
-  panleft: 'pan',
-  panright: 'pan',
-  panend: 'pan',
-  pancancel: 'pan',
-  swipe: 'swipe',
-  swipeleft: 'swipe',
-  swiperight: 'swipe',
-  swipeup: 'swipe',
-  swipedown: 'swipe'
-};
-var GESTURE_EVENT_ALIASES = {
-  click: 'tap',
-  anyclick: 'anytap',
-  dblclick: 'doubletap',
-  mousedown: 'pointerdown',
-  mousemove: 'pointermove',
-  mouseup: 'pointerup',
-  mouseover: 'pointerover',
-  mouseout: 'pointerout',
-  mouseleave: 'pointerleave'
-};
-// EXTERNAL MODULE: ./node_modules/mjolnir.js/dist/esm/utils/globals.js
-var globals = __webpack_require__("Vame");
-
-// CONCATENATED MODULE: ./node_modules/mjolnir.js/dist/esm/inputs/wheel-input.js
-
-
-
-
-
-
-
-
-var firefox = globals["b" /* userAgent */].indexOf('firefox') !== -1;
-var WHEEL_EVENTS = INPUT_EVENT_TYPES.WHEEL_EVENTS;
-var EVENT_TYPE = 'wheel';
-var WHEEL_DELTA_MAGIC_SCALER = 4.000244140625;
-var WHEEL_DELTA_PER_LINE = 40;
-var SHIFT_MULTIPLIER = 0.25;
-
-var wheel_input_WheelInput = function () {
-  function WheelInput(element, callback) {
-    var _this = this;
-
-    var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-
-    Object(classCallCheck["a" /* default */])(this, WheelInput);
-
-    this.element = element;
-    this.callback = callback;
-    this.options = Object.assign({
-      enable: true
-    }, options);
-    this.events = WHEEL_EVENTS.concat(options.events || []);
-    this.handleEvent = this.handleEvent.bind(this);
-    this.events.forEach(function (event) {
-      return element.addEventListener(event, _this.handleEvent, globals["a" /* passiveSupported */] ? {
-        passive: false
-      } : false);
-    });
-  }
-
-  Object(createClass["a" /* default */])(WheelInput, [{
-    key: "destroy",
-    value: function destroy() {
-      var _this2 = this;
-
-      this.events.forEach(function (event) {
-        return _this2.element.removeEventListener(event, _this2.handleEvent);
-      });
-    }
-  }, {
-    key: "enableEventType",
-    value: function enableEventType(eventType, enabled) {
-      if (eventType === EVENT_TYPE) {
-        this.options.enable = enabled;
-      }
-    }
-  }, {
-    key: "handleEvent",
-    value: function handleEvent(event) {
-      if (!this.options.enable) {
-        return;
-      }
-
-      var value = event.deltaY;
-
-      if (globals["c" /* window */].WheelEvent) {
-        if (firefox && event.deltaMode === globals["c" /* window */].WheelEvent.DOM_DELTA_PIXEL) {
-          value /= globals["c" /* window */].devicePixelRatio;
-        }
-
-        if (event.deltaMode === globals["c" /* window */].WheelEvent.DOM_DELTA_LINE) {
-          value *= WHEEL_DELTA_PER_LINE;
-        }
-      }
-
-      var wheelPosition = {
-        x: event.clientX,
-        y: event.clientY
-      };
-
-      if (value !== 0 && value % WHEEL_DELTA_MAGIC_SCALER === 0) {
-        value = Math.floor(value / WHEEL_DELTA_MAGIC_SCALER);
-      }
-
-      if (event.shiftKey && value) {
-        value = value * SHIFT_MULTIPLIER;
-      }
-
-      this._onWheel(event, -value, wheelPosition);
-    }
-  }, {
-    key: "_onWheel",
-    value: function _onWheel(srcEvent, delta, position) {
-      this.callback({
-        type: EVENT_TYPE,
-        center: position,
-        delta: delta,
-        srcEvent: srcEvent,
-        pointerType: 'mouse',
-        target: srcEvent.target
-      });
-    }
-  }]);
-
-  return WheelInput;
-}();
-
-
-// CONCATENATED MODULE: ./node_modules/mjolnir.js/dist/esm/inputs/move-input.js
-
-
-
-
-
-
-var MOUSE_EVENTS = INPUT_EVENT_TYPES.MOUSE_EVENTS;
-var MOVE_EVENT_TYPE = 'pointermove';
-var OVER_EVENT_TYPE = 'pointerover';
-var OUT_EVENT_TYPE = 'pointerout';
-var LEAVE_EVENT_TYPE = 'pointerleave';
-
-var move_input_MoveInput = function () {
-  function MoveInput(element, callback) {
-    var _this = this;
-
-    var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-
-    Object(classCallCheck["a" /* default */])(this, MoveInput);
-
-    this.element = element;
-    this.callback = callback;
-    this.pressed = false;
-    this.options = Object.assign({
-      enable: true
-    }, options);
-    this.enableMoveEvent = this.options.enable;
-    this.enableLeaveEvent = this.options.enable;
-    this.enableOutEvent = this.options.enable;
-    this.enableOverEvent = this.options.enable;
-    this.events = MOUSE_EVENTS.concat(options.events || []);
-    this.handleEvent = this.handleEvent.bind(this);
-    this.events.forEach(function (event) {
-      return element.addEventListener(event, _this.handleEvent);
-    });
-  }
-
-  Object(createClass["a" /* default */])(MoveInput, [{
-    key: "destroy",
-    value: function destroy() {
-      var _this2 = this;
-
-      this.events.forEach(function (event) {
-        return _this2.element.removeEventListener(event, _this2.handleEvent);
-      });
-    }
-  }, {
-    key: "enableEventType",
-    value: function enableEventType(eventType, enabled) {
-      if (eventType === MOVE_EVENT_TYPE) {
-        this.enableMoveEvent = enabled;
-      }
-
-      if (eventType === OVER_EVENT_TYPE) {
-        this.enableOverEvent = enabled;
-      }
-
-      if (eventType === OUT_EVENT_TYPE) {
-        this.enableOutEvent = enabled;
-      }
-
-      if (eventType === LEAVE_EVENT_TYPE) {
-        this.enableLeaveEvent = enabled;
-      }
-    }
-  }, {
-    key: "handleEvent",
-    value: function handleEvent(event) {
-      this.handleOverEvent(event);
-      this.handleOutEvent(event);
-      this.handleLeaveEvent(event);
-      this.handleMoveEvent(event);
-    }
-  }, {
-    key: "handleOverEvent",
-    value: function handleOverEvent(event) {
-      if (this.enableOverEvent) {
-        if (event.type === 'mouseover') {
-          this.callback({
-            type: OVER_EVENT_TYPE,
-            srcEvent: event,
-            pointerType: 'mouse',
-            target: event.target
-          });
-        }
-      }
-    }
-  }, {
-    key: "handleOutEvent",
-    value: function handleOutEvent(event) {
-      if (this.enableOutEvent) {
-        if (event.type === 'mouseout') {
-          this.callback({
-            type: OUT_EVENT_TYPE,
-            srcEvent: event,
-            pointerType: 'mouse',
-            target: event.target
-          });
-        }
-      }
-    }
-  }, {
-    key: "handleLeaveEvent",
-    value: function handleLeaveEvent(event) {
-      if (this.enableLeaveEvent) {
-        if (event.type === 'mouseleave') {
-          this.callback({
-            type: LEAVE_EVENT_TYPE,
-            srcEvent: event,
-            pointerType: 'mouse',
-            target: event.target
-          });
-        }
-      }
-    }
-  }, {
-    key: "handleMoveEvent",
-    value: function handleMoveEvent(event) {
-      if (this.enableMoveEvent) {
-        switch (event.type) {
-          case 'mousedown':
-            if (event.button >= 0) {
-              this.pressed = true;
-            }
-
-            break;
-
-          case 'mousemove':
-            if (event.which === 0) {
-              this.pressed = false;
-            }
-
-            if (!this.pressed) {
-              this.callback({
-                type: MOVE_EVENT_TYPE,
-                srcEvent: event,
-                pointerType: 'mouse',
-                target: event.target
-              });
-            }
-
-            break;
-
-          case 'mouseup':
-            this.pressed = false;
-            break;
-
-          default:
-        }
-      }
-    }
-  }]);
-
-  return MoveInput;
-}();
-
-
-// CONCATENATED MODULE: ./node_modules/mjolnir.js/dist/esm/inputs/key-input.js
-
-
-
-
-
-
-var KEY_EVENTS = INPUT_EVENT_TYPES.KEY_EVENTS;
-var DOWN_EVENT_TYPE = 'keydown';
-var UP_EVENT_TYPE = 'keyup';
-
-var key_input_KeyInput = function () {
-  function KeyInput(element, callback) {
-    var _this = this;
-
-    var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-
-    Object(classCallCheck["a" /* default */])(this, KeyInput);
-
-    this.element = element;
-    this.callback = callback;
-    this.options = Object.assign({
-      enable: true
-    }, options);
-    this.enableDownEvent = this.options.enable;
-    this.enableUpEvent = this.options.enable;
-    this.events = KEY_EVENTS.concat(options.events || []);
-    this.handleEvent = this.handleEvent.bind(this);
-    element.tabIndex = options.tabIndex || 0;
-    element.style.outline = 'none';
-    this.events.forEach(function (event) {
-      return element.addEventListener(event, _this.handleEvent);
-    });
-  }
-
-  Object(createClass["a" /* default */])(KeyInput, [{
-    key: "destroy",
-    value: function destroy() {
-      var _this2 = this;
-
-      this.events.forEach(function (event) {
-        return _this2.element.removeEventListener(event, _this2.handleEvent);
-      });
-    }
-  }, {
-    key: "enableEventType",
-    value: function enableEventType(eventType, enabled) {
-      if (eventType === DOWN_EVENT_TYPE) {
-        this.enableDownEvent = enabled;
-      }
-
-      if (eventType === UP_EVENT_TYPE) {
-        this.enableUpEvent = enabled;
-      }
-    }
-  }, {
-    key: "handleEvent",
-    value: function handleEvent(event) {
-      var targetElement = event.target || event.srcElement;
-
-      if (targetElement.tagName === 'INPUT' && targetElement.type === 'text' || targetElement.tagName === 'TEXTAREA') {
-        return;
-      }
-
-      if (this.enableDownEvent && event.type === 'keydown') {
-        this.callback({
-          type: DOWN_EVENT_TYPE,
-          srcEvent: event,
-          key: event.key,
-          target: event.target
-        });
-      }
-
-      if (this.enableUpEvent && event.type === 'keyup') {
-        this.callback({
-          type: UP_EVENT_TYPE,
-          srcEvent: event,
-          key: event.key,
-          target: event.target
-        });
-      }
-    }
-  }]);
-
-  return KeyInput;
-}();
-
-
-// CONCATENATED MODULE: ./node_modules/mjolnir.js/dist/esm/inputs/contextmenu-input.js
-
-
-
-
-var contextmenu_input_EVENT_TYPE = 'contextmenu';
-
-var contextmenu_input_ContextmenuInput = function () {
-  function ContextmenuInput(element, callback) {
-    var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-
-    Object(classCallCheck["a" /* default */])(this, ContextmenuInput);
-
-    this.element = element;
-    this.callback = callback;
-    this.options = Object.assign({
-      enable: true
-    }, options);
-    this.handleEvent = this.handleEvent.bind(this);
-    element.addEventListener('contextmenu', this.handleEvent);
-  }
-
-  Object(createClass["a" /* default */])(ContextmenuInput, [{
-    key: "destroy",
-    value: function destroy() {
-      this.element.removeEventListener('contextmenu', this.handleEvent);
-    }
-  }, {
-    key: "enableEventType",
-    value: function enableEventType(eventType, enabled) {
-      if (eventType === contextmenu_input_EVENT_TYPE) {
-        this.options.enable = enabled;
-      }
-    }
-  }, {
-    key: "handleEvent",
-    value: function handleEvent(event) {
-      if (!this.options.enable) {
-        return;
-      }
-
-      this.callback({
-        type: contextmenu_input_EVENT_TYPE,
-        center: {
-          x: event.clientX,
-          y: event.clientY
-        },
-        srcEvent: event,
-        pointerType: 'mouse',
-        target: event.target
-      });
-    }
-  }]);
-
-  return ContextmenuInput;
-}();
-
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.array.some.js
-var es6_array_some = __webpack_require__("wZFJ");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/typeof.js
-var esm_typeof = __webpack_require__("0QZy");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.number.constructor.js
-var es6_number_constructor = __webpack_require__("YBKJ");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.number.is-finite.js
-var es6_number_is_finite = __webpack_require__("9ZhD");
-
-// CONCATENATED MODULE: ./node_modules/mjolnir.js/dist/esm/utils/event-utils.js
-
-
-var DOWN_EVENT = 1;
-var MOVE_EVENT = 2;
-var UP_EVENT = 4;
-var event_utils_MOUSE_EVENTS = {
-  pointerdown: DOWN_EVENT,
-  pointermove: MOVE_EVENT,
-  pointerup: UP_EVENT,
-  mousedown: DOWN_EVENT,
-  mousemove: MOVE_EVENT,
-  mouseup: UP_EVENT
-};
-var MOUSE_EVENT_WHICH_LEFT = 1;
-var MOUSE_EVENT_WHICH_MIDDLE = 2;
-var MOUSE_EVENT_WHICH_RIGHT = 3;
-var MOUSE_EVENT_BUTTON_LEFT = 0;
-var MOUSE_EVENT_BUTTON_MIDDLE = 1;
-var MOUSE_EVENT_BUTTON_RIGHT = 2;
-var MOUSE_EVENT_BUTTONS_LEFT_MASK = 1;
-var MOUSE_EVENT_BUTTONS_RIGHT_MASK = 2;
-var MOUSE_EVENT_BUTTONS_MIDDLE_MASK = 4;
-function whichButtons(event) {
-  var eventType = event_utils_MOUSE_EVENTS[event.srcEvent.type];
-
-  if (!eventType) {
-    return null;
-  }
-
-  var _event$srcEvent = event.srcEvent,
-      buttons = _event$srcEvent.buttons,
-      button = _event$srcEvent.button,
-      which = _event$srcEvent.which;
-  var leftButton = false;
-  var middleButton = false;
-  var rightButton = false;
-
-  if (eventType === UP_EVENT || eventType === MOVE_EVENT && !Number.isFinite(buttons)) {
-    leftButton = which === MOUSE_EVENT_WHICH_LEFT;
-    middleButton = which === MOUSE_EVENT_WHICH_MIDDLE;
-    rightButton = which === MOUSE_EVENT_WHICH_RIGHT;
-  } else if (eventType === MOVE_EVENT) {
-    leftButton = Boolean(buttons & MOUSE_EVENT_BUTTONS_LEFT_MASK);
-    middleButton = Boolean(buttons & MOUSE_EVENT_BUTTONS_MIDDLE_MASK);
-    rightButton = Boolean(buttons & MOUSE_EVENT_BUTTONS_RIGHT_MASK);
-  } else if (eventType === DOWN_EVENT) {
-    leftButton = button === MOUSE_EVENT_BUTTON_LEFT;
-    middleButton = button === MOUSE_EVENT_BUTTON_MIDDLE;
-    rightButton = button === MOUSE_EVENT_BUTTON_RIGHT;
-  }
-
-  return {
-    leftButton: leftButton,
-    middleButton: middleButton,
-    rightButton: rightButton
-  };
-}
-function getOffsetPosition(event, rootElement) {
-  var srcEvent = event.srcEvent;
-
-  if (!event.center && !Number.isFinite(srcEvent.clientX)) {
-    return null;
-  }
-
-  var center = event.center || {
-    x: srcEvent.clientX,
-    y: srcEvent.clientY
-  };
-  var rect = rootElement.getBoundingClientRect();
-  var scaleX = rect.width / rootElement.offsetWidth;
-  var scaleY = rect.height / rootElement.offsetHeight;
-  var offsetCenter = {
-    x: (center.x - rect.left - rootElement.clientLeft) / scaleX,
-    y: (center.y - rect.top - rootElement.clientTop) / scaleY
-  };
-  return {
-    center: center,
-    offsetCenter: offsetCenter
-  };
-}
-// CONCATENATED MODULE: ./node_modules/mjolnir.js/dist/esm/utils/event-registrar.js
-
-
-
-
-
-
-
-
-
-
-
-
-
-var DEFAULT_OPTIONS = {
-  srcElement: 'root',
-  priority: 0
-};
-
-var event_registrar_EventRegistrar = function () {
-  function EventRegistrar(eventManager) {
-    Object(classCallCheck["a" /* default */])(this, EventRegistrar);
-
-    this.eventManager = eventManager;
-    this.handlers = [];
-    this.handlersByElement = new Map();
-    this.handleEvent = this.handleEvent.bind(this);
-    this._active = false;
-  }
-
-  Object(createClass["a" /* default */])(EventRegistrar, [{
-    key: "isEmpty",
-    value: function isEmpty() {
-      return !this._active;
-    }
-  }, {
-    key: "add",
-    value: function add(type, handler, opts) {
-      var once = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-      var passive = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
-      var handlers = this.handlers,
-          handlersByElement = this.handlersByElement;
-
-      if (opts && (Object(esm_typeof["a" /* default */])(opts) !== 'object' || opts.addEventListener)) {
-        opts = {
-          srcElement: opts
-        };
-      }
-
-      opts = opts ? Object.assign({}, DEFAULT_OPTIONS, opts) : DEFAULT_OPTIONS;
-      var entries = handlersByElement.get(opts.srcElement);
-
-      if (!entries) {
-        entries = [];
-        handlersByElement.set(opts.srcElement, entries);
-      }
-
-      var entry = {
-        type: type,
-        handler: handler,
-        srcElement: opts.srcElement,
-        priority: opts.priority
-      };
-
-      if (once) {
-        entry.once = true;
-      }
-
-      if (passive) {
-        entry.passive = true;
-      }
-
-      handlers.push(entry);
-      this._active = this._active || !entry.passive;
-      var insertPosition = entries.length - 1;
-
-      while (insertPosition >= 0) {
-        if (entries[insertPosition].priority >= entry.priority) {
-          break;
-        }
-
-        insertPosition--;
-      }
-
-      entries.splice(insertPosition + 1, 0, entry);
-    }
-  }, {
-    key: "remove",
-    value: function remove(type, handler) {
-      var handlers = this.handlers,
-          handlersByElement = this.handlersByElement;
-
-      for (var i = handlers.length - 1; i >= 0; i--) {
-        var entry = handlers[i];
-
-        if (entry.type === type && entry.handler === handler) {
-          handlers.splice(i, 1);
-          var entries = handlersByElement.get(entry.srcElement);
-          entries.splice(entries.indexOf(entry), 1);
-
-          if (entries.length === 0) {
-            handlersByElement["delete"](entry.srcElement);
-          }
-        }
-      }
-
-      this._active = handlers.some(function (entry) {
-        return !entry.passive;
-      });
-    }
-  }, {
-    key: "handleEvent",
-    value: function handleEvent(event) {
-      if (this.isEmpty()) {
-        return;
-      }
-
-      var mjolnirEvent = this._normalizeEvent(event);
-
-      var target = event.srcEvent.target;
-
-      while (target && target !== mjolnirEvent.rootElement) {
-        this._emit(mjolnirEvent, target);
-
-        if (mjolnirEvent.handled) {
-          return;
-        }
-
-        target = target.parentNode;
-      }
-
-      this._emit(mjolnirEvent, 'root');
-    }
-  }, {
-    key: "_emit",
-    value: function _emit(event, srcElement) {
-      var entries = this.handlersByElement.get(srcElement);
-
-      if (entries) {
-        var immediatePropagationStopped = false;
-
-        var stopPropagation = function stopPropagation() {
-          event.handled = true;
-        };
-
-        var stopImmediatePropagation = function stopImmediatePropagation() {
-          event.handled = true;
-          immediatePropagationStopped = true;
-        };
-
-        var entriesToRemove = [];
-
-        for (var i = 0; i < entries.length; i++) {
-          var _entries$i = entries[i],
-              type = _entries$i.type,
-              handler = _entries$i.handler,
-              once = _entries$i.once;
-          handler(Object.assign({}, event, {
-            type: type,
-            stopPropagation: stopPropagation,
-            stopImmediatePropagation: stopImmediatePropagation
-          }));
-
-          if (once) {
-            entriesToRemove.push(entries[i]);
-          }
-
-          if (immediatePropagationStopped) {
-            break;
-          }
-        }
-
-        for (var _i = 0; _i < entriesToRemove.length; _i++) {
-          var _entriesToRemove$_i = entriesToRemove[_i],
-              type = _entriesToRemove$_i.type,
-              handler = _entriesToRemove$_i.handler;
-          this.remove(type, handler);
-        }
-      }
-    }
-  }, {
-    key: "_normalizeEvent",
-    value: function _normalizeEvent(event) {
-      var rootElement = this.eventManager.element;
-      return Object.assign({}, event, whichButtons(event), getOffsetPosition(event, rootElement), {
-        handled: false,
-        rootElement: rootElement
-      });
-    }
-  }]);
-
-  return EventRegistrar;
-}();
-
-
-// CONCATENATED MODULE: ./node_modules/mjolnir.js/dist/esm/event-manager.js
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var event_manager_DEFAULT_OPTIONS = {
-  events: null,
-  recognizers: null,
-  recognizerOptions: {},
-  Manager: Manager,
-  touchAction: 'none',
-  tabIndex: 0
-};
-
-var event_manager_EventManager = function () {
-  function EventManager() {
-    var element = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-    Object(classCallCheck["a" /* default */])(this, EventManager);
-
-    this.options = Object.assign({}, event_manager_DEFAULT_OPTIONS, options);
-    this.events = new Map();
-    this._onBasicInput = this._onBasicInput.bind(this);
-    this._onOtherEvent = this._onOtherEvent.bind(this);
-    this.setElement(element);
-    var events = options.events;
-
-    if (events) {
-      this.on(events);
-    }
-  }
-
-  Object(createClass["a" /* default */])(EventManager, [{
-    key: "setElement",
-    value: function setElement(element) {
-      var _this = this;
-
-      if (this.element) {
-        this.destroy();
-      }
-
-      this.element = element;
-
-      if (!element) {
-        return;
-      }
-
-      var options = this.options;
-      var ManagerClass = options.Manager;
-      this.manager = new ManagerClass(element, {
-        touchAction: options.touchAction,
-        recognizers: options.recognizers || RECOGNIZERS
-      }).on('hammer.input', this._onBasicInput);
-
-      if (!options.recognizers) {
-        Object.keys(RECOGNIZER_COMPATIBLE_MAP).forEach(function (name) {
-          var recognizer = _this.manager.get(name);
-
-          if (recognizer) {
-            RECOGNIZER_COMPATIBLE_MAP[name].forEach(function (otherName) {
-              recognizer.recognizeWith(otherName);
-            });
-          }
-        });
-      }
-
-      for (var recognizerName in options.recognizerOptions) {
-        var recognizer = this.manager.get(recognizerName);
-
-        if (recognizer) {
-          var recognizerOption = options.recognizerOptions[recognizerName];
-          delete recognizerOption.enable;
-          recognizer.set(recognizerOption);
-        }
-      }
-
-      this.wheelInput = new wheel_input_WheelInput(element, this._onOtherEvent, {
-        enable: false
-      });
-      this.moveInput = new move_input_MoveInput(element, this._onOtherEvent, {
-        enable: false
-      });
-      this.keyInput = new key_input_KeyInput(element, this._onOtherEvent, {
-        enable: false,
-        tabIndex: options.tabIndex
-      });
-      this.contextmenuInput = new contextmenu_input_ContextmenuInput(element, this._onOtherEvent, {
-        enable: false
-      });
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = this.events[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var _step$value = Object(slicedToArray["a" /* default */])(_step.value, 2),
-              eventAlias = _step$value[0],
-              eventRegistrar = _step$value[1];
-
-          if (!eventRegistrar.isEmpty()) {
-            this._toggleRecognizer(eventRegistrar.recognizerName, true);
-
-            this.manager.on(eventAlias, eventRegistrar.handleEvent);
-          }
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
-            _iterator["return"]();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
-    }
-  }, {
-    key: "destroy",
-    value: function destroy() {
-      if (this.element) {
-        this.wheelInput.destroy();
-        this.moveInput.destroy();
-        this.keyInput.destroy();
-        this.contextmenuInput.destroy();
-        this.manager.destroy();
-        this.wheelInput = null;
-        this.moveInput = null;
-        this.keyInput = null;
-        this.contextmenuInput = null;
-        this.manager = null;
-        this.element = null;
-      }
-    }
-  }, {
-    key: "on",
-    value: function on(event, handler, opts) {
-      this._addEventHandler(event, handler, opts, false);
-    }
-  }, {
-    key: "once",
-    value: function once(event, handler, opts) {
-      this._addEventHandler(event, handler, opts, true);
-    }
-  }, {
-    key: "watch",
-    value: function watch(event, handler, opts) {
-      this._addEventHandler(event, handler, opts, false, true);
-    }
-  }, {
-    key: "off",
-    value: function off(event, handler) {
-      this._removeEventHandler(event, handler);
-    }
-  }, {
-    key: "_toggleRecognizer",
-    value: function _toggleRecognizer(name, enabled) {
-      var manager = this.manager;
-
-      if (!manager) {
-        return;
-      }
-
-      var recognizer = manager.get(name);
-
-      if (recognizer && recognizer.options.enable !== enabled) {
-        recognizer.set({
-          enable: enabled
-        });
-        var fallbackRecognizers = RECOGNIZER_FALLBACK_MAP[name];
-
-        if (fallbackRecognizers && !this.options.recognizers) {
-          fallbackRecognizers.forEach(function (otherName) {
-            var otherRecognizer = manager.get(otherName);
-
-            if (enabled) {
-              otherRecognizer.requireFailure(name);
-              recognizer.dropRequireFailure(otherName);
-            } else {
-              otherRecognizer.dropRequireFailure(name);
-            }
-          });
-        }
-      }
-
-      this.wheelInput.enableEventType(name, enabled);
-      this.moveInput.enableEventType(name, enabled);
-      this.keyInput.enableEventType(name, enabled);
-      this.contextmenuInput.enableEventType(name, enabled);
-    }
-  }, {
-    key: "_addEventHandler",
-    value: function _addEventHandler(event, handler, opts, once, passive) {
-      if (typeof event !== 'string') {
-        opts = handler;
-
-        for (var eventName in event) {
-          this._addEventHandler(eventName, event[eventName], opts, once, passive);
-        }
-
-        return;
-      }
-
-      var manager = this.manager,
-          events = this.events;
-      var eventAlias = GESTURE_EVENT_ALIASES[event] || event;
-      var eventRegistrar = events.get(eventAlias);
-
-      if (!eventRegistrar) {
-        eventRegistrar = new event_registrar_EventRegistrar(this);
-        events.set(eventAlias, eventRegistrar);
-        eventRegistrar.recognizerName = EVENT_RECOGNIZER_MAP[eventAlias] || eventAlias;
-
-        if (manager) {
-          manager.on(eventAlias, eventRegistrar.handleEvent);
-        }
-      }
-
-      eventRegistrar.add(event, handler, opts, once, passive);
-
-      if (!eventRegistrar.isEmpty()) {
-        this._toggleRecognizer(eventRegistrar.recognizerName, true);
-      }
-    }
-  }, {
-    key: "_removeEventHandler",
-    value: function _removeEventHandler(event, handler) {
-      if (typeof event !== 'string') {
-        for (var eventName in event) {
-          this._removeEventHandler(eventName, event[eventName]);
-        }
-
-        return;
-      }
-
-      var events = this.events;
-      var eventAlias = GESTURE_EVENT_ALIASES[event] || event;
-      var eventRegistrar = events.get(eventAlias);
-
-      if (!eventRegistrar) {
-        return;
-      }
-
-      eventRegistrar.remove(event, handler);
-
-      if (eventRegistrar.isEmpty()) {
-        var recognizerName = eventRegistrar.recognizerName;
-        var isRecognizerUsed = false;
-        var _iteratorNormalCompletion2 = true;
-        var _didIteratorError2 = false;
-        var _iteratorError2 = undefined;
-
-        try {
-          for (var _iterator2 = events.values()[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-            var eh = _step2.value;
-
-            if (eh.recognizerName === recognizerName && !eh.isEmpty()) {
-              isRecognizerUsed = true;
-              break;
-            }
-          }
-        } catch (err) {
-          _didIteratorError2 = true;
-          _iteratorError2 = err;
-        } finally {
-          try {
-            if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
-              _iterator2["return"]();
-            }
-          } finally {
-            if (_didIteratorError2) {
-              throw _iteratorError2;
-            }
-          }
-        }
-
-        if (!isRecognizerUsed) {
-          this._toggleRecognizer(recognizerName, false);
-        }
-      }
-    }
-  }, {
-    key: "_onBasicInput",
-    value: function _onBasicInput(event) {
-      var srcEvent = event.srcEvent;
-      var alias = BASIC_EVENT_ALIASES[srcEvent.type];
-
-      if (alias) {
-        this.manager.emit(alias, event);
-      }
-    }
-  }, {
-    key: "_onOtherEvent",
-    value: function _onOtherEvent(event) {
-      this.manager.emit(event.type, event);
-    }
-  }]);
-
-  return EventManager;
-}();
-
-
-// CONCATENATED MODULE: ./node_modules/mjolnir.js/dist/esm/index.js
 
 
 /***/ }),
@@ -35903,6 +34685,8624 @@ var nodeVersion = matches && parseFloat(matches[1]) || 0;
 
 /***/ }),
 
+/***/ "mybv":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "a", function() { return /* binding */ deck_Deck; });
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.array.is-array.js
+var es6_array_is_array = __webpack_require__("MIFh");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.number.constructor.js
+var es6_number_constructor = __webpack_require__("YBKJ");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.number.is-finite.js
+var es6_number_is_finite = __webpack_require__("9ZhD");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.object.create.js
+var es6_object_create = __webpack_require__("pS08");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.function.bind.js
+var es6_function_bind = __webpack_require__("n7j8");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.object.assign.js
+var es6_object_assign = __webpack_require__("E5k/");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.object.define-property.js
+var es6_object_define_property = __webpack_require__("R48M");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.object.define-properties.js
+var es6_object_define_properties = __webpack_require__("+ar0");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es7.object.get-own-property-descriptors.js
+var es7_object_get_own_property_descriptors = __webpack_require__("xtjI");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.array.for-each.js
+var es6_array_for_each = __webpack_require__("JHok");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.array.filter.js
+var es6_array_filter = __webpack_require__("OeI1");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.symbol.js
+var es6_symbol = __webpack_require__("4DPX");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/web.dom.iterable.js
+var web_dom_iterable = __webpack_require__("rzGZ");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.array.iterator.js
+var es6_array_iterator = __webpack_require__("Dq+y");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.object.to-string.js
+var es6_object_to_string = __webpack_require__("8npG");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.object.keys.js
+var es6_object_keys = __webpack_require__("Ggvi");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/defineProperty.js
+var defineProperty = __webpack_require__("FqMR");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/classCallCheck.js
+var classCallCheck = __webpack_require__("QDMQ");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/createClass.js
+var createClass = __webpack_require__("ls4f");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.array.index-of.js
+var es6_array_index_of = __webpack_require__("sc67");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.array.find.js
+var es6_array_find = __webpack_require__("v9g0");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es7.symbol.async-iterator.js
+var es7_symbol_async_iterator = __webpack_require__("m210");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.object.seal.js
+var es6_object_seal = __webpack_require__("ofTv");
+
+// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/utils/assert.js
+var assert = __webpack_require__("VMBB");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.string.repeat.js
+var es6_string_repeat = __webpack_require__("ZiRl");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.string.iterator.js
+var es6_string_iterator = __webpack_require__("YbXK");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.map.js
+var es6_map = __webpack_require__("xJgp");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/slicedToArray.js + 3 modules
+var slicedToArray = __webpack_require__("8j0Q");
+
+// CONCATENATED MODULE: ./node_modules/@luma.gl/engine/dist/esm/animation/timeline.js
+
+
+
+
+
+
+
+
+
+
+
+
+var channelHandles = 1;
+var animationHandles = 1;
+var timeline_Timeline = function () {
+  function Timeline() {
+    Object(classCallCheck["a" /* default */])(this, Timeline);
+
+    this.time = 0;
+    this.channels = new Map();
+    this.animations = new Map();
+    this.playing = false;
+    this.lastEngineTime = -1;
+  }
+
+  Object(createClass["a" /* default */])(Timeline, [{
+    key: "addChannel",
+    value: function addChannel(props) {
+      var _props$delay = props.delay,
+          delay = _props$delay === void 0 ? 0 : _props$delay,
+          _props$duration = props.duration,
+          duration = _props$duration === void 0 ? Number.POSITIVE_INFINITY : _props$duration,
+          _props$rate = props.rate,
+          rate = _props$rate === void 0 ? 1 : _props$rate,
+          _props$repeat = props.repeat,
+          repeat = _props$repeat === void 0 ? 1 : _props$repeat;
+      var handle = channelHandles++;
+      var channel = {
+        time: 0,
+        delay: delay,
+        duration: duration,
+        rate: rate,
+        repeat: repeat
+      };
+
+      this._setChannelTime(channel, this.time);
+
+      this.channels.set(handle, channel);
+      return handle;
+    }
+  }, {
+    key: "removeChannel",
+    value: function removeChannel(handle) {
+      this.channels["delete"](handle);
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = this.animations[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var _step$value = Object(slicedToArray["a" /* default */])(_step.value, 2),
+              animationHandle = _step$value[0],
+              animation = _step$value[1];
+
+          if (animation.channel === handle) {
+            this.detachAnimation(animationHandle);
+          }
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+            _iterator["return"]();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+    }
+  }, {
+    key: "isFinished",
+    value: function isFinished(handle) {
+      var channel = this.channels.get(handle);
+
+      if (channel === undefined) {
+        return false;
+      }
+
+      return this.time >= channel.delay + channel.duration * channel.repeat;
+    }
+  }, {
+    key: "getTime",
+    value: function getTime(handle) {
+      if (handle === undefined) {
+        return this.time;
+      }
+
+      var channel = this.channels.get(handle);
+
+      if (channel === undefined) {
+        return -1;
+      }
+
+      return channel.time;
+    }
+  }, {
+    key: "setTime",
+    value: function setTime(time) {
+      this.time = Math.max(0, time);
+      var channels = this.channels.values();
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
+
+      try {
+        for (var _iterator2 = channels[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var channel = _step2.value;
+
+          this._setChannelTime(channel, this.time);
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+            _iterator2["return"]();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
+      }
+
+      var animations = this.animations.values();
+      var _iteratorNormalCompletion3 = true;
+      var _didIteratorError3 = false;
+      var _iteratorError3 = undefined;
+
+      try {
+        for (var _iterator3 = animations[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+          var animationData = _step3.value;
+          var animation = animationData.animation,
+              _channel = animationData.channel;
+          animation.setTime(this.getTime(_channel));
+        }
+      } catch (err) {
+        _didIteratorError3 = true;
+        _iteratorError3 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion3 && _iterator3["return"] != null) {
+            _iterator3["return"]();
+          }
+        } finally {
+          if (_didIteratorError3) {
+            throw _iteratorError3;
+          }
+        }
+      }
+    }
+  }, {
+    key: "play",
+    value: function play() {
+      this.playing = true;
+    }
+  }, {
+    key: "pause",
+    value: function pause() {
+      this.playing = false;
+      this.lastEngineTime = -1;
+    }
+  }, {
+    key: "reset",
+    value: function reset() {
+      this.setTime(0);
+    }
+  }, {
+    key: "attachAnimation",
+    value: function attachAnimation(animation, channelHandle) {
+      var animationHandle = animationHandles++;
+      this.animations.set(animationHandle, {
+        animation: animation,
+        channel: channelHandle
+      });
+      animation.setTime(this.getTime(channelHandle));
+      return animationHandle;
+    }
+  }, {
+    key: "detachAnimation",
+    value: function detachAnimation(handle) {
+      this.animations["delete"](handle);
+    }
+  }, {
+    key: "update",
+    value: function update(engineTime) {
+      if (this.playing) {
+        if (this.lastEngineTime === -1) {
+          this.lastEngineTime = engineTime;
+        }
+
+        this.setTime(this.time + (engineTime - this.lastEngineTime));
+        this.lastEngineTime = engineTime;
+      }
+    }
+  }, {
+    key: "_setChannelTime",
+    value: function _setChannelTime(channel, time) {
+      var offsetTime = time - channel.delay;
+      var totalDuration = channel.duration * channel.repeat;
+
+      if (offsetTime >= totalDuration) {
+        channel.time = channel.duration * channel.rate;
+      } else {
+        channel.time = Math.max(0, offsetTime) % channel.duration;
+        channel.time *= channel.rate;
+      }
+    }
+  }]);
+
+  return Timeline;
+}();
+// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/lib/layer.js + 30 modules
+var lib_layer = __webpack_require__("K7jV");
+
+// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/lifecycle/constants.js
+var constants = __webpack_require__("I3n7");
+
+// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/utils/log.js
+var log = __webpack_require__("Jh/b");
+
+// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/debug/index.js
+var esm_debug = __webpack_require__("hZZG");
+
+// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/utils/flatten.js
+var flatten = __webpack_require__("Zk56");
+
+// EXTERNAL MODULE: ./node_modules/@probe.gl/stats/dist/esm/index.js + 2 modules
+var esm = __webpack_require__("laie");
+
+// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/viewports/viewport.js
+var viewports_viewport = __webpack_require__("e/LK");
+
+// EXTERNAL MODULE: ./node_modules/@luma.gl/engine/dist/esm/lib/program-manager.js + 8 modules
+var program_manager = __webpack_require__("haqy");
+
+// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/shaderlib/misc/geometry.js
+var vs = "\nstruct VertexGeometry {\n  vec4 position;\n  vec3 worldPosition;\n  vec3 worldPositionAlt;\n  vec3 normal;\n  vec2 uv;\n  vec3 pickingColor;\n} geometry;\n";
+var fs = "\n#define SMOOTH_EDGE_RADIUS 0.5\n\nstruct FragmentGeometry {\n  vec2 uv;\n} geometry;\n\nfloat smoothedge(float edge, float x) {\n  return smoothstep(edge - SMOOTH_EDGE_RADIUS, edge + SMOOTH_EDGE_RADIUS, x);\n}\n";
+/* harmony default export */ var geometry = ({
+  name: 'geometry',
+  vs: vs,
+  fs: fs
+});
+// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/shaderlib/project/project.js + 2 modules
+var project = __webpack_require__("hJkN");
+
+// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/shaderlib/index.js
+
+
+
+
+
+
+
+
+
+
+var DEFAULT_MODULES = [geometry, project["a" /* default */]];
+var SHADER_HOOKS = ['vs:DECKGL_FILTER_SIZE(inout vec3 size, VertexGeometry geometry)', 'vs:DECKGL_FILTER_GL_POSITION(inout vec4 position, VertexGeometry geometry)', 'vs:DECKGL_FILTER_COLOR(inout vec4 color, VertexGeometry geometry)', 'fs:DECKGL_FILTER_COLOR(inout vec4 color, FragmentGeometry geometry)'];
+function createProgramManager(gl) {
+  var programManager = program_manager["a" /* default */].getDefaultProgramManager(gl);
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
+
+  try {
+    for (var _iterator = DEFAULT_MODULES[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var shaderModule = _step.value;
+      programManager.addDefaultModule(shaderModule);
+    }
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+        _iterator["return"]();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
+      }
+    }
+  }
+
+  var _iteratorNormalCompletion2 = true;
+  var _didIteratorError2 = false;
+  var _iteratorError2 = undefined;
+
+  try {
+    for (var _iterator2 = SHADER_HOOKS[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+      var shaderHook = _step2.value;
+      programManager.addShaderHook(shaderHook);
+    }
+  } catch (err) {
+    _didIteratorError2 = true;
+    _iteratorError2 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+        _iterator2["return"]();
+      }
+    } finally {
+      if (_didIteratorError2) {
+        throw _iteratorError2;
+      }
+    }
+  }
+
+  return programManager;
+}
+
+// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/lib/layer-manager.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var TRACE_SET_LAYERS = 'layerManager.setLayers';
+var TRACE_ACTIVATE_VIEWPORT = 'layerManager.activateViewport';
+var INITIAL_CONTEXT = Object.seal({
+  layerManager: null,
+  deck: null,
+  gl: null,
+  stats: null,
+  shaderCache: null,
+  pickingFBO: null,
+  mousePosition: null,
+  userData: {}
+});
+
+var layer_manager_layerName = function layerName(layer) {
+  return layer instanceof lib_layer["a" /* default */] ? "".concat(layer) : !layer ? 'null' : 'invalid';
+};
+
+var layer_manager_LayerManager = function () {
+  function LayerManager(gl) {
+    var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+        deck = _ref.deck,
+        stats = _ref.stats,
+        _ref$viewport = _ref.viewport,
+        viewport = _ref$viewport === void 0 ? null : _ref$viewport,
+        _ref$timeline = _ref.timeline,
+        timeline = _ref$timeline === void 0 ? null : _ref$timeline;
+
+    Object(classCallCheck["a" /* default */])(this, LayerManager);
+
+    this.lastRenderedLayers = [];
+    this.layers = [];
+    this.context = Object.assign({}, INITIAL_CONTEXT, {
+      layerManager: this,
+      deck: deck,
+      gl: gl,
+      programManager: gl && createProgramManager(gl),
+      stats: stats || new esm["b" /* Stats */]({
+        id: 'deck.gl'
+      }),
+      viewport: viewport || new viewports_viewport["a" /* default */]({
+        id: 'DEFAULT-INITIAL-VIEWPORT'
+      }),
+      timeline: timeline || new timeline_Timeline()
+    });
+    this._needsRedraw = 'Initial render';
+    this._needsUpdate = false;
+    this._debug = false;
+    this._onError = null;
+    this.activateViewport = this.activateViewport.bind(this);
+    Object.seal(this);
+  }
+
+  Object(createClass["a" /* default */])(LayerManager, [{
+    key: "finalize",
+    value: function finalize() {
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = this.layers[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var layer = _step.value;
+
+          this._finalizeLayer(layer);
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+            _iterator["return"]();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+    }
+  }, {
+    key: "needsRedraw",
+    value: function needsRedraw() {
+      var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+        clearRedrawFlags: false
+      };
+      var redraw = this._needsRedraw;
+
+      if (opts.clearRedrawFlags) {
+        this._needsRedraw = false;
+      }
+
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
+
+      try {
+        for (var _iterator2 = this.layers[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var layer = _step2.value;
+          var layerNeedsRedraw = layer.getNeedsRedraw(opts);
+          redraw = redraw || layerNeedsRedraw;
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+            _iterator2["return"]();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
+      }
+
+      return redraw;
+    }
+  }, {
+    key: "needsUpdate",
+    value: function needsUpdate() {
+      return this._needsUpdate;
+    }
+  }, {
+    key: "setNeedsRedraw",
+    value: function setNeedsRedraw(reason) {
+      this._needsRedraw = this._needsRedraw || reason;
+    }
+  }, {
+    key: "setNeedsUpdate",
+    value: function setNeedsUpdate(reason) {
+      this._needsUpdate = this._needsUpdate || reason;
+    }
+  }, {
+    key: "getLayers",
+    value: function getLayers() {
+      var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+          _ref2$layerIds = _ref2.layerIds,
+          layerIds = _ref2$layerIds === void 0 ? null : _ref2$layerIds;
+
+      return layerIds ? this.layers.filter(function (layer) {
+        return layerIds.find(function (layerId) {
+          return layer.id.indexOf(layerId) === 0;
+        });
+      }) : this.layers;
+    }
+  }, {
+    key: "setProps",
+    value: function setProps(props) {
+      if ('debug' in props) {
+        this._debug = props.debug;
+      }
+
+      if ('userData' in props) {
+        this.context.userData = props.userData;
+      }
+
+      if ('layers' in props) {
+        this.setLayers(props.layers);
+      }
+
+      if ('onError' in props) {
+        this._onError = props.onError;
+      }
+    }
+  }, {
+    key: "setLayers",
+    value: function setLayers(newLayers) {
+      var forceUpdate = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      var shouldUpdate = forceUpdate || newLayers !== this.lastRenderedLayers;
+      Object(esm_debug["a" /* default */])(TRACE_SET_LAYERS, this, shouldUpdate, newLayers);
+
+      if (!shouldUpdate) {
+        return this;
+      }
+
+      this.lastRenderedLayers = newLayers;
+      newLayers = Object(flatten["b" /* flatten */])(newLayers, Boolean);
+      var _iteratorNormalCompletion3 = true;
+      var _didIteratorError3 = false;
+      var _iteratorError3 = undefined;
+
+      try {
+        for (var _iterator3 = newLayers[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+          var layer = _step3.value;
+          layer.context = this.context;
+        }
+      } catch (err) {
+        _didIteratorError3 = true;
+        _iteratorError3 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion3 && _iterator3["return"] != null) {
+            _iterator3["return"]();
+          }
+        } finally {
+          if (_didIteratorError3) {
+            throw _iteratorError3;
+          }
+        }
+      }
+
+      this._updateLayers(this.layers, newLayers);
+
+      return this;
+    }
+  }, {
+    key: "updateLayers",
+    value: function updateLayers() {
+      var reason = this.needsUpdate();
+
+      if (reason) {
+        this.setNeedsRedraw("updating layers: ".concat(reason));
+        var forceUpdate = true;
+        this.setLayers(this.lastRenderedLayers, forceUpdate);
+      }
+    }
+  }, {
+    key: "activateViewport",
+    value: function activateViewport(viewport) {
+      Object(assert["a" /* default */])(viewport, 'LayerManager: viewport not set');
+      var oldViewport = this.context.viewport;
+      var viewportChanged = !oldViewport || !viewport.equals(oldViewport);
+
+      if (viewportChanged) {
+        Object(esm_debug["a" /* default */])(TRACE_ACTIVATE_VIEWPORT, this, viewport);
+        this.context.viewport = viewport;
+        var changeFlags = {
+          viewportChanged: true
+        };
+        var _iteratorNormalCompletion4 = true;
+        var _didIteratorError4 = false;
+        var _iteratorError4 = undefined;
+
+        try {
+          for (var _iterator4 = this.layers[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+            var layer = _step4.value;
+            layer.setChangeFlags(changeFlags);
+
+            this._updateLayer(layer);
+          }
+        } catch (err) {
+          _didIteratorError4 = true;
+          _iteratorError4 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion4 && _iterator4["return"] != null) {
+              _iterator4["return"]();
+            }
+          } finally {
+            if (_didIteratorError4) {
+              throw _iteratorError4;
+            }
+          }
+        }
+      }
+
+      return this;
+    }
+  }, {
+    key: "_handleError",
+    value: function _handleError(stage, error, layer) {
+      if (this._onError) {
+        this._onError(error, layer);
+      } else {
+        log["a" /* default */].error("error during ".concat(stage, " of ").concat(layer_manager_layerName(layer)), error)();
+      }
+    }
+  }, {
+    key: "_updateLayers",
+    value: function _updateLayers(oldLayers, newLayers) {
+      var oldLayerMap = {};
+      var _iteratorNormalCompletion5 = true;
+      var _didIteratorError5 = false;
+      var _iteratorError5 = undefined;
+
+      try {
+        for (var _iterator5 = oldLayers[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+          var oldLayer = _step5.value;
+
+          if (oldLayerMap[oldLayer.id]) {
+            log["a" /* default */].warn("Multiple old layers with same id ".concat(layer_manager_layerName(oldLayer)))();
+          } else {
+            oldLayerMap[oldLayer.id] = oldLayer;
+          }
+        }
+      } catch (err) {
+        _didIteratorError5 = true;
+        _iteratorError5 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion5 && _iterator5["return"] != null) {
+            _iterator5["return"]();
+          }
+        } finally {
+          if (_didIteratorError5) {
+            throw _iteratorError5;
+          }
+        }
+      }
+
+      var generatedLayers = [];
+
+      this._updateSublayersRecursively(newLayers, oldLayerMap, generatedLayers);
+
+      this._finalizeOldLayers(oldLayerMap);
+
+      var needsUpdate = false;
+
+      for (var _i = 0, _generatedLayers = generatedLayers; _i < _generatedLayers.length; _i++) {
+        var layer = _generatedLayers[_i];
+
+        if (layer.hasUniformTransition()) {
+          needsUpdate = true;
+          break;
+        }
+      }
+
+      this._needsUpdate = needsUpdate;
+      this.layers = generatedLayers;
+    }
+  }, {
+    key: "_updateSublayersRecursively",
+    value: function _updateSublayersRecursively(newLayers, oldLayerMap, generatedLayers) {
+      var _iteratorNormalCompletion6 = true;
+      var _didIteratorError6 = false;
+      var _iteratorError6 = undefined;
+
+      try {
+        for (var _iterator6 = newLayers[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+          var newLayer = _step6.value;
+          newLayer.context = this.context;
+          var oldLayer = oldLayerMap[newLayer.id];
+
+          if (oldLayer === null) {
+            log["a" /* default */].warn("Multiple new layers with same id ".concat(layer_manager_layerName(newLayer)))();
+          }
+
+          oldLayerMap[newLayer.id] = null;
+          var sublayers = null;
+
+          try {
+            if (this._debug && oldLayer !== newLayer) {
+              newLayer.validateProps();
+            }
+
+            if (!oldLayer) {
+              this._initializeLayer(newLayer);
+            } else {
+              this._transferLayerState(oldLayer, newLayer);
+
+              this._updateLayer(newLayer);
+            }
+
+            generatedLayers.push(newLayer);
+            sublayers = newLayer.isComposite && newLayer.getSubLayers();
+          } catch (err) {
+            this._handleError('matching', err, newLayer);
+          }
+
+          if (sublayers) {
+            this._updateSublayersRecursively(sublayers, oldLayerMap, generatedLayers);
+          }
+        }
+      } catch (err) {
+        _didIteratorError6 = true;
+        _iteratorError6 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion6 && _iterator6["return"] != null) {
+            _iterator6["return"]();
+          }
+        } finally {
+          if (_didIteratorError6) {
+            throw _iteratorError6;
+          }
+        }
+      }
+    }
+  }, {
+    key: "_finalizeOldLayers",
+    value: function _finalizeOldLayers(oldLayerMap) {
+      for (var layerId in oldLayerMap) {
+        var layer = oldLayerMap[layerId];
+
+        if (layer) {
+          this._finalizeLayer(layer);
+        }
+      }
+    }
+  }, {
+    key: "_initializeLayer",
+    value: function _initializeLayer(layer) {
+      try {
+        layer._initialize();
+
+        layer.lifecycle = constants["a" /* LIFECYCLE */].INITIALIZED;
+      } catch (err) {
+        this._handleError('initialization', err, layer);
+      }
+    }
+  }, {
+    key: "_transferLayerState",
+    value: function _transferLayerState(oldLayer, newLayer) {
+      newLayer._transferState(oldLayer);
+
+      newLayer.lifecycle = constants["a" /* LIFECYCLE */].MATCHED;
+
+      if (newLayer !== oldLayer) {
+        oldLayer.lifecycle = constants["a" /* LIFECYCLE */].AWAITING_GC;
+      }
+    }
+  }, {
+    key: "_updateLayer",
+    value: function _updateLayer(layer) {
+      try {
+        layer._update();
+      } catch (err) {
+        this._handleError('update', err, layer);
+      }
+    }
+  }, {
+    key: "_finalizeLayer",
+    value: function _finalizeLayer(layer) {
+      this._needsRedraw = this._needsRedraw || "finalized ".concat(layer_manager_layerName(layer));
+      layer.lifecycle = constants["a" /* LIFECYCLE */].AWAITING_FINALIZATION;
+
+      try {
+        layer._finalize();
+
+        layer.lifecycle = constants["a" /* LIFECYCLE */].FINALIZED;
+      } catch (err) {
+        this._handleError('finalization', err, layer);
+      }
+    }
+  }]);
+
+  return LayerManager;
+}();
+
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.array.some.js
+var es6_array_some = __webpack_require__("wZFJ");
+
+// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/utils/deep-equal.js
+var deep_equal = __webpack_require__("LDVv");
+
+// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/lib/view-manager.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var view_manager_ViewManager = function () {
+  function ViewManager() {
+    var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    Object(classCallCheck["a" /* default */])(this, ViewManager);
+
+    this.views = [];
+    this.width = 100;
+    this.height = 100;
+    this.viewState = {};
+    this.controllers = {};
+    this.timeline = props.timeline;
+    this._viewports = [];
+    this._viewportMap = {};
+    this._isUpdating = false;
+    this._needsRedraw = 'Initial render';
+    this._needsUpdate = true;
+    this._eventManager = props.eventManager;
+    this._eventCallbacks = {
+      onViewStateChange: props.onViewStateChange,
+      onInteractiveStateChange: props.onInteractiveStateChange
+    };
+    Object.seal(this);
+    this.setProps(props);
+  }
+
+  Object(createClass["a" /* default */])(ViewManager, [{
+    key: "finalize",
+    value: function finalize() {
+      for (var key in this.controllers) {
+        if (this.controllers[key]) {
+          this.controllers[key].finalize();
+        }
+      }
+
+      this.controllers = {};
+    }
+  }, {
+    key: "needsRedraw",
+    value: function needsRedraw() {
+      var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+        clearRedrawFlags: false
+      };
+      var redraw = this._needsRedraw;
+
+      if (opts.clearRedrawFlags) {
+        this._needsRedraw = false;
+      }
+
+      return redraw;
+    }
+  }, {
+    key: "setNeedsUpdate",
+    value: function setNeedsUpdate(reason) {
+      this._needsUpdate = this._needsUpdate || reason;
+      this._needsRedraw = this._needsRedraw || reason;
+    }
+  }, {
+    key: "updateViewStates",
+    value: function updateViewStates() {
+      for (var viewId in this.controllers) {
+        var controller = this.controllers[viewId];
+
+        if (controller) {
+          controller.updateTransition();
+        }
+      }
+    }
+  }, {
+    key: "getViewports",
+    value: function getViewports(rect) {
+      if (rect) {
+        return this._viewports.filter(function (viewport) {
+          return viewport.containsPixel(rect);
+        });
+      }
+
+      return this._viewports;
+    }
+  }, {
+    key: "getViews",
+    value: function getViews() {
+      var viewMap = {};
+      this.views.forEach(function (view) {
+        viewMap[view.id] = view;
+      });
+      return viewMap;
+    }
+  }, {
+    key: "getView",
+    value: function getView(viewOrViewId) {
+      return typeof viewOrViewId === 'string' ? this.views.find(function (view) {
+        return view.id === viewOrViewId;
+      }) : viewOrViewId;
+    }
+  }, {
+    key: "getViewState",
+    value: function getViewState(viewId) {
+      var view = this.getView(viewId);
+      var viewState = view && this.viewState[view.getViewStateId()] || this.viewState;
+      return view ? view.filterViewState(viewState) : viewState;
+    }
+  }, {
+    key: "getViewport",
+    value: function getViewport(viewId) {
+      return this._viewportMap[viewId];
+    }
+  }, {
+    key: "unproject",
+    value: function unproject(xyz, opts) {
+      var viewports = this.getViewports();
+      var pixel = {
+        x: xyz[0],
+        y: xyz[1]
+      };
+
+      for (var i = viewports.length - 1; i >= 0; --i) {
+        var viewport = viewports[i];
+
+        if (viewport.containsPixel(pixel)) {
+          var p = xyz.slice();
+          p[0] -= viewport.x;
+          p[1] -= viewport.y;
+          return viewport.unproject(p, opts);
+        }
+      }
+
+      return null;
+    }
+  }, {
+    key: "setProps",
+    value: function setProps(props) {
+      if ('views' in props) {
+        this._setViews(props.views);
+      }
+
+      if ('viewState' in props) {
+        this._setViewState(props.viewState);
+      }
+
+      if ('width' in props || 'height' in props) {
+        this._setSize(props.width, props.height);
+      }
+
+      if (!this._isUpdating) {
+        this._update();
+      }
+    }
+  }, {
+    key: "_update",
+    value: function _update() {
+      this._isUpdating = true;
+
+      if (this._needsUpdate) {
+        this._needsUpdate = false;
+
+        this._rebuildViewports();
+      }
+
+      if (this._needsUpdate) {
+        this._needsUpdate = false;
+
+        this._rebuildViewports();
+      }
+
+      this._isUpdating = false;
+    }
+  }, {
+    key: "_setSize",
+    value: function _setSize(width, height) {
+      Object(assert["a" /* default */])(Number.isFinite(width) && Number.isFinite(height));
+
+      if (width !== this.width || height !== this.height) {
+        this.width = width;
+        this.height = height;
+        this.setNeedsUpdate('Size changed');
+      }
+    }
+  }, {
+    key: "_setViews",
+    value: function _setViews(views) {
+      views = Object(flatten["b" /* flatten */])(views, Boolean);
+
+      var viewsChanged = this._diffViews(views, this.views);
+
+      if (viewsChanged) {
+        this.setNeedsUpdate('views changed');
+      }
+
+      this.views = views;
+    }
+  }, {
+    key: "_setViewState",
+    value: function _setViewState(viewState) {
+      if (viewState) {
+        var viewStateChanged = !Object(deep_equal["a" /* deepEqual */])(viewState, this.viewState);
+
+        if (viewStateChanged) {
+          this.setNeedsUpdate('viewState changed');
+        }
+
+        this.viewState = viewState;
+      } else {
+        log["a" /* default */].warn('missing `viewState` or `initialViewState`')();
+      }
+    }
+  }, {
+    key: "_onViewStateChange",
+    value: function _onViewStateChange(viewId, event) {
+      event.viewId = viewId;
+
+      this._eventCallbacks.onViewStateChange(event);
+    }
+  }, {
+    key: "_createController",
+    value: function _createController(props) {
+      var Controller = props.type;
+      var controller = new Controller(Object.assign({
+        timeline: this.timeline,
+        eventManager: this._eventManager,
+        onViewStateChange: this._onViewStateChange.bind(this, props.id),
+        onStateChange: this._eventCallbacks.onInteractiveStateChange
+      }, props));
+      return controller;
+    }
+  }, {
+    key: "_updateController",
+    value: function _updateController(view, viewState, viewport, controller) {
+      if (view.controller) {
+        var controllerProps = Object.assign({}, view.controller, viewState, {
+          id: view.id,
+          x: viewport.x,
+          y: viewport.y,
+          width: viewport.width,
+          height: viewport.height
+        });
+
+        if (controller) {
+          controller.setProps(controllerProps);
+        } else {
+          controller = this._createController(controllerProps);
+        }
+
+        return controller;
+      }
+
+      return null;
+    }
+  }, {
+    key: "_rebuildViewports",
+    value: function _rebuildViewports() {
+      var width = this.width,
+          height = this.height,
+          views = this.views;
+      var oldControllers = this.controllers;
+      this._viewports = [];
+      this.controllers = {};
+
+      for (var i = views.length; i--;) {
+        var view = views[i];
+        var viewState = this.getViewState(view);
+        var viewport = view.makeViewport({
+          width: width,
+          height: height,
+          viewState: viewState
+        });
+        this.controllers[view.id] = this._updateController(view, viewState, viewport, oldControllers[view.id]);
+
+        this._viewports.unshift(viewport);
+      }
+
+      for (var id in oldControllers) {
+        if (oldControllers[id] && !this.controllers[id]) {
+          oldControllers[id].finalize();
+        }
+      }
+
+      this._buildViewportMap();
+    }
+  }, {
+    key: "_buildViewportMap",
+    value: function _buildViewportMap() {
+      var _this = this;
+
+      this._viewportMap = {};
+
+      this._viewports.forEach(function (viewport) {
+        if (viewport.id) {
+          _this._viewportMap[viewport.id] = _this._viewportMap[viewport.id] || viewport;
+        }
+      });
+    }
+  }, {
+    key: "_diffViews",
+    value: function _diffViews(newViews, oldViews) {
+      if (newViews.length !== oldViews.length) {
+        return true;
+      }
+
+      return newViews.some(function (_, i) {
+        return !newViews[i].equals(oldViews[i]);
+      });
+    }
+  }]);
+
+  return ViewManager;
+}();
+
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/possibleConstructorReturn.js
+var possibleConstructorReturn = __webpack_require__("L6So");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/getPrototypeOf.js
+var getPrototypeOf = __webpack_require__("Ccfo");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/inherits.js
+var inherits = __webpack_require__("x364");
+
+// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/views/view.js + 1 modules
+var views_view = __webpack_require__("nICr");
+
+// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/viewports/web-mercator-viewport.js
+var web_mercator_viewport = __webpack_require__("zGfa");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.math.log2.js
+var es6_math_log2 = __webpack_require__("QNMc");
+
+// EXTERNAL MODULE: ./node_modules/math.gl/dist/esm/index.js
+var dist_esm = __webpack_require__("c9N0");
+
+// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/transitions/transition-interpolator.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var transition_interpolator_TransitionInterpolator = function () {
+  function TransitionInterpolator() {
+    var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    Object(classCallCheck["a" /* default */])(this, TransitionInterpolator);
+
+    if (Array.isArray(opts)) {
+      opts = {
+        compare: opts,
+        extract: opts,
+        required: opts
+      };
+    }
+
+    var _opts = opts,
+        compare = _opts.compare,
+        extract = _opts.extract,
+        required = _opts.required;
+    this._propsToCompare = compare;
+    this._propsToExtract = extract;
+    this._requiredProps = required;
+  }
+
+  Object(createClass["a" /* default */])(TransitionInterpolator, [{
+    key: "arePropsEqual",
+    value: function arePropsEqual(currentProps, nextProps) {
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = (this._propsToCompare || Object.keys(nextProps))[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var key = _step.value;
+
+          if (!(key in currentProps) || !(key in nextProps) || !Object(dist_esm["e" /* equals */])(currentProps[key], nextProps[key])) {
+            return false;
+          }
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+            _iterator["return"]();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
+      return true;
+    }
+  }, {
+    key: "initializeProps",
+    value: function initializeProps(startProps, endProps) {
+      var result;
+
+      if (this._propsToExtract) {
+        var startViewStateProps = {};
+        var endViewStateProps = {};
+        var _iteratorNormalCompletion2 = true;
+        var _didIteratorError2 = false;
+        var _iteratorError2 = undefined;
+
+        try {
+          for (var _iterator2 = this._propsToExtract[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+            var key = _step2.value;
+            startViewStateProps[key] = startProps[key];
+            endViewStateProps[key] = endProps[key];
+          }
+        } catch (err) {
+          _didIteratorError2 = true;
+          _iteratorError2 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+              _iterator2["return"]();
+            }
+          } finally {
+            if (_didIteratorError2) {
+              throw _iteratorError2;
+            }
+          }
+        }
+
+        result = {
+          start: startViewStateProps,
+          end: endViewStateProps
+        };
+      } else {
+        result = {
+          start: startProps,
+          end: endProps
+        };
+      }
+
+      this._checkRequiredProps(result.start);
+
+      this._checkRequiredProps(result.end);
+
+      return result;
+    }
+  }, {
+    key: "interpolateProps",
+    value: function interpolateProps(startProps, endProps, t) {
+      return endProps;
+    }
+  }, {
+    key: "getDuration",
+    value: function getDuration(startProps, endProps) {
+      return endProps.transitionDuration;
+    }
+  }, {
+    key: "_checkRequiredProps",
+    value: function _checkRequiredProps(props) {
+      if (!this._requiredProps) {
+        return;
+      }
+
+      this._requiredProps.forEach(function (propName) {
+        var value = props[propName];
+        Object(assert["a" /* default */])(Number.isFinite(value) || Array.isArray(value), "".concat(propName, " is required for transition"));
+      });
+    }
+  }]);
+
+  return TransitionInterpolator;
+}();
+
+
+// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/transitions/linear-interpolator.js
+
+
+
+
+
+
+
+var VIEWPORT_TRANSITION_PROPS = ['longitude', 'latitude', 'zoom', 'bearing', 'pitch'];
+
+var linear_interpolator_LinearInterpolator = function (_TransitionInterpolat) {
+  Object(inherits["a" /* default */])(LinearInterpolator, _TransitionInterpolat);
+
+  function LinearInterpolator() {
+    var transitionProps = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : VIEWPORT_TRANSITION_PROPS;
+
+    Object(classCallCheck["a" /* default */])(this, LinearInterpolator);
+
+    return Object(possibleConstructorReturn["a" /* default */])(this, Object(getPrototypeOf["a" /* default */])(LinearInterpolator).call(this, transitionProps));
+  }
+
+  Object(createClass["a" /* default */])(LinearInterpolator, [{
+    key: "interpolateProps",
+    value: function interpolateProps(startProps, endProps, t) {
+      var viewport = {};
+
+      for (var key in endProps) {
+        viewport[key] = Object(dist_esm["f" /* lerp */])(startProps[key], endProps[key], t);
+      }
+
+      return viewport;
+    }
+  }]);
+
+  return LinearInterpolator;
+}(transition_interpolator_TransitionInterpolator);
+
+
+// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/transitions/transition.js
+var transition = __webpack_require__("n6ox");
+
+// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/controllers/transition-manager.js
+
+
+
+
+
+
+
+var noop = function noop() {};
+
+var TRANSITION_EVENTS = {
+  BREAK: 1,
+  SNAP_TO_END: 2,
+  IGNORE: 3
+};
+var DEFAULT_PROPS = {
+  transitionDuration: 0,
+  transitionEasing: function transitionEasing(t) {
+    return t;
+  },
+  transitionInterpolator: new linear_interpolator_LinearInterpolator(),
+  transitionInterruption: TRANSITION_EVENTS.BREAK,
+  onTransitionStart: noop,
+  onTransitionInterrupt: noop,
+  onTransitionEnd: noop
+};
+
+var transition_manager_TransitionManager = function () {
+  function TransitionManager(ControllerState) {
+    var props = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+    Object(classCallCheck["a" /* default */])(this, TransitionManager);
+
+    this.ControllerState = ControllerState;
+    this.props = Object.assign({}, DEFAULT_PROPS, props);
+    this.propsInTransition = null;
+    this.transition = new transition["a" /* default */](props.timeline);
+    this.onViewStateChange = props.onViewStateChange;
+    this._onTransitionUpdate = this._onTransitionUpdate.bind(this);
+  }
+
+  Object(createClass["a" /* default */])(TransitionManager, [{
+    key: "finalize",
+    value: function finalize() {
+      this.transition.cancel();
+    }
+  }, {
+    key: "getViewportInTransition",
+    value: function getViewportInTransition() {
+      return this.propsInTransition;
+    }
+  }, {
+    key: "processViewStateChange",
+    value: function processViewStateChange(nextProps) {
+      var transitionTriggered = false;
+      var currentProps = this.props;
+      nextProps = Object.assign({}, DEFAULT_PROPS, nextProps);
+      this.props = nextProps;
+
+      if (this._shouldIgnoreViewportChange(currentProps, nextProps)) {
+        return transitionTriggered;
+      }
+
+      if (this._isTransitionEnabled(nextProps)) {
+        var _this$transition$sett = this.transition.settings,
+            interruption = _this$transition$sett.interruption,
+            endProps = _this$transition$sett.endProps;
+        var startProps = Object.assign({}, currentProps, interruption === TRANSITION_EVENTS.SNAP_TO_END ? endProps : this.propsInTransition || currentProps);
+
+        this._triggerTransition(startProps, nextProps);
+
+        transitionTriggered = true;
+      } else {
+        this.transition.cancel();
+      }
+
+      return transitionTriggered;
+    }
+  }, {
+    key: "updateTransition",
+    value: function updateTransition() {
+      this.transition.update();
+    }
+  }, {
+    key: "_isTransitionEnabled",
+    value: function _isTransitionEnabled(props) {
+      var transitionDuration = props.transitionDuration,
+          transitionInterpolator = props.transitionInterpolator;
+      return (transitionDuration > 0 || transitionDuration === 'auto') && Boolean(transitionInterpolator);
+    }
+  }, {
+    key: "_isUpdateDueToCurrentTransition",
+    value: function _isUpdateDueToCurrentTransition(props) {
+      if (this.transition.inProgress) {
+        return this.transition.settings.interpolator.arePropsEqual(props, this.propsInTransition);
+      }
+
+      return false;
+    }
+  }, {
+    key: "_shouldIgnoreViewportChange",
+    value: function _shouldIgnoreViewportChange(currentProps, nextProps) {
+      if (this.transition.inProgress) {
+        return this.transition.settings.interruption === TRANSITION_EVENTS.IGNORE || this._isUpdateDueToCurrentTransition(nextProps);
+      } else if (this._isTransitionEnabled(nextProps)) {
+        return nextProps.transitionInterpolator.arePropsEqual(currentProps, nextProps);
+      }
+
+      return true;
+    }
+  }, {
+    key: "_triggerTransition",
+    value: function _triggerTransition(startProps, endProps) {
+      var startViewstate = new this.ControllerState(startProps);
+      var endViewStateProps = new this.ControllerState(endProps).shortestPathFrom(startViewstate);
+      var transitionInterpolator = endProps.transitionInterpolator;
+      var duration = transitionInterpolator.getDuration ? transitionInterpolator.getDuration(startProps, endProps) : endProps.transitionDuration;
+      var initialProps = endProps.transitionInterpolator.initializeProps(startProps, endViewStateProps);
+      this.propsInTransition = {};
+      this.duration = duration;
+      this.transition.start({
+        duration: duration,
+        easing: endProps.transitionEasing,
+        interpolator: endProps.transitionInterpolator,
+        interruption: endProps.transitionInterruption,
+        startProps: initialProps.start,
+        endProps: initialProps.end,
+        onStart: endProps.onTransitionStart,
+        onUpdate: this._onTransitionUpdate,
+        onInterrupt: this._onTransitionEnd(endProps.onTransitionInterrupt),
+        onEnd: this._onTransitionEnd(endProps.onTransitionEnd)
+      });
+      this.updateTransition();
+    }
+  }, {
+    key: "_onTransitionEnd",
+    value: function _onTransitionEnd(callback) {
+      var _this = this;
+
+      return function (transition) {
+        _this.propsInTransition = null;
+        callback(transition);
+      };
+    }
+  }, {
+    key: "_onTransitionUpdate",
+    value: function _onTransitionUpdate(transition) {
+      var time = transition.time,
+          _transition$settings = transition.settings,
+          interpolator = _transition$settings.interpolator,
+          startProps = _transition$settings.startProps,
+          endProps = _transition$settings.endProps,
+          duration = _transition$settings.duration,
+          easing = _transition$settings.easing;
+      var t = easing(time / duration);
+      var viewport = interpolator.interpolateProps(startProps, endProps, t);
+      this.propsInTransition = new this.ControllerState(Object.assign({}, this.props, viewport)).getViewportProps();
+
+      if (this.onViewStateChange) {
+        this.onViewStateChange({
+          viewState: this.propsInTransition,
+          interactionState: {
+            inTransition: true
+          },
+          oldViewState: this.props
+        });
+      }
+    }
+  }]);
+
+  return TransitionManager;
+}();
+
+
+transition_manager_TransitionManager.defaultProps = DEFAULT_PROPS;
+// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/controllers/controller.js
+
+
+
+
+
+
+
+
+var NO_TRANSITION_PROPS = {
+  transitionDuration: 0
+};
+var ZOOM_ACCEL = 0.01;
+var EVENT_TYPES = {
+  WHEEL: ['wheel'],
+  PAN: ['panstart', 'panmove', 'panend'],
+  PINCH: ['pinchstart', 'pinchmove', 'pinchend'],
+  DOUBLE_TAP: ['doubletap'],
+  KEYBOARD: ['keydown']
+};
+
+var controller_Controller = function () {
+  function Controller(ControllerState) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+    Object(classCallCheck["a" /* default */])(this, Controller);
+
+    Object(assert["a" /* default */])(ControllerState);
+    this.ControllerState = ControllerState;
+    this.controllerState = null;
+    this.controllerStateProps = null;
+    this.eventManager = null;
+    this.transitionManager = new transition_manager_TransitionManager(ControllerState, options);
+    this._events = null;
+    this._state = {
+      isDragging: false
+    };
+    this._customEvents = [];
+    this.onViewStateChange = null;
+    this.onStateChange = null;
+    this.invertPan = false;
+    this.handleEvent = this.handleEvent.bind(this);
+    this.setProps(options);
+  }
+
+  Object(createClass["a" /* default */])(Controller, [{
+    key: "finalize",
+    value: function finalize() {
+      for (var eventName in this._events) {
+        if (this._events[eventName]) {
+          this.eventManager.off(eventName, this.handleEvent);
+        }
+      }
+
+      this.transitionManager.finalize();
+    }
+  }, {
+    key: "handleEvent",
+    value: function handleEvent(event) {
+      var ControllerState = this.ControllerState;
+      this.controllerState = new ControllerState(Object.assign({}, this.controllerStateProps, this._state));
+
+      switch (event.type) {
+        case 'panstart':
+          return this._onPanStart(event);
+
+        case 'panmove':
+          return this._onPan(event);
+
+        case 'panend':
+          return this._onPanEnd(event);
+
+        case 'pinchstart':
+          return this._onPinchStart(event);
+
+        case 'pinchmove':
+          return this._onPinch(event);
+
+        case 'pinchend':
+          return this._onPinchEnd(event);
+
+        case 'doubletap':
+          return this._onDoubleTap(event);
+
+        case 'wheel':
+          return this._onWheel(event);
+
+        case 'keydown':
+          return this._onKeyDown(event);
+
+        default:
+          return false;
+      }
+    }
+  }, {
+    key: "getCenter",
+    value: function getCenter(event) {
+      var _this$controllerState = this.controllerStateProps,
+          x = _this$controllerState.x,
+          y = _this$controllerState.y;
+      var offsetCenter = event.offsetCenter;
+      return [offsetCenter.x - x, offsetCenter.y - y];
+    }
+  }, {
+    key: "isPointInBounds",
+    value: function isPointInBounds(pos, event) {
+      var _this$controllerState2 = this.controllerStateProps,
+          width = _this$controllerState2.width,
+          height = _this$controllerState2.height;
+
+      if (event && event.handled) {
+        return false;
+      }
+
+      var inside = pos[0] >= 0 && pos[0] <= width && pos[1] >= 0 && pos[1] <= height;
+
+      if (inside && event) {
+        event.stopPropagation();
+      }
+
+      return inside;
+    }
+  }, {
+    key: "isFunctionKeyPressed",
+    value: function isFunctionKeyPressed(event) {
+      var srcEvent = event.srcEvent;
+      return Boolean(srcEvent.metaKey || srcEvent.altKey || srcEvent.ctrlKey || srcEvent.shiftKey);
+    }
+  }, {
+    key: "isDragging",
+    value: function isDragging() {
+      return this._state.isDragging;
+    }
+  }, {
+    key: "setProps",
+    value: function setProps(props) {
+      if ('onViewportChange' in props) {
+        log["a" /* default */].removed('onViewportChange')();
+      }
+
+      if ('onViewStateChange' in props) {
+        this.onViewStateChange = props.onViewStateChange;
+      }
+
+      if ('onStateChange' in props) {
+        this.onStateChange = props.onStateChange;
+      }
+
+      this.controllerStateProps = props;
+
+      if ('eventManager' in props && this.eventManager !== props.eventManager) {
+        this.eventManager = props.eventManager;
+        this._events = {};
+        this.toggleEvents(this._customEvents, true);
+      }
+
+      this.transitionManager.processViewStateChange(this.controllerStateProps);
+      var _props$scrollZoom = props.scrollZoom,
+          scrollZoom = _props$scrollZoom === void 0 ? true : _props$scrollZoom,
+          _props$dragPan = props.dragPan,
+          dragPan = _props$dragPan === void 0 ? true : _props$dragPan,
+          _props$dragRotate = props.dragRotate,
+          dragRotate = _props$dragRotate === void 0 ? true : _props$dragRotate,
+          _props$doubleClickZoo = props.doubleClickZoom,
+          doubleClickZoom = _props$doubleClickZoo === void 0 ? true : _props$doubleClickZoo,
+          _props$touchZoom = props.touchZoom,
+          touchZoom = _props$touchZoom === void 0 ? true : _props$touchZoom,
+          _props$touchRotate = props.touchRotate,
+          touchRotate = _props$touchRotate === void 0 ? false : _props$touchRotate,
+          _props$keyboard = props.keyboard,
+          keyboard = _props$keyboard === void 0 ? true : _props$keyboard;
+      var isInteractive = Boolean(this.onViewStateChange);
+      this.toggleEvents(EVENT_TYPES.WHEEL, isInteractive && scrollZoom);
+      this.toggleEvents(EVENT_TYPES.PAN, isInteractive && (dragPan || dragRotate));
+      this.toggleEvents(EVENT_TYPES.PINCH, isInteractive && (touchZoom || touchRotate));
+      this.toggleEvents(EVENT_TYPES.DOUBLE_TAP, isInteractive && doubleClickZoom);
+      this.toggleEvents(EVENT_TYPES.KEYBOARD, isInteractive && keyboard);
+      this.scrollZoom = scrollZoom;
+      this.dragPan = dragPan;
+      this.dragRotate = dragRotate;
+      this.doubleClickZoom = doubleClickZoom;
+      this.touchZoom = touchZoom;
+      this.touchRotate = touchRotate;
+      this.keyboard = keyboard;
+    }
+  }, {
+    key: "updateTransition",
+    value: function updateTransition() {
+      this.transitionManager.updateTransition();
+    }
+  }, {
+    key: "toggleEvents",
+    value: function toggleEvents(eventNames, enabled) {
+      var _this = this;
+
+      if (this.eventManager) {
+        eventNames.forEach(function (eventName) {
+          if (_this._events[eventName] !== enabled) {
+            _this._events[eventName] = enabled;
+
+            if (enabled) {
+              _this.eventManager.on(eventName, _this.handleEvent);
+            } else {
+              _this.eventManager.off(eventName, _this.handleEvent);
+            }
+          }
+        });
+      }
+    }
+  }, {
+    key: "updateViewport",
+    value: function updateViewport(newControllerState) {
+      var extraProps = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      var interactionState = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+      var viewState = Object.assign({}, newControllerState.getViewportProps(), extraProps);
+      var changed = this.controllerState !== newControllerState;
+
+      if (changed) {
+        var oldViewState = this.controllerState ? this.controllerState.getViewportProps() : null;
+
+        if (this.onViewStateChange) {
+          this.onViewStateChange({
+            viewState: viewState,
+            interactionState: interactionState,
+            oldViewState: oldViewState
+          });
+        }
+      }
+
+      Object.assign(this._state, newControllerState.getInteractiveState(), interactionState);
+
+      if (this.onStateChange) {
+        this.onStateChange(this._state);
+      }
+    }
+  }, {
+    key: "_onPanStart",
+    value: function _onPanStart(event) {
+      var pos = this.getCenter(event);
+
+      if (!this.isPointInBounds(pos, event)) {
+        return false;
+      }
+
+      var newControllerState = this.controllerState.panStart({
+        pos: pos
+      }).rotateStart({
+        pos: pos
+      });
+      this.updateViewport(newControllerState, NO_TRANSITION_PROPS, {
+        isDragging: true
+      });
+      return true;
+    }
+  }, {
+    key: "_onPan",
+    value: function _onPan(event) {
+      if (!this.isDragging()) {
+        return false;
+      }
+
+      var alternateMode = this.isFunctionKeyPressed(event) || event.rightButton;
+      alternateMode = this.invertPan ? !alternateMode : alternateMode;
+      return alternateMode ? this._onPanMove(event) : this._onPanRotate(event);
+    }
+  }, {
+    key: "_onPanEnd",
+    value: function _onPanEnd(event) {
+      var newControllerState = this.controllerState.panEnd().rotateEnd();
+      this.updateViewport(newControllerState, null, {
+        isDragging: false,
+        isPanning: false,
+        isRotating: false
+      });
+      return true;
+    }
+  }, {
+    key: "_onPanMove",
+    value: function _onPanMove(event) {
+      if (!this.dragPan) {
+        return false;
+      }
+
+      var pos = this.getCenter(event);
+      var newControllerState = this.controllerState.pan({
+        pos: pos
+      });
+      this.updateViewport(newControllerState, NO_TRANSITION_PROPS, {
+        isDragging: true,
+        isPanning: true
+      });
+      return true;
+    }
+  }, {
+    key: "_onPanRotate",
+    value: function _onPanRotate(event) {
+      if (!this.dragRotate) {
+        return false;
+      }
+
+      var deltaX = event.deltaX,
+          deltaY = event.deltaY;
+
+      var _this$controllerState3 = this.controllerState.getViewportProps(),
+          width = _this$controllerState3.width,
+          height = _this$controllerState3.height;
+
+      var deltaScaleX = deltaX / width;
+      var deltaScaleY = deltaY / height;
+      var newControllerState = this.controllerState.rotate({
+        deltaScaleX: deltaScaleX,
+        deltaScaleY: deltaScaleY
+      });
+      this.updateViewport(newControllerState, NO_TRANSITION_PROPS, {
+        isDragging: true,
+        isRotating: true
+      });
+      return true;
+    }
+  }, {
+    key: "_onWheel",
+    value: function _onWheel(event) {
+      if (!this.scrollZoom) {
+        return false;
+      }
+
+      event.preventDefault();
+      var pos = this.getCenter(event);
+
+      if (!this.isPointInBounds(pos, event)) {
+        return false;
+      }
+
+      var delta = event.delta;
+      var scale = 2 / (1 + Math.exp(-Math.abs(delta * ZOOM_ACCEL)));
+
+      if (delta < 0 && scale !== 0) {
+        scale = 1 / scale;
+      }
+
+      var newControllerState = this.controllerState.zoom({
+        pos: pos,
+        scale: scale
+      });
+      this.updateViewport(newControllerState, NO_TRANSITION_PROPS, {
+        isZooming: true,
+        isPanning: true
+      });
+      return true;
+    }
+  }, {
+    key: "_onPinchStart",
+    value: function _onPinchStart(event) {
+      var pos = this.getCenter(event);
+
+      if (!this.isPointInBounds(pos, event)) {
+        return false;
+      }
+
+      var newControllerState = this.controllerState.zoomStart({
+        pos: pos
+      }).rotateStart({
+        pos: pos
+      });
+      this._state.startPinchRotation = event.rotation;
+      this.updateViewport(newControllerState, NO_TRANSITION_PROPS, {
+        isDragging: true
+      });
+      return true;
+    }
+  }, {
+    key: "_onPinch",
+    value: function _onPinch(event) {
+      if (!this.touchZoom && !this.touchRotate) {
+        return false;
+      }
+
+      if (!this.isDragging()) {
+        return false;
+      }
+
+      var newControllerState = this.controllerState;
+
+      if (this.touchZoom) {
+        var scale = event.scale;
+        var pos = this.getCenter(event);
+        newControllerState = newControllerState.zoom({
+          pos: pos,
+          scale: scale
+        });
+      }
+
+      if (this.touchRotate) {
+        var rotation = event.rotation;
+        var startPinchRotation = this._state.startPinchRotation;
+        newControllerState = newControllerState.rotate({
+          deltaScaleX: -(rotation - startPinchRotation) / 180
+        });
+      }
+
+      this.updateViewport(newControllerState, NO_TRANSITION_PROPS, {
+        isDragging: true,
+        isPanning: this.touchZoom,
+        isZooming: this.touchZoom,
+        isRotating: this.touchRotate
+      });
+      return true;
+    }
+  }, {
+    key: "_onPinchEnd",
+    value: function _onPinchEnd(event) {
+      var newControllerState = this.controllerState.zoomEnd().rotateEnd();
+      this._state.startPinchRotation = 0;
+      this.updateViewport(newControllerState, null, {
+        isDragging: false,
+        isPanning: false,
+        isZooming: false,
+        isRotating: false
+      });
+      return true;
+    }
+  }, {
+    key: "_onDoubleTap",
+    value: function _onDoubleTap(event) {
+      if (!this.doubleClickZoom) {
+        return false;
+      }
+
+      var pos = this.getCenter(event);
+
+      if (!this.isPointInBounds(pos, event)) {
+        return false;
+      }
+
+      var isZoomOut = this.isFunctionKeyPressed(event);
+      var newControllerState = this.controllerState.zoom({
+        pos: pos,
+        scale: isZoomOut ? 0.5 : 2
+      });
+      this.updateViewport(newControllerState, this._getTransitionProps(), {
+        isZooming: true,
+        isPanning: true
+      });
+      return true;
+    }
+  }, {
+    key: "_onKeyDown",
+    value: function _onKeyDown(event) {
+      if (!this.keyboard) {
+        return false;
+      }
+
+      var funcKey = this.isFunctionKeyPressed(event);
+      var controllerState = this.controllerState;
+      var newControllerState;
+      var interactionState = {};
+
+      switch (event.srcEvent.keyCode) {
+        case 189:
+          newControllerState = funcKey ? controllerState.zoomOut().zoomOut() : controllerState.zoomOut();
+          interactionState.isZooming = true;
+          break;
+
+        case 187:
+          newControllerState = funcKey ? controllerState.zoomIn().zoomIn() : controllerState.zoomIn();
+          interactionState.isZooming = true;
+          break;
+
+        case 37:
+          if (funcKey) {
+            newControllerState = controllerState.rotateLeft();
+            interactionState.isRotating = true;
+          } else {
+            newControllerState = controllerState.moveLeft();
+            interactionState.isPanning = true;
+          }
+
+          break;
+
+        case 39:
+          if (funcKey) {
+            newControllerState = controllerState.rotateRight();
+            interactionState.isRotating = true;
+          } else {
+            newControllerState = controllerState.moveRight();
+            interactionState.isPanning = true;
+          }
+
+          break;
+
+        case 38:
+          if (funcKey) {
+            newControllerState = controllerState.rotateUp();
+            interactionState.isRotating = true;
+          } else {
+            newControllerState = controllerState.moveUp();
+            interactionState.isPanning = true;
+          }
+
+          break;
+
+        case 40:
+          if (funcKey) {
+            newControllerState = controllerState.rotateDown();
+            interactionState.isRotating = true;
+          } else {
+            newControllerState = controllerState.moveDown();
+            interactionState.isPanning = true;
+          }
+
+          break;
+
+        default:
+          return false;
+      }
+
+      this.updateViewport(newControllerState, this._getTransitionProps(), interactionState);
+      return true;
+    }
+  }, {
+    key: "_getTransitionProps",
+    value: function _getTransitionProps() {
+      return NO_TRANSITION_PROPS;
+    }
+  }, {
+    key: "events",
+    set: function set(customEvents) {
+      this.toggleEvents(this._customEvents, false);
+      this.toggleEvents(customEvents, true);
+      this._customEvents = customEvents;
+      this.setProps(this.controllerStateProps);
+    }
+  }]);
+
+  return Controller;
+}();
+
+
+// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/controllers/view-state.js
+
+
+
+
+
+
+var view_state_ViewState = function () {
+  function ViewState(opts) {
+    Object(classCallCheck["a" /* default */])(this, ViewState);
+
+    Object(assert["a" /* default */])(Number.isFinite(opts.width), '`width` must be supplied');
+    Object(assert["a" /* default */])(Number.isFinite(opts.height), '`height` must be supplied');
+    this._viewportProps = this._applyConstraints(opts);
+  }
+
+  Object(createClass["a" /* default */])(ViewState, [{
+    key: "getViewportProps",
+    value: function getViewportProps() {
+      return this._viewportProps;
+    }
+  }, {
+    key: "shortestPathFrom",
+    value: function shortestPathFrom(viewState) {
+      return this._viewportProps;
+    }
+  }, {
+    key: "_applyConstraints",
+    value: function _applyConstraints(props) {
+      return props;
+    }
+  }]);
+
+  return ViewState;
+}();
+
+
+// EXTERNAL MODULE: ./node_modules/@math.gl/web-mercator/dist/esm/index.js + 8 modules
+var web_mercator_dist_esm = __webpack_require__("v88f");
+
+// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/controllers/map-controller.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var PITCH_MOUSE_THRESHOLD = 5;
+var PITCH_ACCEL = 1.2;
+var LINEAR_TRANSITION_PROPS = {
+  transitionDuration: 300,
+  transitionEasing: function transitionEasing(t) {
+    return t;
+  },
+  transitionInterpolator: new linear_interpolator_LinearInterpolator(),
+  transitionInterruption: TRANSITION_EVENTS.BREAK
+};
+var map_controller_NO_TRANSITION_PROPS = {
+  transitionDuration: 0
+};
+var MAPBOX_LIMITS = {
+  minZoom: 0,
+  maxZoom: 20,
+  minPitch: 0,
+  maxPitch: 60
+};
+var DEFAULT_STATE = {
+  pitch: 0,
+  bearing: 0,
+  altitude: 1.5
+};
+
+var map_controller_MapState = function (_ViewState) {
+  Object(inherits["a" /* default */])(MapState, _ViewState);
+
+  function MapState() {
+    var _this;
+
+    var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+        width = _ref.width,
+        height = _ref.height,
+        latitude = _ref.latitude,
+        longitude = _ref.longitude,
+        zoom = _ref.zoom,
+        _ref$bearing = _ref.bearing,
+        bearing = _ref$bearing === void 0 ? DEFAULT_STATE.bearing : _ref$bearing,
+        _ref$pitch = _ref.pitch,
+        pitch = _ref$pitch === void 0 ? DEFAULT_STATE.pitch : _ref$pitch,
+        _ref$altitude = _ref.altitude,
+        altitude = _ref$altitude === void 0 ? DEFAULT_STATE.altitude : _ref$altitude,
+        _ref$maxZoom = _ref.maxZoom,
+        maxZoom = _ref$maxZoom === void 0 ? MAPBOX_LIMITS.maxZoom : _ref$maxZoom,
+        _ref$minZoom = _ref.minZoom,
+        minZoom = _ref$minZoom === void 0 ? MAPBOX_LIMITS.minZoom : _ref$minZoom,
+        _ref$maxPitch = _ref.maxPitch,
+        maxPitch = _ref$maxPitch === void 0 ? MAPBOX_LIMITS.maxPitch : _ref$maxPitch,
+        _ref$minPitch = _ref.minPitch,
+        minPitch = _ref$minPitch === void 0 ? MAPBOX_LIMITS.minPitch : _ref$minPitch,
+        startPanLngLat = _ref.startPanLngLat,
+        startZoomLngLat = _ref.startZoomLngLat,
+        startBearing = _ref.startBearing,
+        startPitch = _ref.startPitch,
+        startZoom = _ref.startZoom;
+
+    Object(classCallCheck["a" /* default */])(this, MapState);
+
+    Object(assert["a" /* default */])(Number.isFinite(longitude), '`longitude` must be supplied');
+    Object(assert["a" /* default */])(Number.isFinite(latitude), '`latitude` must be supplied');
+    Object(assert["a" /* default */])(Number.isFinite(zoom), '`zoom` must be supplied');
+    _this = Object(possibleConstructorReturn["a" /* default */])(this, Object(getPrototypeOf["a" /* default */])(MapState).call(this, {
+      width: width,
+      height: height,
+      latitude: latitude,
+      longitude: longitude,
+      zoom: zoom,
+      bearing: bearing,
+      pitch: pitch,
+      altitude: altitude,
+      maxZoom: maxZoom,
+      minZoom: minZoom,
+      maxPitch: maxPitch,
+      minPitch: minPitch
+    }));
+    _this._interactiveState = {
+      startPanLngLat: startPanLngLat,
+      startZoomLngLat: startZoomLngLat,
+      startBearing: startBearing,
+      startPitch: startPitch,
+      startZoom: startZoom
+    };
+    return _this;
+  }
+
+  Object(createClass["a" /* default */])(MapState, [{
+    key: "getViewportProps",
+    value: function getViewportProps() {
+      return this._viewportProps;
+    }
+  }, {
+    key: "getInteractiveState",
+    value: function getInteractiveState() {
+      return this._interactiveState;
+    }
+  }, {
+    key: "panStart",
+    value: function panStart(_ref2) {
+      var pos = _ref2.pos;
+      return this._getUpdatedState({
+        startPanLngLat: this._unproject(pos)
+      });
+    }
+  }, {
+    key: "pan",
+    value: function pan(_ref3) {
+      var pos = _ref3.pos,
+          startPos = _ref3.startPos;
+
+      var startPanLngLat = this._interactiveState.startPanLngLat || this._unproject(startPos);
+
+      if (!startPanLngLat) {
+        return this;
+      }
+
+      var _this$_calculateNewLn = this._calculateNewLngLat({
+        startPanLngLat: startPanLngLat,
+        pos: pos
+      }),
+          _this$_calculateNewLn2 = Object(slicedToArray["a" /* default */])(_this$_calculateNewLn, 2),
+          longitude = _this$_calculateNewLn2[0],
+          latitude = _this$_calculateNewLn2[1];
+
+      return this._getUpdatedState({
+        longitude: longitude,
+        latitude: latitude
+      });
+    }
+  }, {
+    key: "panEnd",
+    value: function panEnd() {
+      return this._getUpdatedState({
+        startPanLngLat: null
+      });
+    }
+  }, {
+    key: "rotateStart",
+    value: function rotateStart(_ref4) {
+      var pos = _ref4.pos;
+      return this._getUpdatedState({
+        startBearing: this._viewportProps.bearing,
+        startPitch: this._viewportProps.pitch
+      });
+    }
+  }, {
+    key: "rotate",
+    value: function rotate(_ref5) {
+      var _ref5$deltaScaleX = _ref5.deltaScaleX,
+          deltaScaleX = _ref5$deltaScaleX === void 0 ? 0 : _ref5$deltaScaleX,
+          _ref5$deltaScaleY = _ref5.deltaScaleY,
+          deltaScaleY = _ref5$deltaScaleY === void 0 ? 0 : _ref5$deltaScaleY;
+      var _this$_interactiveSta = this._interactiveState,
+          startBearing = _this$_interactiveSta.startBearing,
+          startPitch = _this$_interactiveSta.startPitch;
+
+      if (!Number.isFinite(startBearing) || !Number.isFinite(startPitch)) {
+        return this;
+      }
+
+      var _this$_calculateNewPi = this._calculateNewPitchAndBearing({
+        deltaScaleX: deltaScaleX,
+        deltaScaleY: deltaScaleY,
+        startBearing: startBearing,
+        startPitch: startPitch
+      }),
+          pitch = _this$_calculateNewPi.pitch,
+          bearing = _this$_calculateNewPi.bearing;
+
+      return this._getUpdatedState({
+        bearing: bearing,
+        pitch: pitch
+      });
+    }
+  }, {
+    key: "rotateEnd",
+    value: function rotateEnd() {
+      return this._getUpdatedState({
+        startBearing: null,
+        startPitch: null
+      });
+    }
+  }, {
+    key: "zoomStart",
+    value: function zoomStart(_ref6) {
+      var pos = _ref6.pos;
+      return this._getUpdatedState({
+        startZoomLngLat: this._unproject(pos),
+        startZoom: this._viewportProps.zoom
+      });
+    }
+  }, {
+    key: "zoom",
+    value: function zoom(_ref7) {
+      var pos = _ref7.pos,
+          startPos = _ref7.startPos,
+          scale = _ref7.scale;
+      var _this$_interactiveSta2 = this._interactiveState,
+          startZoom = _this$_interactiveSta2.startZoom,
+          startZoomLngLat = _this$_interactiveSta2.startZoomLngLat;
+
+      if (!Number.isFinite(startZoom)) {
+        startZoom = this._viewportProps.zoom;
+        startZoomLngLat = this._unproject(startPos) || this._unproject(pos);
+      }
+
+      var zoom = this._calculateNewZoom({
+        scale: scale,
+        startZoom: startZoom
+      });
+
+      var zoomedViewport = new web_mercator_dist_esm["b" /* default */](Object.assign({}, this._viewportProps, {
+        zoom: zoom
+      }));
+
+      var _zoomedViewport$getMa = zoomedViewport.getMapCenterByLngLatPosition({
+        lngLat: startZoomLngLat,
+        pos: pos
+      }),
+          _zoomedViewport$getMa2 = Object(slicedToArray["a" /* default */])(_zoomedViewport$getMa, 2),
+          longitude = _zoomedViewport$getMa2[0],
+          latitude = _zoomedViewport$getMa2[1];
+
+      return this._getUpdatedState({
+        zoom: zoom,
+        longitude: longitude,
+        latitude: latitude
+      });
+    }
+  }, {
+    key: "zoomEnd",
+    value: function zoomEnd() {
+      return this._getUpdatedState({
+        startZoomLngLat: null,
+        startZoom: null
+      });
+    }
+  }, {
+    key: "zoomIn",
+    value: function zoomIn() {
+      return this._zoomFromCenter(2);
+    }
+  }, {
+    key: "zoomOut",
+    value: function zoomOut() {
+      return this._zoomFromCenter(0.5);
+    }
+  }, {
+    key: "moveLeft",
+    value: function moveLeft() {
+      return this._panFromCenter([100, 0]);
+    }
+  }, {
+    key: "moveRight",
+    value: function moveRight() {
+      return this._panFromCenter([-100, 0]);
+    }
+  }, {
+    key: "moveUp",
+    value: function moveUp() {
+      return this._panFromCenter([0, 100]);
+    }
+  }, {
+    key: "moveDown",
+    value: function moveDown() {
+      return this._panFromCenter([0, -100]);
+    }
+  }, {
+    key: "rotateLeft",
+    value: function rotateLeft() {
+      return this._getUpdatedState({
+        bearing: this._viewportProps.bearing - 15
+      });
+    }
+  }, {
+    key: "rotateRight",
+    value: function rotateRight() {
+      return this._getUpdatedState({
+        bearing: this._viewportProps.bearing + 15
+      });
+    }
+  }, {
+    key: "rotateUp",
+    value: function rotateUp() {
+      return this._getUpdatedState({
+        pitch: this._viewportProps.pitch + 10
+      });
+    }
+  }, {
+    key: "rotateDown",
+    value: function rotateDown() {
+      return this._getUpdatedState({
+        pitch: this._viewportProps.pitch - 10
+      });
+    }
+  }, {
+    key: "shortestPathFrom",
+    value: function shortestPathFrom(viewState) {
+      var fromProps = viewState.getViewportProps();
+      var props = Object.assign({}, this._viewportProps);
+      var bearing = props.bearing,
+          longitude = props.longitude;
+
+      if (Math.abs(bearing - fromProps.bearing) > 180) {
+        props.bearing = bearing < 0 ? bearing + 360 : bearing - 360;
+      }
+
+      if (Math.abs(longitude - fromProps.longitude) > 180) {
+        props.longitude = longitude < 0 ? longitude + 360 : longitude - 360;
+      }
+
+      return props;
+    }
+  }, {
+    key: "_zoomFromCenter",
+    value: function _zoomFromCenter(scale) {
+      var _this$_viewportProps = this._viewportProps,
+          width = _this$_viewportProps.width,
+          height = _this$_viewportProps.height;
+      return this.zoom({
+        pos: [width / 2, height / 2],
+        scale: scale
+      });
+    }
+  }, {
+    key: "_panFromCenter",
+    value: function _panFromCenter(offset) {
+      var _this$_viewportProps2 = this._viewportProps,
+          width = _this$_viewportProps2.width,
+          height = _this$_viewportProps2.height;
+      return this.pan({
+        startPos: [width / 2, height / 2],
+        pos: [width / 2 + offset[0], height / 2 + offset[1]]
+      });
+    }
+  }, {
+    key: "_getUpdatedState",
+    value: function _getUpdatedState(newProps) {
+      return new MapState(Object.assign({}, this._viewportProps, this._interactiveState, newProps));
+    }
+  }, {
+    key: "_applyConstraints",
+    value: function _applyConstraints(props) {
+      var maxZoom = props.maxZoom,
+          minZoom = props.minZoom,
+          zoom = props.zoom;
+      props.zoom = Object(dist_esm["c" /* clamp */])(zoom, minZoom, maxZoom);
+      var maxPitch = props.maxPitch,
+          minPitch = props.minPitch,
+          pitch = props.pitch;
+      props.pitch = Object(dist_esm["c" /* clamp */])(pitch, minPitch, maxPitch);
+      Object.assign(props, Object(web_mercator_dist_esm["i" /* normalizeViewportProps */])(props));
+      return props;
+    }
+  }, {
+    key: "_unproject",
+    value: function _unproject(pos) {
+      var viewport = new web_mercator_dist_esm["b" /* default */](this._viewportProps);
+      return pos && viewport.unproject(pos);
+    }
+  }, {
+    key: "_calculateNewLngLat",
+    value: function _calculateNewLngLat(_ref8) {
+      var startPanLngLat = _ref8.startPanLngLat,
+          pos = _ref8.pos;
+      var viewport = new web_mercator_dist_esm["b" /* default */](this._viewportProps);
+      return viewport.getMapCenterByLngLatPosition({
+        lngLat: startPanLngLat,
+        pos: pos
+      });
+    }
+  }, {
+    key: "_calculateNewZoom",
+    value: function _calculateNewZoom(_ref9) {
+      var scale = _ref9.scale,
+          startZoom = _ref9.startZoom;
+      var _this$_viewportProps3 = this._viewportProps,
+          maxZoom = _this$_viewportProps3.maxZoom,
+          minZoom = _this$_viewportProps3.minZoom;
+      var zoom = startZoom + Math.log2(scale);
+      return Object(dist_esm["c" /* clamp */])(zoom, minZoom, maxZoom);
+    }
+  }, {
+    key: "_calculateNewPitchAndBearing",
+    value: function _calculateNewPitchAndBearing(_ref10) {
+      var deltaScaleX = _ref10.deltaScaleX,
+          deltaScaleY = _ref10.deltaScaleY,
+          startBearing = _ref10.startBearing,
+          startPitch = _ref10.startPitch;
+      deltaScaleY = Object(dist_esm["c" /* clamp */])(deltaScaleY, -1, 1);
+      var _this$_viewportProps4 = this._viewportProps,
+          minPitch = _this$_viewportProps4.minPitch,
+          maxPitch = _this$_viewportProps4.maxPitch;
+      var bearing = startBearing + 180 * deltaScaleX;
+      var pitch = startPitch;
+
+      if (deltaScaleY > 0) {
+        pitch = startPitch + deltaScaleY * (maxPitch - startPitch);
+      } else if (deltaScaleY < 0) {
+        pitch = startPitch - deltaScaleY * (minPitch - startPitch);
+      }
+
+      return {
+        pitch: pitch,
+        bearing: bearing
+      };
+    }
+  }]);
+
+  return MapState;
+}(view_state_ViewState);
+
+var map_controller_MapController = function (_Controller) {
+  Object(inherits["a" /* default */])(MapController, _Controller);
+
+  function MapController(props) {
+    var _this2;
+
+    Object(classCallCheck["a" /* default */])(this, MapController);
+
+    _this2 = Object(possibleConstructorReturn["a" /* default */])(this, Object(getPrototypeOf["a" /* default */])(MapController).call(this, map_controller_MapState, props));
+    _this2.invertPan = true;
+    return _this2;
+  }
+
+  Object(createClass["a" /* default */])(MapController, [{
+    key: "_getTransitionProps",
+    value: function _getTransitionProps() {
+      return LINEAR_TRANSITION_PROPS;
+    }
+  }, {
+    key: "_onPanRotate",
+    value: function _onPanRotate(event) {
+      if (!this.dragRotate) {
+        return false;
+      }
+
+      var deltaX = event.deltaX,
+          deltaY = event.deltaY;
+
+      var _this$getCenter = this.getCenter(event),
+          _this$getCenter2 = Object(slicedToArray["a" /* default */])(_this$getCenter, 2),
+          centerY = _this$getCenter2[1];
+
+      var startY = centerY - deltaY;
+
+      var _this$controllerState = this.controllerState.getViewportProps(),
+          width = _this$controllerState.width,
+          height = _this$controllerState.height;
+
+      var deltaScaleX = deltaX / width;
+      var deltaScaleY = 0;
+
+      if (deltaY > 0) {
+        if (Math.abs(height - startY) > PITCH_MOUSE_THRESHOLD) {
+          deltaScaleY = deltaY / (startY - height) * PITCH_ACCEL;
+        }
+      } else if (deltaY < 0) {
+        if (startY > PITCH_MOUSE_THRESHOLD) {
+          deltaScaleY = 1 - centerY / startY;
+        }
+      }
+
+      deltaScaleY = Math.min(1, Math.max(-1, deltaScaleY));
+      var newControllerState = this.controllerState.rotate({
+        deltaScaleX: deltaScaleX,
+        deltaScaleY: deltaScaleY
+      });
+      return this.updateViewport(newControllerState, map_controller_NO_TRANSITION_PROPS, {
+        isDragging: true,
+        isRotating: true
+      });
+    }
+  }]);
+
+  return MapController;
+}(controller_Controller);
+
+
+var testExports = {
+  MapState: map_controller_MapState
+};
+// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/views/map-view.js
+
+
+
+
+
+
+
+
+
+
+var map_view_MapView = function (_View) {
+  Object(inherits["a" /* default */])(MapView, _View);
+
+  function MapView(props) {
+    Object(classCallCheck["a" /* default */])(this, MapView);
+
+    return Object(possibleConstructorReturn["a" /* default */])(this, Object(getPrototypeOf["a" /* default */])(MapView).call(this, Object.assign({}, props, {
+      type: web_mercator_viewport["a" /* default */]
+    })));
+  }
+
+  Object(createClass["a" /* default */])(MapView, [{
+    key: "controller",
+    get: function get() {
+      return this._getControllerProps({
+        type: map_controller_MapController
+      });
+    }
+  }]);
+
+  return MapView;
+}(views_view["a" /* default */]);
+
+
+map_view_MapView.displayName = 'MapView';
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.array.map.js
+var es6_array_map = __webpack_require__("AqHK");
+
+// EXTERNAL MODULE: ./node_modules/@luma.gl/webgl/dist/esm/classes/texture-2d.js + 1 modules
+var texture_2d = __webpack_require__("f5Sf");
+
+// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/effects/lighting/ambient-light.js
+
+var DEFAULT_LIGHT_COLOR = [255, 255, 255];
+var DEFAULT_LIGHT_INTENSITY = 1.0;
+var idCount = 0;
+var ambient_light_AmbientLight = function AmbientLight() {
+  var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+  Object(classCallCheck["a" /* default */])(this, AmbientLight);
+
+  var _props$color = props.color,
+      color = _props$color === void 0 ? DEFAULT_LIGHT_COLOR : _props$color;
+  var _props$intensity = props.intensity,
+      intensity = _props$intensity === void 0 ? DEFAULT_LIGHT_INTENSITY : _props$intensity;
+  this.id = props.id || "ambient-".concat(idCount++);
+  this.color = color;
+  this.intensity = intensity;
+  this.type = 'ambient';
+};
+// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/effects/lighting/directional-light.js
+
+
+
+var directional_light_DEFAULT_LIGHT_COLOR = [255, 255, 255];
+var directional_light_DEFAULT_LIGHT_INTENSITY = 1.0;
+var DEFAULT_LIGHT_DIRECTION = [0.0, 0.0, -1.0];
+var directional_light_idCount = 0;
+var directional_light_DirectionalLight = function () {
+  function DirectionalLight() {
+    var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    Object(classCallCheck["a" /* default */])(this, DirectionalLight);
+
+    var _props$color = props.color,
+        color = _props$color === void 0 ? directional_light_DEFAULT_LIGHT_COLOR : _props$color;
+    var _props$intensity = props.intensity,
+        intensity = _props$intensity === void 0 ? directional_light_DEFAULT_LIGHT_INTENSITY : _props$intensity;
+    var _props$direction = props.direction,
+        direction = _props$direction === void 0 ? DEFAULT_LIGHT_DIRECTION : _props$direction;
+
+    var _props$_shadow = props._shadow,
+        _shadow = _props$_shadow === void 0 ? false : _props$_shadow;
+
+    this.id = props.id || "directional-".concat(directional_light_idCount++);
+    this.color = color;
+    this.intensity = intensity;
+    this.type = 'directional';
+    this.direction = new dist_esm["b" /* Vector3 */](direction).normalize().toArray();
+    this.shadow = _shadow;
+  }
+
+  Object(createClass["a" /* default */])(DirectionalLight, [{
+    key: "getProjectedLight",
+    value: function getProjectedLight() {
+      return this;
+    }
+  }]);
+
+  return DirectionalLight;
+}();
+// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/lib/effect.js
+
+
+
+
+var effect_Effect = function () {
+  function Effect() {
+    var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    Object(classCallCheck["a" /* default */])(this, Effect);
+
+    var _props$id = props.id,
+        id = _props$id === void 0 ? 'effect' : _props$id;
+    this.id = id;
+    this.props = {};
+    Object.assign(this.props, props);
+  }
+
+  Object(createClass["a" /* default */])(Effect, [{
+    key: "preRender",
+    value: function preRender() {}
+  }, {
+    key: "getModuleParameters",
+    value: function getModuleParameters() {}
+  }, {
+    key: "cleanup",
+    value: function cleanup() {}
+  }]);
+
+  return Effect;
+}();
+
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/get.js + 1 modules
+var esm_get = __webpack_require__("zs32");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.string.starts-with.js
+var es6_string_starts_with = __webpack_require__("TAD1");
+
+// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/passes/pass.js
+
+
+
+
+var pass_Pass = function () {
+  function Pass(gl) {
+    var props = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+    Object(classCallCheck["a" /* default */])(this, Pass);
+
+    var _props$id = props.id,
+        id = _props$id === void 0 ? 'pass' : _props$id;
+    this.id = id;
+    this.gl = gl;
+    this.props = {};
+    Object.assign(this.props, props);
+  }
+
+  Object(createClass["a" /* default */])(Pass, [{
+    key: "setProps",
+    value: function setProps(props) {
+      Object.assign(this.props, props);
+    }
+  }, {
+    key: "render",
+    value: function render() {}
+  }, {
+    key: "cleanup",
+    value: function cleanup() {}
+  }]);
+
+  return Pass;
+}();
+
+
+// EXTERNAL MODULE: ./node_modules/@luma.gl/gltools/dist/esm/index.js + 1 modules
+var gltools_dist_esm = __webpack_require__("iein");
+
+// EXTERNAL MODULE: ./node_modules/@luma.gl/webgl/dist/esm/classes/clear.js
+var clear = __webpack_require__("pRFE");
+
+// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/passes/layers-pass.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var layers_pass_LayersPass = function (_Pass) {
+  Object(inherits["a" /* default */])(LayersPass, _Pass);
+
+  function LayersPass() {
+    Object(classCallCheck["a" /* default */])(this, LayersPass);
+
+    return Object(possibleConstructorReturn["a" /* default */])(this, Object(getPrototypeOf["a" /* default */])(LayersPass).apply(this, arguments));
+  }
+
+  Object(createClass["a" /* default */])(LayersPass, [{
+    key: "render",
+    value: function render(props) {
+      var gl = this.gl;
+      Object(gltools_dist_esm["j" /* setParameters */])(gl, {
+        framebuffer: props.target
+      });
+      return this._drawLayers(props);
+    }
+  }, {
+    key: "_drawLayers",
+    value: function _drawLayers(props) {
+      var viewports = props.viewports,
+          views = props.views,
+          onViewportActive = props.onViewportActive,
+          _props$clearCanvas = props.clearCanvas,
+          clearCanvas = _props$clearCanvas === void 0 ? true : _props$clearCanvas;
+      var gl = this.gl;
+
+      if (clearCanvas) {
+        clearGLCanvas(gl);
+      }
+
+      var renderStats = [];
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = viewports[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var viewportOrDescriptor = _step.value;
+          var viewport = viewportOrDescriptor.viewport || viewportOrDescriptor;
+          var view = views && views[viewport.id];
+          onViewportActive(viewport);
+          props.view = view;
+          var subViewports = viewport.subViewports || [viewport];
+          var _iteratorNormalCompletion2 = true;
+          var _didIteratorError2 = false;
+          var _iteratorError2 = undefined;
+
+          try {
+            for (var _iterator2 = subViewports[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+              var subViewport = _step2.value;
+              props.viewport = subViewport;
+
+              var stats = this._drawLayersInViewport(gl, props);
+
+              renderStats.push(stats);
+            }
+          } catch (err) {
+            _didIteratorError2 = true;
+            _iteratorError2 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+                _iterator2["return"]();
+              }
+            } finally {
+              if (_didIteratorError2) {
+                throw _iteratorError2;
+              }
+            }
+          }
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+            _iterator["return"]();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
+      return renderStats;
+    }
+  }, {
+    key: "_drawLayersInViewport",
+    value: function _drawLayersInViewport(gl, _ref) {
+      var layers = _ref.layers,
+          layerFilter = _ref.layerFilter,
+          onError = _ref.onError,
+          viewport = _ref.viewport,
+          view = _ref.view,
+          _ref$pass = _ref.pass,
+          pass = _ref$pass === void 0 ? 'unknown' : _ref$pass,
+          effects = _ref.effects,
+          moduleParameters = _ref.moduleParameters;
+      var glViewport = getGLViewport(gl, {
+        viewport: viewport
+      });
+
+      if (view && view.props.clear) {
+        var clearOpts = view.props.clear === true ? {
+          color: true,
+          depth: true
+        } : view.props.clear;
+        Object(gltools_dist_esm["k" /* withParameters */])(gl, {
+          scissorTest: true,
+          scissor: glViewport
+        }, function () {
+          return Object(clear["a" /* clear */])(gl, clearOpts);
+        });
+      }
+
+      var renderStatus = {
+        totalCount: layers.length,
+        visibleCount: 0,
+        compositeCount: 0,
+        pickableCount: 0
+      };
+      Object(gltools_dist_esm["j" /* setParameters */])(gl, {
+        viewport: glViewport
+      });
+      var indexResolver = layerIndexResolver();
+
+      for (var layerIndex = 0; layerIndex < layers.length; layerIndex++) {
+        var layer = layers[layerIndex];
+
+        var shouldDrawLayer = this._shouldDrawLayer(layer, viewport, pass, layerFilter);
+
+        var layerRenderIndex = indexResolver(layer, shouldDrawLayer);
+
+        if (shouldDrawLayer && layer.props.pickable) {
+          renderStatus.pickableCount++;
+        }
+
+        if (layer.isComposite) {
+          renderStatus.compositeCount++;
+        }
+
+        if (shouldDrawLayer) {
+          renderStatus.visibleCount++;
+
+          var _moduleParameters = this._getModuleParameters(layer, effects, pass, moduleParameters);
+
+          var layerParameters = this.getLayerParameters(layer, layerIndex);
+          _moduleParameters.viewport = viewport;
+
+          try {
+            layer.drawLayer({
+              moduleParameters: _moduleParameters,
+              uniforms: {
+                layerIndex: layerRenderIndex
+              },
+              parameters: layerParameters
+            });
+          } catch (err) {
+            if (onError) {
+              onError(err, layer);
+            } else {
+              log["a" /* default */].error("error during drawing of ".concat(layer), err)();
+            }
+          }
+        }
+      }
+
+      return renderStatus;
+    }
+  }, {
+    key: "shouldDrawLayer",
+    value: function shouldDrawLayer(layer) {
+      return true;
+    }
+  }, {
+    key: "getModuleParameters",
+    value: function getModuleParameters(layer, effects) {
+      return null;
+    }
+  }, {
+    key: "getLayerParameters",
+    value: function getLayerParameters(layer, layerIndex) {
+      return layer.props.parameters;
+    }
+  }, {
+    key: "_shouldDrawLayer",
+    value: function _shouldDrawLayer(layer, viewport, pass, layerFilter) {
+      var shouldDrawLayer = this.shouldDrawLayer(layer) && !layer.isComposite && layer.props.visible;
+
+      if (shouldDrawLayer && layerFilter) {
+        shouldDrawLayer = layerFilter({
+          layer: layer,
+          viewport: viewport,
+          isPicking: pass.startsWith('picking'),
+          renderPass: pass
+        });
+      }
+
+      return shouldDrawLayer;
+    }
+  }, {
+    key: "_getModuleParameters",
+    value: function _getModuleParameters(layer, effects, pass, overrides) {
+      var moduleParameters = Object.assign(Object.create(layer.props), {
+        viewport: layer.context.viewport,
+        mousePosition: layer.context.mousePosition,
+        pickingActive: 0,
+        devicePixelRatio: Object(gltools_dist_esm["c" /* cssToDeviceRatio */])(this.gl)
+      });
+
+      if (effects) {
+        var _iteratorNormalCompletion3 = true;
+        var _didIteratorError3 = false;
+        var _iteratorError3 = undefined;
+
+        try {
+          for (var _iterator3 = effects[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+            var effect = _step3.value;
+            Object.assign(moduleParameters, effect.getModuleParameters(layer));
+          }
+        } catch (err) {
+          _didIteratorError3 = true;
+          _iteratorError3 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion3 && _iterator3["return"] != null) {
+              _iterator3["return"]();
+            }
+          } finally {
+            if (_didIteratorError3) {
+              throw _iteratorError3;
+            }
+          }
+        }
+      }
+
+      return Object.assign(moduleParameters, this.getModuleParameters(layer, effects), overrides);
+    }
+  }]);
+
+  return LayersPass;
+}(pass_Pass);
+
+
+function layerIndexResolver() {
+  var startIndex = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+  var layerIndices = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var resolvers = {};
+  return function (layer, isDrawn) {
+    var indexOverride = layer.props._offset;
+    var layerId = layer.id;
+    var parentId = layer.parent && layer.parent.id;
+    var index;
+
+    if (parentId in resolvers) {
+      var resolver = resolvers[parentId] = resolvers[parentId] || layerIndexResolver(layerIndices[parentId], layerIndices);
+      index = resolver(layer, isDrawn);
+      resolvers[layerId] = resolver;
+    } else if (Number.isFinite(indexOverride)) {
+      index = indexOverride + (layerIndices[parentId] || 0);
+      resolvers[layerId] = null;
+    } else {
+      index = startIndex;
+    }
+
+    if (isDrawn && index >= startIndex) {
+      startIndex = index + 1;
+    }
+
+    layerIndices[layerId] = index;
+    return index;
+  };
+}
+
+function getGLViewport(gl, _ref2) {
+  var viewport = _ref2.viewport;
+  var height = gl.canvas ? gl.canvas.clientHeight || gl.canvas.height : 100;
+  var dimensions = viewport;
+  var pixelRatio = Object(gltools_dist_esm["c" /* cssToDeviceRatio */])(gl);
+  return [dimensions.x * pixelRatio, (height - dimensions.y - dimensions.height) * pixelRatio, dimensions.width * pixelRatio, dimensions.height * pixelRatio];
+}
+
+function clearGLCanvas(gl) {
+  var width = gl.drawingBufferWidth;
+  var height = gl.drawingBufferHeight;
+  Object(gltools_dist_esm["j" /* setParameters */])(gl, {
+    viewport: [0, 0, width, height]
+  });
+  gl.clear(16384 | 256);
+}
+// EXTERNAL MODULE: ./node_modules/@luma.gl/webgl/dist/esm/classes/renderbuffer.js + 1 modules
+var renderbuffer = __webpack_require__("n4Ve");
+
+// EXTERNAL MODULE: ./node_modules/@luma.gl/webgl/dist/esm/classes/framebuffer.js
+var framebuffer = __webpack_require__("11Ib");
+
+// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/passes/shadow-pass.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    if (enumerableOnly) symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    });
+    keys.push.apply(keys, symbols);
+  }
+
+  return keys;
+}
+
+function _objectSpread(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
+    if (i % 2) {
+      ownKeys(Object(source), true).forEach(function (key) {
+        Object(defineProperty["a" /* default */])(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      ownKeys(Object(source)).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+
+  return target;
+}
+
+
+
+
+var shadow_pass_ShadowPass = function (_LayersPass) {
+  Object(inherits["a" /* default */])(ShadowPass, _LayersPass);
+
+  function ShadowPass(gl, props) {
+    var _parameters, _attachments;
+
+    var _this;
+
+    Object(classCallCheck["a" /* default */])(this, ShadowPass);
+
+    _this = Object(possibleConstructorReturn["a" /* default */])(this, Object(getPrototypeOf["a" /* default */])(ShadowPass).call(this, gl, props));
+    _this.shadowMap = new texture_2d["a" /* default */](gl, {
+      width: 1,
+      height: 1,
+      parameters: (_parameters = {}, Object(defineProperty["a" /* default */])(_parameters, 10241, 9729), Object(defineProperty["a" /* default */])(_parameters, 10240, 9729), Object(defineProperty["a" /* default */])(_parameters, 10242, 33071), Object(defineProperty["a" /* default */])(_parameters, 10243, 33071), _parameters)
+    });
+    _this.depthBuffer = new renderbuffer["a" /* default */](gl, {
+      format: 33189,
+      width: 1,
+      height: 1
+    });
+    _this.fbo = new framebuffer["a" /* default */](gl, {
+      id: 'shadowmap',
+      width: 1,
+      height: 1,
+      attachments: (_attachments = {}, Object(defineProperty["a" /* default */])(_attachments, 36064, _this.shadowMap), Object(defineProperty["a" /* default */])(_attachments, 36096, _this.depthBuffer), _attachments)
+    });
+    return _this;
+  }
+
+  Object(createClass["a" /* default */])(ShadowPass, [{
+    key: "render",
+    value: function render(params) {
+      var _this2 = this;
+
+      var target = this.fbo;
+      Object(gltools_dist_esm["k" /* withParameters */])(this.gl, {
+        depthRange: [0, 1],
+        depthTest: true,
+        blend: false,
+        clearColor: [1, 1, 1, 1]
+      }, function () {
+        var viewport = params.viewports[0];
+        var pixelRatio = Object(gltools_dist_esm["c" /* cssToDeviceRatio */])(_this2.gl);
+        var width = viewport.width * pixelRatio;
+        var height = viewport.height * pixelRatio;
+
+        if (width !== target.width || height !== target.height) {
+          target.resize({
+            width: width,
+            height: height
+          });
+        }
+
+        Object(esm_get["a" /* default */])(Object(getPrototypeOf["a" /* default */])(ShadowPass.prototype), "render", _this2).call(_this2, _objectSpread({}, params, {
+          target: target,
+          pass: 'shadow'
+        }));
+      });
+    }
+  }, {
+    key: "shouldDrawLayer",
+    value: function shouldDrawLayer(layer) {
+      return layer.props.shadowEnabled !== false;
+    }
+  }, {
+    key: "getModuleParameters",
+    value: function getModuleParameters() {
+      return {
+        drawToShadowMap: true
+      };
+    }
+  }, {
+    key: "delete",
+    value: function _delete() {
+      if (this.fbo) {
+        this.fbo["delete"]();
+        this.fbo = null;
+      }
+
+      if (this.shadowMap) {
+        this.shadowMap["delete"]();
+        this.shadowMap = null;
+      }
+
+      if (this.depthBuffer) {
+        this.depthBuffer["delete"]();
+        this.depthBuffer = null;
+      }
+    }
+  }]);
+
+  return ShadowPass;
+}(layers_pass_LayersPass);
+
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/toConsumableArray.js + 3 modules
+var toConsumableArray = __webpack_require__("t8Zj");
+
+// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/lib/constants.js
+var lib_constants = __webpack_require__("V3d6");
+
+// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/utils/memoize.js
+var memoize = __webpack_require__("OIVS");
+
+// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/shaderlib/shadow/shadow.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var shadow_vs = "\nconst int max_lights = 2;\nuniform mat4 shadow_uViewProjectionMatrices[max_lights];\nuniform vec4 shadow_uProjectCenters[max_lights];\nuniform bool shadow_uDrawShadowMap;\nuniform bool shadow_uUseShadowMap;\nuniform int shadow_uLightId;\nuniform float shadow_uLightCount;\n\nvarying vec3 shadow_vPosition[max_lights];\n\nvec4 shadow_setVertexPosition(vec4 position_commonspace) {\n  if (shadow_uDrawShadowMap) {\n    return project_common_position_to_clipspace(position_commonspace, shadow_uViewProjectionMatrices[shadow_uLightId], shadow_uProjectCenters[shadow_uLightId]);\n  }\n  if (shadow_uUseShadowMap) {\n    for (int i = 0; i < max_lights; i++) {\n      if(i < int(shadow_uLightCount)) {\n        vec4 shadowMap_position = project_common_position_to_clipspace(position_commonspace, shadow_uViewProjectionMatrices[i], shadow_uProjectCenters[i]);\n        shadow_vPosition[i] = (shadowMap_position.xyz / shadowMap_position.w + 1.0) / 2.0;\n      }\n    }\n  }\n  return gl_Position;\n}\n";
+var shadow_fs = "\nconst int max_lights = 2;\nuniform bool shadow_uDrawShadowMap;\nuniform bool shadow_uUseShadowMap;\nuniform sampler2D shadow_uShadowMap0;\nuniform sampler2D shadow_uShadowMap1;\nuniform vec4 shadow_uColor;\nuniform float shadow_uLightCount;\n\nvarying vec3 shadow_vPosition[max_lights];\n\nconst vec4 bitPackShift = vec4(1.0, 255.0, 65025.0, 16581375.0);\nconst vec4 bitUnpackShift = 1.0 / bitPackShift;\nconst vec4 bitMask = vec4(1.0 / 255.0, 1.0 / 255.0, 1.0 / 255.0,  0.0);\n\nfloat shadow_getShadowWeight(vec3 position, sampler2D shadowMap) {\n  vec4 rgbaDepth = texture2D(shadowMap, position.xy);\n\n  float z = dot(rgbaDepth, bitUnpackShift);\n  return smoothstep(0.001, 0.01, position.z - z);\n}\n\nvec4 shadow_filterShadowColor(vec4 color) {\n  if (shadow_uDrawShadowMap) {\n    vec4 rgbaDepth = fract(gl_FragCoord.z * bitPackShift);\n    rgbaDepth -= rgbaDepth.gbaa * bitMask;\n    return rgbaDepth;\n  }\n  if (shadow_uUseShadowMap) {\n    float shadowAlpha = 0.0;\n    shadowAlpha += shadow_getShadowWeight(shadow_vPosition[0], shadow_uShadowMap0);\n    if(shadow_uLightCount > 1.0) {\n      shadowAlpha += shadow_getShadowWeight(shadow_vPosition[1], shadow_uShadowMap1);\n    }\n    shadowAlpha *= shadow_uColor.a / shadow_uLightCount;\n    float blendedAlpha = shadowAlpha + color.a * (1.0 - shadowAlpha);\n\n    return vec4(\n      mix(color.rgb, shadow_uColor.rgb, shadowAlpha / blendedAlpha),\n      blendedAlpha\n    );\n  }\n  return color;\n}\n";
+var getMemoizedViewportCenterPosition = Object(memoize["a" /* default */])(getViewportCenterPosition);
+var getMemoizedViewProjectionMatrices = Object(memoize["a" /* default */])(getViewProjectionMatrices);
+var DEFAULT_SHADOW_COLOR = [0, 0, 0, 1.0];
+var VECTOR_TO_POINT_MATRIX = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0];
+
+function screenToCommonSpace(xyz, pixelUnprojectionMatrix) {
+  var _xyz = Object(slicedToArray["a" /* default */])(xyz, 3),
+      x = _xyz[0],
+      y = _xyz[1],
+      z = _xyz[2];
+
+  var coord = Object(web_mercator_dist_esm["j" /* pixelsToWorld */])([x, y, z], pixelUnprojectionMatrix);
+
+  if (Number.isFinite(z)) {
+    return coord;
+  }
+
+  return [coord[0], coord[1], 0];
+}
+
+function getViewportCenterPosition(_ref) {
+  var viewport = _ref.viewport,
+      center = _ref.center;
+  return new dist_esm["a" /* Matrix4 */](viewport.viewProjectionMatrix).invert().transform(center);
+}
+
+function getViewProjectionMatrices(_ref2) {
+  var viewport = _ref2.viewport,
+      shadowMatrices = _ref2.shadowMatrices;
+  var projectionMatrices = [];
+  var pixelUnprojectionMatrix = viewport.pixelUnprojectionMatrix;
+  var farZ = viewport.isGeospatial ? undefined : 1;
+  var corners = [[0, 0, farZ], [viewport.width, 0, farZ], [0, viewport.height, farZ], [viewport.width, viewport.height, farZ], [0, 0, -1], [viewport.width, 0, -1], [0, viewport.height, -1], [viewport.width, viewport.height, -1]].map(function (pixel) {
+    return screenToCommonSpace(pixel, pixelUnprojectionMatrix);
+  });
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
+
+  try {
+    var _loop = function _loop() {
+      var shadowMatrix = _step.value;
+      var viewMatrix = shadowMatrix.clone().translate(new dist_esm["b" /* Vector3 */](viewport.center).negate());
+      var positions = corners.map(function (corner) {
+        return viewMatrix.transform(corner);
+      });
+      var projectionMatrix = new dist_esm["a" /* Matrix4 */]().ortho({
+        left: Math.min.apply(Math, Object(toConsumableArray["a" /* default */])(positions.map(function (position) {
+          return position[0];
+        }))),
+        right: Math.max.apply(Math, Object(toConsumableArray["a" /* default */])(positions.map(function (position) {
+          return position[0];
+        }))),
+        bottom: Math.min.apply(Math, Object(toConsumableArray["a" /* default */])(positions.map(function (position) {
+          return position[1];
+        }))),
+        top: Math.max.apply(Math, Object(toConsumableArray["a" /* default */])(positions.map(function (position) {
+          return position[1];
+        }))),
+        near: Math.min.apply(Math, Object(toConsumableArray["a" /* default */])(positions.map(function (position) {
+          return -position[2];
+        }))),
+        far: Math.max.apply(Math, Object(toConsumableArray["a" /* default */])(positions.map(function (position) {
+          return -position[2];
+        })))
+      });
+      projectionMatrices.push(projectionMatrix.multiplyRight(shadowMatrix));
+    };
+
+    for (var _iterator = shadowMatrices[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      _loop();
+    }
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+        _iterator["return"]();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
+      }
+    }
+  }
+
+  return projectionMatrices;
+}
+
+function createShadowUniforms() {
+  var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var context = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var uniforms = {
+    shadow_uDrawShadowMap: Boolean(opts.drawToShadowMap),
+    shadow_uUseShadowMap: opts.shadowMaps ? opts.shadowMaps.length > 0 : false,
+    shadow_uColor: opts.shadowColor || DEFAULT_SHADOW_COLOR,
+    shadow_uLightId: opts.shadowLightId || 0,
+    shadow_uLightCount: opts.shadowMatrices.length
+  };
+  var center = getMemoizedViewportCenterPosition({
+    viewport: opts.viewport,
+    center: context.project_uCenter
+  });
+  var projectCenters = [];
+  var viewProjectionMatrices = getMemoizedViewProjectionMatrices({
+    shadowMatrices: opts.shadowMatrices,
+    viewport: opts.viewport
+  }).slice();
+
+  for (var i = 0; i < opts.shadowMatrices.length; i++) {
+    var viewProjectionMatrix = viewProjectionMatrices[i];
+    var viewProjectionMatrixCentered = viewProjectionMatrix.clone().translate(new dist_esm["b" /* Vector3 */](opts.viewport.center).negate());
+
+    if (context.project_uCoordinateSystem === lib_constants["a" /* COORDINATE_SYSTEM */].LNGLAT && context.project_uProjectionMode === lib_constants["c" /* PROJECTION_MODE */].WEB_MERCATOR) {
+      viewProjectionMatrices[i] = viewProjectionMatrixCentered;
+      projectCenters[i] = center;
+    } else {
+      viewProjectionMatrices[i] = viewProjectionMatrix.clone().multiplyRight(VECTOR_TO_POINT_MATRIX);
+      projectCenters[i] = viewProjectionMatrixCentered.transform(center);
+    }
+  }
+
+  for (var _i = 0; _i < viewProjectionMatrices.length; _i++) {
+    uniforms["shadow_uViewProjectionMatrices[".concat(_i, "]")] = viewProjectionMatrices[_i];
+    uniforms["shadow_uProjectCenters[".concat(_i, "]")] = projectCenters[_i];
+
+    if (opts.shadowMaps && opts.shadowMaps.length > 0) {
+      uniforms["shadow_uShadowMap".concat(_i)] = opts.shadowMaps[_i];
+    } else {
+      uniforms["shadow_uShadowMap".concat(_i)] = opts.dummyShadowMap;
+    }
+  }
+
+  return uniforms;
+}
+
+/* harmony default export */ var shadow = ({
+  name: 'shadow',
+  dependencies: [project["a" /* default */]],
+  vs: shadow_vs,
+  fs: shadow_fs,
+  inject: {
+    'vs:DECKGL_FILTER_GL_POSITION': "\n    position = shadow_setVertexPosition(geometry.position);\n    ",
+    'fs:DECKGL_FILTER_COLOR': "\n    color = shadow_filterShadowColor(color);\n    "
+  },
+  getUniforms: function getUniforms() {
+    var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var context = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+    if (opts.drawToShadowMap || opts.shadowMaps && opts.shadowMaps.length > 0) {
+      var shadowUniforms = {};
+      var _opts$shadowEnabled = opts.shadowEnabled,
+          shadowEnabled = _opts$shadowEnabled === void 0 ? true : _opts$shadowEnabled;
+
+      if (shadowEnabled && opts.shadowMatrices && opts.shadowMatrices.length > 0) {
+        Object.assign(shadowUniforms, createShadowUniforms(opts, context));
+      } else {
+        Object.assign(shadowUniforms, {
+          shadow_uDrawShadowMap: false,
+          shadow_uUseShadowMap: false
+        });
+      }
+
+      return shadowUniforms;
+    }
+
+    return {};
+  }
+});
+// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/effects/lighting/lighting-effect.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var DEFAULT_AMBIENT_LIGHT_PROPS = {
+  color: [255, 255, 255],
+  intensity: 1.0
+};
+var DEFAULT_DIRECTIONAL_LIGHT_PROPS = [{
+  color: [255, 255, 255],
+  intensity: 1.0,
+  direction: [-1, 3, -1]
+}, {
+  color: [255, 255, 255],
+  intensity: 0.9,
+  direction: [1, -8, -2.5]
+}];
+var lighting_effect_DEFAULT_SHADOW_COLOR = [0, 0, 0, 200 / 255];
+
+var lighting_effect_LightingEffect = function (_Effect) {
+  Object(inherits["a" /* default */])(LightingEffect, _Effect);
+
+  function LightingEffect(props) {
+    var _this;
+
+    Object(classCallCheck["a" /* default */])(this, LightingEffect);
+
+    _this = Object(possibleConstructorReturn["a" /* default */])(this, Object(getPrototypeOf["a" /* default */])(LightingEffect).call(this, props));
+    _this.ambientLight = null;
+    _this.directionalLights = [];
+    _this.pointLights = [];
+    _this.shadowColor = lighting_effect_DEFAULT_SHADOW_COLOR;
+    _this.shadowPasses = [];
+    _this.shadowMaps = [];
+    _this.dummyShadowMap = null;
+    _this.shadow = false;
+    _this.programManager = null;
+
+    for (var key in props) {
+      var lightSource = props[key];
+
+      switch (lightSource.type) {
+        case 'ambient':
+          _this.ambientLight = lightSource;
+          break;
+
+        case 'directional':
+          _this.directionalLights.push(lightSource);
+
+          break;
+
+        case 'point':
+          _this.pointLights.push(lightSource);
+
+          break;
+
+        default:
+      }
+    }
+
+    _this._applyDefaultLights();
+
+    _this.shadow = _this.directionalLights.some(function (light) {
+      return light.shadow;
+    });
+    return _this;
+  }
+
+  Object(createClass["a" /* default */])(LightingEffect, [{
+    key: "preRender",
+    value: function preRender(gl, _ref) {
+      var layers = _ref.layers,
+          layerFilter = _ref.layerFilter,
+          viewports = _ref.viewports,
+          onViewportActive = _ref.onViewportActive,
+          views = _ref.views;
+      if (!this.shadow) return;
+      this.shadowMatrices = this._createLightMatrix();
+
+      if (this.shadowPasses.length === 0) {
+        this._createShadowPasses(gl);
+      }
+
+      if (!this.programManager) {
+        this.programManager = program_manager["a" /* default */].getDefaultProgramManager(gl);
+
+        if (shadow) {
+          this.programManager.addDefaultModule(shadow);
+        }
+      }
+
+      if (!this.dummyShadowMap) {
+        this.dummyShadowMap = new texture_2d["a" /* default */](gl, {
+          width: 1,
+          height: 1
+        });
+      }
+
+      for (var i = 0; i < this.shadowPasses.length; i++) {
+        var shadowPass = this.shadowPasses[i];
+        shadowPass.render({
+          layers: layers,
+          layerFilter: layerFilter,
+          viewports: viewports,
+          onViewportActive: onViewportActive,
+          views: views,
+          moduleParameters: {
+            shadowLightId: i,
+            dummyShadowMap: this.dummyShadowMap,
+            shadowMatrices: this.shadowMatrices
+          }
+        });
+      }
+    }
+  }, {
+    key: "getModuleParameters",
+    value: function getModuleParameters(layer) {
+      var parameters = this.shadow ? {
+        shadowMaps: this.shadowMaps,
+        dummyShadowMap: this.dummyShadowMap,
+        shadowColor: this.shadowColor,
+        shadowMatrices: this.shadowMatrices
+      } : {};
+      parameters.lightSources = {
+        ambientLight: this.ambientLight,
+        directionalLights: this.directionalLights.map(function (directionalLight) {
+          return directionalLight.getProjectedLight({
+            layer: layer
+          });
+        }),
+        pointLights: this.pointLights.map(function (pointLight) {
+          return pointLight.getProjectedLight({
+            layer: layer
+          });
+        })
+      };
+      return parameters;
+    }
+  }, {
+    key: "cleanup",
+    value: function cleanup() {
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = this.shadowPasses[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var shadowPass = _step.value;
+          shadowPass["delete"]();
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+            _iterator["return"]();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
+      this.shadowPasses.length = 0;
+      this.shadowMaps.length = 0;
+
+      if (this.dummyShadowMap) {
+        this.dummyShadowMap["delete"]();
+        this.dummyShadowMap = null;
+      }
+
+      if (this.shadow && this.programManager) {
+        this.programManager.removeDefaultModule(shadow);
+        this.programManager = null;
+      }
+    }
+  }, {
+    key: "_createLightMatrix",
+    value: function _createLightMatrix() {
+      var lightMatrices = [];
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
+
+      try {
+        for (var _iterator2 = this.directionalLights[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var light = _step2.value;
+          var viewMatrix = new dist_esm["a" /* Matrix4 */]().lookAt({
+            eye: new dist_esm["b" /* Vector3 */](light.direction).negate()
+          });
+          lightMatrices.push(viewMatrix);
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+            _iterator2["return"]();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
+      }
+
+      return lightMatrices;
+    }
+  }, {
+    key: "_createShadowPasses",
+    value: function _createShadowPasses(gl) {
+      for (var i = 0; i < this.directionalLights.length; i++) {
+        var shadowPass = new shadow_pass_ShadowPass(gl);
+        this.shadowPasses[i] = shadowPass;
+        this.shadowMaps[i] = shadowPass.shadowMap;
+      }
+    }
+  }, {
+    key: "_applyDefaultLights",
+    value: function _applyDefaultLights() {
+      var ambientLight = this.ambientLight,
+          pointLights = this.pointLights,
+          directionalLights = this.directionalLights;
+
+      if (!ambientLight && pointLights.length === 0 && directionalLights.length === 0) {
+        this.ambientLight = new ambient_light_AmbientLight(DEFAULT_AMBIENT_LIGHT_PROPS);
+        this.directionalLights.push(new directional_light_DirectionalLight(DEFAULT_DIRECTIONAL_LIGHT_PROPS[0]), new directional_light_DirectionalLight(DEFAULT_DIRECTIONAL_LIGHT_PROPS[1]));
+      }
+    }
+  }]);
+
+  return LightingEffect;
+}(effect_Effect);
+
+
+// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/lib/effect-manager.js
+
+
+
+
+
+
+
+
+var DEFAULT_LIGHTING_EFFECT = new lighting_effect_LightingEffect();
+
+var effect_manager_EffectManager = function () {
+  function EffectManager() {
+    Object(classCallCheck["a" /* default */])(this, EffectManager);
+
+    this.effects = [];
+    this._internalEffects = [];
+    this._needsRedraw = 'Initial render';
+    this.setEffects();
+  }
+
+  Object(createClass["a" /* default */])(EffectManager, [{
+    key: "setProps",
+    value: function setProps(props) {
+      if ('effects' in props) {
+        if (props.effects.length !== this.effects.length || !Object(deep_equal["a" /* deepEqual */])(props.effects, this.effects)) {
+          this.setEffects(props.effects);
+          this._needsRedraw = 'effects changed';
+        }
+      }
+    }
+  }, {
+    key: "needsRedraw",
+    value: function needsRedraw() {
+      var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+        clearRedrawFlags: false
+      };
+      var redraw = this._needsRedraw;
+
+      if (opts.clearRedrawFlags) {
+        this._needsRedraw = false;
+      }
+
+      return redraw;
+    }
+  }, {
+    key: "getEffects",
+    value: function getEffects() {
+      return this._internalEffects;
+    }
+  }, {
+    key: "finalize",
+    value: function finalize() {
+      this.cleanup();
+    }
+  }, {
+    key: "setEffects",
+    value: function setEffects() {
+      var effects = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+      this.cleanup();
+      this.effects = effects;
+
+      this._createInternalEffects();
+    }
+  }, {
+    key: "cleanup",
+    value: function cleanup() {
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = this.effects[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var effect = _step.value;
+          effect.cleanup();
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+            _iterator["return"]();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
+
+      try {
+        for (var _iterator2 = this._internalEffects[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var _effect = _step2.value;
+
+          _effect.cleanup();
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+            _iterator2["return"]();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
+      }
+
+      this.effects.length = 0;
+      this._internalEffects.length = 0;
+    }
+  }, {
+    key: "_createInternalEffects",
+    value: function _createInternalEffects() {
+      this._internalEffects = this.effects.slice();
+
+      if (!this.effects.some(function (effect) {
+        return effect instanceof lighting_effect_LightingEffect;
+      })) {
+        this._internalEffects.push(DEFAULT_LIGHTING_EFFECT);
+      }
+    }
+  }]);
+
+  return EffectManager;
+}();
+
+
+// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/passes/draw-layers-pass.js
+
+
+
+
+
+
+var draw_layers_pass_DrawLayersPass = function (_LayersPass) {
+  Object(inherits["a" /* default */])(DrawLayersPass, _LayersPass);
+
+  function DrawLayersPass() {
+    Object(classCallCheck["a" /* default */])(this, DrawLayersPass);
+
+    return Object(possibleConstructorReturn["a" /* default */])(this, Object(getPrototypeOf["a" /* default */])(DrawLayersPass).apply(this, arguments));
+  }
+
+  return DrawLayersPass;
+}(layers_pass_LayersPass);
+
+
+// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/passes/pick-layers-pass.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function pick_layers_pass_ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    if (enumerableOnly) symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    });
+    keys.push.apply(keys, symbols);
+  }
+
+  return keys;
+}
+
+function pick_layers_pass_objectSpread(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
+    if (i % 2) {
+      pick_layers_pass_ownKeys(Object(source), true).forEach(function (key) {
+        Object(defineProperty["a" /* default */])(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      pick_layers_pass_ownKeys(Object(source)).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+
+  return target;
+}
+
+
+
+var PICKING_PARAMETERS = {
+  blendFunc: [1, 0, 32771, 0],
+  blendEquation: 32774
+};
+
+var pick_layers_pass_PickLayersPass = function (_LayersPass) {
+  Object(inherits["a" /* default */])(PickLayersPass, _LayersPass);
+
+  function PickLayersPass() {
+    Object(classCallCheck["a" /* default */])(this, PickLayersPass);
+
+    return Object(possibleConstructorReturn["a" /* default */])(this, Object(getPrototypeOf["a" /* default */])(PickLayersPass).apply(this, arguments));
+  }
+
+  Object(createClass["a" /* default */])(PickLayersPass, [{
+    key: "render",
+    value: function render(props) {
+      if (props.pickingFBO) {
+        this._drawPickingBuffer(props);
+      } else {
+        Object(esm_get["a" /* default */])(Object(getPrototypeOf["a" /* default */])(PickLayersPass.prototype), "render", this).call(this, props);
+      }
+    }
+  }, {
+    key: "_drawPickingBuffer",
+    value: function _drawPickingBuffer(_ref) {
+      var _this = this;
+
+      var layers = _ref.layers,
+          layerFilter = _ref.layerFilter,
+          viewports = _ref.viewports,
+          onViewportActive = _ref.onViewportActive,
+          pickingFBO = _ref.pickingFBO,
+          _ref$deviceRect = _ref.deviceRect,
+          x = _ref$deviceRect.x,
+          y = _ref$deviceRect.y,
+          width = _ref$deviceRect.width,
+          height = _ref$deviceRect.height,
+          _ref$pass = _ref.pass,
+          pass = _ref$pass === void 0 ? 'picking' : _ref$pass,
+          redrawReason = _ref.redrawReason,
+          pickZ = _ref.pickZ;
+      var gl = this.gl;
+      this.pickZ = pickZ;
+      return Object(gltools_dist_esm["k" /* withParameters */])(gl, pick_layers_pass_objectSpread({
+        scissorTest: true,
+        scissor: [x, y, width, height],
+        clearColor: [0, 0, 0, 0],
+        depthMask: true,
+        depthTest: true,
+        depthRange: [0, 1],
+        colorMask: [true, true, true, true]
+      }, PICKING_PARAMETERS, {
+        blend: !pickZ
+      }), function () {
+        Object(esm_get["a" /* default */])(Object(getPrototypeOf["a" /* default */])(PickLayersPass.prototype), "render", _this).call(_this, {
+          target: pickingFBO,
+          layers: layers,
+          layerFilter: layerFilter,
+          viewports: viewports,
+          onViewportActive: onViewportActive,
+          pass: pass,
+          redrawReason: redrawReason
+        });
+      });
+    }
+  }, {
+    key: "shouldDrawLayer",
+    value: function shouldDrawLayer(layer) {
+      return layer.props.pickable;
+    }
+  }, {
+    key: "getModuleParameters",
+    value: function getModuleParameters() {
+      return {
+        pickingActive: 1,
+        pickingAttribute: this.pickZ,
+        lightSources: {}
+      };
+    }
+  }, {
+    key: "getLayerParameters",
+    value: function getLayerParameters(layer, layerIndex) {
+      var pickParameters = this.pickZ ? {
+        blend: false
+      } : pick_layers_pass_objectSpread({}, PICKING_PARAMETERS, {
+        blend: true,
+        blendColor: [0, 0, 0, (layerIndex + 1) / 255]
+      });
+      return Object.assign({}, layer.props.parameters, pickParameters);
+    }
+  }]);
+
+  return PickLayersPass;
+}(layers_pass_LayersPass);
+
+
+// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/lib/deck-renderer.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function deck_renderer_ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    if (enumerableOnly) symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    });
+    keys.push.apply(keys, symbols);
+  }
+
+  return keys;
+}
+
+function deck_renderer_objectSpread(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
+    if (i % 2) {
+      deck_renderer_ownKeys(Object(source), true).forEach(function (key) {
+        Object(defineProperty["a" /* default */])(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      deck_renderer_ownKeys(Object(source)).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+
+  return target;
+}
+
+
+
+
+
+var TRACE_RENDER_LAYERS = 'deckRenderer.renderLayers';
+
+var deck_renderer_DeckRenderer = function () {
+  function DeckRenderer(gl) {
+    Object(classCallCheck["a" /* default */])(this, DeckRenderer);
+
+    this.gl = gl;
+    this.layerFilter = null;
+    this.drawPickingColors = false;
+    this.drawLayersPass = new draw_layers_pass_DrawLayersPass(gl);
+    this.pickLayersPass = new pick_layers_pass_PickLayersPass(gl);
+    this.renderCount = 0;
+    this._needsRedraw = 'Initial render';
+    this.renderBuffers = [];
+    this.lastPostProcessEffect = null;
+    this._onError = null;
+  }
+
+  Object(createClass["a" /* default */])(DeckRenderer, [{
+    key: "setProps",
+    value: function setProps(props) {
+      if ('layerFilter' in props && this.layerFilter !== props.layerFilter) {
+        this.layerFilter = props.layerFilter;
+        this._needsRedraw = 'layerFilter changed';
+      }
+
+      if ('drawPickingColors' in props && this.drawPickingColors !== props.drawPickingColors) {
+        this.drawPickingColors = props.drawPickingColors;
+        this._needsRedraw = 'drawPickingColors changed';
+      }
+
+      if ('onError' in props) {
+        this._onError = props.onError;
+      }
+    }
+  }, {
+    key: "renderLayers",
+    value: function renderLayers(opts) {
+      var layerPass = this.drawPickingColors ? this.pickLayersPass : this.drawLayersPass;
+      opts.layerFilter = this.layerFilter;
+      opts.onError = this._onError;
+      opts.effects = opts.effects || [];
+      opts.target = opts.target || framebuffer["a" /* default */].getDefaultFramebuffer(this.gl);
+
+      this._preRender(opts.effects, opts);
+
+      var outputBuffer = this.lastPostProcessEffect ? this.renderBuffers[0] : opts.target;
+      var renderStats = layerPass.render(deck_renderer_objectSpread({}, opts, {
+        target: outputBuffer
+      }));
+
+      this._postRender(opts.effects, opts);
+
+      this.renderCount++;
+      Object(esm_debug["a" /* default */])(TRACE_RENDER_LAYERS, this, renderStats, opts);
+    }
+  }, {
+    key: "needsRedraw",
+    value: function needsRedraw() {
+      var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+        clearRedrawFlags: false
+      };
+      var redraw = this._needsRedraw;
+
+      if (opts.clearRedrawFlags) {
+        this._needsRedraw = false;
+      }
+
+      return redraw;
+    }
+  }, {
+    key: "finalize",
+    value: function finalize() {
+      var renderBuffers = this.renderBuffers;
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = renderBuffers[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var buffer = _step.value;
+          buffer["delete"]();
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+            _iterator["return"]();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
+      renderBuffers.length = 0;
+    }
+  }, {
+    key: "_preRender",
+    value: function _preRender(effects, opts) {
+      var lastPostProcessEffect = null;
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
+
+      try {
+        for (var _iterator2 = effects[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var effect = _step2.value;
+          effect.preRender(this.gl, opts);
+
+          if (effect.postRender) {
+            lastPostProcessEffect = effect;
+          }
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+            _iterator2["return"]();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
+      }
+
+      if (lastPostProcessEffect) {
+        this._resizeRenderBuffers();
+      }
+
+      this.lastPostProcessEffect = lastPostProcessEffect;
+    }
+  }, {
+    key: "_resizeRenderBuffers",
+    value: function _resizeRenderBuffers() {
+      var renderBuffers = this.renderBuffers;
+
+      if (renderBuffers.length === 0) {
+        renderBuffers.push(new framebuffer["a" /* default */](this.gl), new framebuffer["a" /* default */](this.gl));
+      }
+
+      var _iteratorNormalCompletion3 = true;
+      var _didIteratorError3 = false;
+      var _iteratorError3 = undefined;
+
+      try {
+        for (var _iterator3 = renderBuffers[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+          var buffer = _step3.value;
+          buffer.resize();
+        }
+      } catch (err) {
+        _didIteratorError3 = true;
+        _iteratorError3 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion3 && _iterator3["return"] != null) {
+            _iterator3["return"]();
+          }
+        } finally {
+          if (_didIteratorError3) {
+            throw _iteratorError3;
+          }
+        }
+      }
+    }
+  }, {
+    key: "_postRender",
+    value: function _postRender(effects, opts) {
+      var renderBuffers = this.renderBuffers;
+      var params = {
+        inputBuffer: renderBuffers[0],
+        swapBuffer: renderBuffers[1],
+        target: null
+      };
+      var _iteratorNormalCompletion4 = true;
+      var _didIteratorError4 = false;
+      var _iteratorError4 = undefined;
+
+      try {
+        for (var _iterator4 = effects[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+          var effect = _step4.value;
+
+          if (effect.postRender) {
+            if (effect === this.lastPostProcessEffect) {
+              params.target = opts.target;
+              effect.postRender(this.gl, params);
+              break;
+            }
+
+            var buffer = effect.postRender(this.gl, params);
+            params.inputBuffer = buffer;
+            params.swapBuffer = buffer === renderBuffers[0] ? renderBuffers[1] : renderBuffers[0];
+          }
+        }
+      } catch (err) {
+        _didIteratorError4 = true;
+        _iteratorError4 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion4 && _iterator4["return"] != null) {
+            _iterator4["return"]();
+          }
+        } finally {
+          if (_didIteratorError4) {
+            throw _iteratorError4;
+          }
+        }
+      }
+    }
+  }]);
+
+  return DeckRenderer;
+}();
+
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.typed.uint8-array.js
+var es6_typed_uint8_array = __webpack_require__("CtJk");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.typed.float32-array.js
+var es6_typed_float32_array = __webpack_require__("5irr");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.array.from.js
+var es6_array_from = __webpack_require__("cFtU");
+
+// EXTERNAL MODULE: ./node_modules/@luma.gl/webgl/dist/esm/classes/copy-and-blit.js + 1 modules
+var copy_and_blit = __webpack_require__("p7wt");
+
+// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/lib/picking/query-object.js
+
+
+
+
+
+
+
+var NO_PICKED_OBJECT = {
+  pickedColor: null,
+  pickedLayer: null,
+  pickedObjectIndex: -1
+};
+function getClosestObject(_ref) {
+  var pickedColors = _ref.pickedColors,
+      layers = _ref.layers,
+      deviceX = _ref.deviceX,
+      deviceY = _ref.deviceY,
+      deviceRadius = _ref.deviceRadius,
+      deviceRect = _ref.deviceRect;
+
+  if (pickedColors) {
+    var x = deviceRect.x,
+        y = deviceRect.y,
+        width = deviceRect.width,
+        height = deviceRect.height;
+    var minSquareDistanceToCenter = deviceRadius * deviceRadius;
+    var closestPixelIndex = -1;
+    var i = 0;
+
+    for (var row = 0; row < height; row++) {
+      var dy = row + y - deviceY;
+      var dy2 = dy * dy;
+
+      if (dy2 > minSquareDistanceToCenter) {
+        i += 4 * width;
+      } else {
+        for (var col = 0; col < width; col++) {
+          var pickedLayerIndex = pickedColors[i + 3] - 1;
+
+          if (pickedLayerIndex >= 0) {
+            var dx = col + x - deviceX;
+            var d2 = dx * dx + dy2;
+
+            if (d2 <= minSquareDistanceToCenter) {
+              minSquareDistanceToCenter = d2;
+              closestPixelIndex = i;
+            }
+          }
+
+          i += 4;
+        }
+      }
+    }
+
+    if (closestPixelIndex >= 0) {
+      var _pickedLayerIndex = pickedColors[closestPixelIndex + 3] - 1;
+
+      var pickedColor = pickedColors.slice(closestPixelIndex, closestPixelIndex + 4);
+      var pickedLayer = layers[_pickedLayerIndex];
+
+      if (pickedLayer) {
+        var pickedObjectIndex = pickedLayer.decodePickingColor(pickedColor);
+
+        var _dy = Math.floor(closestPixelIndex / 4 / width);
+
+        var _dx = closestPixelIndex / 4 - _dy * width;
+
+        return {
+          pickedColor: pickedColor,
+          pickedLayer: pickedLayer,
+          pickedObjectIndex: pickedObjectIndex,
+          pickedX: x + _dx,
+          pickedY: y + _dy
+        };
+      }
+
+      log["a" /* default */].error('Picked non-existent layer. Is picking buffer corrupt?')();
+    }
+  }
+
+  return NO_PICKED_OBJECT;
+}
+function getUniqueObjects(_ref2) {
+  var pickedColors = _ref2.pickedColors,
+      layers = _ref2.layers;
+  var uniqueColors = new Map();
+
+  if (pickedColors) {
+    for (var i = 0; i < pickedColors.length; i += 4) {
+      var pickedLayerIndex = pickedColors[i + 3] - 1;
+
+      if (pickedLayerIndex >= 0) {
+        var pickedColor = pickedColors.slice(i, i + 4);
+        var colorKey = pickedColor.join(',');
+
+        if (!uniqueColors.has(colorKey)) {
+          var pickedLayer = layers[pickedLayerIndex];
+
+          if (pickedLayer) {
+            uniqueColors.set(colorKey, {
+              pickedColor: pickedColor,
+              pickedLayer: pickedLayer,
+              pickedObjectIndex: pickedLayer.decodePickingColor(pickedColor)
+            });
+          } else {
+            log["a" /* default */].error('Picked non-existent layer. Is picking buffer corrupt?')();
+          }
+        }
+      }
+    }
+  }
+
+  return Array.from(uniqueColors.values());
+}
+// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/lib/picking/pick-info.js
+
+
+
+
+
+
+
+
+function processPickInfo(_ref) {
+  var pickInfo = _ref.pickInfo,
+      lastPickedInfo = _ref.lastPickedInfo,
+      mode = _ref.mode,
+      layers = _ref.layers,
+      viewports = _ref.viewports,
+      x = _ref.x,
+      y = _ref.y,
+      z = _ref.z,
+      pixelRatio = _ref.pixelRatio;
+  var pickedColor = pickInfo.pickedColor,
+      pickedLayer = pickInfo.pickedLayer,
+      pickedObjectIndex = pickInfo.pickedObjectIndex;
+  var affectedLayers = pickedLayer ? [pickedLayer] : [];
+
+  if (mode === 'hover') {
+    var lastPickedObjectIndex = lastPickedInfo.index;
+    var lastPickedLayerId = lastPickedInfo.layerId;
+    var pickedLayerId = pickedLayer && pickedLayer.props.id;
+
+    if (pickedLayerId !== lastPickedLayerId || pickedObjectIndex !== lastPickedObjectIndex) {
+      if (pickedLayerId !== lastPickedLayerId) {
+        var lastPickedLayer = layers.find(function (layer) {
+          return layer.props.id === lastPickedLayerId;
+        });
+
+        if (lastPickedLayer) {
+          affectedLayers.unshift(lastPickedLayer);
+        }
+      }
+
+      lastPickedInfo.layerId = pickedLayerId;
+      lastPickedInfo.index = pickedObjectIndex;
+      lastPickedInfo.info = null;
+    }
+  }
+
+  var viewport = getViewportFromCoordinates({
+    viewports: viewports
+  });
+  var coordinate = viewport && viewport.unproject([x, y], {
+    targetZ: z
+  });
+  var baseInfo = {
+    color: null,
+    layer: null,
+    index: -1,
+    picked: false,
+    x: x,
+    y: y,
+    pixel: [x, y],
+    coordinate: coordinate,
+    lngLat: coordinate,
+    devicePixel: [pickInfo.pickedX, pickInfo.pickedY],
+    pixelRatio: pixelRatio
+  };
+  var infos = new Map();
+  infos.set(null, baseInfo);
+  affectedLayers.forEach(function (layer) {
+    var info = Object.assign({}, baseInfo);
+
+    if (layer === pickedLayer) {
+      info.color = pickedColor;
+      info.index = pickedObjectIndex;
+      info.picked = true;
+    }
+
+    info = getLayerPickingInfo({
+      layer: layer,
+      info: info,
+      mode: mode
+    });
+
+    if (layer === pickedLayer && mode === 'hover') {
+      lastPickedInfo.info = info;
+    }
+
+    if (info) {
+      infos.set(info.layer.id, info);
+    }
+
+    if (mode === 'hover' && layer.props.autoHighlight) {
+      layer.setModuleParameters({
+        pickingSelectedColor: pickedLayer === layer ? pickedColor : null
+      });
+      layer.setNeedsRedraw();
+    }
+  });
+  return infos;
+}
+function getLayerPickingInfo(_ref2) {
+  var layer = _ref2.layer,
+      info = _ref2.info,
+      mode = _ref2.mode;
+
+  while (layer && info) {
+    var sourceLayer = info.layer || layer;
+    info.layer = layer;
+    info = layer.getPickingInfo({
+      info: info,
+      mode: mode,
+      sourceLayer: sourceLayer
+    });
+    layer = layer.parent;
+  }
+
+  return info;
+}
+
+function getViewportFromCoordinates(_ref3) {
+  var viewports = _ref3.viewports;
+  var viewport = viewports[0];
+  return viewport;
+}
+// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/lib/deck-picker.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var deck_picker_DeckPicker = function () {
+  function DeckPicker(gl) {
+    Object(classCallCheck["a" /* default */])(this, DeckPicker);
+
+    this.gl = gl;
+    this.pickingFBO = null;
+    this.pickLayersPass = new pick_layers_pass_PickLayersPass(gl);
+    this.layerFilter = null;
+    this.lastPickedInfo = {
+      index: -1,
+      layerId: null,
+      info: null
+    };
+    this._onError = null;
+  }
+
+  Object(createClass["a" /* default */])(DeckPicker, [{
+    key: "setProps",
+    value: function setProps(props) {
+      if ('layerFilter' in props) {
+        this.layerFilter = props.layerFilter;
+      }
+
+      if ('onError' in props) {
+        this._onError = props.onError;
+      }
+    }
+  }, {
+    key: "finalize",
+    value: function finalize() {
+      if (this.pickingFBO) {
+        this.pickingFBO["delete"]();
+      }
+
+      if (this.depthFBO) {
+        this.depthFBO.color["delete"]();
+        this.depthFBO["delete"]();
+      }
+    }
+  }, {
+    key: "pickObject",
+    value: function pickObject(opts) {
+      return this._pickClosestObject(opts);
+    }
+  }, {
+    key: "pickObjects",
+    value: function pickObjects(opts) {
+      return this._pickVisibleObjects(opts);
+    }
+  }, {
+    key: "getLastPickedObject",
+    value: function getLastPickedObject(_ref) {
+      var x = _ref.x,
+          y = _ref.y,
+          layers = _ref.layers,
+          viewports = _ref.viewports;
+      var lastPickedInfo = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.lastPickedInfo.info;
+      var lastPickedLayerId = lastPickedInfo && lastPickedInfo.layer && lastPickedInfo.layer.id;
+      var layer = lastPickedLayerId ? layers.find(function (l) {
+        return l.id === lastPickedLayerId;
+      }) : null;
+      var coordinate = viewports[0] && viewports[0].unproject([x, y]);
+      var info = {
+        x: x,
+        y: y,
+        coordinate: coordinate,
+        lngLat: coordinate,
+        layer: layer
+      };
+
+      if (layer) {
+        return Object.assign({}, lastPickedInfo, info);
+      }
+
+      return Object.assign(info, {
+        color: null,
+        object: null,
+        index: -1
+      });
+    }
+  }, {
+    key: "_resizeBuffer",
+    value: function _resizeBuffer() {
+      var gl = this.gl;
+
+      if (!this.pickingFBO) {
+        this.pickingFBO = new framebuffer["a" /* default */](gl);
+
+        if (framebuffer["a" /* default */].isSupported(gl, {
+          colorBufferFloat: true
+        })) {
+          this.depthFBO = new framebuffer["a" /* default */](gl);
+          this.depthFBO.attach(Object(defineProperty["a" /* default */])({}, 36064, new texture_2d["a" /* default */](gl, {
+            format: Object(gltools_dist_esm["f" /* isWebGL2 */])(gl) ? 34836 : 6408,
+            type: 5126
+          })));
+        }
+      }
+
+      this.pickingFBO.resize({
+        width: gl.canvas.width,
+        height: gl.canvas.height
+      });
+      this.depthFBO.resize({
+        width: gl.canvas.width,
+        height: gl.canvas.height
+      });
+      return this.pickingFBO;
+    }
+  }, {
+    key: "_pickClosestObject",
+    value: function _pickClosestObject(_ref2) {
+      var layers = _ref2.layers,
+          viewports = _ref2.viewports,
+          x = _ref2.x,
+          y = _ref2.y,
+          _ref2$radius = _ref2.radius,
+          radius = _ref2$radius === void 0 ? 0 : _ref2$radius,
+          _ref2$depth = _ref2.depth,
+          depth = _ref2$depth === void 0 ? 1 : _ref2$depth,
+          _ref2$mode = _ref2.mode,
+          mode = _ref2$mode === void 0 ? 'query' : _ref2$mode,
+          unproject3D = _ref2.unproject3D,
+          onViewportActive = _ref2.onViewportActive;
+
+      this._resizeBuffer();
+
+      var pixelRatio = Object(gltools_dist_esm["c" /* cssToDeviceRatio */])(this.gl);
+      var devicePixelRange = Object(gltools_dist_esm["b" /* cssToDevicePixels */])(this.gl, [x, y], true);
+      var devicePixel = [devicePixelRange.x + Math.floor(devicePixelRange.width / 2), devicePixelRange.y + Math.floor(devicePixelRange.height / 2)];
+      var deviceRadius = Math.round(radius * pixelRatio);
+      var _this$pickingFBO = this.pickingFBO,
+          width = _this$pickingFBO.width,
+          height = _this$pickingFBO.height;
+
+      var deviceRect = this._getPickingRect({
+        deviceX: devicePixel[0],
+        deviceY: devicePixel[1],
+        deviceRadius: deviceRadius,
+        deviceWidth: width,
+        deviceHeight: height
+      });
+
+      var infos;
+      var result = [];
+      var affectedLayers = {};
+
+      for (var i = 0; i < depth; i++) {
+        var pickedColors = deviceRect && this._drawAndSample({
+          layers: layers,
+          viewports: viewports,
+          onViewportActive: onViewportActive,
+          deviceRect: deviceRect,
+          pass: "picking:".concat(mode),
+          redrawReason: mode
+        });
+
+        var pickInfo = getClosestObject({
+          pickedColors: pickedColors,
+          layers: layers,
+          deviceX: devicePixel[0],
+          deviceY: devicePixel[1],
+          deviceRadius: deviceRadius,
+          deviceRect: deviceRect
+        });
+        var z = void 0;
+
+        if (pickInfo.pickedLayer && unproject3D && this.depthFBO) {
+          var zValues = this._drawAndSample({
+            layers: [pickInfo.pickedLayer],
+            viewports: viewports,
+            onViewportActive: onViewportActive,
+            deviceRect: {
+              x: pickInfo.pickedX,
+              y: pickInfo.pickedY,
+              width: 1,
+              height: 1
+            },
+            pass: "picking:".concat(mode),
+            redrawReason: 'pick-z',
+            pickZ: true
+          });
+
+          z = zValues[0] * viewports[0].distanceScales.metersPerUnit[2] + viewports[0].position[2];
+        }
+
+        if (pickInfo.pickedColor && i + 1 < depth) {
+          var layerId = pickInfo.pickedColor[3] - 1;
+          affectedLayers[layerId] = true;
+          layers[layerId].clearPickingColor(pickInfo.pickedColor);
+        }
+
+        infos = processPickInfo({
+          pickInfo: pickInfo,
+          lastPickedInfo: this.lastPickedInfo,
+          mode: mode,
+          layers: layers,
+          viewports: viewports,
+          x: x,
+          y: y,
+          z: z,
+          pixelRatio: pixelRatio
+        });
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
+
+        try {
+          for (var _iterator = infos.values()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            var info = _step.value;
+
+            if (info.layer) {
+              result.push(info);
+            }
+          }
+        } catch (err) {
+          _didIteratorError = true;
+          _iteratorError = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+              _iterator["return"]();
+            }
+          } finally {
+            if (_didIteratorError) {
+              throw _iteratorError;
+            }
+          }
+        }
+
+        if (!pickInfo.pickedColor) {
+          break;
+        }
+      }
+
+      for (var _layerId in affectedLayers) {
+        layers[_layerId].restorePickingColors();
+      }
+
+      return {
+        result: result,
+        emptyInfo: infos && infos.get(null)
+      };
+    }
+  }, {
+    key: "_pickVisibleObjects",
+    value: function _pickVisibleObjects(_ref3) {
+      var layers = _ref3.layers,
+          viewports = _ref3.viewports,
+          x = _ref3.x,
+          y = _ref3.y,
+          _ref3$width = _ref3.width,
+          width = _ref3$width === void 0 ? 1 : _ref3$width,
+          _ref3$height = _ref3.height,
+          height = _ref3$height === void 0 ? 1 : _ref3$height,
+          _ref3$mode = _ref3.mode,
+          mode = _ref3$mode === void 0 ? 'query' : _ref3$mode,
+          onViewportActive = _ref3.onViewportActive;
+
+      this._resizeBuffer();
+
+      var pixelRatio = Object(gltools_dist_esm["c" /* cssToDeviceRatio */])(this.gl);
+      var leftTop = Object(gltools_dist_esm["b" /* cssToDevicePixels */])(this.gl, [x, y], true);
+      var deviceLeft = leftTop.x;
+      var deviceTop = leftTop.y + leftTop.height;
+      var rightBottom = Object(gltools_dist_esm["b" /* cssToDevicePixels */])(this.gl, [x + width, y + height], true);
+      var deviceRight = rightBottom.x + rightBottom.width;
+      var deviceBottom = rightBottom.y;
+      var deviceRect = {
+        x: deviceLeft,
+        y: deviceBottom,
+        width: deviceRight - deviceLeft,
+        height: deviceTop - deviceBottom
+      };
+
+      var pickedColors = this._drawAndSample({
+        layers: layers,
+        viewports: viewports,
+        onViewportActive: onViewportActive,
+        deviceRect: deviceRect,
+        pass: "picking:".concat(mode),
+        redrawReason: mode
+      });
+
+      var pickInfos = getUniqueObjects({
+        pickedColors: pickedColors,
+        layers: layers
+      });
+      var uniqueInfos = new Map();
+      pickInfos.forEach(function (pickInfo) {
+        var info = {
+          color: pickInfo.pickedColor,
+          layer: null,
+          index: pickInfo.pickedObjectIndex,
+          picked: true,
+          x: x,
+          y: y,
+          width: width,
+          height: height,
+          pixelRatio: pixelRatio
+        };
+        info = getLayerPickingInfo({
+          layer: pickInfo.pickedLayer,
+          info: info,
+          mode: mode
+        });
+
+        if (!uniqueInfos.has(info.object)) {
+          uniqueInfos.set(info.object, info);
+        }
+      });
+      return Array.from(uniqueInfos.values());
+    }
+  }, {
+    key: "_drawAndSample",
+    value: function _drawAndSample(_ref4) {
+      var layers = _ref4.layers,
+          viewports = _ref4.viewports,
+          onViewportActive = _ref4.onViewportActive,
+          deviceRect = _ref4.deviceRect,
+          pass = _ref4.pass,
+          redrawReason = _ref4.redrawReason,
+          pickZ = _ref4.pickZ;
+      Object(assert["a" /* default */])(deviceRect.width > 0 && deviceRect.height > 0);
+      var pickableLayers = layers.filter(function (layer) {
+        return layer.isPickable();
+      });
+
+      if (pickableLayers.length < 1) {
+        return null;
+      }
+
+      var pickingFBO = pickZ ? this.depthFBO : this.pickingFBO;
+      this.pickLayersPass.render({
+        layers: layers,
+        layerFilter: this.layerFilter,
+        onError: this._onError,
+        viewports: viewports,
+        onViewportActive: onViewportActive,
+        pickingFBO: pickingFBO,
+        deviceRect: deviceRect,
+        pass: pass,
+        redrawReason: redrawReason,
+        pickZ: pickZ
+      });
+      var x = deviceRect.x,
+          y = deviceRect.y,
+          width = deviceRect.width,
+          height = deviceRect.height;
+      var pickedColors = new (pickZ ? Float32Array : Uint8Array)(width * height * 4);
+      Object(copy_and_blit["b" /* readPixelsToArray */])(pickingFBO, {
+        sourceX: x,
+        sourceY: y,
+        sourceWidth: width,
+        sourceHeight: height,
+        target: pickedColors
+      });
+      return pickedColors;
+    }
+  }, {
+    key: "_getPickingRect",
+    value: function _getPickingRect(_ref5) {
+      var deviceX = _ref5.deviceX,
+          deviceY = _ref5.deviceY,
+          deviceRadius = _ref5.deviceRadius,
+          deviceWidth = _ref5.deviceWidth,
+          deviceHeight = _ref5.deviceHeight;
+      var x = Math.max(0, deviceX - deviceRadius);
+      var y = Math.max(0, deviceY - deviceRadius);
+      var width = Math.min(deviceWidth, deviceX + deviceRadius + 1) - x;
+      var height = Math.min(deviceHeight, deviceY + deviceRadius + 1) - y;
+
+      if (width <= 0 || height <= 0) {
+        return null;
+      }
+
+      return {
+        x: x,
+        y: y,
+        width: width,
+        height: height
+      };
+    }
+  }]);
+
+  return DeckPicker;
+}();
+
+
+// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/lib/tooltip.js
+
+
+
+var defaultStyle = {
+  zIndex: 1,
+  position: 'absolute',
+  pointerEvents: 'none',
+  color: '#a0a7b4',
+  backgroundColor: '#29323c',
+  padding: '10px',
+  top: 0,
+  left: 0,
+  display: 'none'
+};
+
+var tooltip_Tooltip = function () {
+  function Tooltip(canvas) {
+    Object(classCallCheck["a" /* default */])(this, Tooltip);
+
+    var canvasParent = canvas.parentElement;
+
+    if (canvasParent) {
+      this.el = document.createElement('div');
+      this.el.className = 'deck-tooltip';
+      Object.assign(this.el.style, defaultStyle);
+      canvasParent.appendChild(this.el);
+    }
+  }
+
+  Object(createClass["a" /* default */])(Tooltip, [{
+    key: "setTooltip",
+    value: function setTooltip(displayInfo, x, y) {
+      var el = this.el;
+
+      if (typeof displayInfo === 'string') {
+        el.innerText = displayInfo;
+      } else if (!displayInfo) {
+        el.style.display = 'none';
+        return;
+      } else {
+        if ('text' in displayInfo) {
+          el.innerText = displayInfo.text;
+        }
+
+        if ('html' in displayInfo) {
+          el.innerHTML = displayInfo.html;
+        }
+
+        if ('className' in displayInfo) {
+          el.className = displayInfo.className;
+        }
+
+        Object.assign(el.style, displayInfo.style);
+      }
+
+      el.style.display = 'block';
+      el.style.transform = "translate(".concat(x, "px, ").concat(y, "px)");
+    }
+  }, {
+    key: "remove",
+    value: function remove() {
+      if (this.el) {
+        this.el.remove();
+      }
+    }
+  }]);
+
+  return Tooltip;
+}();
+
+
+// EXTERNAL MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/register-loaders.js
+var register_loaders = __webpack_require__("pCSj");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.typed.data-view.js
+var es6_typed_data_view = __webpack_require__("t+I+");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/regenerator/index.js
+var regenerator = __webpack_require__("kD0k");
+var regenerator_default = /*#__PURE__*/__webpack_require__.n(regenerator);
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js
+var asyncToGenerator = __webpack_require__("/S4K");
+
+// CONCATENATED MODULE: ./node_modules/@loaders.gl/images/dist/esm/lib/utils/assert.js
+function assert_assert(condition, message) {
+  if (!condition) {
+    throw new Error(message);
+  }
+}
+// EXTERNAL MODULE: ./node_modules/@loaders.gl/images/dist/esm/lib/utils/globals.js
+var globals = __webpack_require__("d64r");
+
+// CONCATENATED MODULE: ./node_modules/@loaders.gl/images/dist/esm/lib/parsed-image-api/image-type.js
+
+var image_type_parseImageNode = globals["a" /* global */]._parseImageNode;
+var IMAGE_SUPPORTED = typeof Image !== 'undefined';
+var IMAGE_BITMAP_SUPPORTED = typeof ImageBitmap !== 'undefined';
+var NODE_IMAGE_SUPPORTED = Boolean(image_type_parseImageNode);
+function isImageTypeSupported(type) {
+  switch (type) {
+    case 'auto':
+      return IMAGE_BITMAP_SUPPORTED || IMAGE_SUPPORTED || NODE_IMAGE_SUPPORTED;
+
+    case 'imagebitmap':
+      return IMAGE_BITMAP_SUPPORTED;
+
+    case 'html':
+    case 'image':
+      return IMAGE_SUPPORTED;
+
+    case 'ndarray':
+    case 'data':
+      return globals["b" /* isBrowser */] ? true : NODE_IMAGE_SUPPORTED;
+
+    default:
+      throw new Error("@loaders.gl/images: image ".concat(type, " not supported in this environment"));
+  }
+}
+function getDefaultImageType() {
+  if (isImageTypeSupported('image')) {
+    return 'image';
+  }
+
+  if (isImageTypeSupported('imagebitmap')) {
+    return 'imagebitmap';
+  }
+
+  if (isImageTypeSupported('data')) {
+    return 'data';
+  }
+
+  throw new Error("Install '@loaders.gl/polyfills' to parse images under Node.js");
+}
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/typeof.js
+var esm_typeof = __webpack_require__("0QZy");
+
+// CONCATENATED MODULE: ./node_modules/@loaders.gl/images/dist/esm/lib/parsed-image-api/parsed-image-api.js
+
+
+function isImage(image) {
+  return Boolean(getImageTypeOrNull(image));
+}
+function deleteImage(image) {
+  switch (getImageType(image)) {
+    case 'imagebitmap':
+      image.close();
+      break;
+
+    default:
+  }
+}
+function getImageType(image) {
+  var format = getImageTypeOrNull(image);
+
+  if (!format) {
+    throw new Error('Not an image');
+  }
+
+  return format;
+}
+function getImageData(image) {
+  switch (getImageType(image)) {
+    case 'data':
+      return image;
+
+    case 'image':
+    case 'imagebitmap':
+      var canvas = document.createElement('canvas');
+      var context = canvas.getContext('2d');
+      canvas.width = image.width;
+      canvas.height = image.height;
+      context.drawImage(image, 0, 0);
+      var imageData = context.getImageData(0, 0, image.width, image.height);
+      return imageData;
+
+    default:
+      return assert_assert(false);
+  }
+}
+
+
+function getImageTypeOrNull(image) {
+  if (typeof ImageBitmap !== 'undefined' && image instanceof ImageBitmap) {
+    return 'imagebitmap';
+  }
+
+  if (typeof Image !== 'undefined' && image instanceof Image) {
+    return 'image';
+  }
+
+  if (image && Object(esm_typeof["a" /* default */])(image) === 'object' && image.data && image.width && image.height) {
+    return 'data';
+  }
+
+  return null;
+}
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.promise.js
+var es6_promise = __webpack_require__("6kNP");
+
+// CONCATENATED MODULE: ./node_modules/@loaders.gl/images/dist/esm/lib/parsers/get-blob.js
+
+var SVG_DATA_URL_PATTERN = /^data:image\/svg\+xml/;
+var SVG_URL_PATTERN = /\.svg((\?|#).*)?$/;
+function getBlob(arrayBuffer, url) {
+  if (isSVG(url)) {
+    console.warn('SVG cannot be parsed to imagebitmap');
+    return new Blob([new Uint8Array(arrayBuffer)], {
+      type: 'image/svg+xml'
+    });
+  }
+
+  return new Blob([new Uint8Array(arrayBuffer)]);
+}
+function getBlobOrDataUrl(arrayBuffer, url) {
+  if (isSVG(url)) {
+    var textDecoder = new TextDecoder();
+    var xmlText = textDecoder.decode(arrayBuffer);
+    var src = "data:image/svg+xml;base64,".concat(btoa(xmlText));
+    return src;
+  }
+
+  return getBlob(arrayBuffer, url);
+}
+
+function isSVG(url) {
+  return url && (SVG_DATA_URL_PATTERN.test(url) || SVG_URL_PATTERN.test(url));
+}
+// CONCATENATED MODULE: ./node_modules/@loaders.gl/images/dist/esm/lib/parsers/parse-to-image.js
+
+
+
+
+
+function parseToImage(_x, _x2, _x3) {
+  return _parseToImage.apply(this, arguments);
+}
+
+function _parseToImage() {
+  _parseToImage = Object(asyncToGenerator["a" /* default */])(regenerator_default.a.mark(function _callee(arrayBuffer, options, url) {
+    var blobOrDataUrl, URL, objectUrl;
+    return regenerator_default.a.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            blobOrDataUrl = getBlobOrDataUrl(arrayBuffer, url);
+            URL = self.URL || self.webkitURL;
+            objectUrl = typeof blobOrDataUrl !== 'string' && URL.createObjectURL(blobOrDataUrl);
+            _context.prev = 3;
+            _context.next = 6;
+            return loadToImage(objectUrl || blobOrDataUrl, options);
+
+          case 6:
+            return _context.abrupt("return", _context.sent);
+
+          case 7:
+            _context.prev = 7;
+
+            if (objectUrl) {
+              URL.revokeObjectURL(objectUrl);
+            }
+
+            return _context.finish(7);
+
+          case 10:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, null, [[3,, 7, 10]]);
+  }));
+  return _parseToImage.apply(this, arguments);
+}
+
+function loadToImage(_x4, _x5) {
+  return _loadToImage.apply(this, arguments);
+}
+
+function _loadToImage() {
+  _loadToImage = Object(asyncToGenerator["a" /* default */])(regenerator_default.a.mark(function _callee2(url, options) {
+    var image;
+    return regenerator_default.a.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            image = new Image();
+            image.src = url;
+
+            if (!(options.image && options.image.decode && image.decode)) {
+              _context2.next = 6;
+              break;
+            }
+
+            _context2.next = 5;
+            return image.decode();
+
+          case 5:
+            return _context2.abrupt("return", image);
+
+          case 6:
+            _context2.next = 8;
+            return new Promise(function (resolve, reject) {
+              try {
+                image.onload = function () {
+                  return resolve(image);
+                };
+
+                image.onerror = function (err) {
+                  return reject(new Error("Could not load image ".concat(url, ": ").concat(err)));
+                };
+              } catch (error) {
+                reject(error);
+              }
+            });
+
+          case 8:
+            return _context2.abrupt("return", _context2.sent);
+
+          case 9:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+  return _loadToImage.apply(this, arguments);
+}
+// CONCATENATED MODULE: ./node_modules/@loaders.gl/images/dist/esm/lib/parsers/parse-to-image-bitmap.js
+
+
+
+var imagebitmapOptionsSupported = true;
+function parseToImageBitmap(_x, _x2, _x3) {
+  return _parseToImageBitmap.apply(this, arguments);
+}
+
+function _parseToImageBitmap() {
+  _parseToImageBitmap = Object(asyncToGenerator["a" /* default */])(regenerator_default.a.mark(function _callee(arrayBuffer, options, url) {
+    var blob, imagebitmapOptions;
+    return regenerator_default.a.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            blob = getBlob(arrayBuffer, url);
+            imagebitmapOptions = options && options.imagebitmap;
+
+            if (isEmptyObject(imagebitmapOptions) || !imagebitmapOptionsSupported) {
+              imagebitmapOptions = null;
+            }
+
+            if (!imagebitmapOptions) {
+              _context.next = 14;
+              break;
+            }
+
+            _context.prev = 4;
+            _context.next = 7;
+            return createImageBitmap(blob, imagebitmapOptions);
+
+          case 7:
+            return _context.abrupt("return", _context.sent);
+
+          case 10:
+            _context.prev = 10;
+            _context.t0 = _context["catch"](4);
+            console.warn(_context.t0);
+            imagebitmapOptionsSupported = false;
+
+          case 14:
+            _context.next = 16;
+            return createImageBitmap(blob);
+
+          case 16:
+            return _context.abrupt("return", _context.sent);
+
+          case 17:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, null, [[4, 10]]);
+  }));
+  return _parseToImageBitmap.apply(this, arguments);
+}
+
+var EMPTY_OBJECT = {};
+
+function isEmptyObject(object) {
+  for (var key in object || EMPTY_OBJECT) {
+    return true;
+  }
+
+  return false;
+}
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.set.js
+var es6_set = __webpack_require__("ToIb");
+
+// CONCATENATED MODULE: ./node_modules/@loaders.gl/images/dist/esm/lib/binary-image-api/binary-image-parsers.js
+
+
+
+
+
+
+var BIG_ENDIAN = false;
+var LITTLE_ENDIAN = true;
+var mimeTypeMap = new Map([['image/png', {
+  test: isPng,
+  getSize: getPngSize
+}], ['image/jpeg', {
+  test: isJpeg,
+  getSize: getJpegSize
+}], ['image/gif', {
+  test: isGif,
+  getSize: getGifSize
+}], ['image/bmp', {
+  test: isBmp,
+  getSize: getBmpSize
+}]]);
+function isPng(dataView) {
+  return dataView.byteLength >= 24 && dataView.getUint32(0, BIG_ENDIAN) === 0x89504e47;
+}
+
+function getPngSize(dataView) {
+  return {
+    width: dataView.getUint32(16, BIG_ENDIAN),
+    height: dataView.getUint32(20, BIG_ENDIAN)
+  };
+}
+
+function isGif(dataView) {
+  return dataView.byteLength >= 10 && dataView.getUint32(0, BIG_ENDIAN) === 0x47494638;
+}
+
+function getGifSize(dataView) {
+  return {
+    width: dataView.getUint16(6, LITTLE_ENDIAN),
+    height: dataView.getUint16(8, LITTLE_ENDIAN)
+  };
+}
+
+function isBmp(dataView) {
+  return dataView.byteLength >= 14 && dataView.getUint16(0, BIG_ENDIAN) === 0x424d && dataView.getUint32(2, LITTLE_ENDIAN) === dataView.byteLength;
+}
+
+function getBmpSize(dataView) {
+  return {
+    width: dataView.getUint32(18, LITTLE_ENDIAN),
+    height: dataView.getUint32(22, LITTLE_ENDIAN)
+  };
+}
+
+function isJpeg(dataView) {
+  return dataView.byteLength >= 3 && dataView.getUint16(0, BIG_ENDIAN) === 0xffd8 && dataView.getUint8(2, BIG_ENDIAN) === 0xff;
+}
+
+function getJpegSize(dataView) {
+  if (dataView.byteLength < 2 || dataView.getUint16(0, BIG_ENDIAN) !== 0xffd8) {
+    return null;
+  }
+
+  var _getJpegMarkers = getJpegMarkers(),
+      tableMarkers = _getJpegMarkers.tableMarkers,
+      sofMarkers = _getJpegMarkers.sofMarkers;
+
+  var i = 2;
+
+  while (i < dataView.byteLength) {
+    var marker = dataView.getUint16(i, BIG_ENDIAN);
+
+    if (sofMarkers.has(marker)) {
+      return {
+        height: dataView.getUint16(i + 5, BIG_ENDIAN),
+        width: dataView.getUint16(i + 7, BIG_ENDIAN)
+      };
+    }
+
+    if (!tableMarkers.has(marker)) {
+      return null;
+    }
+
+    i += 2;
+    i += dataView.getUint16(i, BIG_ENDIAN);
+  }
+
+  return null;
+}
+
+function getJpegMarkers() {
+  var tableMarkers = new Set([0xffdb, 0xffc4, 0xffcc, 0xffdd, 0xfffe]);
+
+  for (var i = 0xffe0; i < 0xfff0; ++i) {
+    tableMarkers.add(i);
+  }
+
+  var sofMarkers = new Set([0xffc0, 0xffc1, 0xffc2, 0xffc3, 0xffc5, 0xffc6, 0xffc7, 0xffc9, 0xffca, 0xffcb, 0xffcd, 0xffce, 0xffcf, 0xffde]);
+  return {
+    tableMarkers: tableMarkers,
+    sofMarkers: sofMarkers
+  };
+}
+// CONCATENATED MODULE: ./node_modules/@loaders.gl/images/dist/esm/lib/binary-image-api/binary-image-api.js
+
+
+
+
+
+
+
+
+
+
+var ERR_INVALID_MIME_TYPE = "Invalid MIME type. Supported MIME types are: ".concat(Array.from(mimeTypeMap.keys()).join(', '));
+function isBinaryImage(arrayBuffer, mimeType) {
+  if (mimeType) {
+    var _getBinaryImageTypeHa = getBinaryImageTypeHandlers(mimeType),
+        test = _getBinaryImageTypeHa.test;
+
+    var dataView = toDataView(arrayBuffer);
+    return test(dataView);
+  }
+
+  return Boolean(getBinaryImageMIMEType(arrayBuffer));
+}
+function getBinaryImageMIMEType(arrayBuffer) {
+  var dataView = toDataView(arrayBuffer);
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
+
+  try {
+    for (var _iterator = mimeTypeMap.entries()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var _step$value = Object(slicedToArray["a" /* default */])(_step.value, 2),
+          mimeType = _step$value[0],
+          test = _step$value[1].test;
+
+      if (test(dataView)) {
+        return mimeType;
+      }
+    }
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+        _iterator["return"]();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
+      }
+    }
+  }
+
+  return null;
+}
+function getBinaryImageSize(arrayBuffer) {
+  var mimeType = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+  mimeType = mimeType || getBinaryImageMIMEType(arrayBuffer);
+
+  var _getBinaryImageTypeHa2 = getBinaryImageTypeHandlers(mimeType),
+      getSize = _getBinaryImageTypeHa2.getSize;
+
+  var dataView = toDataView(arrayBuffer);
+  var size = getSize(dataView);
+
+  if (!size) {
+    throw new Error("invalid image data for type: ".concat(mimeType));
+  }
+
+  return size;
+}
+
+function getBinaryImageTypeHandlers(mimeType) {
+  var handlers = mimeTypeMap.get(mimeType);
+
+  if (!handlers) {
+    throw new Error(ERR_INVALID_MIME_TYPE);
+  }
+
+  return handlers;
+}
+
+function toDataView(data) {
+  data = data.buffer || data;
+
+  if (data instanceof ArrayBuffer) {
+    return new DataView(data);
+  }
+
+  if (ArrayBuffer.isView(data)) {
+    return new DataView(data.buffer);
+  }
+
+  throw new Error('toDataView');
+}
+// CONCATENATED MODULE: ./node_modules/@loaders.gl/images/dist/esm/lib/parsers/parse-to-node-image.js
+
+
+
+function parseToNodeImage(arrayBuffer, options) {
+  var mimeType = getBinaryImageMIMEType(arrayBuffer);
+  var _parseImageNode = globals["a" /* global */]._parseImageNode;
+  assert_assert(_parseImageNode);
+  return _parseImageNode(arrayBuffer, mimeType, options);
+}
+// CONCATENATED MODULE: ./node_modules/@loaders.gl/images/dist/esm/lib/parsers/parse-image.js
+
+
+
+
+
+
+
+
+function parseImage(_x, _x2, _x3) {
+  return _parseImage.apply(this, arguments);
+}
+
+function _parseImage() {
+  _parseImage = Object(asyncToGenerator["a" /* default */])(regenerator_default.a.mark(function _callee(arrayBuffer, options, context) {
+    var imageOptions, imageType, _ref, url, loadType, image;
+
+    return regenerator_default.a.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            options = options || {};
+            imageOptions = options.image || {};
+            imageType = imageOptions.type || 'auto';
+            _ref = context || {}, url = _ref.url;
+            loadType = getLoadableImageType(imageType);
+            _context.t0 = loadType;
+            _context.next = _context.t0 === 'imagebitmap' ? 8 : _context.t0 === 'image' ? 12 : _context.t0 === 'data' ? 16 : 20;
+            break;
+
+          case 8:
+            _context.next = 10;
+            return parseToImageBitmap(arrayBuffer, options, url);
+
+          case 10:
+            image = _context.sent;
+            return _context.abrupt("break", 21);
+
+          case 12:
+            _context.next = 14;
+            return parseToImage(arrayBuffer, options, url);
+
+          case 14:
+            image = _context.sent;
+            return _context.abrupt("break", 21);
+
+          case 16:
+            _context.next = 18;
+            return parseToNodeImage(arrayBuffer, options);
+
+          case 18:
+            image = _context.sent;
+            return _context.abrupt("break", 21);
+
+          case 20:
+            assert_assert(false);
+
+          case 21:
+            if (imageType === 'data') {
+              image = getImageData(image);
+            }
+
+            return _context.abrupt("return", image);
+
+          case 23:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _parseImage.apply(this, arguments);
+}
+
+function getLoadableImageType(type) {
+  switch (type) {
+    case 'auto':
+    case 'data':
+      return getDefaultImageType();
+
+    default:
+      isImageTypeSupported(type);
+      return type;
+  }
+}
+// CONCATENATED MODULE: ./node_modules/@loaders.gl/images/dist/esm/image-loader.js
+
+
+
+var VERSION =  true ? "2.1.2" : undefined;
+var EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp', 'ico', 'svg'];
+var MIME_TYPES = ['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/bmp', 'image/vndmicrosofticon', 'image/svg+xml'];
+var ImageLoader = {
+  name: 'Images',
+  version: VERSION,
+  mimeTypes: MIME_TYPES,
+  extensions: EXTENSIONS,
+  parse: parseImage,
+  test: function test(arrayBuffer) {
+    var dataView = new DataView(arrayBuffer);
+    return isJpeg(dataView) || isBmp(dataView) || isGif(dataView) || isPng(dataView);
+  },
+  options: {
+    image: {
+      format: 'auto',
+      decode: true
+    }
+  }
+};
+/* harmony default export */ var image_loader = (ImageLoader);
+// EXTERNAL MODULE: ./node_modules/probe.gl/env.js
+var env = __webpack_require__("xSaR");
+
+// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/utils/json-loader.js
+function isJSON(text) {
+  var firstChar = text[0];
+  var lastChar = text[text.length - 1];
+  return firstChar === '{' && lastChar === '}' || firstChar === '[' && lastChar === ']';
+}
+
+/* harmony default export */ var json_loader = ({
+  name: 'JSON',
+  extensions: ['json', 'geojson'],
+  testText: isJSON,
+  parseTextSync: JSON.parse
+});
+// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/lib/init.js
+
+
+
+
+
+
+
+var version =  true ? "8.1.3" : undefined;
+var existingVersion = env["global"].deck && env["global"].deck.VERSION;
+
+if (existingVersion && existingVersion !== version) {
+  throw new Error("deck.gl - multiple versions detected: ".concat(existingVersion, " vs ").concat(version));
+}
+
+if (!existingVersion) {
+  if (false) {}
+
+  env["global"].deck = Object.assign(env["global"].deck || {}, {
+    VERSION: version,
+    version: version,
+    log: log["a" /* default */],
+    _registerLoggers: esm_debug["b" /* register */]
+  });
+  Object(register_loaders["b" /* registerLoaders */])([json_loader, image_loader]);
+}
+
+/* harmony default export */ var init = (env["global"].deck);
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.date.now.js
+var es6_date_now = __webpack_require__("1dPr");
+
+// EXTERNAL MODULE: ./node_modules/@luma.gl/webgl/dist/esm/init.js
+var esm_init = __webpack_require__("rta6");
+
+// EXTERNAL MODULE: ./node_modules/@luma.gl/webgl/dist/esm/utils/assert.js
+var utils_assert = __webpack_require__("CxzY");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/assertThisInitialized.js
+var assertThisInitialized = __webpack_require__("uRdJ");
+
+// EXTERNAL MODULE: ./node_modules/@luma.gl/webgl/dist/esm/classes/resource.js
+var resource = __webpack_require__("L8KH");
+
+// EXTERNAL MODULE: ./node_modules/@luma.gl/webgl/dist/esm/features/features.js
+var features = __webpack_require__("d3kR");
+
+// EXTERNAL MODULE: ./node_modules/@luma.gl/webgl/dist/esm/features/webgl-features-table.js
+var webgl_features_table = __webpack_require__("tMmZ");
+
+// CONCATENATED MODULE: ./node_modules/@luma.gl/webgl/dist/esm/classes/query.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var GL_QUERY_RESULT = 0x8866;
+var GL_QUERY_RESULT_AVAILABLE = 0x8867;
+var GL_TIME_ELAPSED_EXT = 0x88bf;
+var GL_GPU_DISJOINT_EXT = 0x8fbb;
+var GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN = 0x8c88;
+var GL_ANY_SAMPLES_PASSED = 0x8c2f;
+var GL_ANY_SAMPLES_PASSED_CONSERVATIVE = 0x8d6a;
+
+var query_Query = function (_Resource) {
+  Object(inherits["a" /* default */])(Query, _Resource);
+
+  Object(createClass["a" /* default */])(Query, null, [{
+    key: "isSupported",
+    value: function isSupported(gl) {
+      var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+      var webgl2 = Object(gltools_dist_esm["f" /* isWebGL2 */])(gl);
+      var hasTimerQuery = Object(features["c" /* hasFeatures */])(gl, webgl_features_table["a" /* FEATURES */].TIMER_QUERY);
+      var supported = webgl2 || hasTimerQuery;
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = opts[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var key = _step.value;
+
+          switch (key) {
+            case 'queries':
+              supported = supported && webgl2;
+              break;
+
+            case 'timers':
+              supported = supported && hasTimerQuery;
+              break;
+
+            default:
+              Object(utils_assert["a" /* default */])(false);
+          }
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+            _iterator["return"]();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
+      return supported;
+    }
+  }]);
+
+  function Query(gl) {
+    var _this;
+
+    var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+    Object(classCallCheck["a" /* default */])(this, Query);
+
+    _this = Object(possibleConstructorReturn["a" /* default */])(this, Object(getPrototypeOf["a" /* default */])(Query).call(this, gl, opts));
+    _this.target = null;
+    _this._queryPending = false;
+    _this._pollingPromise = null;
+    Object.seal(Object(assertThisInitialized["a" /* default */])(_this));
+    return _this;
+  }
+
+  Object(createClass["a" /* default */])(Query, [{
+    key: "beginTimeElapsedQuery",
+    value: function beginTimeElapsedQuery() {
+      return this.begin(GL_TIME_ELAPSED_EXT);
+    }
+  }, {
+    key: "beginOcclusionQuery",
+    value: function beginOcclusionQuery() {
+      var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+          _ref$conservative = _ref.conservative,
+          conservative = _ref$conservative === void 0 ? false : _ref$conservative;
+
+      return this.begin(conservative ? GL_ANY_SAMPLES_PASSED_CONSERVATIVE : GL_ANY_SAMPLES_PASSED);
+    }
+  }, {
+    key: "beginTransformFeedbackQuery",
+    value: function beginTransformFeedbackQuery() {
+      return this.begin(GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN);
+    }
+  }, {
+    key: "begin",
+    value: function begin(target) {
+      if (this._queryPending) {
+        return this;
+      }
+
+      this.target = target;
+      this.gl.beginQuery(this.target, this.handle);
+      return this;
+    }
+  }, {
+    key: "end",
+    value: function end() {
+      if (this._queryPending) {
+        return this;
+      }
+
+      if (this.target) {
+        this.gl.endQuery(this.target);
+        this.target = null;
+        this._queryPending = true;
+      }
+
+      return this;
+    }
+  }, {
+    key: "isResultAvailable",
+    value: function isResultAvailable() {
+      if (!this._queryPending) {
+        return false;
+      }
+
+      var resultAvailable = this.gl.getQueryParameter(this.handle, GL_QUERY_RESULT_AVAILABLE);
+
+      if (resultAvailable) {
+        this._queryPending = false;
+      }
+
+      return resultAvailable;
+    }
+  }, {
+    key: "isTimerDisjoint",
+    value: function isTimerDisjoint() {
+      return this.gl.getParameter(GL_GPU_DISJOINT_EXT);
+    }
+  }, {
+    key: "getResult",
+    value: function getResult() {
+      return this.gl.getQueryParameter(this.handle, GL_QUERY_RESULT);
+    }
+  }, {
+    key: "getTimerMilliseconds",
+    value: function getTimerMilliseconds() {
+      return this.getResult() / 1e6;
+    }
+  }, {
+    key: "createPoll",
+    value: function createPoll() {
+      var _this2 = this;
+
+      var limit = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : Number.POSITIVE_INFINITY;
+
+      if (this._pollingPromise) {
+        return this._pollingPromise;
+      }
+
+      var counter = 0;
+      this._pollingPromise = new Promise(function (resolve, reject) {
+        var poll = function poll() {
+          if (_this2.isResultAvailable()) {
+            resolve(_this2.getResult());
+            _this2._pollingPromise = null;
+          } else if (counter++ > limit) {
+            reject('Timed out');
+            _this2._pollingPromise = null;
+          } else {
+            requestAnimationFrame(poll);
+          }
+        };
+
+        requestAnimationFrame(poll);
+      });
+      return this._pollingPromise;
+    }
+  }, {
+    key: "_createHandle",
+    value: function _createHandle() {
+      return Query.isSupported(this.gl) ? this.gl.createQuery() : null;
+    }
+  }, {
+    key: "_deleteHandle",
+    value: function _deleteHandle() {
+      this.gl.deleteQuery(this.handle);
+    }
+  }]);
+
+  return Query;
+}(resource["a" /* default */]);
+
+
+// CONCATENATED MODULE: ./node_modules/@luma.gl/webgl/dist/esm/webgl-utils/request-animation-frame.js
+function request_animation_frame_requestAnimationFrame(callback) {
+  return typeof window !== 'undefined' && window.requestAnimationFrame ? window.requestAnimationFrame(callback) : setTimeout(callback, 1000 / 60);
+}
+function cancelAnimationFrame(timerId) {
+  return typeof window !== 'undefined' && window.cancelAnimationFrame ? window.cancelAnimationFrame(timerId) : clearTimeout(timerId);
+}
+// CONCATENATED MODULE: ./node_modules/@luma.gl/engine/dist/esm/lib/animation-loop.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var isPage = Object(env["isBrowser"])() && typeof document !== 'undefined';
+var statIdCounter = 0;
+
+var animation_loop_AnimationLoop = function () {
+  function AnimationLoop() {
+    var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    Object(classCallCheck["a" /* default */])(this, AnimationLoop);
+
+    var _props$onCreateContex = props.onCreateContext,
+        onCreateContext = _props$onCreateContex === void 0 ? function (opts) {
+      return Object(gltools_dist_esm["a" /* createGLContext */])(opts);
+    } : _props$onCreateContex,
+        _props$onAddHTML = props.onAddHTML,
+        onAddHTML = _props$onAddHTML === void 0 ? null : _props$onAddHTML,
+        _props$onInitialize = props.onInitialize,
+        onInitialize = _props$onInitialize === void 0 ? function () {} : _props$onInitialize,
+        _props$onRender = props.onRender,
+        onRender = _props$onRender === void 0 ? function () {} : _props$onRender,
+        _props$onFinalize = props.onFinalize,
+        onFinalize = _props$onFinalize === void 0 ? function () {} : _props$onFinalize,
+        _props$gl = props.gl,
+        gl = _props$gl === void 0 ? null : _props$gl,
+        _props$glOptions = props.glOptions,
+        glOptions = _props$glOptions === void 0 ? {} : _props$glOptions,
+        _props$debug = props.debug,
+        debug = _props$debug === void 0 ? false : _props$debug,
+        _props$createFramebuf = props.createFramebuffer,
+        createFramebuffer = _props$createFramebuf === void 0 ? false : _props$createFramebuf,
+        _props$autoResizeView = props.autoResizeViewport,
+        autoResizeViewport = _props$autoResizeView === void 0 ? true : _props$autoResizeView,
+        _props$autoResizeDraw = props.autoResizeDrawingBuffer,
+        autoResizeDrawingBuffer = _props$autoResizeDraw === void 0 ? true : _props$autoResizeDraw,
+        _props$stats = props.stats,
+        stats = _props$stats === void 0 ? esm_init["a" /* lumaStats */].get("animation-loop-".concat(statIdCounter++)) : _props$stats;
+    var _props$useDevicePixel = props.useDevicePixels,
+        useDevicePixels = _props$useDevicePixel === void 0 ? true : _props$useDevicePixel;
+
+    if ('useDevicePixelRatio' in props) {
+      gltools_dist_esm["g" /* log */].deprecated('useDevicePixelRatio', 'useDevicePixels')();
+      useDevicePixels = props.useDevicePixelRatio;
+    }
+
+    this.props = {
+      onCreateContext: onCreateContext,
+      onAddHTML: onAddHTML,
+      onInitialize: onInitialize,
+      onRender: onRender,
+      onFinalize: onFinalize,
+      gl: gl,
+      glOptions: glOptions,
+      debug: debug,
+      createFramebuffer: createFramebuffer
+    };
+    this.gl = gl;
+    this.needsRedraw = null;
+    this.timeline = null;
+    this.stats = stats;
+    this.cpuTime = this.stats.get('CPU Time');
+    this.gpuTime = this.stats.get('GPU Time');
+    this.frameRate = this.stats.get('Frame Rate');
+    this._initialized = false;
+    this._running = false;
+    this._animationFrameId = null;
+    this._nextFramePromise = null;
+    this._resolveNextFrame = null;
+    this._cpuStartTime = 0;
+    this.setProps({
+      autoResizeViewport: autoResizeViewport,
+      autoResizeDrawingBuffer: autoResizeDrawingBuffer,
+      useDevicePixels: useDevicePixels
+    });
+    this.start = this.start.bind(this);
+    this.stop = this.stop.bind(this);
+    this._pageLoadPromise = null;
+    this._onMousemove = this._onMousemove.bind(this);
+    this._onMouseleave = this._onMouseleave.bind(this);
+  }
+
+  Object(createClass["a" /* default */])(AnimationLoop, [{
+    key: "delete",
+    value: function _delete() {
+      this.stop();
+
+      this._setDisplay(null);
+    }
+  }, {
+    key: "setNeedsRedraw",
+    value: function setNeedsRedraw(reason) {
+      Object(utils_assert["a" /* default */])(typeof reason === 'string');
+      this.needsRedraw = this.needsRedraw || reason;
+      return this;
+    }
+  }, {
+    key: "setProps",
+    value: function setProps(props) {
+      if ('autoResizeViewport' in props) {
+        this.autoResizeViewport = props.autoResizeViewport;
+      }
+
+      if ('autoResizeDrawingBuffer' in props) {
+        this.autoResizeDrawingBuffer = props.autoResizeDrawingBuffer;
+      }
+
+      if ('useDevicePixels' in props) {
+        this.useDevicePixels = props.useDevicePixels;
+      }
+
+      return this;
+    }
+  }, {
+    key: "start",
+    value: function start() {
+      var _this = this;
+
+      var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+      if (this._running) {
+        return this;
+      }
+
+      this._running = true;
+
+      this._getPageLoadPromise().then(function () {
+        if (!_this._running || _this._initialized) {
+          return null;
+        }
+
+        _this._createWebGLContext(opts);
+
+        _this._createFramebuffer();
+
+        _this._startEventHandling();
+
+        _this._initializeCallbackData();
+
+        _this._updateCallbackData();
+
+        _this._resizeCanvasDrawingBuffer();
+
+        _this._resizeViewport();
+
+        _this._gpuTimeQuery = query_Query.isSupported(_this.gl, ['timers']) ? new query_Query(_this.gl) : null;
+        _this._initialized = true;
+        return _this.onInitialize(_this.animationProps);
+      }).then(function (appContext) {
+        if (_this._running) {
+          _this._addCallbackData(appContext || {});
+
+          if (appContext !== false) {
+            _this._startLoop();
+          }
+        }
+      });
+
+      return this;
+    }
+  }, {
+    key: "redraw",
+    value: function redraw() {
+      this._beginTimers();
+
+      this._setupFrame();
+
+      this._updateCallbackData();
+
+      this._renderFrame(this.animationProps);
+
+      this._clearNeedsRedraw();
+
+      if (this.offScreen && this.gl.commit) {
+        this.gl.commit();
+      }
+
+      if (this._resolveNextFrame) {
+        this._resolveNextFrame(this);
+
+        this._nextFramePromise = null;
+        this._resolveNextFrame = null;
+      }
+
+      this._endTimers();
+
+      return this;
+    }
+  }, {
+    key: "stop",
+    value: function stop() {
+      if (this._running) {
+        this._finalizeCallbackData();
+
+        cancelAnimationFrame(this._animationFrameId);
+        this._nextFramePromise = null;
+        this._resolveNextFrame = null;
+        this._animationFrameId = null;
+        this._running = false;
+      }
+
+      return this;
+    }
+  }, {
+    key: "attachTimeline",
+    value: function attachTimeline(timeline) {
+      this.timeline = timeline;
+      return this.timeline;
+    }
+  }, {
+    key: "detachTimeline",
+    value: function detachTimeline() {
+      this.timeline = null;
+    }
+  }, {
+    key: "waitForRender",
+    value: function waitForRender() {
+      var _this2 = this;
+
+      this.setNeedsRedraw('waitForRender');
+
+      if (!this._nextFramePromise) {
+        this._nextFramePromise = new Promise(function (resolve) {
+          _this2._resolveNextFrame = resolve;
+        });
+      }
+
+      return this._nextFramePromise;
+    }
+  }, {
+    key: "toDataURL",
+    value: function () {
+      var _toDataURL = Object(asyncToGenerator["a" /* default */])(regenerator_default.a.mark(function _callee() {
+        return regenerator_default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                this.setNeedsRedraw('toDataURL');
+                _context.next = 3;
+                return this.waitForRender();
+
+              case 3:
+                return _context.abrupt("return", this.gl.canvas.toDataURL());
+
+              case 4:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function toDataURL() {
+        return _toDataURL.apply(this, arguments);
+      }
+
+      return toDataURL;
+    }()
+  }, {
+    key: "onCreateContext",
+    value: function onCreateContext() {
+      var _this$props;
+
+      return (_this$props = this.props).onCreateContext.apply(_this$props, arguments);
+    }
+  }, {
+    key: "onInitialize",
+    value: function onInitialize() {
+      var _this$props2;
+
+      return (_this$props2 = this.props).onInitialize.apply(_this$props2, arguments);
+    }
+  }, {
+    key: "onRender",
+    value: function onRender() {
+      var _this$props3;
+
+      return (_this$props3 = this.props).onRender.apply(_this$props3, arguments);
+    }
+  }, {
+    key: "onFinalize",
+    value: function onFinalize() {
+      var _this$props4;
+
+      return (_this$props4 = this.props).onFinalize.apply(_this$props4, arguments);
+    }
+  }, {
+    key: "getHTMLControlValue",
+    value: function getHTMLControlValue(id) {
+      var defaultValue = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+      var element = document.getElementById(id);
+      return element ? Number(element.value) : defaultValue;
+    }
+  }, {
+    key: "setViewParameters",
+    value: function setViewParameters() {
+      gltools_dist_esm["g" /* log */].removed('AnimationLoop.setViewParameters', 'AnimationLoop.setProps')();
+      return this;
+    }
+  }, {
+    key: "_startLoop",
+    value: function _startLoop() {
+      var _this3 = this;
+
+      var renderFrame = function renderFrame() {
+        if (!_this3._running) {
+          return;
+        }
+
+        _this3.redraw();
+
+        _this3._animationFrameId = _this3._requestAnimationFrame(renderFrame);
+      };
+
+      cancelAnimationFrame(this._animationFrameId);
+      this._animationFrameId = this._requestAnimationFrame(renderFrame);
+    }
+  }, {
+    key: "_getPageLoadPromise",
+    value: function _getPageLoadPromise() {
+      if (!this._pageLoadPromise) {
+        this._pageLoadPromise = isPage ? new Promise(function (resolve, reject) {
+          if (isPage && document.readyState === 'complete') {
+            resolve(document);
+            return;
+          }
+
+          window.addEventListener('load', function () {
+            resolve(document);
+          });
+        }) : Promise.resolve({});
+      }
+
+      return this._pageLoadPromise;
+    }
+  }, {
+    key: "_setDisplay",
+    value: function _setDisplay(display) {
+      if (this.display) {
+        this.display["delete"]();
+        this.display.animationLoop = null;
+      }
+
+      if (display) {
+        display.animationLoop = this;
+      }
+
+      this.display = display;
+    }
+  }, {
+    key: "_requestAnimationFrame",
+    value: function _requestAnimationFrame(renderFrameCallback) {
+      if (this.display && this.display.requestAnimationFrame(renderFrameCallback)) {
+        return;
+      }
+
+      request_animation_frame_requestAnimationFrame(renderFrameCallback);
+    }
+  }, {
+    key: "_renderFrame",
+    value: function _renderFrame() {
+      if (this.display) {
+        var _this$display;
+
+        (_this$display = this.display)._renderFrame.apply(_this$display, arguments);
+
+        return;
+      }
+
+      this.onRender.apply(this, arguments);
+    }
+  }, {
+    key: "_clearNeedsRedraw",
+    value: function _clearNeedsRedraw() {
+      this.needsRedraw = null;
+    }
+  }, {
+    key: "_setupFrame",
+    value: function _setupFrame() {
+      if (this._onSetupFrame) {
+        this._onSetupFrame(this.animationProps);
+      } else {
+        this._resizeCanvasDrawingBuffer();
+
+        this._resizeViewport();
+
+        this._resizeFramebuffer();
+      }
+    }
+  }, {
+    key: "_initializeCallbackData",
+    value: function _initializeCallbackData() {
+      this.animationProps = {
+        gl: this.gl,
+        stop: this.stop,
+        canvas: this.gl.canvas,
+        framebuffer: this.framebuffer,
+        useDevicePixels: this.useDevicePixels,
+        needsRedraw: null,
+        startTime: Date.now(),
+        engineTime: 0,
+        tick: 0,
+        tock: 0,
+        time: 0,
+        _timeline: this.timeline,
+        _loop: this,
+        _animationLoop: this,
+        _mousePosition: null
+      };
+    }
+  }, {
+    key: "_updateCallbackData",
+    value: function _updateCallbackData() {
+      var _this$_getSizeAndAspe = this._getSizeAndAspect(),
+          width = _this$_getSizeAndAspe.width,
+          height = _this$_getSizeAndAspe.height,
+          aspect = _this$_getSizeAndAspe.aspect;
+
+      if (width !== this.animationProps.width || height !== this.animationProps.height) {
+        this.setNeedsRedraw('drawing buffer resized');
+      }
+
+      if (aspect !== this.animationProps.aspect) {
+        this.setNeedsRedraw('drawing buffer aspect changed');
+      }
+
+      this.animationProps.width = width;
+      this.animationProps.height = height;
+      this.animationProps.aspect = aspect;
+      this.animationProps.needsRedraw = this.needsRedraw;
+      this.animationProps.engineTime = Date.now() - this.animationProps.startTime;
+
+      if (this.timeline) {
+        this.timeline.update(this.animationProps.engineTime);
+      }
+
+      this.animationProps.tick = Math.floor(this.animationProps.time / 1000 * 60);
+      this.animationProps.tock++;
+      this.animationProps.time = this.timeline ? this.timeline.getTime() : this.animationProps.engineTime;
+      this.animationProps._offScreen = this.offScreen;
+    }
+  }, {
+    key: "_finalizeCallbackData",
+    value: function _finalizeCallbackData() {
+      this.onFinalize(this.animationProps);
+    }
+  }, {
+    key: "_addCallbackData",
+    value: function _addCallbackData(appContext) {
+      if (Object(esm_typeof["a" /* default */])(appContext) === 'object' && appContext !== null) {
+        this.animationProps = Object.assign({}, this.animationProps, appContext);
+      }
+    }
+  }, {
+    key: "_createWebGLContext",
+    value: function _createWebGLContext(opts) {
+      this.offScreen = opts.canvas && typeof OffscreenCanvas !== 'undefined' && opts.canvas instanceof OffscreenCanvas;
+      opts = Object.assign({}, opts, this.props.glOptions);
+      this.gl = this.props.gl ? Object(gltools_dist_esm["d" /* instrumentGLContext */])(this.props.gl, opts) : this.onCreateContext(opts);
+
+      if (!Object(gltools_dist_esm["e" /* isWebGL */])(this.gl)) {
+        throw new Error('AnimationLoop.onCreateContext - illegal context returned');
+      }
+
+      Object(gltools_dist_esm["h" /* resetParameters */])(this.gl);
+
+      this._createInfoDiv();
+    }
+  }, {
+    key: "_createInfoDiv",
+    value: function _createInfoDiv() {
+      if (this.gl.canvas && this.props.onAddHTML) {
+        var wrapperDiv = document.createElement('div');
+        document.body.appendChild(wrapperDiv);
+        wrapperDiv.style.position = 'relative';
+        var div = document.createElement('div');
+        div.style.position = 'absolute';
+        div.style.left = '10px';
+        div.style.bottom = '10px';
+        div.style.width = '300px';
+        div.style.background = 'white';
+        wrapperDiv.appendChild(this.gl.canvas);
+        wrapperDiv.appendChild(div);
+        var html = this.props.onAddHTML(div);
+
+        if (html) {
+          div.innerHTML = html;
+        }
+      }
+    }
+  }, {
+    key: "_getSizeAndAspect",
+    value: function _getSizeAndAspect() {
+      var width = this.gl.drawingBufferWidth;
+      var height = this.gl.drawingBufferHeight;
+      var aspect = 1;
+      var canvas = this.gl.canvas;
+
+      if (canvas && canvas.clientHeight) {
+        aspect = canvas.clientWidth / canvas.clientHeight;
+      } else if (width > 0 && height > 0) {
+        aspect = width / height;
+      }
+
+      return {
+        width: width,
+        height: height,
+        aspect: aspect
+      };
+    }
+  }, {
+    key: "_resizeViewport",
+    value: function _resizeViewport() {
+      if (this.autoResizeViewport) {
+        this.gl.viewport(0, 0, this.gl.drawingBufferWidth, this.gl.drawingBufferHeight);
+      }
+    }
+  }, {
+    key: "_resizeCanvasDrawingBuffer",
+    value: function _resizeCanvasDrawingBuffer() {
+      if (this.autoResizeDrawingBuffer) {
+        Object(gltools_dist_esm["i" /* resizeGLContext */])(this.gl, {
+          useDevicePixels: this.useDevicePixels
+        });
+      }
+    }
+  }, {
+    key: "_createFramebuffer",
+    value: function _createFramebuffer() {
+      if (this.props.createFramebuffer) {
+        this.framebuffer = new framebuffer["a" /* default */](this.gl);
+      }
+    }
+  }, {
+    key: "_resizeFramebuffer",
+    value: function _resizeFramebuffer() {
+      if (this.framebuffer) {
+        this.framebuffer.resize({
+          width: this.gl.drawingBufferWidth,
+          height: this.gl.drawingBufferHeight
+        });
+      }
+    }
+  }, {
+    key: "_beginTimers",
+    value: function _beginTimers() {
+      this.frameRate.timeEnd();
+      this.frameRate.timeStart();
+
+      if (this._gpuTimeQuery && this._gpuTimeQuery.isResultAvailable() && !this._gpuTimeQuery.isTimerDisjoint()) {
+        this.stats.get('GPU Time').addTime(this._gpuTimeQuery.getTimerMilliseconds());
+      }
+
+      if (this._gpuTimeQuery) {
+        this._gpuTimeQuery.beginTimeElapsedQuery();
+      }
+
+      this.cpuTime.timeStart();
+    }
+  }, {
+    key: "_endTimers",
+    value: function _endTimers() {
+      this.cpuTime.timeEnd();
+
+      if (this._gpuTimeQuery) {
+        this._gpuTimeQuery.end();
+      }
+    }
+  }, {
+    key: "_startEventHandling",
+    value: function _startEventHandling() {
+      var canvas = this.gl.canvas;
+
+      if (canvas) {
+        canvas.addEventListener('mousemove', this._onMousemove);
+        canvas.addEventListener('mouseleave', this._onMouseleave);
+      }
+    }
+  }, {
+    key: "_onMousemove",
+    value: function _onMousemove(e) {
+      this.animationProps._mousePosition = [e.offsetX, e.offsetY];
+    }
+  }, {
+    key: "_onMouseleave",
+    value: function _onMouseleave(e) {
+      this.animationProps._mousePosition = null;
+    }
+  }]);
+
+  return AnimationLoop;
+}();
+
+
+// EXTERNAL MODULE: ./node_modules/hammerjs/hammer.js
+var hammer = __webpack_require__("yLV6");
+var hammer_default = /*#__PURE__*/__webpack_require__.n(hammer);
+
+// CONCATENATED MODULE: ./node_modules/mjolnir.js/dist/esm/utils/hammer-overrides.js
+var INPUT_START = 1;
+var INPUT_MOVE = 2;
+var INPUT_END = 4;
+var MOUSE_INPUT_MAP = {
+  mousedown: INPUT_START,
+  mousemove: INPUT_MOVE,
+  mouseup: INPUT_END
+};
+
+function some(array, predict) {
+  for (var i = 0; i < array.length; i++) {
+    if (predict(array[i])) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function enhancePointerEventInput(PointerEventInput) {
+  var oldHandler = PointerEventInput.prototype.handler;
+
+  PointerEventInput.prototype.handler = function handler(ev) {
+    var store = this.store;
+
+    if (ev.button > 0) {
+      if (!some(store, function (e) {
+        return e.pointerId === ev.pointerId;
+      })) {
+        store.push(ev);
+      }
+    }
+
+    oldHandler.call(this, ev);
+  };
+}
+function enhanceMouseInput(MouseInput) {
+  MouseInput.prototype.handler = function handler(ev) {
+    var eventType = MOUSE_INPUT_MAP[ev.type];
+
+    if (eventType & INPUT_START && ev.button >= 0) {
+      this.pressed = true;
+    }
+
+    if (eventType & INPUT_MOVE && ev.which === 0) {
+      eventType = INPUT_END;
+    }
+
+    if (!this.pressed) {
+      return;
+    }
+
+    if (eventType & INPUT_END) {
+      this.pressed = false;
+    }
+
+    this.callback(this.manager, eventType, {
+      pointers: [ev],
+      changedPointers: [ev],
+      pointerType: 'mouse',
+      srcEvent: ev
+    });
+  };
+}
+// CONCATENATED MODULE: ./node_modules/mjolnir.js/dist/esm/utils/hammer.browser.js
+
+
+enhancePointerEventInput(hammer_default.a.PointerEventInput);
+enhanceMouseInput(hammer_default.a.MouseInput);
+var Manager = hammer_default.a.Manager;
+/* harmony default export */ var hammer_browser = (hammer_default.a);
+// CONCATENATED MODULE: ./node_modules/mjolnir.js/dist/esm/constants.js
+
+var RECOGNIZERS = hammer_browser ? [[hammer_browser.Rotate, {
+  enable: false
+}], [hammer_browser.Pinch, {
+  enable: false
+}], [hammer_browser.Swipe, {
+  enable: false
+}], [hammer_browser.Pan, {
+  threshold: 0,
+  enable: false
+}], [hammer_browser.Press, {
+  enable: false
+}], [hammer_browser.Tap, {
+  event: 'doubletap',
+  taps: 2,
+  enable: false
+}], [hammer_browser.Tap, {
+  event: 'anytap',
+  enable: false
+}], [hammer_browser.Tap, {
+  enable: false
+}]] : null;
+var RECOGNIZER_COMPATIBLE_MAP = {
+  rotate: ['pinch'],
+  pinch: ['pan'],
+  pan: ['press', 'doubletap', 'anytap', 'tap'],
+  doubletap: ['anytap'],
+  anytap: ['tap']
+};
+var RECOGNIZER_FALLBACK_MAP = {
+  doubletap: ['tap']
+};
+var BASIC_EVENT_ALIASES = {
+  pointerdown: 'pointerdown',
+  pointermove: 'pointermove',
+  pointerup: 'pointerup',
+  touchstart: 'pointerdown',
+  touchmove: 'pointermove',
+  touchend: 'pointerup',
+  mousedown: 'pointerdown',
+  mousemove: 'pointermove',
+  mouseup: 'pointerup'
+};
+var INPUT_EVENT_TYPES = {
+  KEY_EVENTS: ['keydown', 'keyup'],
+  MOUSE_EVENTS: ['mousedown', 'mousemove', 'mouseup', 'mouseover', 'mouseout', 'mouseleave'],
+  WHEEL_EVENTS: ['wheel', 'mousewheel', 'DOMMouseScroll']
+};
+var EVENT_RECOGNIZER_MAP = {
+  tap: 'tap',
+  anytap: 'anytap',
+  doubletap: 'doubletap',
+  press: 'press',
+  pinch: 'pinch',
+  pinchin: 'pinch',
+  pinchout: 'pinch',
+  pinchstart: 'pinch',
+  pinchmove: 'pinch',
+  pinchend: 'pinch',
+  pinchcancel: 'pinch',
+  rotate: 'rotate',
+  rotatestart: 'rotate',
+  rotatemove: 'rotate',
+  rotateend: 'rotate',
+  rotatecancel: 'rotate',
+  pan: 'pan',
+  panstart: 'pan',
+  panmove: 'pan',
+  panup: 'pan',
+  pandown: 'pan',
+  panleft: 'pan',
+  panright: 'pan',
+  panend: 'pan',
+  pancancel: 'pan',
+  swipe: 'swipe',
+  swipeleft: 'swipe',
+  swiperight: 'swipe',
+  swipeup: 'swipe',
+  swipedown: 'swipe'
+};
+var GESTURE_EVENT_ALIASES = {
+  click: 'tap',
+  anyclick: 'anytap',
+  dblclick: 'doubletap',
+  mousedown: 'pointerdown',
+  mousemove: 'pointermove',
+  mouseup: 'pointerup',
+  mouseover: 'pointerover',
+  mouseout: 'pointerout',
+  mouseleave: 'pointerleave'
+};
+// EXTERNAL MODULE: ./node_modules/mjolnir.js/dist/esm/utils/globals.js
+var utils_globals = __webpack_require__("Vame");
+
+// CONCATENATED MODULE: ./node_modules/mjolnir.js/dist/esm/inputs/wheel-input.js
+
+
+
+
+
+
+
+
+var firefox = utils_globals["b" /* userAgent */].indexOf('firefox') !== -1;
+var WHEEL_EVENTS = INPUT_EVENT_TYPES.WHEEL_EVENTS;
+var EVENT_TYPE = 'wheel';
+var WHEEL_DELTA_MAGIC_SCALER = 4.000244140625;
+var WHEEL_DELTA_PER_LINE = 40;
+var SHIFT_MULTIPLIER = 0.25;
+
+var wheel_input_WheelInput = function () {
+  function WheelInput(element, callback) {
+    var _this = this;
+
+    var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+    Object(classCallCheck["a" /* default */])(this, WheelInput);
+
+    this.element = element;
+    this.callback = callback;
+    this.options = Object.assign({
+      enable: true
+    }, options);
+    this.events = WHEEL_EVENTS.concat(options.events || []);
+    this.handleEvent = this.handleEvent.bind(this);
+    this.events.forEach(function (event) {
+      return element.addEventListener(event, _this.handleEvent, utils_globals["a" /* passiveSupported */] ? {
+        passive: false
+      } : false);
+    });
+  }
+
+  Object(createClass["a" /* default */])(WheelInput, [{
+    key: "destroy",
+    value: function destroy() {
+      var _this2 = this;
+
+      this.events.forEach(function (event) {
+        return _this2.element.removeEventListener(event, _this2.handleEvent);
+      });
+    }
+  }, {
+    key: "enableEventType",
+    value: function enableEventType(eventType, enabled) {
+      if (eventType === EVENT_TYPE) {
+        this.options.enable = enabled;
+      }
+    }
+  }, {
+    key: "handleEvent",
+    value: function handleEvent(event) {
+      if (!this.options.enable) {
+        return;
+      }
+
+      var value = event.deltaY;
+
+      if (utils_globals["c" /* window */].WheelEvent) {
+        if (firefox && event.deltaMode === utils_globals["c" /* window */].WheelEvent.DOM_DELTA_PIXEL) {
+          value /= utils_globals["c" /* window */].devicePixelRatio;
+        }
+
+        if (event.deltaMode === utils_globals["c" /* window */].WheelEvent.DOM_DELTA_LINE) {
+          value *= WHEEL_DELTA_PER_LINE;
+        }
+      }
+
+      var wheelPosition = {
+        x: event.clientX,
+        y: event.clientY
+      };
+
+      if (value !== 0 && value % WHEEL_DELTA_MAGIC_SCALER === 0) {
+        value = Math.floor(value / WHEEL_DELTA_MAGIC_SCALER);
+      }
+
+      if (event.shiftKey && value) {
+        value = value * SHIFT_MULTIPLIER;
+      }
+
+      this._onWheel(event, -value, wheelPosition);
+    }
+  }, {
+    key: "_onWheel",
+    value: function _onWheel(srcEvent, delta, position) {
+      this.callback({
+        type: EVENT_TYPE,
+        center: position,
+        delta: delta,
+        srcEvent: srcEvent,
+        pointerType: 'mouse',
+        target: srcEvent.target
+      });
+    }
+  }]);
+
+  return WheelInput;
+}();
+
+
+// CONCATENATED MODULE: ./node_modules/mjolnir.js/dist/esm/inputs/move-input.js
+
+
+
+
+
+
+var MOUSE_EVENTS = INPUT_EVENT_TYPES.MOUSE_EVENTS;
+var MOVE_EVENT_TYPE = 'pointermove';
+var OVER_EVENT_TYPE = 'pointerover';
+var OUT_EVENT_TYPE = 'pointerout';
+var LEAVE_EVENT_TYPE = 'pointerleave';
+
+var move_input_MoveInput = function () {
+  function MoveInput(element, callback) {
+    var _this = this;
+
+    var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+    Object(classCallCheck["a" /* default */])(this, MoveInput);
+
+    this.element = element;
+    this.callback = callback;
+    this.pressed = false;
+    this.options = Object.assign({
+      enable: true
+    }, options);
+    this.enableMoveEvent = this.options.enable;
+    this.enableLeaveEvent = this.options.enable;
+    this.enableOutEvent = this.options.enable;
+    this.enableOverEvent = this.options.enable;
+    this.events = MOUSE_EVENTS.concat(options.events || []);
+    this.handleEvent = this.handleEvent.bind(this);
+    this.events.forEach(function (event) {
+      return element.addEventListener(event, _this.handleEvent);
+    });
+  }
+
+  Object(createClass["a" /* default */])(MoveInput, [{
+    key: "destroy",
+    value: function destroy() {
+      var _this2 = this;
+
+      this.events.forEach(function (event) {
+        return _this2.element.removeEventListener(event, _this2.handleEvent);
+      });
+    }
+  }, {
+    key: "enableEventType",
+    value: function enableEventType(eventType, enabled) {
+      if (eventType === MOVE_EVENT_TYPE) {
+        this.enableMoveEvent = enabled;
+      }
+
+      if (eventType === OVER_EVENT_TYPE) {
+        this.enableOverEvent = enabled;
+      }
+
+      if (eventType === OUT_EVENT_TYPE) {
+        this.enableOutEvent = enabled;
+      }
+
+      if (eventType === LEAVE_EVENT_TYPE) {
+        this.enableLeaveEvent = enabled;
+      }
+    }
+  }, {
+    key: "handleEvent",
+    value: function handleEvent(event) {
+      this.handleOverEvent(event);
+      this.handleOutEvent(event);
+      this.handleLeaveEvent(event);
+      this.handleMoveEvent(event);
+    }
+  }, {
+    key: "handleOverEvent",
+    value: function handleOverEvent(event) {
+      if (this.enableOverEvent) {
+        if (event.type === 'mouseover') {
+          this.callback({
+            type: OVER_EVENT_TYPE,
+            srcEvent: event,
+            pointerType: 'mouse',
+            target: event.target
+          });
+        }
+      }
+    }
+  }, {
+    key: "handleOutEvent",
+    value: function handleOutEvent(event) {
+      if (this.enableOutEvent) {
+        if (event.type === 'mouseout') {
+          this.callback({
+            type: OUT_EVENT_TYPE,
+            srcEvent: event,
+            pointerType: 'mouse',
+            target: event.target
+          });
+        }
+      }
+    }
+  }, {
+    key: "handleLeaveEvent",
+    value: function handleLeaveEvent(event) {
+      if (this.enableLeaveEvent) {
+        if (event.type === 'mouseleave') {
+          this.callback({
+            type: LEAVE_EVENT_TYPE,
+            srcEvent: event,
+            pointerType: 'mouse',
+            target: event.target
+          });
+        }
+      }
+    }
+  }, {
+    key: "handleMoveEvent",
+    value: function handleMoveEvent(event) {
+      if (this.enableMoveEvent) {
+        switch (event.type) {
+          case 'mousedown':
+            if (event.button >= 0) {
+              this.pressed = true;
+            }
+
+            break;
+
+          case 'mousemove':
+            if (event.which === 0) {
+              this.pressed = false;
+            }
+
+            if (!this.pressed) {
+              this.callback({
+                type: MOVE_EVENT_TYPE,
+                srcEvent: event,
+                pointerType: 'mouse',
+                target: event.target
+              });
+            }
+
+            break;
+
+          case 'mouseup':
+            this.pressed = false;
+            break;
+
+          default:
+        }
+      }
+    }
+  }]);
+
+  return MoveInput;
+}();
+
+
+// CONCATENATED MODULE: ./node_modules/mjolnir.js/dist/esm/inputs/key-input.js
+
+
+
+
+
+
+var KEY_EVENTS = INPUT_EVENT_TYPES.KEY_EVENTS;
+var DOWN_EVENT_TYPE = 'keydown';
+var UP_EVENT_TYPE = 'keyup';
+
+var key_input_KeyInput = function () {
+  function KeyInput(element, callback) {
+    var _this = this;
+
+    var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+    Object(classCallCheck["a" /* default */])(this, KeyInput);
+
+    this.element = element;
+    this.callback = callback;
+    this.options = Object.assign({
+      enable: true
+    }, options);
+    this.enableDownEvent = this.options.enable;
+    this.enableUpEvent = this.options.enable;
+    this.events = KEY_EVENTS.concat(options.events || []);
+    this.handleEvent = this.handleEvent.bind(this);
+    element.tabIndex = options.tabIndex || 0;
+    element.style.outline = 'none';
+    this.events.forEach(function (event) {
+      return element.addEventListener(event, _this.handleEvent);
+    });
+  }
+
+  Object(createClass["a" /* default */])(KeyInput, [{
+    key: "destroy",
+    value: function destroy() {
+      var _this2 = this;
+
+      this.events.forEach(function (event) {
+        return _this2.element.removeEventListener(event, _this2.handleEvent);
+      });
+    }
+  }, {
+    key: "enableEventType",
+    value: function enableEventType(eventType, enabled) {
+      if (eventType === DOWN_EVENT_TYPE) {
+        this.enableDownEvent = enabled;
+      }
+
+      if (eventType === UP_EVENT_TYPE) {
+        this.enableUpEvent = enabled;
+      }
+    }
+  }, {
+    key: "handleEvent",
+    value: function handleEvent(event) {
+      var targetElement = event.target || event.srcElement;
+
+      if (targetElement.tagName === 'INPUT' && targetElement.type === 'text' || targetElement.tagName === 'TEXTAREA') {
+        return;
+      }
+
+      if (this.enableDownEvent && event.type === 'keydown') {
+        this.callback({
+          type: DOWN_EVENT_TYPE,
+          srcEvent: event,
+          key: event.key,
+          target: event.target
+        });
+      }
+
+      if (this.enableUpEvent && event.type === 'keyup') {
+        this.callback({
+          type: UP_EVENT_TYPE,
+          srcEvent: event,
+          key: event.key,
+          target: event.target
+        });
+      }
+    }
+  }]);
+
+  return KeyInput;
+}();
+
+
+// CONCATENATED MODULE: ./node_modules/mjolnir.js/dist/esm/inputs/contextmenu-input.js
+
+
+
+
+var contextmenu_input_EVENT_TYPE = 'contextmenu';
+
+var contextmenu_input_ContextmenuInput = function () {
+  function ContextmenuInput(element, callback) {
+    var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+    Object(classCallCheck["a" /* default */])(this, ContextmenuInput);
+
+    this.element = element;
+    this.callback = callback;
+    this.options = Object.assign({
+      enable: true
+    }, options);
+    this.handleEvent = this.handleEvent.bind(this);
+    element.addEventListener('contextmenu', this.handleEvent);
+  }
+
+  Object(createClass["a" /* default */])(ContextmenuInput, [{
+    key: "destroy",
+    value: function destroy() {
+      this.element.removeEventListener('contextmenu', this.handleEvent);
+    }
+  }, {
+    key: "enableEventType",
+    value: function enableEventType(eventType, enabled) {
+      if (eventType === contextmenu_input_EVENT_TYPE) {
+        this.options.enable = enabled;
+      }
+    }
+  }, {
+    key: "handleEvent",
+    value: function handleEvent(event) {
+      if (!this.options.enable) {
+        return;
+      }
+
+      this.callback({
+        type: contextmenu_input_EVENT_TYPE,
+        center: {
+          x: event.clientX,
+          y: event.clientY
+        },
+        srcEvent: event,
+        pointerType: 'mouse',
+        target: event.target
+      });
+    }
+  }]);
+
+  return ContextmenuInput;
+}();
+
+
+// CONCATENATED MODULE: ./node_modules/mjolnir.js/dist/esm/utils/event-utils.js
+
+
+var DOWN_EVENT = 1;
+var MOVE_EVENT = 2;
+var UP_EVENT = 4;
+var event_utils_MOUSE_EVENTS = {
+  pointerdown: DOWN_EVENT,
+  pointermove: MOVE_EVENT,
+  pointerup: UP_EVENT,
+  mousedown: DOWN_EVENT,
+  mousemove: MOVE_EVENT,
+  mouseup: UP_EVENT
+};
+var MOUSE_EVENT_WHICH_LEFT = 1;
+var MOUSE_EVENT_WHICH_MIDDLE = 2;
+var MOUSE_EVENT_WHICH_RIGHT = 3;
+var MOUSE_EVENT_BUTTON_LEFT = 0;
+var MOUSE_EVENT_BUTTON_MIDDLE = 1;
+var MOUSE_EVENT_BUTTON_RIGHT = 2;
+var MOUSE_EVENT_BUTTONS_LEFT_MASK = 1;
+var MOUSE_EVENT_BUTTONS_RIGHT_MASK = 2;
+var MOUSE_EVENT_BUTTONS_MIDDLE_MASK = 4;
+function whichButtons(event) {
+  var eventType = event_utils_MOUSE_EVENTS[event.srcEvent.type];
+
+  if (!eventType) {
+    return null;
+  }
+
+  var _event$srcEvent = event.srcEvent,
+      buttons = _event$srcEvent.buttons,
+      button = _event$srcEvent.button,
+      which = _event$srcEvent.which;
+  var leftButton = false;
+  var middleButton = false;
+  var rightButton = false;
+
+  if (eventType === UP_EVENT || eventType === MOVE_EVENT && !Number.isFinite(buttons)) {
+    leftButton = which === MOUSE_EVENT_WHICH_LEFT;
+    middleButton = which === MOUSE_EVENT_WHICH_MIDDLE;
+    rightButton = which === MOUSE_EVENT_WHICH_RIGHT;
+  } else if (eventType === MOVE_EVENT) {
+    leftButton = Boolean(buttons & MOUSE_EVENT_BUTTONS_LEFT_MASK);
+    middleButton = Boolean(buttons & MOUSE_EVENT_BUTTONS_MIDDLE_MASK);
+    rightButton = Boolean(buttons & MOUSE_EVENT_BUTTONS_RIGHT_MASK);
+  } else if (eventType === DOWN_EVENT) {
+    leftButton = button === MOUSE_EVENT_BUTTON_LEFT;
+    middleButton = button === MOUSE_EVENT_BUTTON_MIDDLE;
+    rightButton = button === MOUSE_EVENT_BUTTON_RIGHT;
+  }
+
+  return {
+    leftButton: leftButton,
+    middleButton: middleButton,
+    rightButton: rightButton
+  };
+}
+function getOffsetPosition(event, rootElement) {
+  var srcEvent = event.srcEvent;
+
+  if (!event.center && !Number.isFinite(srcEvent.clientX)) {
+    return null;
+  }
+
+  var center = event.center || {
+    x: srcEvent.clientX,
+    y: srcEvent.clientY
+  };
+  var rect = rootElement.getBoundingClientRect();
+  var scaleX = rect.width / rootElement.offsetWidth;
+  var scaleY = rect.height / rootElement.offsetHeight;
+  var offsetCenter = {
+    x: (center.x - rect.left - rootElement.clientLeft) / scaleX,
+    y: (center.y - rect.top - rootElement.clientTop) / scaleY
+  };
+  return {
+    center: center,
+    offsetCenter: offsetCenter
+  };
+}
+// CONCATENATED MODULE: ./node_modules/mjolnir.js/dist/esm/utils/event-registrar.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+var DEFAULT_OPTIONS = {
+  srcElement: 'root',
+  priority: 0
+};
+
+var event_registrar_EventRegistrar = function () {
+  function EventRegistrar(eventManager) {
+    Object(classCallCheck["a" /* default */])(this, EventRegistrar);
+
+    this.eventManager = eventManager;
+    this.handlers = [];
+    this.handlersByElement = new Map();
+    this.handleEvent = this.handleEvent.bind(this);
+    this._active = false;
+  }
+
+  Object(createClass["a" /* default */])(EventRegistrar, [{
+    key: "isEmpty",
+    value: function isEmpty() {
+      return !this._active;
+    }
+  }, {
+    key: "add",
+    value: function add(type, handler, opts) {
+      var once = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+      var passive = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+      var handlers = this.handlers,
+          handlersByElement = this.handlersByElement;
+
+      if (opts && (Object(esm_typeof["a" /* default */])(opts) !== 'object' || opts.addEventListener)) {
+        opts = {
+          srcElement: opts
+        };
+      }
+
+      opts = opts ? Object.assign({}, DEFAULT_OPTIONS, opts) : DEFAULT_OPTIONS;
+      var entries = handlersByElement.get(opts.srcElement);
+
+      if (!entries) {
+        entries = [];
+        handlersByElement.set(opts.srcElement, entries);
+      }
+
+      var entry = {
+        type: type,
+        handler: handler,
+        srcElement: opts.srcElement,
+        priority: opts.priority
+      };
+
+      if (once) {
+        entry.once = true;
+      }
+
+      if (passive) {
+        entry.passive = true;
+      }
+
+      handlers.push(entry);
+      this._active = this._active || !entry.passive;
+      var insertPosition = entries.length - 1;
+
+      while (insertPosition >= 0) {
+        if (entries[insertPosition].priority >= entry.priority) {
+          break;
+        }
+
+        insertPosition--;
+      }
+
+      entries.splice(insertPosition + 1, 0, entry);
+    }
+  }, {
+    key: "remove",
+    value: function remove(type, handler) {
+      var handlers = this.handlers,
+          handlersByElement = this.handlersByElement;
+
+      for (var i = handlers.length - 1; i >= 0; i--) {
+        var entry = handlers[i];
+
+        if (entry.type === type && entry.handler === handler) {
+          handlers.splice(i, 1);
+          var entries = handlersByElement.get(entry.srcElement);
+          entries.splice(entries.indexOf(entry), 1);
+
+          if (entries.length === 0) {
+            handlersByElement["delete"](entry.srcElement);
+          }
+        }
+      }
+
+      this._active = handlers.some(function (entry) {
+        return !entry.passive;
+      });
+    }
+  }, {
+    key: "handleEvent",
+    value: function handleEvent(event) {
+      if (this.isEmpty()) {
+        return;
+      }
+
+      var mjolnirEvent = this._normalizeEvent(event);
+
+      var target = event.srcEvent.target;
+
+      while (target && target !== mjolnirEvent.rootElement) {
+        this._emit(mjolnirEvent, target);
+
+        if (mjolnirEvent.handled) {
+          return;
+        }
+
+        target = target.parentNode;
+      }
+
+      this._emit(mjolnirEvent, 'root');
+    }
+  }, {
+    key: "_emit",
+    value: function _emit(event, srcElement) {
+      var entries = this.handlersByElement.get(srcElement);
+
+      if (entries) {
+        var immediatePropagationStopped = false;
+
+        var stopPropagation = function stopPropagation() {
+          event.handled = true;
+        };
+
+        var stopImmediatePropagation = function stopImmediatePropagation() {
+          event.handled = true;
+          immediatePropagationStopped = true;
+        };
+
+        var entriesToRemove = [];
+
+        for (var i = 0; i < entries.length; i++) {
+          var _entries$i = entries[i],
+              type = _entries$i.type,
+              handler = _entries$i.handler,
+              once = _entries$i.once;
+          handler(Object.assign({}, event, {
+            type: type,
+            stopPropagation: stopPropagation,
+            stopImmediatePropagation: stopImmediatePropagation
+          }));
+
+          if (once) {
+            entriesToRemove.push(entries[i]);
+          }
+
+          if (immediatePropagationStopped) {
+            break;
+          }
+        }
+
+        for (var _i = 0; _i < entriesToRemove.length; _i++) {
+          var _entriesToRemove$_i = entriesToRemove[_i],
+              type = _entriesToRemove$_i.type,
+              handler = _entriesToRemove$_i.handler;
+          this.remove(type, handler);
+        }
+      }
+    }
+  }, {
+    key: "_normalizeEvent",
+    value: function _normalizeEvent(event) {
+      var rootElement = this.eventManager.element;
+      return Object.assign({}, event, whichButtons(event), getOffsetPosition(event, rootElement), {
+        handled: false,
+        rootElement: rootElement
+      });
+    }
+  }]);
+
+  return EventRegistrar;
+}();
+
+
+// CONCATENATED MODULE: ./node_modules/mjolnir.js/dist/esm/event-manager.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var event_manager_DEFAULT_OPTIONS = {
+  events: null,
+  recognizers: null,
+  recognizerOptions: {},
+  Manager: Manager,
+  touchAction: 'none',
+  tabIndex: 0
+};
+
+var event_manager_EventManager = function () {
+  function EventManager() {
+    var element = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+    Object(classCallCheck["a" /* default */])(this, EventManager);
+
+    this.options = Object.assign({}, event_manager_DEFAULT_OPTIONS, options);
+    this.events = new Map();
+    this._onBasicInput = this._onBasicInput.bind(this);
+    this._onOtherEvent = this._onOtherEvent.bind(this);
+    this.setElement(element);
+    var events = options.events;
+
+    if (events) {
+      this.on(events);
+    }
+  }
+
+  Object(createClass["a" /* default */])(EventManager, [{
+    key: "setElement",
+    value: function setElement(element) {
+      var _this = this;
+
+      if (this.element) {
+        this.destroy();
+      }
+
+      this.element = element;
+
+      if (!element) {
+        return;
+      }
+
+      var options = this.options;
+      var ManagerClass = options.Manager;
+      this.manager = new ManagerClass(element, {
+        touchAction: options.touchAction,
+        recognizers: options.recognizers || RECOGNIZERS
+      }).on('hammer.input', this._onBasicInput);
+
+      if (!options.recognizers) {
+        Object.keys(RECOGNIZER_COMPATIBLE_MAP).forEach(function (name) {
+          var recognizer = _this.manager.get(name);
+
+          if (recognizer) {
+            RECOGNIZER_COMPATIBLE_MAP[name].forEach(function (otherName) {
+              recognizer.recognizeWith(otherName);
+            });
+          }
+        });
+      }
+
+      for (var recognizerName in options.recognizerOptions) {
+        var recognizer = this.manager.get(recognizerName);
+
+        if (recognizer) {
+          var recognizerOption = options.recognizerOptions[recognizerName];
+          delete recognizerOption.enable;
+          recognizer.set(recognizerOption);
+        }
+      }
+
+      this.wheelInput = new wheel_input_WheelInput(element, this._onOtherEvent, {
+        enable: false
+      });
+      this.moveInput = new move_input_MoveInput(element, this._onOtherEvent, {
+        enable: false
+      });
+      this.keyInput = new key_input_KeyInput(element, this._onOtherEvent, {
+        enable: false,
+        tabIndex: options.tabIndex
+      });
+      this.contextmenuInput = new contextmenu_input_ContextmenuInput(element, this._onOtherEvent, {
+        enable: false
+      });
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = this.events[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var _step$value = Object(slicedToArray["a" /* default */])(_step.value, 2),
+              eventAlias = _step$value[0],
+              eventRegistrar = _step$value[1];
+
+          if (!eventRegistrar.isEmpty()) {
+            this._toggleRecognizer(eventRegistrar.recognizerName, true);
+
+            this.manager.on(eventAlias, eventRegistrar.handleEvent);
+          }
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+            _iterator["return"]();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+    }
+  }, {
+    key: "destroy",
+    value: function destroy() {
+      if (this.element) {
+        this.wheelInput.destroy();
+        this.moveInput.destroy();
+        this.keyInput.destroy();
+        this.contextmenuInput.destroy();
+        this.manager.destroy();
+        this.wheelInput = null;
+        this.moveInput = null;
+        this.keyInput = null;
+        this.contextmenuInput = null;
+        this.manager = null;
+        this.element = null;
+      }
+    }
+  }, {
+    key: "on",
+    value: function on(event, handler, opts) {
+      this._addEventHandler(event, handler, opts, false);
+    }
+  }, {
+    key: "once",
+    value: function once(event, handler, opts) {
+      this._addEventHandler(event, handler, opts, true);
+    }
+  }, {
+    key: "watch",
+    value: function watch(event, handler, opts) {
+      this._addEventHandler(event, handler, opts, false, true);
+    }
+  }, {
+    key: "off",
+    value: function off(event, handler) {
+      this._removeEventHandler(event, handler);
+    }
+  }, {
+    key: "_toggleRecognizer",
+    value: function _toggleRecognizer(name, enabled) {
+      var manager = this.manager;
+
+      if (!manager) {
+        return;
+      }
+
+      var recognizer = manager.get(name);
+
+      if (recognizer && recognizer.options.enable !== enabled) {
+        recognizer.set({
+          enable: enabled
+        });
+        var fallbackRecognizers = RECOGNIZER_FALLBACK_MAP[name];
+
+        if (fallbackRecognizers && !this.options.recognizers) {
+          fallbackRecognizers.forEach(function (otherName) {
+            var otherRecognizer = manager.get(otherName);
+
+            if (enabled) {
+              otherRecognizer.requireFailure(name);
+              recognizer.dropRequireFailure(otherName);
+            } else {
+              otherRecognizer.dropRequireFailure(name);
+            }
+          });
+        }
+      }
+
+      this.wheelInput.enableEventType(name, enabled);
+      this.moveInput.enableEventType(name, enabled);
+      this.keyInput.enableEventType(name, enabled);
+      this.contextmenuInput.enableEventType(name, enabled);
+    }
+  }, {
+    key: "_addEventHandler",
+    value: function _addEventHandler(event, handler, opts, once, passive) {
+      if (typeof event !== 'string') {
+        opts = handler;
+
+        for (var eventName in event) {
+          this._addEventHandler(eventName, event[eventName], opts, once, passive);
+        }
+
+        return;
+      }
+
+      var manager = this.manager,
+          events = this.events;
+      var eventAlias = GESTURE_EVENT_ALIASES[event] || event;
+      var eventRegistrar = events.get(eventAlias);
+
+      if (!eventRegistrar) {
+        eventRegistrar = new event_registrar_EventRegistrar(this);
+        events.set(eventAlias, eventRegistrar);
+        eventRegistrar.recognizerName = EVENT_RECOGNIZER_MAP[eventAlias] || eventAlias;
+
+        if (manager) {
+          manager.on(eventAlias, eventRegistrar.handleEvent);
+        }
+      }
+
+      eventRegistrar.add(event, handler, opts, once, passive);
+
+      if (!eventRegistrar.isEmpty()) {
+        this._toggleRecognizer(eventRegistrar.recognizerName, true);
+      }
+    }
+  }, {
+    key: "_removeEventHandler",
+    value: function _removeEventHandler(event, handler) {
+      if (typeof event !== 'string') {
+        for (var eventName in event) {
+          this._removeEventHandler(eventName, event[eventName]);
+        }
+
+        return;
+      }
+
+      var events = this.events;
+      var eventAlias = GESTURE_EVENT_ALIASES[event] || event;
+      var eventRegistrar = events.get(eventAlias);
+
+      if (!eventRegistrar) {
+        return;
+      }
+
+      eventRegistrar.remove(event, handler);
+
+      if (eventRegistrar.isEmpty()) {
+        var recognizerName = eventRegistrar.recognizerName;
+        var isRecognizerUsed = false;
+        var _iteratorNormalCompletion2 = true;
+        var _didIteratorError2 = false;
+        var _iteratorError2 = undefined;
+
+        try {
+          for (var _iterator2 = events.values()[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+            var eh = _step2.value;
+
+            if (eh.recognizerName === recognizerName && !eh.isEmpty()) {
+              isRecognizerUsed = true;
+              break;
+            }
+          }
+        } catch (err) {
+          _didIteratorError2 = true;
+          _iteratorError2 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+              _iterator2["return"]();
+            }
+          } finally {
+            if (_didIteratorError2) {
+              throw _iteratorError2;
+            }
+          }
+        }
+
+        if (!isRecognizerUsed) {
+          this._toggleRecognizer(recognizerName, false);
+        }
+      }
+    }
+  }, {
+    key: "_onBasicInput",
+    value: function _onBasicInput(event) {
+      var srcEvent = event.srcEvent;
+      var alias = BASIC_EVENT_ALIASES[srcEvent.type];
+
+      if (alias) {
+        this.manager.emit(alias, event);
+      }
+    }
+  }, {
+    key: "_onOtherEvent",
+    value: function _onOtherEvent(event) {
+      this.manager.emit(event.type, event);
+    }
+  }]);
+
+  return EventManager;
+}();
+
+
+// CONCATENATED MODULE: ./node_modules/mjolnir.js/dist/esm/index.js
+
+// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/lib/deck.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function deck_ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    if (enumerableOnly) symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    });
+    keys.push.apply(keys, symbols);
+  }
+
+  return keys;
+}
+
+function deck_objectSpread(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
+    if (i % 2) {
+      deck_ownKeys(Object(source), true).forEach(function (key) {
+        Object(defineProperty["a" /* default */])(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      deck_ownKeys(Object(source)).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+
+  return target;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function deck_noop() {}
+
+var getCursor = function getCursor(_ref) {
+  var isDragging = _ref.isDragging;
+  return isDragging ? 'grabbing' : 'grab';
+};
+
+function getPropTypes(PropTypes) {
+  return {
+    id: PropTypes.string,
+    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    layers: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+    layerFilter: PropTypes.func,
+    views: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+    viewState: PropTypes.object,
+    effects: PropTypes.arrayOf(PropTypes.instanceOf(effect_Effect)),
+    controller: PropTypes.oneOfType([PropTypes.func, PropTypes.bool, PropTypes.object]),
+    gl: PropTypes.object,
+    glOptions: PropTypes.object,
+    parameters: PropTypes.object,
+    pickingRadius: PropTypes.number,
+    useDevicePixels: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
+    touchAction: PropTypes.string,
+    onWebGLInitialized: PropTypes.func,
+    onResize: PropTypes.func,
+    onViewStateChange: PropTypes.func,
+    onBeforeRender: PropTypes.func,
+    onAfterRender: PropTypes.func,
+    onLoad: PropTypes.func,
+    onError: PropTypes.func,
+    debug: PropTypes.bool,
+    drawPickingColors: PropTypes.bool,
+    _framebuffer: PropTypes.object,
+    _animate: PropTypes.bool
+  };
+}
+
+var defaultProps = {
+  id: 'deckgl-overlay',
+  width: '100%',
+  height: '100%',
+  pickingRadius: 0,
+  layerFilter: null,
+  glOptions: {},
+  gl: null,
+  layers: [],
+  effects: [],
+  views: null,
+  controller: null,
+  useDevicePixels: true,
+  touchAction: 'none',
+  _framebuffer: null,
+  _animate: false,
+  onWebGLInitialized: deck_noop,
+  onResize: deck_noop,
+  onViewStateChange: deck_noop,
+  onBeforeRender: deck_noop,
+  onAfterRender: deck_noop,
+  onLoad: deck_noop,
+  onError: null,
+  _onMetrics: null,
+  getCursor: getCursor,
+  debug: false,
+  drawPickingColors: false
+};
+
+var deck_Deck = function () {
+  function Deck(props) {
+    Object(classCallCheck["a" /* default */])(this, Deck);
+
+    props = Object.assign({}, defaultProps, props);
+    this.props = {};
+    this.width = 0;
+    this.height = 0;
+    this.viewManager = null;
+    this.layerManager = null;
+    this.effectManager = null;
+    this.deckRenderer = null;
+    this.deckPicker = null;
+    this._needsRedraw = true;
+    this._pickRequest = {};
+    this._lastPointerDownInfo = null;
+    this.viewState = null;
+    this.interactiveState = {
+      isDragging: false
+    };
+    this._onEvent = this._onEvent.bind(this);
+    this._onPointerDown = this._onPointerDown.bind(this);
+    this._onPointerMove = this._onPointerMove.bind(this);
+    this._pickAndCallback = this._pickAndCallback.bind(this);
+    this._onRendererInitialized = this._onRendererInitialized.bind(this);
+    this._onRenderFrame = this._onRenderFrame.bind(this);
+    this._onViewStateChange = this._onViewStateChange.bind(this);
+    this._onInteractiveStateChange = this._onInteractiveStateChange.bind(this);
+
+    if (props.viewState && props.initialViewState) {
+      log["a" /* default */].warn('View state tracking is disabled. Use either `initialViewState` for auto update or `viewState` for manual update.')();
+    }
+
+    if (Object(env["getBrowser"])() === 'IE') {
+      log["a" /* default */].warn('IE 11 support will be deprecated in v8.0')();
+    }
+
+    if (!props.gl) {
+      if (typeof document !== 'undefined') {
+        this.canvas = this._createCanvas(props);
+      }
+    }
+
+    this.animationLoop = this._createAnimationLoop(props);
+    this.stats = new esm["b" /* Stats */]({
+      id: 'deck.gl'
+    });
+    this.metrics = {
+      fps: 0,
+      setPropsTime: 0,
+      updateAttributesTime: 0,
+      framesRedrawn: 0,
+      pickTime: 0,
+      pickCount: 0,
+      gpuTime: 0,
+      gpuTimePerFrame: 0,
+      cpuTime: 0,
+      cpuTimePerFrame: 0,
+      bufferMemory: 0,
+      textureMemory: 0,
+      renderbufferMemory: 0,
+      gpuMemory: 0
+    };
+    this._metricsCounter = 0;
+    this.setProps(props);
+    this.animationLoop.start();
+  }
+
+  Object(createClass["a" /* default */])(Deck, [{
+    key: "finalize",
+    value: function finalize() {
+      this.animationLoop.stop();
+      this.animationLoop = null;
+      this._lastPointerDownInfo = null;
+
+      if (this.layerManager) {
+        this.layerManager.finalize();
+        this.layerManager = null;
+        this.viewManager.finalize();
+        this.viewManager = null;
+        this.effectManager.finalize();
+        this.effectManager = null;
+        this.deckRenderer.finalize();
+        this.deckRenderer = null;
+        this.deckPicker.finalize();
+        this.deckPicker = null;
+        this.eventManager.destroy();
+        this.eventManager = null;
+        this.tooltip.remove();
+        this.tooltip = null;
+      }
+
+      if (!this.props.canvas && !this.props.gl && this.canvas) {
+        this.canvas.parentElement.removeChild(this.canvas);
+        this.canvas = null;
+      }
+    }
+  }, {
+    key: "setProps",
+    value: function setProps(props) {
+      this.stats.get('setProps Time').timeStart();
+
+      if ('onLayerHover' in props) {
+        log["a" /* default */].removed('onLayerHover', 'onHover')();
+      }
+
+      if ('onLayerClick' in props) {
+        log["a" /* default */].removed('onLayerClick', 'onClick')();
+      }
+
+      if (props.initialViewState && !Object(deep_equal["a" /* deepEqual */])(this.props.initialViewState, props.initialViewState)) {
+        this.viewState = props.initialViewState;
+      }
+
+      Object.assign(this.props, props);
+
+      this._setCanvasSize(this.props);
+
+      var resolvedProps = Object.create(this.props);
+      Object.assign(resolvedProps, {
+        views: this._getViews(),
+        width: this.width,
+        height: this.height,
+        viewState: this._getViewState()
+      });
+      this.animationLoop.setProps(resolvedProps);
+
+      if (this.layerManager) {
+        this.viewManager.setProps(resolvedProps);
+        this.layerManager.setProps(resolvedProps);
+        this.effectManager.setProps(resolvedProps);
+        this.deckRenderer.setProps(resolvedProps);
+        this.deckPicker.setProps(resolvedProps);
+      }
+
+      this.stats.get('setProps Time').timeEnd();
+    }
+  }, {
+    key: "needsRedraw",
+    value: function needsRedraw() {
+      var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+        clearRedrawFlags: false
+      };
+
+      if (this.props._animate) {
+        return 'Deck._animate';
+      }
+
+      var redraw = this._needsRedraw;
+
+      if (opts.clearRedrawFlags) {
+        this._needsRedraw = false;
+      }
+
+      var viewManagerNeedsRedraw = this.viewManager.needsRedraw(opts);
+      var layerManagerNeedsRedraw = this.layerManager.needsRedraw(opts);
+      var effectManagerNeedsRedraw = this.effectManager.needsRedraw(opts);
+      var deckRendererNeedsRedraw = this.deckRenderer.needsRedraw(opts);
+      redraw = redraw || viewManagerNeedsRedraw || layerManagerNeedsRedraw || effectManagerNeedsRedraw || deckRendererNeedsRedraw;
+      return redraw;
+    }
+  }, {
+    key: "redraw",
+    value: function redraw(force) {
+      if (!this.layerManager) {
+        return;
+      }
+
+      var redrawReason = force || this.needsRedraw({
+        clearRedrawFlags: true
+      });
+
+      if (!redrawReason) {
+        return;
+      }
+
+      this.stats.get('Redraw Count').incrementCount();
+
+      if (this.props._customRender) {
+        this.props._customRender(redrawReason);
+      } else {
+        this._drawLayers(redrawReason);
+      }
+    }
+  }, {
+    key: "getViews",
+    value: function getViews() {
+      return this.viewManager.views;
+    }
+  }, {
+    key: "getViewports",
+    value: function getViewports(rect) {
+      return this.viewManager.getViewports(rect);
+    }
+  }, {
+    key: "pickObject",
+    value: function pickObject(opts) {
+      var infos = this._pick('pickObject', 'pickObject Time', opts).result;
+
+      return infos.length ? infos[0] : null;
+    }
+  }, {
+    key: "pickMultipleObjects",
+    value: function pickMultipleObjects(opts) {
+      opts.depth = opts.depth || 10;
+      return this._pick('pickObject', 'pickMultipleObjects Time', opts).result;
+    }
+  }, {
+    key: "pickObjects",
+    value: function pickObjects(opts) {
+      return this._pick('pickObjects', 'pickObjects Time', opts);
+    }
+  }, {
+    key: "_pick",
+    value: function _pick(method, statKey, opts) {
+      var stats = this.stats;
+      stats.get('Pick Count').incrementCount();
+      stats.get(statKey).timeStart();
+      var infos = this.deckPicker[method](Object.assign({
+        layers: this.layerManager.getLayers(opts),
+        viewports: this.getViewports(opts),
+        onViewportActive: this.layerManager.activateViewport
+      }, opts));
+      stats.get(statKey).timeEnd();
+      return infos;
+    }
+  }, {
+    key: "_createCanvas",
+    value: function _createCanvas(props) {
+      var canvas = props.canvas;
+
+      if (typeof canvas === 'string') {
+        canvas = document.getElementById(canvas);
+        Object(assert["a" /* default */])(canvas);
+      }
+
+      if (!canvas) {
+        canvas = document.createElement('canvas');
+        var parent = props.parent || document.body;
+        parent.appendChild(canvas);
+      }
+
+      var id = props.id,
+          style = props.style;
+      canvas.id = id;
+      Object.assign(canvas.style, style);
+      return canvas;
+    }
+  }, {
+    key: "_setCanvasSize",
+    value: function _setCanvasSize(props) {
+      if (!this.canvas) {
+        return;
+      }
+
+      var width = props.width,
+          height = props.height;
+
+      if (width || width === 0) {
+        width = Number.isFinite(width) ? "".concat(width, "px") : width;
+        this.canvas.style.width = width;
+      }
+
+      if (height || height === 0) {
+        height = Number.isFinite(height) ? "".concat(height, "px") : height;
+        this.canvas.style.position = 'absolute';
+        this.canvas.style.height = height;
+      }
+    }
+  }, {
+    key: "_updateCanvasSize",
+    value: function _updateCanvasSize() {
+      if (this._checkForCanvasSizeChange()) {
+        var width = this.width,
+            height = this.height;
+        this.viewManager.setProps({
+          width: width,
+          height: height
+        });
+        this.props.onResize({
+          width: this.width,
+          height: this.height
+        });
+      }
+    }
+  }, {
+    key: "_checkForCanvasSizeChange",
+    value: function _checkForCanvasSizeChange() {
+      var canvas = this.canvas;
+
+      if (!canvas) {
+        return false;
+      }
+
+      var newWidth = canvas.clientWidth || canvas.width;
+      var newHeight = canvas.clientHeight || canvas.height;
+
+      if (newWidth !== this.width || newHeight !== this.height) {
+        this.width = newWidth;
+        this.height = newHeight;
+        return true;
+      }
+
+      return false;
+    }
+  }, {
+    key: "_createAnimationLoop",
+    value: function _createAnimationLoop(props) {
+      var _this = this;
+
+      var width = props.width,
+          height = props.height,
+          gl = props.gl,
+          glOptions = props.glOptions,
+          debug = props.debug,
+          useDevicePixels = props.useDevicePixels,
+          autoResizeDrawingBuffer = props.autoResizeDrawingBuffer;
+      return new animation_loop_AnimationLoop({
+        width: width,
+        height: height,
+        useDevicePixels: useDevicePixels,
+        autoResizeDrawingBuffer: autoResizeDrawingBuffer,
+        autoResizeViewport: false,
+        gl: gl,
+        onCreateContext: function onCreateContext(opts) {
+          return Object(gltools_dist_esm["a" /* createGLContext */])(Object.assign({}, glOptions, opts, {
+            canvas: _this.canvas,
+            debug: debug
+          }));
+        },
+        onInitialize: this._onRendererInitialized,
+        onRender: this._onRenderFrame,
+        onBeforeRender: props.onBeforeRender,
+        onAfterRender: props.onAfterRender
+      });
+    }
+  }, {
+    key: "_getViewState",
+    value: function _getViewState() {
+      return this.props.viewState || this.viewState;
+    }
+  }, {
+    key: "_getViews",
+    value: function _getViews() {
+      var views = this.props.views || [new map_view_MapView({
+        id: 'default-view'
+      })];
+      views = Array.isArray(views) ? views : [views];
+
+      if (views.length && this.props.controller) {
+        views[0].props.controller = this.props.controller;
+      }
+
+      return views;
+    }
+  }, {
+    key: "_onPointerMove",
+    value: function _onPointerMove(event) {
+      var _pickRequest = this._pickRequest;
+
+      if (event.type === 'pointerleave') {
+        _pickRequest.x = -1;
+        _pickRequest.y = -1;
+        _pickRequest.radius = 0;
+      } else if (event.leftButton || event.rightButton) {
+        return;
+      } else {
+        var pos = event.offsetCenter;
+
+        if (!pos) {
+          return;
+        }
+
+        _pickRequest.x = pos.x;
+        _pickRequest.y = pos.y;
+        _pickRequest.radius = this.props.pickingRadius;
+      }
+
+      if (this.layerManager) {
+        this.layerManager.context.mousePosition = {
+          x: _pickRequest.x,
+          y: _pickRequest.y
+        };
+      }
+
+      _pickRequest.event = event;
+      _pickRequest.mode = 'hover';
+    }
+  }, {
+    key: "_pickAndCallback",
+    value: function _pickAndCallback() {
+      var _pickRequest = this._pickRequest;
+
+      if (_pickRequest.event) {
+        var _this$_pick = this._pick('pickObject', 'pickObject Time', _pickRequest),
+            result = _this$_pick.result,
+            emptyInfo = _this$_pick.emptyInfo;
+
+        var pickedInfo = result[0] || emptyInfo;
+
+        if (this.props.getTooltip) {
+          var displayInfo = this.props.getTooltip(pickedInfo);
+          this.tooltip.setTooltip(displayInfo, pickedInfo.x, pickedInfo.y);
+        }
+
+        var handled = false;
+
+        if (pickedInfo.layer) {
+          handled = pickedInfo.layer.onHover(pickedInfo, _pickRequest.event);
+        }
+
+        if (!handled && this.props.onHover) {
+          this.props.onHover(pickedInfo, _pickRequest.event);
+        }
+
+        _pickRequest.event = null;
+      }
+    }
+  }, {
+    key: "_updateCursor",
+    value: function _updateCursor() {
+      var container = this.props.parent || this.canvas;
+
+      if (container) {
+        container.style.cursor = this.props.getCursor(this.interactiveState);
+      }
+    }
+  }, {
+    key: "_setGLContext",
+    value: function _setGLContext(gl) {
+      if (this.layerManager) {
+        return;
+      }
+
+      if (!this.canvas) {
+        this.canvas = gl.canvas;
+        Object(gltools_dist_esm["d" /* instrumentGLContext */])(gl, {
+          enable: true,
+          copyState: true
+        });
+      }
+
+      this.tooltip = new tooltip_Tooltip(this.canvas);
+      Object(gltools_dist_esm["j" /* setParameters */])(gl, {
+        blend: true,
+        blendFunc: [770, 771, 1, 771],
+        polygonOffsetFill: true,
+        depthTest: true,
+        depthFunc: 515
+      });
+      this.props.onWebGLInitialized(gl);
+      var timeline = new timeline_Timeline();
+      timeline.play();
+      this.animationLoop.attachTimeline(timeline);
+      this.eventManager = new event_manager_EventManager(this.props.parent || gl.canvas, {
+        touchAction: this.props.touchAction,
+        events: {
+          pointerdown: this._onPointerDown,
+          pointermove: this._onPointerMove,
+          pointerleave: this._onPointerMove
+        }
+      });
+
+      for (var eventType in lib_constants["b" /* EVENTS */]) {
+        this.eventManager.on(eventType, this._onEvent);
+      }
+
+      this.viewManager = new view_manager_ViewManager({
+        timeline: timeline,
+        eventManager: this.eventManager,
+        onViewStateChange: this._onViewStateChange,
+        onInteractiveStateChange: this._onInteractiveStateChange,
+        views: this._getViews(),
+        viewState: this._getViewState(),
+        width: this.width,
+        height: this.height
+      });
+      var viewport = this.viewManager.getViewports()[0];
+      this.layerManager = new layer_manager_LayerManager(gl, {
+        deck: this,
+        stats: this.stats,
+        viewport: viewport,
+        timeline: timeline
+      });
+      this.effectManager = new effect_manager_EffectManager();
+      this.deckRenderer = new deck_renderer_DeckRenderer(gl);
+      this.deckPicker = new deck_picker_DeckPicker(gl);
+      this.setProps(this.props);
+
+      this._updateCanvasSize();
+
+      this.props.onLoad();
+    }
+  }, {
+    key: "_drawLayers",
+    value: function _drawLayers(redrawReason, renderOptions) {
+      var gl = this.layerManager.context.gl;
+      Object(gltools_dist_esm["j" /* setParameters */])(gl, this.props.parameters);
+      this.props.onBeforeRender({
+        gl: gl
+      });
+      this.deckRenderer.renderLayers(Object.assign({
+        target: this.props._framebuffer,
+        layers: this.layerManager.getLayers(),
+        viewports: this.viewManager.getViewports(),
+        onViewportActive: this.layerManager.activateViewport,
+        views: this.viewManager.getViews(),
+        pass: 'screen',
+        redrawReason: redrawReason,
+        effects: this.effectManager.getEffects()
+      }, renderOptions));
+      this.props.onAfterRender({
+        gl: gl
+      });
+    }
+  }, {
+    key: "_onRendererInitialized",
+    value: function _onRendererInitialized(_ref2) {
+      var gl = _ref2.gl;
+
+      this._setGLContext(gl);
+    }
+  }, {
+    key: "_onRenderFrame",
+    value: function _onRenderFrame(animationProps) {
+      this._getFrameStats();
+
+      if (this._metricsCounter++ % 60 === 0) {
+        this._getMetrics();
+
+        this.stats.reset();
+        log["a" /* default */].table(4, this.metrics)();
+
+        if (this.props._onMetrics) {
+          this.props._onMetrics(this.metrics);
+        }
+      }
+
+      this._updateCanvasSize();
+
+      this._updateCursor();
+
+      this.layerManager.updateLayers();
+
+      this._pickAndCallback();
+
+      this.redraw(false);
+
+      if (this.viewManager) {
+        this.viewManager.updateViewStates();
+      }
+    }
+  }, {
+    key: "_onViewStateChange",
+    value: function _onViewStateChange(params) {
+      var viewState = this.props.onViewStateChange(params) || params.viewState;
+
+      if (this.viewState) {
+        this.viewState = deck_objectSpread({}, this.viewState, Object(defineProperty["a" /* default */])({}, params.viewId, viewState));
+
+        if (!this.props.viewState) {
+          this.viewManager.setProps({
+            viewState: this.viewState
+          });
+        }
+      }
+    }
+  }, {
+    key: "_onInteractiveStateChange",
+    value: function _onInteractiveStateChange(_ref3) {
+      var _ref3$isDragging = _ref3.isDragging,
+          isDragging = _ref3$isDragging === void 0 ? false : _ref3$isDragging;
+
+      if (isDragging !== this.interactiveState.isDragging) {
+        this.interactiveState.isDragging = isDragging;
+      }
+    }
+  }, {
+    key: "_onEvent",
+    value: function _onEvent(event) {
+      var eventOptions = lib_constants["b" /* EVENTS */][event.type];
+      var pos = event.offsetCenter;
+
+      if (!eventOptions || !pos) {
+        return;
+      }
+
+      var layers = this.layerManager.getLayers();
+      var info = this.deckPicker.getLastPickedObject({
+        x: pos.x,
+        y: pos.y,
+        layers: layers,
+        viewports: this.getViewports(pos)
+      }, this._lastPointerDownInfo);
+      var layer = info.layer;
+      var layerHandler = layer && (layer[eventOptions.handler] || layer.props[eventOptions.handler]);
+      var rootHandler = this.props[eventOptions.handler];
+      var handled = false;
+
+      if (layerHandler) {
+        handled = layerHandler.call(layer, info, event);
+      }
+
+      if (!handled && rootHandler) {
+        rootHandler(info, event);
+      }
+    }
+  }, {
+    key: "_onPointerDown",
+    value: function _onPointerDown(event) {
+      var pos = event.offsetCenter;
+      this._lastPointerDownInfo = this.pickObject({
+        x: pos.x,
+        y: pos.y,
+        radius: this.props.pickingRadius
+      });
+    }
+  }, {
+    key: "_getFrameStats",
+    value: function _getFrameStats() {
+      var stats = this.stats;
+      stats.get('frameRate').timeEnd();
+      stats.get('frameRate').timeStart();
+      var animationLoopStats = this.animationLoop.stats;
+      stats.get('GPU Time').addTime(animationLoopStats.get('GPU Time').lastTiming);
+      stats.get('CPU Time').addTime(animationLoopStats.get('CPU Time').lastTiming);
+    }
+  }, {
+    key: "_getMetrics",
+    value: function _getMetrics() {
+      var metrics = this.metrics,
+          stats = this.stats;
+      metrics.fps = stats.get('frameRate').getHz();
+      metrics.setPropsTime = stats.get('setProps Time').time;
+      metrics.updateAttributesTime = stats.get('Update Attributes').time;
+      metrics.framesRedrawn = stats.get('Redraw Count').count;
+      metrics.pickTime = stats.get('pickObject Time').time + stats.get('pickMultipleObjects Time').time + stats.get('pickObjects Time').time;
+      metrics.pickCount = stats.get('Pick Count').count;
+      metrics.gpuTime = stats.get('GPU Time').time;
+      metrics.cpuTime = stats.get('CPU Time').time;
+      metrics.gpuTimePerFrame = stats.get('GPU Time').getAverageTime();
+      metrics.cpuTimePerFrame = stats.get('CPU Time').getAverageTime();
+      var memoryStats = esm_init["a" /* lumaStats */].get('Memory Usage');
+      metrics.bufferMemory = memoryStats.get('Buffer Memory').count;
+      metrics.textureMemory = memoryStats.get('Texture Memory').count;
+      metrics.renderbufferMemory = memoryStats.get('Renderbuffer Memory').count;
+      metrics.gpuMemory = memoryStats.get('GPU Memory').count;
+    }
+  }]);
+
+  return Deck;
+}();
+
+
+deck_Deck.getPropTypes = getPropTypes;
+deck_Deck.defaultProps = defaultProps;
+deck_Deck.VERSION = init.VERSION;
+
+/***/ }),
+
 /***/ "n+fv":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -37178,6 +44578,271 @@ var Transition = function () {
   }]);
 
   return Transition;
+}();
+
+
+
+/***/ }),
+
+/***/ "nICr":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "a", function() { return /* binding */ view_View; });
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.object.seal.js
+var es6_object_seal = __webpack_require__("ofTv");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.function.bind.js
+var es6_function_bind = __webpack_require__("n7j8");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.object.assign.js
+var es6_object_assign = __webpack_require__("E5k/");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/typeof.js
+var esm_typeof = __webpack_require__("0QZy");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/classCallCheck.js
+var classCallCheck = __webpack_require__("QDMQ");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/createClass.js
+var createClass = __webpack_require__("ls4f");
+
+// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/viewports/viewport.js
+var viewport = __webpack_require__("e/LK");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.regexp.match.js
+var es6_regexp_match = __webpack_require__("Ll4R");
+
+// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/utils/positions.js
+
+
+var PERCENT_OR_PIXELS_REGEX = /([0-9]+\.?[0-9]*)(%|px)/;
+function parsePosition(value) {
+  switch (Object(esm_typeof["a" /* default */])(value)) {
+    case 'number':
+      return {
+        position: value,
+        relative: false
+      };
+
+    case 'string':
+      var match = value.match(PERCENT_OR_PIXELS_REGEX);
+
+      if (match && match.length >= 3) {
+        var relative = match[2] === '%';
+        var position = parseFloat(match[1]);
+        return {
+          position: relative ? position / 100 : position,
+          relative: relative
+        };
+      }
+
+    default:
+      throw new Error("Could not parse position string ".concat(value));
+  }
+}
+function getPosition(position, extent) {
+  return position.relative ? Math.round(position.position * extent) : position.position;
+}
+// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/utils/deep-equal.js
+var deep_equal = __webpack_require__("LDVv");
+
+// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/utils/assert.js
+var assert = __webpack_require__("VMBB");
+
+// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/views/view.js
+
+
+
+
+
+
+
+
+
+
+
+var view_View = function () {
+  function View() {
+    var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    Object(classCallCheck["a" /* default */])(this, View);
+
+    var _props$id = props.id,
+        id = _props$id === void 0 ? null : _props$id,
+        _props$x = props.x,
+        x = _props$x === void 0 ? 0 : _props$x,
+        _props$y = props.y,
+        y = _props$y === void 0 ? 0 : _props$y,
+        _props$width = props.width,
+        width = _props$width === void 0 ? '100%' : _props$width,
+        _props$height = props.height,
+        height = _props$height === void 0 ? '100%' : _props$height,
+        _props$projectionMatr = props.projectionMatrix,
+        projectionMatrix = _props$projectionMatr === void 0 ? null : _props$projectionMatr,
+        _props$fovy = props.fovy,
+        fovy = _props$fovy === void 0 ? 50 : _props$fovy,
+        _props$near = props.near,
+        near = _props$near === void 0 ? 0.1 : _props$near,
+        _props$far = props.far,
+        far = _props$far === void 0 ? 1000 : _props$far,
+        _props$modelMatrix = props.modelMatrix,
+        modelMatrix = _props$modelMatrix === void 0 ? null : _props$modelMatrix,
+        _props$viewportInstan = props.viewportInstance,
+        viewportInstance = _props$viewportInstan === void 0 ? null : _props$viewportInstan,
+        _props$type = props.type,
+        type = _props$type === void 0 ? viewport["a" /* default */] : _props$type;
+    Object(assert["a" /* default */])(!viewportInstance || viewportInstance instanceof viewport["a" /* default */]);
+    this.viewportInstance = viewportInstance;
+    this.id = id || this.constructor.displayName || 'view';
+    this.type = type;
+    this.props = Object.assign({}, props, {
+      id: this.id,
+      projectionMatrix: projectionMatrix,
+      fovy: fovy,
+      near: near,
+      far: far,
+      modelMatrix: modelMatrix
+    });
+
+    this._parseDimensions({
+      x: x,
+      y: y,
+      width: width,
+      height: height
+    });
+
+    this.equals = this.equals.bind(this);
+    Object.seal(this);
+  }
+
+  Object(createClass["a" /* default */])(View, [{
+    key: "equals",
+    value: function equals(view) {
+      if (this === view) {
+        return true;
+      }
+
+      if (this.viewportInstance) {
+        return view.viewportInstance && this.viewportInstance.equals(view.viewportInstance);
+      }
+
+      var viewChanged = Object(deep_equal["a" /* deepEqual */])(this.props, view.props);
+      return viewChanged;
+    }
+  }, {
+    key: "makeViewport",
+    value: function makeViewport(_ref) {
+      var width = _ref.width,
+          height = _ref.height,
+          viewState = _ref.viewState;
+
+      if (this.viewportInstance) {
+        return this.viewportInstance;
+      }
+
+      viewState = this.filterViewState(viewState);
+      var viewportDimensions = this.getDimensions({
+        width: width,
+        height: height
+      });
+      var props = Object.assign({
+        viewState: viewState
+      }, viewState, this.props, viewportDimensions);
+      return this._getViewport(props);
+    }
+  }, {
+    key: "getViewStateId",
+    value: function getViewStateId() {
+      switch (Object(esm_typeof["a" /* default */])(this.props.viewState)) {
+        case 'string':
+          return this.props.viewState;
+
+        case 'object':
+          return this.props.viewState && this.props.viewState.id;
+
+        default:
+          return this.id;
+      }
+    }
+  }, {
+    key: "filterViewState",
+    value: function filterViewState(viewState) {
+      if (this.props.viewState && Object(esm_typeof["a" /* default */])(this.props.viewState) === 'object') {
+        if (!this.props.viewState.id) {
+          return this.props.viewState;
+        }
+
+        var newViewState = Object.assign({}, viewState);
+
+        for (var key in this.props.viewState) {
+          if (key !== 'id') {
+            newViewState[key] = this.props.viewState[key];
+          }
+        }
+
+        return newViewState;
+      }
+
+      return viewState;
+    }
+  }, {
+    key: "getDimensions",
+    value: function getDimensions(_ref2) {
+      var width = _ref2.width,
+          height = _ref2.height;
+      return {
+        x: getPosition(this._x, width),
+        y: getPosition(this._y, height),
+        width: getPosition(this._width, width),
+        height: getPosition(this._height, height)
+      };
+    }
+  }, {
+    key: "_getControllerProps",
+    value: function _getControllerProps(defaultOpts) {
+      var opts = this.props.controller;
+
+      if (!opts) {
+        return null;
+      }
+
+      if (opts === true) {
+        return defaultOpts;
+      }
+
+      if (typeof opts === 'function') {
+        opts = {
+          type: opts
+        };
+      }
+
+      return Object.assign({}, defaultOpts, opts);
+    }
+  }, {
+    key: "_getViewport",
+    value: function _getViewport(props) {
+      var ViewportType = this.type;
+      return new ViewportType(props);
+    }
+  }, {
+    key: "_parseDimensions",
+    value: function _parseDimensions(_ref3) {
+      var x = _ref3.x,
+          y = _ref3.y,
+          width = _ref3.width,
+          height = _ref3.height;
+      this._x = parsePosition(x);
+      this._y = parsePosition(y);
+      this._width = parsePosition(width);
+      this._height = parsePosition(height);
+    }
+  }]);
+
+  return View;
 }();
 
 
@@ -39764,9 +47429,10 @@ function assert(condition, message) {
 "use strict";
 
 // EXPORTS
-__webpack_require__.d(__webpack_exports__, "b", function() { return /* reexport */ google_login_provider_GoogleLoginProvider; });
-__webpack_require__.d(__webpack_exports__, "a", function() { return /* reexport */ google_login_pane; });
-__webpack_require__.d(__webpack_exports__, "c", function() { return /* reexport */ info_box; });
+__webpack_require__.d(__webpack_exports__, "c", function() { return /* reexport */ google_login_provider_GoogleLoginProvider; });
+__webpack_require__.d(__webpack_exports__, "a", function() { return /* reexport */ deck_with_google_maps_DeckWithGoogleMaps; });
+__webpack_require__.d(__webpack_exports__, "b", function() { return /* reexport */ google_login_pane; });
+__webpack_require__.d(__webpack_exports__, "d", function() { return /* reexport */ info_box; });
 
 // UNUSED EXPORTS: GoogleEarthEngineIcon
 
@@ -39866,6 +47532,296 @@ return{email:userProfile&&userProfile.getEmail(),domain:googleUser.getHostedDoma
 var react = __webpack_require__("q1tI");
 var react_default = /*#__PURE__*/__webpack_require__.n(react);
 
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.function.bind.js
+var es6_function_bind = __webpack_require__("n7j8");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/classCallCheck.js
+var classCallCheck = __webpack_require__("QDMQ");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/createClass.js
+var createClass = __webpack_require__("ls4f");
+
+// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.math.log2.js
+var es6_math_log2 = __webpack_require__("QNMc");
+
+// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/lib/deck.js + 55 modules
+var lib_deck = __webpack_require__("mybv");
+
+// CONCATENATED MODULE: ../node_modules/@deck.gl/google-maps/dist/esm/utils.js
+
+
+
+var MAX_LATITUDE = 85.05113;
+function createDeckInstance(map, overlay, deck) {
+  if (deck) {
+    if (deck.props.userData._googleMap === map) {
+      return deck;
+    }
+
+    destroyDeckInstance(deck);
+  }
+
+  var eventListeners = {
+    click: null,
+    mousemove: null,
+    mouseout: null
+  };
+  deck = new lib_deck["a" /* default */]({
+    canvas: createDeckCanvas(overlay),
+    initialViewState: {
+      longitude: 0,
+      latitude: 0,
+      zoom: 1
+    },
+    controller: false,
+    userData: {
+      _googleMap: map,
+      _eventListeners: eventListeners
+    }
+  });
+
+  var _loop = function _loop(eventType) {
+    eventListeners[eventType] = map.addListener(eventType, function (evt) {
+      return handleMouseEvent(deck, eventType, evt);
+    });
+  };
+
+  for (var eventType in eventListeners) {
+    _loop(eventType);
+  }
+
+  return deck;
+}
+
+function createDeckCanvas(overlay) {
+  var container = overlay.getPanes().overlayLayer;
+  var deckCanvas = document.createElement('canvas');
+  Object.assign(deckCanvas.style, {
+    position: 'absolute'
+  });
+  container.appendChild(deckCanvas);
+  return deckCanvas;
+}
+
+function destroyDeckInstance(deck) {
+  var eventListeners = deck.props.userData._eventListeners;
+
+  for (var eventType in eventListeners) {
+    eventListeners[eventType].remove();
+  }
+
+  deck.finalize();
+  deck.canvas.parentNode.removeChild(deck.canvas);
+}
+function getViewState(map, overlay) {
+  var container = map.getDiv().firstChild;
+  var width = container.offsetWidth;
+  var height = container.offsetHeight;
+  var projection = overlay.getProjection();
+  var bounds = map.getBounds();
+  var ne = bounds.getNorthEast();
+  var sw = bounds.getSouthWest();
+  var topRight = projection.fromLatLngToDivPixel(ne);
+  var bottomLeft = projection.fromLatLngToDivPixel(sw);
+  var nwContainerPx = new google.maps.Point(0, 0);
+  var nw = projection.fromContainerPixelToLatLng(nwContainerPx);
+  var nwDivPx = projection.fromLatLngToDivPixel(nw);
+  var leftOffset = nwDivPx.x;
+  var topOffset = nwDivPx.y;
+  var mapWidth = projection.getWorldWidth();
+  var mapCount = Math.ceil(width / mapWidth);
+  leftOffset -= Math.floor(mapCount / 2) * mapWidth;
+  var scale = height ? (bottomLeft.y - topRight.y) / height : 1;
+  var zoom = Math.log2(scale || 1) + map.getZoom() - 1;
+  var centerPx = new google.maps.Point(width / 2, height / 2);
+  var centerContainer = projection.fromContainerPixelToLatLng(centerPx);
+  var latitude = centerContainer.lat();
+  var longitude = centerContainer.lng();
+
+  if (Math.abs(latitude) > MAX_LATITUDE) {
+    latitude = latitude > 0 ? MAX_LATITUDE : -MAX_LATITUDE;
+    var center = new google.maps.LatLng(latitude, longitude);
+    centerPx = projection.fromLatLngToContainerPixel(center);
+    topOffset += centerPx.y - height / 2;
+  }
+
+  return {
+    width: width,
+    height: height,
+    left: leftOffset,
+    top: topOffset,
+    zoom: zoom,
+    pitch: map.getTilt(),
+    latitude: latitude,
+    longitude: longitude
+  };
+}
+
+function handleMouseEvent(deck, type, event) {
+  var callback;
+
+  switch (type) {
+    case 'click':
+      deck._lastPointerDownInfo = deck.pickObject({
+        x: event.pixel.x,
+        y: event.pixel.y
+      });
+      callback = deck._onEvent;
+      break;
+
+    case 'mousemove':
+      type = 'pointermove';
+      callback = deck._onPointerMove;
+      break;
+
+    case 'mouseout':
+      type = 'pointerleave';
+      callback = deck._onPointerMove;
+      break;
+
+    default:
+      return;
+  }
+
+  callback({
+    type: type,
+    offsetCenter: event.pixel,
+    srcEvent: event
+  });
+}
+// CONCATENATED MODULE: ../node_modules/@deck.gl/google-maps/dist/esm/google-maps-overlay.js
+
+
+
+
+
+
+var HIDE_ALL_LAYERS = function HIDE_ALL_LAYERS() {
+  return false;
+};
+
+var google_maps_overlay_GoogleMapsOverlay = function () {
+  function GoogleMapsOverlay(props) {
+    Object(classCallCheck["a" /* default */])(this, GoogleMapsOverlay);
+
+    this.props = {};
+    this._map = null;
+    var overlay = new google.maps.OverlayView();
+    overlay.onAdd = this._onAdd.bind(this);
+    overlay.onRemove = this._onRemove.bind(this);
+    overlay.draw = this._draw.bind(this);
+    this._overlay = overlay;
+    this.setProps(props);
+  }
+
+  Object(createClass["a" /* default */])(GoogleMapsOverlay, [{
+    key: "setMap",
+    value: function setMap(map) {
+      if (map === this._map) {
+        return;
+      }
+
+      if (this._map) {
+        this._overlay.setMap(null);
+
+        this._map = null;
+      }
+
+      if (map) {
+        this._map = map;
+
+        this._overlay.setMap(map);
+      }
+    }
+  }, {
+    key: "setProps",
+    value: function setProps(props) {
+      Object.assign(this.props, props);
+
+      if (this._deck) {
+        this._deck.setProps(this.props);
+      }
+    }
+  }, {
+    key: "pickObject",
+    value: function pickObject(params) {
+      return this._deck && this._deck.pickObject(params);
+    }
+  }, {
+    key: "pickMultipleObjects",
+    value: function pickMultipleObjects(params) {
+      return this._deck && this._deck.pickMultipleObjects(params);
+    }
+  }, {
+    key: "pickObjects",
+    value: function pickObjects(params) {
+      return this._deck && this._deck.pickObjects(params);
+    }
+  }, {
+    key: "finalize",
+    value: function finalize() {
+      this.setMap(null);
+
+      if (this._deck) {
+        destroyDeckInstance(this._deck);
+        this._deck = null;
+      }
+    }
+  }, {
+    key: "_onAdd",
+    value: function _onAdd() {
+      this._deck = createDeckInstance(this._map, this._overlay, this._deck);
+
+      this._deck.setProps(this.props);
+    }
+  }, {
+    key: "_onRemove",
+    value: function _onRemove() {
+      this._deck.setProps({
+        layerFilter: HIDE_ALL_LAYERS
+      });
+    }
+  }, {
+    key: "_draw",
+    value: function _draw() {
+      var deck = this._deck;
+
+      var _getViewState = getViewState(this._map, this._overlay),
+          width = _getViewState.width,
+          height = _getViewState.height,
+          left = _getViewState.left,
+          top = _getViewState.top,
+          zoom = _getViewState.zoom,
+          pitch = _getViewState.pitch,
+          latitude = _getViewState.latitude,
+          longitude = _getViewState.longitude;
+
+      var canSyncWithGoogleMaps = pitch === 0;
+      deck.canvas.style.left = "".concat(left, "px");
+      deck.canvas.style.top = "".concat(top, "px");
+      deck.setProps({
+        width: width,
+        height: height,
+        viewState: {
+          latitude: latitude,
+          longitude: longitude,
+          zoom: zoom,
+          repeat: true
+        },
+        layerFilter: canSyncWithGoogleMaps ? this.props.layerFilter : HIDE_ALL_LAYERS
+      });
+      deck.redraw();
+    }
+  }]);
+
+  return GoogleMapsOverlay;
+}();
+
+
+// CONCATENATED MODULE: ../examples/shared/google-maps/deck-with-google-maps.js
+function _inheritsLoose(subClass,superClass){subClass.prototype=Object.create(superClass.prototype);subClass.prototype.constructor=subClass;subClass.__proto__=superClass;}/* global console, document, window */var HOST='https://maps.googleapis.com/maps/api/js';var LOADING_GIF='https://upload.wikimedia.org/wikipedia/commons/d/de/Ajax-loader.gif';var deck_with_google_maps_style={height:'100%',width:'100%'};function injectScript(src){return new Promise(function(resolve,reject){var script=document.createElement('script');script.src=src;script.addEventListener('load',resolve);script.addEventListener('error',function(e){return reject(e.error);});document.head.appendChild(script);});}function loadGoogleMapApi(apiKey,onComplete){var url=HOST+"?key="+apiKey+"&libraries=places";injectScript(url).then(function(){return onComplete();})// eslint-disable-next-line no-console
+.catch(function(e){return console.error(e);});}var deck_with_google_maps_DeckWithGoogleMaps=/*#__PURE__*/function(_Component){_inheritsLoose(DeckWithGoogleMaps,_Component);function DeckWithGoogleMaps(props){var _this;_this=_Component.call(this,props)||this;_this.state={googleMapsLoaded:false};return _this;}var _proto=DeckWithGoogleMaps.prototype;_proto.componentDidMount=function componentDidMount(){var _this2=this;var googleMapsToken=this.props.googleMapsToken;if(!window.google||window.google&&!window.google.maps){loadGoogleMapApi(googleMapsToken,function(){_this2.setState({googleMapsLoaded:true});});}else{this.setState({googleMapsLoaded:true});}};_proto.render=function render(){var googleMapsLoaded=this.state.googleMapsLoaded;if(!googleMapsLoaded){return/*#__PURE__*/react_default.a.createElement("img",{src:LOADING_GIF,alt:"Loading Google Maps overlay..."});}return/*#__PURE__*/react_default.a.createElement(deck_with_google_maps_DeckOverlayWrapper,this.props);};return DeckWithGoogleMaps;}(react["Component"]);var deck_with_google_maps_DeckOverlayWrapper=/*#__PURE__*/function(_Component2){_inheritsLoose(DeckOverlayWrapper,_Component2);function DeckOverlayWrapper(props){var _this3;_this3=_Component2.call(this,props)||this;_this3.state={isOverlayConfigured:false};_this3.DeckOverlay=new google_maps_overlay_GoogleMapsOverlay({layers:[]});_this3.containerRef=react_default.a.createRef();return _this3;}var _proto2=DeckOverlayWrapper.prototype;_proto2.componentDidMount=function componentDidMount(){var initialViewState=this.props.initialViewState;var view={center:{lat:initialViewState.latitude,lng:initialViewState.longitude},mapTypeId:this.props.mapTypeId||'satellite',zoom:initialViewState.zoom};var map=new window.google.maps.Map(this.containerRef.current,view);this.DeckOverlay.setMap(map);this.DeckOverlay.setProps({layers:this.props.layers});// eslint-disable-next-line react/no-did-mount-set-state
+this.setState({isOverlayConfigured:true});};_proto2.componentDidUpdate=function componentDidUpdate(prevProps,prevState,snapshot){this.DeckOverlay.setProps({layers:this.props.layers});};_proto2.componentWillUnmount=function componentWillUnmount(){delete this.DeckOverlay;};_proto2.render=function render(){return/*#__PURE__*/react_default.a.createElement("div",{ref:this.containerRef,style:deck_with_google_maps_style});};return DeckOverlayWrapper;}(react["Component"]);
 // EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/web.dom.iterable.js
 var web_dom_iterable = __webpack_require__("rzGZ");
 
@@ -39883,7 +47839,7 @@ var prop_types = __webpack_require__("W0B4");
 var prop_types_default = /*#__PURE__*/__webpack_require__.n(prop_types);
 
 // CONCATENATED MODULE: ../examples/shared/react-components/icon-wrapper.js
-function _objectWithoutPropertiesLoose(source,excluded){if(source==null)return{};var target={};var sourceKeys=Object.keys(source);var key,i;for(i=0;i<sourceKeys.length;i++){key=sourceKeys[i];if(excluded.indexOf(key)>=0)continue;target[key]=source[key];}return target;}function _inheritsLoose(subClass,superClass){subClass.prototype=Object.create(superClass.prototype);subClass.prototype.constructor=subClass;subClass.__proto__=superClass;}// Copyright (c) 2020 Uber Technologies, Inc.
+function _objectWithoutPropertiesLoose(source,excluded){if(source==null)return{};var target={};var sourceKeys=Object.keys(source);var key,i;for(i=0;i<sourceKeys.length;i++){key=sourceKeys[i];if(excluded.indexOf(key)>=0)continue;target[key]=source[key];}return target;}function icon_wrapper_inheritsLoose(subClass,superClass){subClass.prototype=Object.create(superClass.prototype);subClass.prototype.constructor=subClass;subClass.__proto__=superClass;}// Copyright (c) 2020 Uber Technologies, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -39902,7 +47858,7 @@ function _objectWithoutPropertiesLoose(source,excluded){if(source==null)return{}
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-var getStyleClassFromColor=function getStyleClassFromColor(totalColor,colors){return new Array(totalColor).fill(1).reduce(function(accu,c,i){return accu+".cr"+(i+1)+" {fill:"+colors[i%colors.length]+";}";},'');};var icon_wrapper_IconWrapper=/*#__PURE__*/function(_Component){_inheritsLoose(IconWrapper,_Component);function IconWrapper(){return _Component.apply(this,arguments)||this;}IconWrapper.displayName=function displayName(){return'Base Icon';};IconWrapper.propTypes=function propTypes(){return{/** Set the height of the icon, ex. '16px' */height:prop_types_default.a.string,/** Set the width of the icon, ex. '16px' */width:prop_types_default.a.string,/** Set the viewbox of the svg */viewBox:prop_types_default.a.string,/** Path element */children:prop_types_default.a.node,predefinedClassName:prop_types_default.a.string,className:prop_types_default.a.string};};IconWrapper.defaultProps=function defaultProps(){return{height:null,width:null,viewBox:'0 0 64 64',predefinedClassName:'',className:''};};var _proto=IconWrapper.prototype;_proto.render=function render(){var _this$props=this.props,height=_this$props.height,width=_this$props.width,viewBox=_this$props.viewBox,_this$props$style=_this$props.style,style=_this$props$style===void 0?{}:_this$props$style,children=_this$props.children,predefinedClassName=_this$props.predefinedClassName,className=_this$props.className,colors=_this$props.colors,totalColor=_this$props.totalColor,props=_objectWithoutPropertiesLoose(_this$props,["height","width","viewBox","style","children","predefinedClassName","className","colors","totalColor"]);var svgHeight=height;var svgWidth=width||svgHeight;style.fill='currentColor';var fillStyle=Array.isArray(colors)&&totalColor&&getStyleClassFromColor(totalColor,colors);return/*#__PURE__*/react_default.a.createElement("svg",Object.assign({viewBox:viewBox,width:svgWidth,height:svgHeight,style:style,className:predefinedClassName+" "+className},props),fillStyle?/*#__PURE__*/react_default.a.createElement("style",{type:"text/css"},fillStyle):null,children);};return IconWrapper;}(react["Component"]);
+var getStyleClassFromColor=function getStyleClassFromColor(totalColor,colors){return new Array(totalColor).fill(1).reduce(function(accu,c,i){return accu+".cr"+(i+1)+" {fill:"+colors[i%colors.length]+";}";},'');};var icon_wrapper_IconWrapper=/*#__PURE__*/function(_Component){icon_wrapper_inheritsLoose(IconWrapper,_Component);function IconWrapper(){return _Component.apply(this,arguments)||this;}IconWrapper.displayName=function displayName(){return'Base Icon';};IconWrapper.propTypes=function propTypes(){return{/** Set the height of the icon, ex. '16px' */height:prop_types_default.a.string,/** Set the width of the icon, ex. '16px' */width:prop_types_default.a.string,/** Set the viewbox of the svg */viewBox:prop_types_default.a.string,/** Path element */children:prop_types_default.a.node,predefinedClassName:prop_types_default.a.string,className:prop_types_default.a.string};};IconWrapper.defaultProps=function defaultProps(){return{height:null,width:null,viewBox:'0 0 64 64',predefinedClassName:'',className:''};};var _proto=IconWrapper.prototype;_proto.render=function render(){var _this$props=this.props,height=_this$props.height,width=_this$props.width,viewBox=_this$props.viewBox,_this$props$style=_this$props.style,style=_this$props$style===void 0?{}:_this$props$style,children=_this$props.children,predefinedClassName=_this$props.predefinedClassName,className=_this$props.className,colors=_this$props.colors,totalColor=_this$props.totalColor,props=_objectWithoutPropertiesLoose(_this$props,["height","width","viewBox","style","children","predefinedClassName","className","colors","totalColor"]);var svgHeight=height;var svgWidth=width||svgHeight;style.fill='currentColor';var fillStyle=Array.isArray(colors)&&totalColor&&getStyleClassFromColor(totalColor,colors);return/*#__PURE__*/react_default.a.createElement("svg",Object.assign({viewBox:viewBox,width:svgWidth,height:svgHeight,style:style,className:predefinedClassName+" "+className},props),fillStyle?/*#__PURE__*/react_default.a.createElement("style",{type:"text/css"},fillStyle):null,children);};return IconWrapper;}(react["Component"]);
 // CONCATENATED MODULE: ../examples/shared/react-components/earthengine-icon.js
 function earthengine_icon_inheritsLoose(subClass,superClass){subClass.prototype=Object.create(superClass.prototype);subClass.prototype.constructor=subClass;subClass.__proto__=superClass;}var earthengine_icon_GoogleEarthEngineIcon=/*#__PURE__*/function(_Component){earthengine_icon_inheritsLoose(GoogleEarthEngineIcon,_Component);function GoogleEarthEngineIcon(){return _Component.apply(this,arguments)||this;}GoogleEarthEngineIcon.propTypes=function propTypes(){return{/** Set the height of the icon, ex. '16px' */height:prop_types_default.a.string,colors:prop_types_default.a.arrayOf(prop_types_default.a.string)};};GoogleEarthEngineIcon.defaultProps=function defaultProps(){return{height:'16px',predefinedClassName:'data-ex-icons-google-earthengine',totalColor:1};};var _proto=GoogleEarthEngineIcon.prototype;_proto.render=function render(){return/*#__PURE__*/react_default.a.createElement(icon_wrapper_IconWrapper,Object.assign({},this.props,{viewBox:'0 0 512 512'}),/*#__PURE__*/react_default.a.createElement("ellipse",{style:{fill:'#ffffff',fillOpacity:1,fillRule:'nonzero',stroke:'#4169e1',strokeWidth:0,strokeLinecap:'round',strokeLinejoin:'miter',strokeMiterlimit:4,strokeDasharray:'none',strokeOpacity:1},id:"path3012",transform:"matrix(1.1612903,0,0,1.1612903,-67.184257,-59.106617)",cx:"278.77966",cy:"273.35593",rx:"137.76271",ry:"134.50847"}),/*#__PURE__*/react_default.a.createElement("path",{id:"path2986",d:"m 222.26198,503.31514 c -4.30086,-1.91972 -8.8755,-6.83229 -10.9168,-11.72322 -1.05206,-2.5207 -2.10198,-12.21014 -3.0009,-27.69445 -0.76045,-13.09948 -1.76183,-24.86184 -2.22527,-26.13857 -0.61471,-1.69349 -3.61992,-3.29116 -11.11126,-5.90712 -5.64776,-1.97219 -14.15283,-5.53872 -18.90014,-7.92563 -4.74732,-2.38689 -9.66575,-4.33982 -10.92986,-4.33982 -1.4178,0 -9.17289,6.30634 -20.24155,16.46016 -9.86873,9.05309 -19.53853,17.27834 -21.48843,18.27834 -4.01368,2.05841 -13.04408,2.39342 -17.70735,0.65691 -3.70788,-1.38073 -42.93205,-40.0341 -45.446972,-44.7856 -2.494396,-4.71271 -2.227632,-13.52832 0.570993,-18.86902 1.273967,-2.43114 9.570429,-12.28384 18.4366,-21.89489 9.544086,-10.3459 16.120313,-18.37742 16.120313,-19.68764 0,-1.21716 -1.952925,-6.09719 -4.339822,-10.84451 -2.386907,-4.74731 -5.945723,-13.23031 -7.908496,-18.85111 -1.962772,-5.6208 -4.371725,-10.63588 -5.353239,-11.14463 -0.981514,-0.50874 -12.50232,-1.51584 -25.601799,-2.23798 -15.234677,-0.83984 -25.488406,-1.91133 -28.454859,-2.97347 -5.653171,-2.02412 -12.166154,-8.95574 -13.086319,-13.92748 -0.373222,-2.0165 -0.526018,-16.95603 -0.339545,-33.19894 l 0.339035,-29.53257 3.394499,-4.25467 c 5.998764,-7.51887 8.818558,-8.27414 37.470636,-10.03647 16.217077,-0.99749 26.07544,-2.05371 26.894321,-2.88146 0.711017,-0.71871 3.141161,-6.29174 5.40032,-12.38453 2.259159,-6.09278 5.790047,-14.43022 7.846416,-18.52763 2.056369,-4.09742 3.738852,-8.35042 3.738852,-9.45112 0,-1.1007 -6.783104,-9.44161 -15.073562,-18.53535 -8.290458,-9.09373 -16.220512,-18.05098 -17.622339,-19.90501 -3.942738,-5.21453 -5.276016,-11.67174 -3.716142,-17.99765 1.177812,-4.77647 3.335244,-7.36582 21.353613,-25.628507 11.02389,-11.173374 21.892946,-21.268004 24.153466,-22.432512 5.24571,-2.702336 13.58672,-2.739746 18.79521,-0.0843 2.19318,1.118147 11.81505,9.218777 21.38193,18.001398 9.56689,8.782622 18.04255,16.336501 18.83484,16.786421 0.83494,0.47414 5.9883,-1.3363 12.25898,-4.306755 5.95017,-2.818609 14.85312,-6.484546 19.78434,-8.146524 6.68624,-2.253465 9.28056,-3.693366 10.2037,-5.663251 0.68083,-1.452818 1.84845,-13.359253 2.59471,-26.458732 1.43521,-25.192589 2.29758,-29.174902 7.49239,-34.5984 5.77848,-6.032872 9.10175,-6.527787 41.4002,-6.165491 l 29.4183,0.329989 4.60225,3.047626 c 7.91816,5.243453 8.87664,8.503447 10.74144,36.533985 0.90266,13.568235 1.88767,25.726302 2.18892,27.017905 0.42397,1.817753 2.84874,3.151873 10.73157,5.904547 5.60112,1.955893 14.57094,5.759495 19.93294,8.452459 5.36201,2.692962 10.17874,4.896292 10.70384,4.896292 0.5251,0 9.13419,-7.507735 19.13132,-16.68384 9.99711,-9.176115 20.02608,-17.65062 22.2866,-18.832231 5.34357,-2.793175 13.2972,-2.767729 19.14106,0.06126 2.7747,1.343203 12.20097,9.922093 24.03971,21.878622 20.32185,20.524049 21.92338,22.872189 21.93916,32.167089 0.0112,6.57408 -2.91549,10.88667 -20.38644,30.04035 -9.49951,10.41446 -17.27184,19.37698 -17.27184,19.91669 0,0.53971 2.47945,6.14961 5.5099,12.46644 3.03044,6.31683 6.64457,15.16341 8.03139,19.65907 1.72287,5.585 3.22323,8.472 4.73705,9.115 1.21856,0.51759 13.46663,1.64375 27.21794,2.50259 27.2897,1.70436 31.68548,2.82722 36.26096,9.26258 4.3254,6.08362 4.82847,10.64305 4.45389,40.36657 l -0.35831,28.43287 -3.33867,4.74734 c -5.96165,8.47704 -7.4673,8.91135 -37.74248,10.88694 -14.79312,0.96532 -27.15606,2.0146 -27.47321,2.33176 -0.31716,0.31716 -2.15365,5.04527 -4.08109,10.5069 -1.92745,5.46165 -5.71766,14.33754 -8.42269,19.72423 -2.70506,5.38668 -4.76583,10.45844 -4.57953,11.27058 0.18631,0.81214 7.56699,9.357 16.40153,18.98858 8.83453,9.63158 17.18441,19.72394 18.55528,22.42745 2.9119,5.74259 3.18198,11.82324 0.78045,17.57091 -2.11933,5.07227 -38.0926,41.63744 -43.93967,44.66265 -4.88898,2.5295 -13.79465,2.80128 -18.91195,0.57716 -1.96058,-0.85213 -11.78995,-9.07509 -21.84304,-18.27325 -10.05309,-9.19817 -19.0779,-16.72623 -20.05514,-16.72903 -0.97724,-0.003 -6.64017,2.26759 -12.58429,5.04529 -5.94413,2.77771 -14.75197,6.34993 -19.57297,7.93828 -6.66342,2.19535 -8.89443,3.44155 -9.30323,5.19658 -0.29576,1.26977 -1.2763,13.40995 -2.17896,26.9782 -1.98537,29.84285 -3.126,33.07797 -13.51793,38.34024 -3.01332,1.52589 -7.99984,1.78875 -33.23335,1.7519 -22.33262,-0.0326 -30.51147,-0.41089 -33.01142,-1.52676 z m 43.75724,-132.50462 c 26.78112,-2.80677 49.15657,-13.48771 68.20616,-32.55826 14.51901,-14.53499 23.8874,-30.84407 29.52845,-51.40499 3.53643,-12.88981 3.51558,-41.35248 -0.0399,-54.39963 -10.78971,-39.59432 -39.13333,-68.74625 -78.30863,-80.54181 -9.12821,-2.74847 -11.60682,-3.00909 -29.35613,-3.08662 -17.00063,-0.0742 -20.54479,0.23162 -28.80223,2.48586 -41.22993,11.25552 -72.76306,44.38443 -81.37953,85.49784 -7.7414,36.93802 3.5778,74.64033 30.54545,101.7417 14.12004,14.19006 32.44092,24.60186 52.28941,29.71619 5.65987,1.45837 13.69183,2.58238 25.13135,3.51692 0.91392,0.0747 6.39742,-0.36058 12.18556,-0.9672 z m -27.47101,-46.4431 c -28.24696,-7.66077 -48.01557,-31.70052 -49.7659,-60.51815 -1.22382,-20.14894 5.2603,-37.19647 19.56861,-51.44824 26.05766,-25.95469 67.66639,-26.19795 93.39392,-0.546 21.19059,21.12833 26.27511,51.17802 13.12257,77.55487 -11.20256,22.46624 -31.84016,35.72424 -57.15268,36.716 -8.61738,0.33764 -12.87949,-0.0534 -19.16652,-1.75848 z m 31.60201,-27.93457 c 7.80185,-2.91905 17.10779,-11.56877 21.02165,-19.53928 2.76183,-5.62442 3.09528,-7.49672 3.09548,-17.38121 2.1e-4,-10.51503 -0.19264,-11.43349 -3.79628,-18.07997 -7.2743,-13.41658 -18.06759,-20.21506 -33.31407,-20.98387 -12.24764,-0.6176 -19.57845,1.97666 -28.42009,10.05742 -11.2101,10.2454 -15.67052,24.48856 -12.07007,38.54251 3.11639,12.16444 9.71875,20.42413 20.82444,26.05181 10.36058,5.25011 21.02537,5.68526 32.65894,1.33259 z",style:{fill:'#869094'}}),/*#__PURE__*/react_default.a.createElement("circle",{r:"165.00546",cy:"259.10611",cx:"256.52478",style:{fill:'#ffffff',fillOpacity:1,fillRule:'nonzero',stroke:'none',strokeWidth:1.28815722},id:"path3010"}),/*#__PURE__*/react_default.a.createElement("path",{id:"path2997",d:"M 233.61024,426.42338 C 197.68639,421.7137 164.3661,404.99223 137.53361,378.20824 114.01256,354.72973 98.872267,327.0956 91.039031,293.34618 c -1.743271,-7.51087 -4.793718,-19.56939 -4.747238,-39.018 0.05491,-22.98222 2.543426,-28.61778 6.010987,-39.64359 15.43972,-49.09366 43.80508,-83.33327 87.80623,-105.78785 39.35794,-20.085073 87.78473,-23.555128 130.16859,-9.327331 40.63604,13.641061 77.57833,45.887321 96.89319,84.576301 32.21235,64.52354 19.25646,142.40435 -32.29422,194.12782 -37.06602,37.19028 -89.23385,54.97141 -141.26633,48.14985 z m -47.42331,-24.15047 c -0.23857,-1.04106 -0.77184,-4.74742 -1.18506,-8.23639 -0.68299,-5.76673 -0.37824,-6.71665 3.35124,-10.44613 5.3387,-5.3387 10.09045,-5.34519 32.63164,-0.0446 9.4912,2.23188 23.46448,5.03537 31.05178,6.22994 17.16244,2.70217 59.00915,3.04733 74.21019,0.61211 12.34988,-1.97847 33.00478,-7.50967 38.33402,-10.26551 5.82087,-3.01009 25.47948,-26.54861 23.6775,-28.3506 -0.42962,-0.42963 -7.00609,0.775 -14.61436,2.67693 -26.19932,6.54939 -38.54199,0.34838 -64.17914,-0.4247 -44.36755,-1.33787 -80.82464,-10.66605 -140.55275,-35.96285 -35.75343,-15.14275 -44.59721,-8.77784 -53.60786,0.23282 -6.7826,6.78261 -6.9657,9.98964 -1.17341,20.55362 13.20035,24.07483 35.42144,46.84576 59.4461,60.91706 8.95395,5.24435 13.44166,6.13699 12.61011,2.50826 z M 411.53027,306.6541 c 0.72386,-1.66141 2.19336,-7.2498 3.26556,-12.41866 1.77606,-8.56209 1.75302,-9.54715 -0.25896,-11.0761 -1.21461,-0.923 -3.03333,-1.67819 -4.04161,-1.67819 -3.73974,0 -25.04416,-9.67941 -36.48478,-16.57644 -21.97634,-13.24853 -49.66555,-35.71221 -88.71177,-71.97002 -38.40796,-35.66513 -49.90888,-44.85362 -64.6895,-51.68269 -17.50255,-8.08666 -40.86579,-9.49704 -64.19607,-3.87535 -8.62125,2.0774 -10.94549,3.29781 -16.16318,8.48698 -11.90502,11.83999 -23.09877,27.49907 -30.24473,42.30976 -11.528198,23.89324 -11.031681,40.95022 3.50839,28.60758 11.05179,-9.38156 22.06862,-10.47234 33.17211,-12.37066 7.24727,-1.23902 18.02456,0.4131 26.62906,2.32983 17.75842,3.95586 30.42134,16.86585 76.40615,49.50445 52.05641,36.94805 61.30415,36.91727 96.77806,51.04348 15.319,6.10024 54.81002,2.20047 60.66561,2.32298 1.91599,0.0401 3.53876,-1.05904 4.36566,-2.95695 z m -4.63534,-84.50876 c 4.32314,-3.79578 4.81127,-4.85649 4.22984,-9.19148 -1.03651,-7.72775 -9.62176,-27.44765 -17.37288,-39.90464 -9.14534,-14.69768 -31.65069,-37.75961 -46.02425,-47.16244 -21.21776,-13.88016 -41.43549,-21.99831 -65.56227,-26.325669 -21.49217,-3.854804 -65.91914,-0.935654 -67.71411,4.449259 -0.37225,1.11674 1.93545,1.59572 7.68827,1.59572 35.89556,0 66.54633,9.99126 89.77949,29.26552 13.78903,11.43939 23.4481,22.30252 39.24611,44.13839 26.57067,36.72574 36.98963,47.02989 47.86862,47.34117 1.63574,0.0469 5.17326,-1.84582 7.86118,-4.20583 z",style:{fill:'#367bf0',fillOpacity:1,strokeWidth:1.39689767}}));};return GoogleEarthEngineIcon;}(react["Component"]);
 // EXTERNAL MODULE: ./node_modules/styled-components/dist/styled-components.browser.esm.js
@@ -39919,9 +47875,10 @@ function getError(err){if(!err){return'Something went wrong';}if(typeof err==='s
  */var google_login_pane_GoogleLoginPane=function GoogleLoginPane(_ref6){var loginProvider=_ref6.loginProvider,iconHeight=_ref6.iconHeight,loginButtonColor=_ref6.loginButtonColor;var _useState=Object(react["useState"])(null),error=_useState[0],setError=_useState[1];var onLogin=Object(react["useCallback"])(function(){try{loginProvider.login({prompt:'login'});setError(null);}catch(err){setError(err);}},[loginProvider]);if(!loginProvider){return/*#__PURE__*/react_default.a.createElement("div",null);}return/*#__PURE__*/react_default.a.createElement(StyledPanel,null,/*#__PURE__*/react_default.a.createElement(google_login_pane_LoginPane,{user:loginProvider.user,onLogin:onLogin,iconHeight:iconHeight,loginButtonColor:loginButtonColor,Icon:earthengine_icon_GoogleEarthEngineIcon,href:"https://earthengine.google.com/",target:"_blank",error:error}));};/* harmony default export */ var google_login_pane = (google_login_pane_GoogleLoginPane);
 // CONCATENATED MODULE: ../examples/shared/react-components/info-box.js
 // import EarthEngineIcon from './earthengine-icon';
-var info_box_StyledPanel=styled_components_browser_esm["c" /* default */].div.withConfig({displayName:"info-box__StyledPanel",componentId:"sc-1p0aswp-0"})(["position:absolute;top:20px;right:20px;width:344px;background:#fff;box-shadow:0 0 4px rgba(0,0,0,0.15);margin:24px;font-family:ff-clan-web-pro,'Helvetica Neue',Helvetica,sans-serif;font-size:15px;z-index:1000;padding:12px 24px;padding-top:2px;"]);var info_box_StyledEELogo=styled_components_browser_esm["c" /* default */].div.withConfig({displayName:"info-box__StyledEELogo",componentId:"sc-1p0aswp-1"})(["display:flex;flex-direction:column;align-items:flex-start;margin-top:-6px;.login{margin-left:9px;font-size:16px;}"]);var info_box_InfoBox=function InfoBox(_ref){var _ref$title=_ref.title,title=_ref$title===void 0?'Example':_ref$title,children=_ref.children;return/*#__PURE__*/react_default.a.createElement("div",{style:{position:'relative',width:'100%',height:'100%'}},/*#__PURE__*/react_default.a.createElement(info_box_StyledPanel,null,/*#__PURE__*/react_default.a.createElement("h3",null,title," ",/*#__PURE__*/react_default.a.createElement(info_box_StyledEELogo,null)),children,/*#__PURE__*/react_default.a.createElement("p",null,/*#__PURE__*/react_default.a.createElement("small",null,"To run this demo, you need to sign in with an",' ',/*#__PURE__*/react_default.a.createElement("a",{href:"https://earthengine.google.com/signup/"},"Earth Engine-enabled")," Google Account. Loading EE data may take some time."))));};/* harmony default export */ var info_box = (info_box_InfoBox);
+var info_box_StyledPanel=styled_components_browser_esm["c" /* default */].div.withConfig({displayName:"info-box__StyledPanel",componentId:"sc-1p0aswp-0"})(["position:absolute;top:20px;right:20px;width:344px;background:#fff;box-shadow:0 0 4px rgba(0,0,0,0.15);margin:24px;font-family:ff-clan-web-pro,'Helvetica Neue',Helvetica,sans-serif;font-size:15px;z-index:1000;padding:12px 24px;padding-top:2px;"]);var info_box_StyledEELogo=styled_components_browser_esm["c" /* default */].div.withConfig({displayName:"info-box__StyledEELogo",componentId:"sc-1p0aswp-1"})(["display:flex;flex-direction:column;align-items:flex-start;margin-top:-6px;.login{margin-left:9px;font-size:16px;}"]);var info_box_InfoBox=function InfoBox(_ref){var _ref$title=_ref.title,title=_ref$title===void 0?'Example':_ref$title,children=_ref.children;return/*#__PURE__*/react_default.a.createElement(info_box_StyledPanel,null,/*#__PURE__*/react_default.a.createElement("h3",null,title," ",/*#__PURE__*/react_default.a.createElement(info_box_StyledEELogo,null)),children,/*#__PURE__*/react_default.a.createElement("p",null,/*#__PURE__*/react_default.a.createElement("small",null,"To run this demo, you need to sign in with an",' ',/*#__PURE__*/react_default.a.createElement("a",{href:"https://earthengine.google.com/signup/"},"Earth Engine-enabled")," Google Account. Loading EE data may take some time.")));};/* harmony default export */ var info_box = (info_box_InfoBox);
 // CONCATENATED MODULE: ../examples/shared/index.js
 // Helper class for Google Login
+// Helper class for using Google Maps in React
 // React SVG Icons
 // React Components
 
@@ -39934,23 +47891,20 @@ var info_box_StyledPanel=styled_components_browser_esm["c" /* default */].div.wi
 "use strict";
 
 // EXPORTS
-__webpack_require__.d(__webpack_exports__, "c", function() { return /* reexport */ web_mercator_viewport_WebMercatorViewport; });
-__webpack_require__.d(__webpack_exports__, "a", function() { return /* reexport */ web_mercator_viewport_WebMercatorViewport; });
-__webpack_require__.d(__webpack_exports__, "d", function() { return /* reexport */ fit_bounds_fitBounds; });
-__webpack_require__.d(__webpack_exports__, "l", function() { return /* reexport */ normalizeViewportProps; });
-__webpack_require__.d(__webpack_exports__, "e", function() { return /* reexport */ flyToViewport; });
-__webpack_require__.d(__webpack_exports__, "g", function() { return /* reexport */ getFlyToDuration; });
-__webpack_require__.d(__webpack_exports__, "k", function() { return /* reexport */ lngLatToWorld; });
-__webpack_require__.d(__webpack_exports__, "n", function() { return /* reexport */ worldToLngLat; });
-__webpack_require__.d(__webpack_exports__, "o", function() { return /* reexport */ worldToPixels; });
-__webpack_require__.d(__webpack_exports__, "m", function() { return /* reexport */ pixelsToWorld; });
-__webpack_require__.d(__webpack_exports__, "h", function() { return /* reexport */ getMeterZoom; });
-__webpack_require__.d(__webpack_exports__, "f", function() { return /* reexport */ getDistanceScales; });
-__webpack_require__.d(__webpack_exports__, "b", function() { return /* reexport */ addMetersToLngLat; });
-__webpack_require__.d(__webpack_exports__, "j", function() { return /* reexport */ getViewMatrix; });
-__webpack_require__.d(__webpack_exports__, "i", function() { return /* reexport */ getProjectionParameters; });
+__webpack_require__.d(__webpack_exports__, "b", function() { return /* reexport */ web_mercator_viewport_WebMercatorViewport; });
+__webpack_require__.d(__webpack_exports__, "c", function() { return /* reexport */ fit_bounds_fitBounds; });
+__webpack_require__.d(__webpack_exports__, "i", function() { return /* reexport */ normalizeViewportProps; });
+__webpack_require__.d(__webpack_exports__, "h", function() { return /* reexport */ lngLatToWorld; });
+__webpack_require__.d(__webpack_exports__, "k", function() { return /* reexport */ worldToLngLat; });
+__webpack_require__.d(__webpack_exports__, "l", function() { return /* reexport */ worldToPixels; });
+__webpack_require__.d(__webpack_exports__, "j", function() { return /* reexport */ pixelsToWorld; });
+__webpack_require__.d(__webpack_exports__, "e", function() { return /* reexport */ getMeterZoom; });
+__webpack_require__.d(__webpack_exports__, "d", function() { return /* reexport */ getDistanceScales; });
+__webpack_require__.d(__webpack_exports__, "a", function() { return /* reexport */ addMetersToLngLat; });
+__webpack_require__.d(__webpack_exports__, "g", function() { return /* reexport */ getViewMatrix; });
+__webpack_require__.d(__webpack_exports__, "f", function() { return /* reexport */ getProjectionParameters; });
 
-// UNUSED EXPORTS: zoomToScale, scaleToZoom, getProjectionMatrix
+// UNUSED EXPORTS: WebMercatorViewport, flyToViewport, getFlyToDuration, zoomToScale, scaleToZoom, getProjectionMatrix
 
 // EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.object.assign.js
 var es6_object_assign = __webpack_require__("E5k/");
@@ -44453,8197 +52407,6 @@ if (!Math.hypot) Math.hypot = function () {
 
 /***/ }),
 
-/***/ "yYqN":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// EXPORTS
-__webpack_require__.d(__webpack_exports__, "a", function() { return /* binding */ deckgl_DeckGL; });
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.object.assign.js
-var es6_object_assign = __webpack_require__("E5k/");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.function.bind.js
-var es6_function_bind = __webpack_require__("n7j8");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/classCallCheck.js
-var classCallCheck = __webpack_require__("QDMQ");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/createClass.js
-var createClass = __webpack_require__("ls4f");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/possibleConstructorReturn.js
-var possibleConstructorReturn = __webpack_require__("L6So");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/getPrototypeOf.js
-var getPrototypeOf = __webpack_require__("Ccfo");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/assertThisInitialized.js
-var assertThisInitialized = __webpack_require__("uRdJ");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/inherits.js
-var inherits = __webpack_require__("x364");
-
-// EXTERNAL MODULE: ./node_modules/react/index.js
-var react = __webpack_require__("q1tI");
-var react_default = /*#__PURE__*/__webpack_require__.n(react);
-
-// EXTERNAL MODULE: ./node_modules/prop-types/index.js
-var prop_types = __webpack_require__("17x9");
-var prop_types_default = /*#__PURE__*/__webpack_require__.n(prop_types);
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.array.is-array.js
-var es6_array_is_array = __webpack_require__("MIFh");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.number.constructor.js
-var es6_number_constructor = __webpack_require__("YBKJ");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.number.is-finite.js
-var es6_number_is_finite = __webpack_require__("9ZhD");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.object.create.js
-var es6_object_create = __webpack_require__("pS08");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.object.define-property.js
-var es6_object_define_property = __webpack_require__("R48M");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.object.define-properties.js
-var es6_object_define_properties = __webpack_require__("+ar0");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es7.object.get-own-property-descriptors.js
-var es7_object_get_own_property_descriptors = __webpack_require__("xtjI");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.array.for-each.js
-var es6_array_for_each = __webpack_require__("JHok");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.array.filter.js
-var es6_array_filter = __webpack_require__("OeI1");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.symbol.js
-var es6_symbol = __webpack_require__("4DPX");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/web.dom.iterable.js
-var web_dom_iterable = __webpack_require__("rzGZ");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.array.iterator.js
-var es6_array_iterator = __webpack_require__("Dq+y");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.object.to-string.js
-var es6_object_to_string = __webpack_require__("8npG");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.object.keys.js
-var es6_object_keys = __webpack_require__("Ggvi");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/defineProperty.js
-var defineProperty = __webpack_require__("FqMR");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.array.index-of.js
-var es6_array_index_of = __webpack_require__("sc67");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.array.find.js
-var es6_array_find = __webpack_require__("v9g0");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es7.symbol.async-iterator.js
-var es7_symbol_async_iterator = __webpack_require__("m210");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.object.seal.js
-var es6_object_seal = __webpack_require__("ofTv");
-
-// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/utils/assert.js
-var assert = __webpack_require__("VMBB");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.string.repeat.js
-var es6_string_repeat = __webpack_require__("ZiRl");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.string.iterator.js
-var es6_string_iterator = __webpack_require__("YbXK");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.map.js
-var es6_map = __webpack_require__("xJgp");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/slicedToArray.js + 3 modules
-var slicedToArray = __webpack_require__("8j0Q");
-
-// CONCATENATED MODULE: ./node_modules/@luma.gl/engine/dist/esm/animation/timeline.js
-
-
-
-
-
-
-
-
-
-
-
-
-var channelHandles = 1;
-var animationHandles = 1;
-var timeline_Timeline = function () {
-  function Timeline() {
-    Object(classCallCheck["a" /* default */])(this, Timeline);
-
-    this.time = 0;
-    this.channels = new Map();
-    this.animations = new Map();
-    this.playing = false;
-    this.lastEngineTime = -1;
-  }
-
-  Object(createClass["a" /* default */])(Timeline, [{
-    key: "addChannel",
-    value: function addChannel(props) {
-      var _props$delay = props.delay,
-          delay = _props$delay === void 0 ? 0 : _props$delay,
-          _props$duration = props.duration,
-          duration = _props$duration === void 0 ? Number.POSITIVE_INFINITY : _props$duration,
-          _props$rate = props.rate,
-          rate = _props$rate === void 0 ? 1 : _props$rate,
-          _props$repeat = props.repeat,
-          repeat = _props$repeat === void 0 ? 1 : _props$repeat;
-      var handle = channelHandles++;
-      var channel = {
-        time: 0,
-        delay: delay,
-        duration: duration,
-        rate: rate,
-        repeat: repeat
-      };
-
-      this._setChannelTime(channel, this.time);
-
-      this.channels.set(handle, channel);
-      return handle;
-    }
-  }, {
-    key: "removeChannel",
-    value: function removeChannel(handle) {
-      this.channels["delete"](handle);
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = this.animations[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var _step$value = Object(slicedToArray["a" /* default */])(_step.value, 2),
-              animationHandle = _step$value[0],
-              animation = _step$value[1];
-
-          if (animation.channel === handle) {
-            this.detachAnimation(animationHandle);
-          }
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
-            _iterator["return"]();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
-    }
-  }, {
-    key: "isFinished",
-    value: function isFinished(handle) {
-      var channel = this.channels.get(handle);
-
-      if (channel === undefined) {
-        return false;
-      }
-
-      return this.time >= channel.delay + channel.duration * channel.repeat;
-    }
-  }, {
-    key: "getTime",
-    value: function getTime(handle) {
-      if (handle === undefined) {
-        return this.time;
-      }
-
-      var channel = this.channels.get(handle);
-
-      if (channel === undefined) {
-        return -1;
-      }
-
-      return channel.time;
-    }
-  }, {
-    key: "setTime",
-    value: function setTime(time) {
-      this.time = Math.max(0, time);
-      var channels = this.channels.values();
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
-
-      try {
-        for (var _iterator2 = channels[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var channel = _step2.value;
-
-          this._setChannelTime(channel, this.time);
-        }
-      } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
-            _iterator2["return"]();
-          }
-        } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
-          }
-        }
-      }
-
-      var animations = this.animations.values();
-      var _iteratorNormalCompletion3 = true;
-      var _didIteratorError3 = false;
-      var _iteratorError3 = undefined;
-
-      try {
-        for (var _iterator3 = animations[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-          var animationData = _step3.value;
-          var animation = animationData.animation,
-              _channel = animationData.channel;
-          animation.setTime(this.getTime(_channel));
-        }
-      } catch (err) {
-        _didIteratorError3 = true;
-        _iteratorError3 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion3 && _iterator3["return"] != null) {
-            _iterator3["return"]();
-          }
-        } finally {
-          if (_didIteratorError3) {
-            throw _iteratorError3;
-          }
-        }
-      }
-    }
-  }, {
-    key: "play",
-    value: function play() {
-      this.playing = true;
-    }
-  }, {
-    key: "pause",
-    value: function pause() {
-      this.playing = false;
-      this.lastEngineTime = -1;
-    }
-  }, {
-    key: "reset",
-    value: function reset() {
-      this.setTime(0);
-    }
-  }, {
-    key: "attachAnimation",
-    value: function attachAnimation(animation, channelHandle) {
-      var animationHandle = animationHandles++;
-      this.animations.set(animationHandle, {
-        animation: animation,
-        channel: channelHandle
-      });
-      animation.setTime(this.getTime(channelHandle));
-      return animationHandle;
-    }
-  }, {
-    key: "detachAnimation",
-    value: function detachAnimation(handle) {
-      this.animations["delete"](handle);
-    }
-  }, {
-    key: "update",
-    value: function update(engineTime) {
-      if (this.playing) {
-        if (this.lastEngineTime === -1) {
-          this.lastEngineTime = engineTime;
-        }
-
-        this.setTime(this.time + (engineTime - this.lastEngineTime));
-        this.lastEngineTime = engineTime;
-      }
-    }
-  }, {
-    key: "_setChannelTime",
-    value: function _setChannelTime(channel, time) {
-      var offsetTime = time - channel.delay;
-      var totalDuration = channel.duration * channel.repeat;
-
-      if (offsetTime >= totalDuration) {
-        channel.time = channel.duration * channel.rate;
-      } else {
-        channel.time = Math.max(0, offsetTime) % channel.duration;
-        channel.time *= channel.rate;
-      }
-    }
-  }]);
-
-  return Timeline;
-}();
-// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/lib/layer.js + 30 modules
-var lib_layer = __webpack_require__("K7jV");
-
-// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/lifecycle/constants.js
-var constants = __webpack_require__("I3n7");
-
-// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/utils/log.js
-var log = __webpack_require__("Jh/b");
-
-// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/debug/index.js
-var esm_debug = __webpack_require__("hZZG");
-
-// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/utils/flatten.js
-var flatten = __webpack_require__("Zk56");
-
-// EXTERNAL MODULE: ./node_modules/@probe.gl/stats/dist/esm/index.js + 2 modules
-var esm = __webpack_require__("laie");
-
-// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/viewports/viewport.js
-var viewports_viewport = __webpack_require__("e/LK");
-
-// EXTERNAL MODULE: ./node_modules/@luma.gl/engine/dist/esm/lib/program-manager.js + 8 modules
-var program_manager = __webpack_require__("haqy");
-
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/shaderlib/misc/geometry.js
-var vs = "\nstruct VertexGeometry {\n  vec4 position;\n  vec3 worldPosition;\n  vec3 worldPositionAlt;\n  vec3 normal;\n  vec2 uv;\n  vec3 pickingColor;\n} geometry;\n";
-var fs = "\n#define SMOOTH_EDGE_RADIUS 0.5\n\nstruct FragmentGeometry {\n  vec2 uv;\n} geometry;\n\nfloat smoothedge(float edge, float x) {\n  return smoothstep(edge - SMOOTH_EDGE_RADIUS, edge + SMOOTH_EDGE_RADIUS, x);\n}\n";
-/* harmony default export */ var geometry = ({
-  name: 'geometry',
-  vs: vs,
-  fs: fs
-});
-// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/shaderlib/project/project.js + 2 modules
-var project = __webpack_require__("hJkN");
-
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/shaderlib/index.js
-
-
-
-
-
-
-
-
-
-
-var DEFAULT_MODULES = [geometry, project["a" /* default */]];
-var SHADER_HOOKS = ['vs:DECKGL_FILTER_SIZE(inout vec3 size, VertexGeometry geometry)', 'vs:DECKGL_FILTER_GL_POSITION(inout vec4 position, VertexGeometry geometry)', 'vs:DECKGL_FILTER_COLOR(inout vec4 color, VertexGeometry geometry)', 'fs:DECKGL_FILTER_COLOR(inout vec4 color, FragmentGeometry geometry)'];
-function createProgramManager(gl) {
-  var programManager = program_manager["a" /* default */].getDefaultProgramManager(gl);
-  var _iteratorNormalCompletion = true;
-  var _didIteratorError = false;
-  var _iteratorError = undefined;
-
-  try {
-    for (var _iterator = DEFAULT_MODULES[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-      var shaderModule = _step.value;
-      programManager.addDefaultModule(shaderModule);
-    }
-  } catch (err) {
-    _didIteratorError = true;
-    _iteratorError = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion && _iterator["return"] != null) {
-        _iterator["return"]();
-      }
-    } finally {
-      if (_didIteratorError) {
-        throw _iteratorError;
-      }
-    }
-  }
-
-  var _iteratorNormalCompletion2 = true;
-  var _didIteratorError2 = false;
-  var _iteratorError2 = undefined;
-
-  try {
-    for (var _iterator2 = SHADER_HOOKS[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-      var shaderHook = _step2.value;
-      programManager.addShaderHook(shaderHook);
-    }
-  } catch (err) {
-    _didIteratorError2 = true;
-    _iteratorError2 = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
-        _iterator2["return"]();
-      }
-    } finally {
-      if (_didIteratorError2) {
-        throw _iteratorError2;
-      }
-    }
-  }
-
-  return programManager;
-}
-
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/lib/layer-manager.js
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var TRACE_SET_LAYERS = 'layerManager.setLayers';
-var TRACE_ACTIVATE_VIEWPORT = 'layerManager.activateViewport';
-var INITIAL_CONTEXT = Object.seal({
-  layerManager: null,
-  deck: null,
-  gl: null,
-  stats: null,
-  shaderCache: null,
-  pickingFBO: null,
-  mousePosition: null,
-  userData: {}
-});
-
-var layer_manager_layerName = function layerName(layer) {
-  return layer instanceof lib_layer["a" /* default */] ? "".concat(layer) : !layer ? 'null' : 'invalid';
-};
-
-var layer_manager_LayerManager = function () {
-  function LayerManager(gl) {
-    var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
-        deck = _ref.deck,
-        stats = _ref.stats,
-        _ref$viewport = _ref.viewport,
-        viewport = _ref$viewport === void 0 ? null : _ref$viewport,
-        _ref$timeline = _ref.timeline,
-        timeline = _ref$timeline === void 0 ? null : _ref$timeline;
-
-    Object(classCallCheck["a" /* default */])(this, LayerManager);
-
-    this.lastRenderedLayers = [];
-    this.layers = [];
-    this.context = Object.assign({}, INITIAL_CONTEXT, {
-      layerManager: this,
-      deck: deck,
-      gl: gl,
-      programManager: gl && createProgramManager(gl),
-      stats: stats || new esm["b" /* Stats */]({
-        id: 'deck.gl'
-      }),
-      viewport: viewport || new viewports_viewport["a" /* default */]({
-        id: 'DEFAULT-INITIAL-VIEWPORT'
-      }),
-      timeline: timeline || new timeline_Timeline()
-    });
-    this._needsRedraw = 'Initial render';
-    this._needsUpdate = false;
-    this._debug = false;
-    this._onError = null;
-    this.activateViewport = this.activateViewport.bind(this);
-    Object.seal(this);
-  }
-
-  Object(createClass["a" /* default */])(LayerManager, [{
-    key: "finalize",
-    value: function finalize() {
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = this.layers[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var layer = _step.value;
-
-          this._finalizeLayer(layer);
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
-            _iterator["return"]();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
-    }
-  }, {
-    key: "needsRedraw",
-    value: function needsRedraw() {
-      var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
-        clearRedrawFlags: false
-      };
-      var redraw = this._needsRedraw;
-
-      if (opts.clearRedrawFlags) {
-        this._needsRedraw = false;
-      }
-
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
-
-      try {
-        for (var _iterator2 = this.layers[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var layer = _step2.value;
-          var layerNeedsRedraw = layer.getNeedsRedraw(opts);
-          redraw = redraw || layerNeedsRedraw;
-        }
-      } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
-            _iterator2["return"]();
-          }
-        } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
-          }
-        }
-      }
-
-      return redraw;
-    }
-  }, {
-    key: "needsUpdate",
-    value: function needsUpdate() {
-      return this._needsUpdate;
-    }
-  }, {
-    key: "setNeedsRedraw",
-    value: function setNeedsRedraw(reason) {
-      this._needsRedraw = this._needsRedraw || reason;
-    }
-  }, {
-    key: "setNeedsUpdate",
-    value: function setNeedsUpdate(reason) {
-      this._needsUpdate = this._needsUpdate || reason;
-    }
-  }, {
-    key: "getLayers",
-    value: function getLayers() {
-      var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-          _ref2$layerIds = _ref2.layerIds,
-          layerIds = _ref2$layerIds === void 0 ? null : _ref2$layerIds;
-
-      return layerIds ? this.layers.filter(function (layer) {
-        return layerIds.find(function (layerId) {
-          return layer.id.indexOf(layerId) === 0;
-        });
-      }) : this.layers;
-    }
-  }, {
-    key: "setProps",
-    value: function setProps(props) {
-      if ('debug' in props) {
-        this._debug = props.debug;
-      }
-
-      if ('userData' in props) {
-        this.context.userData = props.userData;
-      }
-
-      if ('layers' in props) {
-        this.setLayers(props.layers);
-      }
-
-      if ('onError' in props) {
-        this._onError = props.onError;
-      }
-    }
-  }, {
-    key: "setLayers",
-    value: function setLayers(newLayers) {
-      var forceUpdate = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-      var shouldUpdate = forceUpdate || newLayers !== this.lastRenderedLayers;
-      Object(esm_debug["a" /* default */])(TRACE_SET_LAYERS, this, shouldUpdate, newLayers);
-
-      if (!shouldUpdate) {
-        return this;
-      }
-
-      this.lastRenderedLayers = newLayers;
-      newLayers = Object(flatten["b" /* flatten */])(newLayers, Boolean);
-      var _iteratorNormalCompletion3 = true;
-      var _didIteratorError3 = false;
-      var _iteratorError3 = undefined;
-
-      try {
-        for (var _iterator3 = newLayers[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-          var layer = _step3.value;
-          layer.context = this.context;
-        }
-      } catch (err) {
-        _didIteratorError3 = true;
-        _iteratorError3 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion3 && _iterator3["return"] != null) {
-            _iterator3["return"]();
-          }
-        } finally {
-          if (_didIteratorError3) {
-            throw _iteratorError3;
-          }
-        }
-      }
-
-      this._updateLayers(this.layers, newLayers);
-
-      return this;
-    }
-  }, {
-    key: "updateLayers",
-    value: function updateLayers() {
-      var reason = this.needsUpdate();
-
-      if (reason) {
-        this.setNeedsRedraw("updating layers: ".concat(reason));
-        var forceUpdate = true;
-        this.setLayers(this.lastRenderedLayers, forceUpdate);
-      }
-    }
-  }, {
-    key: "activateViewport",
-    value: function activateViewport(viewport) {
-      Object(assert["a" /* default */])(viewport, 'LayerManager: viewport not set');
-      var oldViewport = this.context.viewport;
-      var viewportChanged = !oldViewport || !viewport.equals(oldViewport);
-
-      if (viewportChanged) {
-        Object(esm_debug["a" /* default */])(TRACE_ACTIVATE_VIEWPORT, this, viewport);
-        this.context.viewport = viewport;
-        var changeFlags = {
-          viewportChanged: true
-        };
-        var _iteratorNormalCompletion4 = true;
-        var _didIteratorError4 = false;
-        var _iteratorError4 = undefined;
-
-        try {
-          for (var _iterator4 = this.layers[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-            var layer = _step4.value;
-            layer.setChangeFlags(changeFlags);
-
-            this._updateLayer(layer);
-          }
-        } catch (err) {
-          _didIteratorError4 = true;
-          _iteratorError4 = err;
-        } finally {
-          try {
-            if (!_iteratorNormalCompletion4 && _iterator4["return"] != null) {
-              _iterator4["return"]();
-            }
-          } finally {
-            if (_didIteratorError4) {
-              throw _iteratorError4;
-            }
-          }
-        }
-      }
-
-      return this;
-    }
-  }, {
-    key: "_handleError",
-    value: function _handleError(stage, error, layer) {
-      if (this._onError) {
-        this._onError(error, layer);
-      } else {
-        log["a" /* default */].error("error during ".concat(stage, " of ").concat(layer_manager_layerName(layer)), error)();
-      }
-    }
-  }, {
-    key: "_updateLayers",
-    value: function _updateLayers(oldLayers, newLayers) {
-      var oldLayerMap = {};
-      var _iteratorNormalCompletion5 = true;
-      var _didIteratorError5 = false;
-      var _iteratorError5 = undefined;
-
-      try {
-        for (var _iterator5 = oldLayers[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-          var oldLayer = _step5.value;
-
-          if (oldLayerMap[oldLayer.id]) {
-            log["a" /* default */].warn("Multiple old layers with same id ".concat(layer_manager_layerName(oldLayer)))();
-          } else {
-            oldLayerMap[oldLayer.id] = oldLayer;
-          }
-        }
-      } catch (err) {
-        _didIteratorError5 = true;
-        _iteratorError5 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion5 && _iterator5["return"] != null) {
-            _iterator5["return"]();
-          }
-        } finally {
-          if (_didIteratorError5) {
-            throw _iteratorError5;
-          }
-        }
-      }
-
-      var generatedLayers = [];
-
-      this._updateSublayersRecursively(newLayers, oldLayerMap, generatedLayers);
-
-      this._finalizeOldLayers(oldLayerMap);
-
-      var needsUpdate = false;
-
-      for (var _i = 0, _generatedLayers = generatedLayers; _i < _generatedLayers.length; _i++) {
-        var layer = _generatedLayers[_i];
-
-        if (layer.hasUniformTransition()) {
-          needsUpdate = true;
-          break;
-        }
-      }
-
-      this._needsUpdate = needsUpdate;
-      this.layers = generatedLayers;
-    }
-  }, {
-    key: "_updateSublayersRecursively",
-    value: function _updateSublayersRecursively(newLayers, oldLayerMap, generatedLayers) {
-      var _iteratorNormalCompletion6 = true;
-      var _didIteratorError6 = false;
-      var _iteratorError6 = undefined;
-
-      try {
-        for (var _iterator6 = newLayers[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-          var newLayer = _step6.value;
-          newLayer.context = this.context;
-          var oldLayer = oldLayerMap[newLayer.id];
-
-          if (oldLayer === null) {
-            log["a" /* default */].warn("Multiple new layers with same id ".concat(layer_manager_layerName(newLayer)))();
-          }
-
-          oldLayerMap[newLayer.id] = null;
-          var sublayers = null;
-
-          try {
-            if (this._debug && oldLayer !== newLayer) {
-              newLayer.validateProps();
-            }
-
-            if (!oldLayer) {
-              this._initializeLayer(newLayer);
-            } else {
-              this._transferLayerState(oldLayer, newLayer);
-
-              this._updateLayer(newLayer);
-            }
-
-            generatedLayers.push(newLayer);
-            sublayers = newLayer.isComposite && newLayer.getSubLayers();
-          } catch (err) {
-            this._handleError('matching', err, newLayer);
-          }
-
-          if (sublayers) {
-            this._updateSublayersRecursively(sublayers, oldLayerMap, generatedLayers);
-          }
-        }
-      } catch (err) {
-        _didIteratorError6 = true;
-        _iteratorError6 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion6 && _iterator6["return"] != null) {
-            _iterator6["return"]();
-          }
-        } finally {
-          if (_didIteratorError6) {
-            throw _iteratorError6;
-          }
-        }
-      }
-    }
-  }, {
-    key: "_finalizeOldLayers",
-    value: function _finalizeOldLayers(oldLayerMap) {
-      for (var layerId in oldLayerMap) {
-        var layer = oldLayerMap[layerId];
-
-        if (layer) {
-          this._finalizeLayer(layer);
-        }
-      }
-    }
-  }, {
-    key: "_initializeLayer",
-    value: function _initializeLayer(layer) {
-      try {
-        layer._initialize();
-
-        layer.lifecycle = constants["a" /* LIFECYCLE */].INITIALIZED;
-      } catch (err) {
-        this._handleError('initialization', err, layer);
-      }
-    }
-  }, {
-    key: "_transferLayerState",
-    value: function _transferLayerState(oldLayer, newLayer) {
-      newLayer._transferState(oldLayer);
-
-      newLayer.lifecycle = constants["a" /* LIFECYCLE */].MATCHED;
-
-      if (newLayer !== oldLayer) {
-        oldLayer.lifecycle = constants["a" /* LIFECYCLE */].AWAITING_GC;
-      }
-    }
-  }, {
-    key: "_updateLayer",
-    value: function _updateLayer(layer) {
-      try {
-        layer._update();
-      } catch (err) {
-        this._handleError('update', err, layer);
-      }
-    }
-  }, {
-    key: "_finalizeLayer",
-    value: function _finalizeLayer(layer) {
-      this._needsRedraw = this._needsRedraw || "finalized ".concat(layer_manager_layerName(layer));
-      layer.lifecycle = constants["a" /* LIFECYCLE */].AWAITING_FINALIZATION;
-
-      try {
-        layer._finalize();
-
-        layer.lifecycle = constants["a" /* LIFECYCLE */].FINALIZED;
-      } catch (err) {
-        this._handleError('finalization', err, layer);
-      }
-    }
-  }]);
-
-  return LayerManager;
-}();
-
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.array.some.js
-var es6_array_some = __webpack_require__("wZFJ");
-
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/utils/deep-equal.js
-
-function deepEqual(a, b) {
-  if (a === b) {
-    return true;
-  }
-
-  if (!a || !b) {
-    return false;
-  }
-
-  for (var key in a) {
-    var aValue = a[key];
-    var bValue = b[key];
-    var equals = aValue === bValue || Array.isArray(aValue) && Array.isArray(bValue) && deepEqual(aValue, bValue);
-
-    if (!equals) {
-      return false;
-    }
-  }
-
-  return true;
-}
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/lib/view-manager.js
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var view_manager_ViewManager = function () {
-  function ViewManager() {
-    var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-    Object(classCallCheck["a" /* default */])(this, ViewManager);
-
-    this.views = [];
-    this.width = 100;
-    this.height = 100;
-    this.viewState = {};
-    this.controllers = {};
-    this.timeline = props.timeline;
-    this._viewports = [];
-    this._viewportMap = {};
-    this._isUpdating = false;
-    this._needsRedraw = 'Initial render';
-    this._needsUpdate = true;
-    this._eventManager = props.eventManager;
-    this._eventCallbacks = {
-      onViewStateChange: props.onViewStateChange,
-      onInteractiveStateChange: props.onInteractiveStateChange
-    };
-    Object.seal(this);
-    this.setProps(props);
-  }
-
-  Object(createClass["a" /* default */])(ViewManager, [{
-    key: "finalize",
-    value: function finalize() {
-      for (var key in this.controllers) {
-        if (this.controllers[key]) {
-          this.controllers[key].finalize();
-        }
-      }
-
-      this.controllers = {};
-    }
-  }, {
-    key: "needsRedraw",
-    value: function needsRedraw() {
-      var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
-        clearRedrawFlags: false
-      };
-      var redraw = this._needsRedraw;
-
-      if (opts.clearRedrawFlags) {
-        this._needsRedraw = false;
-      }
-
-      return redraw;
-    }
-  }, {
-    key: "setNeedsUpdate",
-    value: function setNeedsUpdate(reason) {
-      this._needsUpdate = this._needsUpdate || reason;
-      this._needsRedraw = this._needsRedraw || reason;
-    }
-  }, {
-    key: "updateViewStates",
-    value: function updateViewStates() {
-      for (var viewId in this.controllers) {
-        var controller = this.controllers[viewId];
-
-        if (controller) {
-          controller.updateTransition();
-        }
-      }
-    }
-  }, {
-    key: "getViewports",
-    value: function getViewports(rect) {
-      if (rect) {
-        return this._viewports.filter(function (viewport) {
-          return viewport.containsPixel(rect);
-        });
-      }
-
-      return this._viewports;
-    }
-  }, {
-    key: "getViews",
-    value: function getViews() {
-      var viewMap = {};
-      this.views.forEach(function (view) {
-        viewMap[view.id] = view;
-      });
-      return viewMap;
-    }
-  }, {
-    key: "getView",
-    value: function getView(viewOrViewId) {
-      return typeof viewOrViewId === 'string' ? this.views.find(function (view) {
-        return view.id === viewOrViewId;
-      }) : viewOrViewId;
-    }
-  }, {
-    key: "getViewState",
-    value: function getViewState(viewId) {
-      var view = this.getView(viewId);
-      var viewState = view && this.viewState[view.getViewStateId()] || this.viewState;
-      return view ? view.filterViewState(viewState) : viewState;
-    }
-  }, {
-    key: "getViewport",
-    value: function getViewport(viewId) {
-      return this._viewportMap[viewId];
-    }
-  }, {
-    key: "unproject",
-    value: function unproject(xyz, opts) {
-      var viewports = this.getViewports();
-      var pixel = {
-        x: xyz[0],
-        y: xyz[1]
-      };
-
-      for (var i = viewports.length - 1; i >= 0; --i) {
-        var viewport = viewports[i];
-
-        if (viewport.containsPixel(pixel)) {
-          var p = xyz.slice();
-          p[0] -= viewport.x;
-          p[1] -= viewport.y;
-          return viewport.unproject(p, opts);
-        }
-      }
-
-      return null;
-    }
-  }, {
-    key: "setProps",
-    value: function setProps(props) {
-      if ('views' in props) {
-        this._setViews(props.views);
-      }
-
-      if ('viewState' in props) {
-        this._setViewState(props.viewState);
-      }
-
-      if ('width' in props || 'height' in props) {
-        this._setSize(props.width, props.height);
-      }
-
-      if (!this._isUpdating) {
-        this._update();
-      }
-    }
-  }, {
-    key: "_update",
-    value: function _update() {
-      this._isUpdating = true;
-
-      if (this._needsUpdate) {
-        this._needsUpdate = false;
-
-        this._rebuildViewports();
-      }
-
-      if (this._needsUpdate) {
-        this._needsUpdate = false;
-
-        this._rebuildViewports();
-      }
-
-      this._isUpdating = false;
-    }
-  }, {
-    key: "_setSize",
-    value: function _setSize(width, height) {
-      Object(assert["a" /* default */])(Number.isFinite(width) && Number.isFinite(height));
-
-      if (width !== this.width || height !== this.height) {
-        this.width = width;
-        this.height = height;
-        this.setNeedsUpdate('Size changed');
-      }
-    }
-  }, {
-    key: "_setViews",
-    value: function _setViews(views) {
-      views = Object(flatten["b" /* flatten */])(views, Boolean);
-
-      var viewsChanged = this._diffViews(views, this.views);
-
-      if (viewsChanged) {
-        this.setNeedsUpdate('views changed');
-      }
-
-      this.views = views;
-    }
-  }, {
-    key: "_setViewState",
-    value: function _setViewState(viewState) {
-      if (viewState) {
-        var viewStateChanged = !deepEqual(viewState, this.viewState);
-
-        if (viewStateChanged) {
-          this.setNeedsUpdate('viewState changed');
-        }
-
-        this.viewState = viewState;
-      } else {
-        log["a" /* default */].warn('missing `viewState` or `initialViewState`')();
-      }
-    }
-  }, {
-    key: "_onViewStateChange",
-    value: function _onViewStateChange(viewId, event) {
-      event.viewId = viewId;
-
-      this._eventCallbacks.onViewStateChange(event);
-    }
-  }, {
-    key: "_createController",
-    value: function _createController(props) {
-      var Controller = props.type;
-      var controller = new Controller(Object.assign({
-        timeline: this.timeline,
-        eventManager: this._eventManager,
-        onViewStateChange: this._onViewStateChange.bind(this, props.id),
-        onStateChange: this._eventCallbacks.onInteractiveStateChange
-      }, props));
-      return controller;
-    }
-  }, {
-    key: "_updateController",
-    value: function _updateController(view, viewState, viewport, controller) {
-      if (view.controller) {
-        var controllerProps = Object.assign({}, view.controller, viewState, {
-          id: view.id,
-          x: viewport.x,
-          y: viewport.y,
-          width: viewport.width,
-          height: viewport.height
-        });
-
-        if (controller) {
-          controller.setProps(controllerProps);
-        } else {
-          controller = this._createController(controllerProps);
-        }
-
-        return controller;
-      }
-
-      return null;
-    }
-  }, {
-    key: "_rebuildViewports",
-    value: function _rebuildViewports() {
-      var width = this.width,
-          height = this.height,
-          views = this.views;
-      var oldControllers = this.controllers;
-      this._viewports = [];
-      this.controllers = {};
-
-      for (var i = views.length; i--;) {
-        var view = views[i];
-        var viewState = this.getViewState(view);
-        var viewport = view.makeViewport({
-          width: width,
-          height: height,
-          viewState: viewState
-        });
-        this.controllers[view.id] = this._updateController(view, viewState, viewport, oldControllers[view.id]);
-
-        this._viewports.unshift(viewport);
-      }
-
-      for (var id in oldControllers) {
-        if (oldControllers[id] && !this.controllers[id]) {
-          oldControllers[id].finalize();
-        }
-      }
-
-      this._buildViewportMap();
-    }
-  }, {
-    key: "_buildViewportMap",
-    value: function _buildViewportMap() {
-      var _this = this;
-
-      this._viewportMap = {};
-
-      this._viewports.forEach(function (viewport) {
-        if (viewport.id) {
-          _this._viewportMap[viewport.id] = _this._viewportMap[viewport.id] || viewport;
-        }
-      });
-    }
-  }, {
-    key: "_diffViews",
-    value: function _diffViews(newViews, oldViews) {
-      if (newViews.length !== oldViews.length) {
-        return true;
-      }
-
-      return newViews.some(function (_, i) {
-        return !newViews[i].equals(oldViews[i]);
-      });
-    }
-  }]);
-
-  return ViewManager;
-}();
-
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/typeof.js
-var esm_typeof = __webpack_require__("0QZy");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.regexp.match.js
-var es6_regexp_match = __webpack_require__("Ll4R");
-
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/utils/positions.js
-
-
-var PERCENT_OR_PIXELS_REGEX = /([0-9]+\.?[0-9]*)(%|px)/;
-function parsePosition(value) {
-  switch (Object(esm_typeof["a" /* default */])(value)) {
-    case 'number':
-      return {
-        position: value,
-        relative: false
-      };
-
-    case 'string':
-      var match = value.match(PERCENT_OR_PIXELS_REGEX);
-
-      if (match && match.length >= 3) {
-        var relative = match[2] === '%';
-        var position = parseFloat(match[1]);
-        return {
-          position: relative ? position / 100 : position,
-          relative: relative
-        };
-      }
-
-    default:
-      throw new Error("Could not parse position string ".concat(value));
-  }
-}
-function getPosition(position, extent) {
-  return position.relative ? Math.round(position.position * extent) : position.position;
-}
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/views/view.js
-
-
-
-
-
-
-
-
-
-
-
-var view_View = function () {
-  function View() {
-    var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-    Object(classCallCheck["a" /* default */])(this, View);
-
-    var _props$id = props.id,
-        id = _props$id === void 0 ? null : _props$id,
-        _props$x = props.x,
-        x = _props$x === void 0 ? 0 : _props$x,
-        _props$y = props.y,
-        y = _props$y === void 0 ? 0 : _props$y,
-        _props$width = props.width,
-        width = _props$width === void 0 ? '100%' : _props$width,
-        _props$height = props.height,
-        height = _props$height === void 0 ? '100%' : _props$height,
-        _props$projectionMatr = props.projectionMatrix,
-        projectionMatrix = _props$projectionMatr === void 0 ? null : _props$projectionMatr,
-        _props$fovy = props.fovy,
-        fovy = _props$fovy === void 0 ? 50 : _props$fovy,
-        _props$near = props.near,
-        near = _props$near === void 0 ? 0.1 : _props$near,
-        _props$far = props.far,
-        far = _props$far === void 0 ? 1000 : _props$far,
-        _props$modelMatrix = props.modelMatrix,
-        modelMatrix = _props$modelMatrix === void 0 ? null : _props$modelMatrix,
-        _props$viewportInstan = props.viewportInstance,
-        viewportInstance = _props$viewportInstan === void 0 ? null : _props$viewportInstan,
-        _props$type = props.type,
-        type = _props$type === void 0 ? viewports_viewport["a" /* default */] : _props$type;
-    Object(assert["a" /* default */])(!viewportInstance || viewportInstance instanceof viewports_viewport["a" /* default */]);
-    this.viewportInstance = viewportInstance;
-    this.id = id || this.constructor.displayName || 'view';
-    this.type = type;
-    this.props = Object.assign({}, props, {
-      id: this.id,
-      projectionMatrix: projectionMatrix,
-      fovy: fovy,
-      near: near,
-      far: far,
-      modelMatrix: modelMatrix
-    });
-
-    this._parseDimensions({
-      x: x,
-      y: y,
-      width: width,
-      height: height
-    });
-
-    this.equals = this.equals.bind(this);
-    Object.seal(this);
-  }
-
-  Object(createClass["a" /* default */])(View, [{
-    key: "equals",
-    value: function equals(view) {
-      if (this === view) {
-        return true;
-      }
-
-      if (this.viewportInstance) {
-        return view.viewportInstance && this.viewportInstance.equals(view.viewportInstance);
-      }
-
-      var viewChanged = deepEqual(this.props, view.props);
-      return viewChanged;
-    }
-  }, {
-    key: "makeViewport",
-    value: function makeViewport(_ref) {
-      var width = _ref.width,
-          height = _ref.height,
-          viewState = _ref.viewState;
-
-      if (this.viewportInstance) {
-        return this.viewportInstance;
-      }
-
-      viewState = this.filterViewState(viewState);
-      var viewportDimensions = this.getDimensions({
-        width: width,
-        height: height
-      });
-      var props = Object.assign({
-        viewState: viewState
-      }, viewState, this.props, viewportDimensions);
-      return this._getViewport(props);
-    }
-  }, {
-    key: "getViewStateId",
-    value: function getViewStateId() {
-      switch (Object(esm_typeof["a" /* default */])(this.props.viewState)) {
-        case 'string':
-          return this.props.viewState;
-
-        case 'object':
-          return this.props.viewState && this.props.viewState.id;
-
-        default:
-          return this.id;
-      }
-    }
-  }, {
-    key: "filterViewState",
-    value: function filterViewState(viewState) {
-      if (this.props.viewState && Object(esm_typeof["a" /* default */])(this.props.viewState) === 'object') {
-        if (!this.props.viewState.id) {
-          return this.props.viewState;
-        }
-
-        var newViewState = Object.assign({}, viewState);
-
-        for (var key in this.props.viewState) {
-          if (key !== 'id') {
-            newViewState[key] = this.props.viewState[key];
-          }
-        }
-
-        return newViewState;
-      }
-
-      return viewState;
-    }
-  }, {
-    key: "getDimensions",
-    value: function getDimensions(_ref2) {
-      var width = _ref2.width,
-          height = _ref2.height;
-      return {
-        x: getPosition(this._x, width),
-        y: getPosition(this._y, height),
-        width: getPosition(this._width, width),
-        height: getPosition(this._height, height)
-      };
-    }
-  }, {
-    key: "_getControllerProps",
-    value: function _getControllerProps(defaultOpts) {
-      var opts = this.props.controller;
-
-      if (!opts) {
-        return null;
-      }
-
-      if (opts === true) {
-        return defaultOpts;
-      }
-
-      if (typeof opts === 'function') {
-        opts = {
-          type: opts
-        };
-      }
-
-      return Object.assign({}, defaultOpts, opts);
-    }
-  }, {
-    key: "_getViewport",
-    value: function _getViewport(props) {
-      var ViewportType = this.type;
-      return new ViewportType(props);
-    }
-  }, {
-    key: "_parseDimensions",
-    value: function _parseDimensions(_ref3) {
-      var x = _ref3.x,
-          y = _ref3.y,
-          width = _ref3.width,
-          height = _ref3.height;
-      this._x = parsePosition(x);
-      this._y = parsePosition(y);
-      this._width = parsePosition(width);
-      this._height = parsePosition(height);
-    }
-  }]);
-
-  return View;
-}();
-
-
-// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/viewports/web-mercator-viewport.js
-var web_mercator_viewport = __webpack_require__("zGfa");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.math.log2.js
-var es6_math_log2 = __webpack_require__("QNMc");
-
-// EXTERNAL MODULE: ./node_modules/math.gl/dist/esm/index.js
-var dist_esm = __webpack_require__("c9N0");
-
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/transitions/transition-interpolator.js
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var transition_interpolator_TransitionInterpolator = function () {
-  function TransitionInterpolator() {
-    var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-    Object(classCallCheck["a" /* default */])(this, TransitionInterpolator);
-
-    if (Array.isArray(opts)) {
-      opts = {
-        compare: opts,
-        extract: opts,
-        required: opts
-      };
-    }
-
-    var _opts = opts,
-        compare = _opts.compare,
-        extract = _opts.extract,
-        required = _opts.required;
-    this._propsToCompare = compare;
-    this._propsToExtract = extract;
-    this._requiredProps = required;
-  }
-
-  Object(createClass["a" /* default */])(TransitionInterpolator, [{
-    key: "arePropsEqual",
-    value: function arePropsEqual(currentProps, nextProps) {
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = (this._propsToCompare || Object.keys(nextProps))[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var key = _step.value;
-
-          if (!(key in currentProps) || !(key in nextProps) || !Object(dist_esm["e" /* equals */])(currentProps[key], nextProps[key])) {
-            return false;
-          }
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
-            _iterator["return"]();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
-
-      return true;
-    }
-  }, {
-    key: "initializeProps",
-    value: function initializeProps(startProps, endProps) {
-      var result;
-
-      if (this._propsToExtract) {
-        var startViewStateProps = {};
-        var endViewStateProps = {};
-        var _iteratorNormalCompletion2 = true;
-        var _didIteratorError2 = false;
-        var _iteratorError2 = undefined;
-
-        try {
-          for (var _iterator2 = this._propsToExtract[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-            var key = _step2.value;
-            startViewStateProps[key] = startProps[key];
-            endViewStateProps[key] = endProps[key];
-          }
-        } catch (err) {
-          _didIteratorError2 = true;
-          _iteratorError2 = err;
-        } finally {
-          try {
-            if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
-              _iterator2["return"]();
-            }
-          } finally {
-            if (_didIteratorError2) {
-              throw _iteratorError2;
-            }
-          }
-        }
-
-        result = {
-          start: startViewStateProps,
-          end: endViewStateProps
-        };
-      } else {
-        result = {
-          start: startProps,
-          end: endProps
-        };
-      }
-
-      this._checkRequiredProps(result.start);
-
-      this._checkRequiredProps(result.end);
-
-      return result;
-    }
-  }, {
-    key: "interpolateProps",
-    value: function interpolateProps(startProps, endProps, t) {
-      return endProps;
-    }
-  }, {
-    key: "getDuration",
-    value: function getDuration(startProps, endProps) {
-      return endProps.transitionDuration;
-    }
-  }, {
-    key: "_checkRequiredProps",
-    value: function _checkRequiredProps(props) {
-      if (!this._requiredProps) {
-        return;
-      }
-
-      this._requiredProps.forEach(function (propName) {
-        var value = props[propName];
-        Object(assert["a" /* default */])(Number.isFinite(value) || Array.isArray(value), "".concat(propName, " is required for transition"));
-      });
-    }
-  }]);
-
-  return TransitionInterpolator;
-}();
-
-
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/transitions/linear-interpolator.js
-
-
-
-
-
-
-
-var VIEWPORT_TRANSITION_PROPS = ['longitude', 'latitude', 'zoom', 'bearing', 'pitch'];
-
-var linear_interpolator_LinearInterpolator = function (_TransitionInterpolat) {
-  Object(inherits["a" /* default */])(LinearInterpolator, _TransitionInterpolat);
-
-  function LinearInterpolator() {
-    var transitionProps = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : VIEWPORT_TRANSITION_PROPS;
-
-    Object(classCallCheck["a" /* default */])(this, LinearInterpolator);
-
-    return Object(possibleConstructorReturn["a" /* default */])(this, Object(getPrototypeOf["a" /* default */])(LinearInterpolator).call(this, transitionProps));
-  }
-
-  Object(createClass["a" /* default */])(LinearInterpolator, [{
-    key: "interpolateProps",
-    value: function interpolateProps(startProps, endProps, t) {
-      var viewport = {};
-
-      for (var key in endProps) {
-        viewport[key] = Object(dist_esm["f" /* lerp */])(startProps[key], endProps[key], t);
-      }
-
-      return viewport;
-    }
-  }]);
-
-  return LinearInterpolator;
-}(transition_interpolator_TransitionInterpolator);
-
-
-// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/transitions/transition.js
-var transition = __webpack_require__("n6ox");
-
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/controllers/transition-manager.js
-
-
-
-
-
-
-
-var noop = function noop() {};
-
-var TRANSITION_EVENTS = {
-  BREAK: 1,
-  SNAP_TO_END: 2,
-  IGNORE: 3
-};
-var DEFAULT_PROPS = {
-  transitionDuration: 0,
-  transitionEasing: function transitionEasing(t) {
-    return t;
-  },
-  transitionInterpolator: new linear_interpolator_LinearInterpolator(),
-  transitionInterruption: TRANSITION_EVENTS.BREAK,
-  onTransitionStart: noop,
-  onTransitionInterrupt: noop,
-  onTransitionEnd: noop
-};
-
-var transition_manager_TransitionManager = function () {
-  function TransitionManager(ControllerState) {
-    var props = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-    Object(classCallCheck["a" /* default */])(this, TransitionManager);
-
-    this.ControllerState = ControllerState;
-    this.props = Object.assign({}, DEFAULT_PROPS, props);
-    this.propsInTransition = null;
-    this.transition = new transition["a" /* default */](props.timeline);
-    this.onViewStateChange = props.onViewStateChange;
-    this._onTransitionUpdate = this._onTransitionUpdate.bind(this);
-  }
-
-  Object(createClass["a" /* default */])(TransitionManager, [{
-    key: "finalize",
-    value: function finalize() {
-      this.transition.cancel();
-    }
-  }, {
-    key: "getViewportInTransition",
-    value: function getViewportInTransition() {
-      return this.propsInTransition;
-    }
-  }, {
-    key: "processViewStateChange",
-    value: function processViewStateChange(nextProps) {
-      var transitionTriggered = false;
-      var currentProps = this.props;
-      nextProps = Object.assign({}, DEFAULT_PROPS, nextProps);
-      this.props = nextProps;
-
-      if (this._shouldIgnoreViewportChange(currentProps, nextProps)) {
-        return transitionTriggered;
-      }
-
-      if (this._isTransitionEnabled(nextProps)) {
-        var _this$transition$sett = this.transition.settings,
-            interruption = _this$transition$sett.interruption,
-            endProps = _this$transition$sett.endProps;
-        var startProps = Object.assign({}, currentProps, interruption === TRANSITION_EVENTS.SNAP_TO_END ? endProps : this.propsInTransition || currentProps);
-
-        this._triggerTransition(startProps, nextProps);
-
-        transitionTriggered = true;
-      } else {
-        this.transition.cancel();
-      }
-
-      return transitionTriggered;
-    }
-  }, {
-    key: "updateTransition",
-    value: function updateTransition() {
-      this.transition.update();
-    }
-  }, {
-    key: "_isTransitionEnabled",
-    value: function _isTransitionEnabled(props) {
-      var transitionDuration = props.transitionDuration,
-          transitionInterpolator = props.transitionInterpolator;
-      return (transitionDuration > 0 || transitionDuration === 'auto') && Boolean(transitionInterpolator);
-    }
-  }, {
-    key: "_isUpdateDueToCurrentTransition",
-    value: function _isUpdateDueToCurrentTransition(props) {
-      if (this.transition.inProgress) {
-        return this.transition.settings.interpolator.arePropsEqual(props, this.propsInTransition);
-      }
-
-      return false;
-    }
-  }, {
-    key: "_shouldIgnoreViewportChange",
-    value: function _shouldIgnoreViewportChange(currentProps, nextProps) {
-      if (this.transition.inProgress) {
-        return this.transition.settings.interruption === TRANSITION_EVENTS.IGNORE || this._isUpdateDueToCurrentTransition(nextProps);
-      } else if (this._isTransitionEnabled(nextProps)) {
-        return nextProps.transitionInterpolator.arePropsEqual(currentProps, nextProps);
-      }
-
-      return true;
-    }
-  }, {
-    key: "_triggerTransition",
-    value: function _triggerTransition(startProps, endProps) {
-      var startViewstate = new this.ControllerState(startProps);
-      var endViewStateProps = new this.ControllerState(endProps).shortestPathFrom(startViewstate);
-      var transitionInterpolator = endProps.transitionInterpolator;
-      var duration = transitionInterpolator.getDuration ? transitionInterpolator.getDuration(startProps, endProps) : endProps.transitionDuration;
-      var initialProps = endProps.transitionInterpolator.initializeProps(startProps, endViewStateProps);
-      this.propsInTransition = {};
-      this.duration = duration;
-      this.transition.start({
-        duration: duration,
-        easing: endProps.transitionEasing,
-        interpolator: endProps.transitionInterpolator,
-        interruption: endProps.transitionInterruption,
-        startProps: initialProps.start,
-        endProps: initialProps.end,
-        onStart: endProps.onTransitionStart,
-        onUpdate: this._onTransitionUpdate,
-        onInterrupt: this._onTransitionEnd(endProps.onTransitionInterrupt),
-        onEnd: this._onTransitionEnd(endProps.onTransitionEnd)
-      });
-      this.updateTransition();
-    }
-  }, {
-    key: "_onTransitionEnd",
-    value: function _onTransitionEnd(callback) {
-      var _this = this;
-
-      return function (transition) {
-        _this.propsInTransition = null;
-        callback(transition);
-      };
-    }
-  }, {
-    key: "_onTransitionUpdate",
-    value: function _onTransitionUpdate(transition) {
-      var time = transition.time,
-          _transition$settings = transition.settings,
-          interpolator = _transition$settings.interpolator,
-          startProps = _transition$settings.startProps,
-          endProps = _transition$settings.endProps,
-          duration = _transition$settings.duration,
-          easing = _transition$settings.easing;
-      var t = easing(time / duration);
-      var viewport = interpolator.interpolateProps(startProps, endProps, t);
-      this.propsInTransition = new this.ControllerState(Object.assign({}, this.props, viewport)).getViewportProps();
-
-      if (this.onViewStateChange) {
-        this.onViewStateChange({
-          viewState: this.propsInTransition,
-          interactionState: {
-            inTransition: true
-          },
-          oldViewState: this.props
-        });
-      }
-    }
-  }]);
-
-  return TransitionManager;
-}();
-
-
-transition_manager_TransitionManager.defaultProps = DEFAULT_PROPS;
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/controllers/controller.js
-
-
-
-
-
-
-
-
-var NO_TRANSITION_PROPS = {
-  transitionDuration: 0
-};
-var ZOOM_ACCEL = 0.01;
-var EVENT_TYPES = {
-  WHEEL: ['wheel'],
-  PAN: ['panstart', 'panmove', 'panend'],
-  PINCH: ['pinchstart', 'pinchmove', 'pinchend'],
-  DOUBLE_TAP: ['doubletap'],
-  KEYBOARD: ['keydown']
-};
-
-var controller_Controller = function () {
-  function Controller(ControllerState) {
-    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-    Object(classCallCheck["a" /* default */])(this, Controller);
-
-    Object(assert["a" /* default */])(ControllerState);
-    this.ControllerState = ControllerState;
-    this.controllerState = null;
-    this.controllerStateProps = null;
-    this.eventManager = null;
-    this.transitionManager = new transition_manager_TransitionManager(ControllerState, options);
-    this._events = null;
-    this._state = {
-      isDragging: false
-    };
-    this._customEvents = [];
-    this.onViewStateChange = null;
-    this.onStateChange = null;
-    this.invertPan = false;
-    this.handleEvent = this.handleEvent.bind(this);
-    this.setProps(options);
-  }
-
-  Object(createClass["a" /* default */])(Controller, [{
-    key: "finalize",
-    value: function finalize() {
-      for (var eventName in this._events) {
-        if (this._events[eventName]) {
-          this.eventManager.off(eventName, this.handleEvent);
-        }
-      }
-
-      this.transitionManager.finalize();
-    }
-  }, {
-    key: "handleEvent",
-    value: function handleEvent(event) {
-      var ControllerState = this.ControllerState;
-      this.controllerState = new ControllerState(Object.assign({}, this.controllerStateProps, this._state));
-
-      switch (event.type) {
-        case 'panstart':
-          return this._onPanStart(event);
-
-        case 'panmove':
-          return this._onPan(event);
-
-        case 'panend':
-          return this._onPanEnd(event);
-
-        case 'pinchstart':
-          return this._onPinchStart(event);
-
-        case 'pinchmove':
-          return this._onPinch(event);
-
-        case 'pinchend':
-          return this._onPinchEnd(event);
-
-        case 'doubletap':
-          return this._onDoubleTap(event);
-
-        case 'wheel':
-          return this._onWheel(event);
-
-        case 'keydown':
-          return this._onKeyDown(event);
-
-        default:
-          return false;
-      }
-    }
-  }, {
-    key: "getCenter",
-    value: function getCenter(event) {
-      var _this$controllerState = this.controllerStateProps,
-          x = _this$controllerState.x,
-          y = _this$controllerState.y;
-      var offsetCenter = event.offsetCenter;
-      return [offsetCenter.x - x, offsetCenter.y - y];
-    }
-  }, {
-    key: "isPointInBounds",
-    value: function isPointInBounds(pos, event) {
-      var _this$controllerState2 = this.controllerStateProps,
-          width = _this$controllerState2.width,
-          height = _this$controllerState2.height;
-
-      if (event && event.handled) {
-        return false;
-      }
-
-      var inside = pos[0] >= 0 && pos[0] <= width && pos[1] >= 0 && pos[1] <= height;
-
-      if (inside && event) {
-        event.stopPropagation();
-      }
-
-      return inside;
-    }
-  }, {
-    key: "isFunctionKeyPressed",
-    value: function isFunctionKeyPressed(event) {
-      var srcEvent = event.srcEvent;
-      return Boolean(srcEvent.metaKey || srcEvent.altKey || srcEvent.ctrlKey || srcEvent.shiftKey);
-    }
-  }, {
-    key: "isDragging",
-    value: function isDragging() {
-      return this._state.isDragging;
-    }
-  }, {
-    key: "setProps",
-    value: function setProps(props) {
-      if ('onViewportChange' in props) {
-        log["a" /* default */].removed('onViewportChange')();
-      }
-
-      if ('onViewStateChange' in props) {
-        this.onViewStateChange = props.onViewStateChange;
-      }
-
-      if ('onStateChange' in props) {
-        this.onStateChange = props.onStateChange;
-      }
-
-      this.controllerStateProps = props;
-
-      if ('eventManager' in props && this.eventManager !== props.eventManager) {
-        this.eventManager = props.eventManager;
-        this._events = {};
-        this.toggleEvents(this._customEvents, true);
-      }
-
-      this.transitionManager.processViewStateChange(this.controllerStateProps);
-      var _props$scrollZoom = props.scrollZoom,
-          scrollZoom = _props$scrollZoom === void 0 ? true : _props$scrollZoom,
-          _props$dragPan = props.dragPan,
-          dragPan = _props$dragPan === void 0 ? true : _props$dragPan,
-          _props$dragRotate = props.dragRotate,
-          dragRotate = _props$dragRotate === void 0 ? true : _props$dragRotate,
-          _props$doubleClickZoo = props.doubleClickZoom,
-          doubleClickZoom = _props$doubleClickZoo === void 0 ? true : _props$doubleClickZoo,
-          _props$touchZoom = props.touchZoom,
-          touchZoom = _props$touchZoom === void 0 ? true : _props$touchZoom,
-          _props$touchRotate = props.touchRotate,
-          touchRotate = _props$touchRotate === void 0 ? false : _props$touchRotate,
-          _props$keyboard = props.keyboard,
-          keyboard = _props$keyboard === void 0 ? true : _props$keyboard;
-      var isInteractive = Boolean(this.onViewStateChange);
-      this.toggleEvents(EVENT_TYPES.WHEEL, isInteractive && scrollZoom);
-      this.toggleEvents(EVENT_TYPES.PAN, isInteractive && (dragPan || dragRotate));
-      this.toggleEvents(EVENT_TYPES.PINCH, isInteractive && (touchZoom || touchRotate));
-      this.toggleEvents(EVENT_TYPES.DOUBLE_TAP, isInteractive && doubleClickZoom);
-      this.toggleEvents(EVENT_TYPES.KEYBOARD, isInteractive && keyboard);
-      this.scrollZoom = scrollZoom;
-      this.dragPan = dragPan;
-      this.dragRotate = dragRotate;
-      this.doubleClickZoom = doubleClickZoom;
-      this.touchZoom = touchZoom;
-      this.touchRotate = touchRotate;
-      this.keyboard = keyboard;
-    }
-  }, {
-    key: "updateTransition",
-    value: function updateTransition() {
-      this.transitionManager.updateTransition();
-    }
-  }, {
-    key: "toggleEvents",
-    value: function toggleEvents(eventNames, enabled) {
-      var _this = this;
-
-      if (this.eventManager) {
-        eventNames.forEach(function (eventName) {
-          if (_this._events[eventName] !== enabled) {
-            _this._events[eventName] = enabled;
-
-            if (enabled) {
-              _this.eventManager.on(eventName, _this.handleEvent);
-            } else {
-              _this.eventManager.off(eventName, _this.handleEvent);
-            }
-          }
-        });
-      }
-    }
-  }, {
-    key: "updateViewport",
-    value: function updateViewport(newControllerState) {
-      var extraProps = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var interactionState = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-      var viewState = Object.assign({}, newControllerState.getViewportProps(), extraProps);
-      var changed = this.controllerState !== newControllerState;
-
-      if (changed) {
-        var oldViewState = this.controllerState ? this.controllerState.getViewportProps() : null;
-
-        if (this.onViewStateChange) {
-          this.onViewStateChange({
-            viewState: viewState,
-            interactionState: interactionState,
-            oldViewState: oldViewState
-          });
-        }
-      }
-
-      Object.assign(this._state, newControllerState.getInteractiveState(), interactionState);
-
-      if (this.onStateChange) {
-        this.onStateChange(this._state);
-      }
-    }
-  }, {
-    key: "_onPanStart",
-    value: function _onPanStart(event) {
-      var pos = this.getCenter(event);
-
-      if (!this.isPointInBounds(pos, event)) {
-        return false;
-      }
-
-      var newControllerState = this.controllerState.panStart({
-        pos: pos
-      }).rotateStart({
-        pos: pos
-      });
-      this.updateViewport(newControllerState, NO_TRANSITION_PROPS, {
-        isDragging: true
-      });
-      return true;
-    }
-  }, {
-    key: "_onPan",
-    value: function _onPan(event) {
-      if (!this.isDragging()) {
-        return false;
-      }
-
-      var alternateMode = this.isFunctionKeyPressed(event) || event.rightButton;
-      alternateMode = this.invertPan ? !alternateMode : alternateMode;
-      return alternateMode ? this._onPanMove(event) : this._onPanRotate(event);
-    }
-  }, {
-    key: "_onPanEnd",
-    value: function _onPanEnd(event) {
-      var newControllerState = this.controllerState.panEnd().rotateEnd();
-      this.updateViewport(newControllerState, null, {
-        isDragging: false,
-        isPanning: false,
-        isRotating: false
-      });
-      return true;
-    }
-  }, {
-    key: "_onPanMove",
-    value: function _onPanMove(event) {
-      if (!this.dragPan) {
-        return false;
-      }
-
-      var pos = this.getCenter(event);
-      var newControllerState = this.controllerState.pan({
-        pos: pos
-      });
-      this.updateViewport(newControllerState, NO_TRANSITION_PROPS, {
-        isDragging: true,
-        isPanning: true
-      });
-      return true;
-    }
-  }, {
-    key: "_onPanRotate",
-    value: function _onPanRotate(event) {
-      if (!this.dragRotate) {
-        return false;
-      }
-
-      var deltaX = event.deltaX,
-          deltaY = event.deltaY;
-
-      var _this$controllerState3 = this.controllerState.getViewportProps(),
-          width = _this$controllerState3.width,
-          height = _this$controllerState3.height;
-
-      var deltaScaleX = deltaX / width;
-      var deltaScaleY = deltaY / height;
-      var newControllerState = this.controllerState.rotate({
-        deltaScaleX: deltaScaleX,
-        deltaScaleY: deltaScaleY
-      });
-      this.updateViewport(newControllerState, NO_TRANSITION_PROPS, {
-        isDragging: true,
-        isRotating: true
-      });
-      return true;
-    }
-  }, {
-    key: "_onWheel",
-    value: function _onWheel(event) {
-      if (!this.scrollZoom) {
-        return false;
-      }
-
-      event.preventDefault();
-      var pos = this.getCenter(event);
-
-      if (!this.isPointInBounds(pos, event)) {
-        return false;
-      }
-
-      var delta = event.delta;
-      var scale = 2 / (1 + Math.exp(-Math.abs(delta * ZOOM_ACCEL)));
-
-      if (delta < 0 && scale !== 0) {
-        scale = 1 / scale;
-      }
-
-      var newControllerState = this.controllerState.zoom({
-        pos: pos,
-        scale: scale
-      });
-      this.updateViewport(newControllerState, NO_TRANSITION_PROPS, {
-        isZooming: true,
-        isPanning: true
-      });
-      return true;
-    }
-  }, {
-    key: "_onPinchStart",
-    value: function _onPinchStart(event) {
-      var pos = this.getCenter(event);
-
-      if (!this.isPointInBounds(pos, event)) {
-        return false;
-      }
-
-      var newControllerState = this.controllerState.zoomStart({
-        pos: pos
-      }).rotateStart({
-        pos: pos
-      });
-      this._state.startPinchRotation = event.rotation;
-      this.updateViewport(newControllerState, NO_TRANSITION_PROPS, {
-        isDragging: true
-      });
-      return true;
-    }
-  }, {
-    key: "_onPinch",
-    value: function _onPinch(event) {
-      if (!this.touchZoom && !this.touchRotate) {
-        return false;
-      }
-
-      if (!this.isDragging()) {
-        return false;
-      }
-
-      var newControllerState = this.controllerState;
-
-      if (this.touchZoom) {
-        var scale = event.scale;
-        var pos = this.getCenter(event);
-        newControllerState = newControllerState.zoom({
-          pos: pos,
-          scale: scale
-        });
-      }
-
-      if (this.touchRotate) {
-        var rotation = event.rotation;
-        var startPinchRotation = this._state.startPinchRotation;
-        newControllerState = newControllerState.rotate({
-          deltaScaleX: -(rotation - startPinchRotation) / 180
-        });
-      }
-
-      this.updateViewport(newControllerState, NO_TRANSITION_PROPS, {
-        isDragging: true,
-        isPanning: this.touchZoom,
-        isZooming: this.touchZoom,
-        isRotating: this.touchRotate
-      });
-      return true;
-    }
-  }, {
-    key: "_onPinchEnd",
-    value: function _onPinchEnd(event) {
-      var newControllerState = this.controllerState.zoomEnd().rotateEnd();
-      this._state.startPinchRotation = 0;
-      this.updateViewport(newControllerState, null, {
-        isDragging: false,
-        isPanning: false,
-        isZooming: false,
-        isRotating: false
-      });
-      return true;
-    }
-  }, {
-    key: "_onDoubleTap",
-    value: function _onDoubleTap(event) {
-      if (!this.doubleClickZoom) {
-        return false;
-      }
-
-      var pos = this.getCenter(event);
-
-      if (!this.isPointInBounds(pos, event)) {
-        return false;
-      }
-
-      var isZoomOut = this.isFunctionKeyPressed(event);
-      var newControllerState = this.controllerState.zoom({
-        pos: pos,
-        scale: isZoomOut ? 0.5 : 2
-      });
-      this.updateViewport(newControllerState, this._getTransitionProps(), {
-        isZooming: true,
-        isPanning: true
-      });
-      return true;
-    }
-  }, {
-    key: "_onKeyDown",
-    value: function _onKeyDown(event) {
-      if (!this.keyboard) {
-        return false;
-      }
-
-      var funcKey = this.isFunctionKeyPressed(event);
-      var controllerState = this.controllerState;
-      var newControllerState;
-      var interactionState = {};
-
-      switch (event.srcEvent.keyCode) {
-        case 189:
-          newControllerState = funcKey ? controllerState.zoomOut().zoomOut() : controllerState.zoomOut();
-          interactionState.isZooming = true;
-          break;
-
-        case 187:
-          newControllerState = funcKey ? controllerState.zoomIn().zoomIn() : controllerState.zoomIn();
-          interactionState.isZooming = true;
-          break;
-
-        case 37:
-          if (funcKey) {
-            newControllerState = controllerState.rotateLeft();
-            interactionState.isRotating = true;
-          } else {
-            newControllerState = controllerState.moveLeft();
-            interactionState.isPanning = true;
-          }
-
-          break;
-
-        case 39:
-          if (funcKey) {
-            newControllerState = controllerState.rotateRight();
-            interactionState.isRotating = true;
-          } else {
-            newControllerState = controllerState.moveRight();
-            interactionState.isPanning = true;
-          }
-
-          break;
-
-        case 38:
-          if (funcKey) {
-            newControllerState = controllerState.rotateUp();
-            interactionState.isRotating = true;
-          } else {
-            newControllerState = controllerState.moveUp();
-            interactionState.isPanning = true;
-          }
-
-          break;
-
-        case 40:
-          if (funcKey) {
-            newControllerState = controllerState.rotateDown();
-            interactionState.isRotating = true;
-          } else {
-            newControllerState = controllerState.moveDown();
-            interactionState.isPanning = true;
-          }
-
-          break;
-
-        default:
-          return false;
-      }
-
-      this.updateViewport(newControllerState, this._getTransitionProps(), interactionState);
-      return true;
-    }
-  }, {
-    key: "_getTransitionProps",
-    value: function _getTransitionProps() {
-      return NO_TRANSITION_PROPS;
-    }
-  }, {
-    key: "events",
-    set: function set(customEvents) {
-      this.toggleEvents(this._customEvents, false);
-      this.toggleEvents(customEvents, true);
-      this._customEvents = customEvents;
-      this.setProps(this.controllerStateProps);
-    }
-  }]);
-
-  return Controller;
-}();
-
-
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/controllers/view-state.js
-
-
-
-
-
-
-var view_state_ViewState = function () {
-  function ViewState(opts) {
-    Object(classCallCheck["a" /* default */])(this, ViewState);
-
-    Object(assert["a" /* default */])(Number.isFinite(opts.width), '`width` must be supplied');
-    Object(assert["a" /* default */])(Number.isFinite(opts.height), '`height` must be supplied');
-    this._viewportProps = this._applyConstraints(opts);
-  }
-
-  Object(createClass["a" /* default */])(ViewState, [{
-    key: "getViewportProps",
-    value: function getViewportProps() {
-      return this._viewportProps;
-    }
-  }, {
-    key: "shortestPathFrom",
-    value: function shortestPathFrom(viewState) {
-      return this._viewportProps;
-    }
-  }, {
-    key: "_applyConstraints",
-    value: function _applyConstraints(props) {
-      return props;
-    }
-  }]);
-
-  return ViewState;
-}();
-
-
-// EXTERNAL MODULE: ./node_modules/@math.gl/web-mercator/dist/esm/index.js + 8 modules
-var web_mercator_dist_esm = __webpack_require__("v88f");
-
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/controllers/map-controller.js
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var PITCH_MOUSE_THRESHOLD = 5;
-var PITCH_ACCEL = 1.2;
-var LINEAR_TRANSITION_PROPS = {
-  transitionDuration: 300,
-  transitionEasing: function transitionEasing(t) {
-    return t;
-  },
-  transitionInterpolator: new linear_interpolator_LinearInterpolator(),
-  transitionInterruption: TRANSITION_EVENTS.BREAK
-};
-var map_controller_NO_TRANSITION_PROPS = {
-  transitionDuration: 0
-};
-var MAPBOX_LIMITS = {
-  minZoom: 0,
-  maxZoom: 20,
-  minPitch: 0,
-  maxPitch: 60
-};
-var DEFAULT_STATE = {
-  pitch: 0,
-  bearing: 0,
-  altitude: 1.5
-};
-
-var map_controller_MapState = function (_ViewState) {
-  Object(inherits["a" /* default */])(MapState, _ViewState);
-
-  function MapState() {
-    var _this;
-
-    var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-        width = _ref.width,
-        height = _ref.height,
-        latitude = _ref.latitude,
-        longitude = _ref.longitude,
-        zoom = _ref.zoom,
-        _ref$bearing = _ref.bearing,
-        bearing = _ref$bearing === void 0 ? DEFAULT_STATE.bearing : _ref$bearing,
-        _ref$pitch = _ref.pitch,
-        pitch = _ref$pitch === void 0 ? DEFAULT_STATE.pitch : _ref$pitch,
-        _ref$altitude = _ref.altitude,
-        altitude = _ref$altitude === void 0 ? DEFAULT_STATE.altitude : _ref$altitude,
-        _ref$maxZoom = _ref.maxZoom,
-        maxZoom = _ref$maxZoom === void 0 ? MAPBOX_LIMITS.maxZoom : _ref$maxZoom,
-        _ref$minZoom = _ref.minZoom,
-        minZoom = _ref$minZoom === void 0 ? MAPBOX_LIMITS.minZoom : _ref$minZoom,
-        _ref$maxPitch = _ref.maxPitch,
-        maxPitch = _ref$maxPitch === void 0 ? MAPBOX_LIMITS.maxPitch : _ref$maxPitch,
-        _ref$minPitch = _ref.minPitch,
-        minPitch = _ref$minPitch === void 0 ? MAPBOX_LIMITS.minPitch : _ref$minPitch,
-        startPanLngLat = _ref.startPanLngLat,
-        startZoomLngLat = _ref.startZoomLngLat,
-        startBearing = _ref.startBearing,
-        startPitch = _ref.startPitch,
-        startZoom = _ref.startZoom;
-
-    Object(classCallCheck["a" /* default */])(this, MapState);
-
-    Object(assert["a" /* default */])(Number.isFinite(longitude), '`longitude` must be supplied');
-    Object(assert["a" /* default */])(Number.isFinite(latitude), '`latitude` must be supplied');
-    Object(assert["a" /* default */])(Number.isFinite(zoom), '`zoom` must be supplied');
-    _this = Object(possibleConstructorReturn["a" /* default */])(this, Object(getPrototypeOf["a" /* default */])(MapState).call(this, {
-      width: width,
-      height: height,
-      latitude: latitude,
-      longitude: longitude,
-      zoom: zoom,
-      bearing: bearing,
-      pitch: pitch,
-      altitude: altitude,
-      maxZoom: maxZoom,
-      minZoom: minZoom,
-      maxPitch: maxPitch,
-      minPitch: minPitch
-    }));
-    _this._interactiveState = {
-      startPanLngLat: startPanLngLat,
-      startZoomLngLat: startZoomLngLat,
-      startBearing: startBearing,
-      startPitch: startPitch,
-      startZoom: startZoom
-    };
-    return _this;
-  }
-
-  Object(createClass["a" /* default */])(MapState, [{
-    key: "getViewportProps",
-    value: function getViewportProps() {
-      return this._viewportProps;
-    }
-  }, {
-    key: "getInteractiveState",
-    value: function getInteractiveState() {
-      return this._interactiveState;
-    }
-  }, {
-    key: "panStart",
-    value: function panStart(_ref2) {
-      var pos = _ref2.pos;
-      return this._getUpdatedState({
-        startPanLngLat: this._unproject(pos)
-      });
-    }
-  }, {
-    key: "pan",
-    value: function pan(_ref3) {
-      var pos = _ref3.pos,
-          startPos = _ref3.startPos;
-
-      var startPanLngLat = this._interactiveState.startPanLngLat || this._unproject(startPos);
-
-      if (!startPanLngLat) {
-        return this;
-      }
-
-      var _this$_calculateNewLn = this._calculateNewLngLat({
-        startPanLngLat: startPanLngLat,
-        pos: pos
-      }),
-          _this$_calculateNewLn2 = Object(slicedToArray["a" /* default */])(_this$_calculateNewLn, 2),
-          longitude = _this$_calculateNewLn2[0],
-          latitude = _this$_calculateNewLn2[1];
-
-      return this._getUpdatedState({
-        longitude: longitude,
-        latitude: latitude
-      });
-    }
-  }, {
-    key: "panEnd",
-    value: function panEnd() {
-      return this._getUpdatedState({
-        startPanLngLat: null
-      });
-    }
-  }, {
-    key: "rotateStart",
-    value: function rotateStart(_ref4) {
-      var pos = _ref4.pos;
-      return this._getUpdatedState({
-        startBearing: this._viewportProps.bearing,
-        startPitch: this._viewportProps.pitch
-      });
-    }
-  }, {
-    key: "rotate",
-    value: function rotate(_ref5) {
-      var _ref5$deltaScaleX = _ref5.deltaScaleX,
-          deltaScaleX = _ref5$deltaScaleX === void 0 ? 0 : _ref5$deltaScaleX,
-          _ref5$deltaScaleY = _ref5.deltaScaleY,
-          deltaScaleY = _ref5$deltaScaleY === void 0 ? 0 : _ref5$deltaScaleY;
-      var _this$_interactiveSta = this._interactiveState,
-          startBearing = _this$_interactiveSta.startBearing,
-          startPitch = _this$_interactiveSta.startPitch;
-
-      if (!Number.isFinite(startBearing) || !Number.isFinite(startPitch)) {
-        return this;
-      }
-
-      var _this$_calculateNewPi = this._calculateNewPitchAndBearing({
-        deltaScaleX: deltaScaleX,
-        deltaScaleY: deltaScaleY,
-        startBearing: startBearing,
-        startPitch: startPitch
-      }),
-          pitch = _this$_calculateNewPi.pitch,
-          bearing = _this$_calculateNewPi.bearing;
-
-      return this._getUpdatedState({
-        bearing: bearing,
-        pitch: pitch
-      });
-    }
-  }, {
-    key: "rotateEnd",
-    value: function rotateEnd() {
-      return this._getUpdatedState({
-        startBearing: null,
-        startPitch: null
-      });
-    }
-  }, {
-    key: "zoomStart",
-    value: function zoomStart(_ref6) {
-      var pos = _ref6.pos;
-      return this._getUpdatedState({
-        startZoomLngLat: this._unproject(pos),
-        startZoom: this._viewportProps.zoom
-      });
-    }
-  }, {
-    key: "zoom",
-    value: function zoom(_ref7) {
-      var pos = _ref7.pos,
-          startPos = _ref7.startPos,
-          scale = _ref7.scale;
-      var _this$_interactiveSta2 = this._interactiveState,
-          startZoom = _this$_interactiveSta2.startZoom,
-          startZoomLngLat = _this$_interactiveSta2.startZoomLngLat;
-
-      if (!Number.isFinite(startZoom)) {
-        startZoom = this._viewportProps.zoom;
-        startZoomLngLat = this._unproject(startPos) || this._unproject(pos);
-      }
-
-      var zoom = this._calculateNewZoom({
-        scale: scale,
-        startZoom: startZoom
-      });
-
-      var zoomedViewport = new web_mercator_dist_esm["c" /* default */](Object.assign({}, this._viewportProps, {
-        zoom: zoom
-      }));
-
-      var _zoomedViewport$getMa = zoomedViewport.getMapCenterByLngLatPosition({
-        lngLat: startZoomLngLat,
-        pos: pos
-      }),
-          _zoomedViewport$getMa2 = Object(slicedToArray["a" /* default */])(_zoomedViewport$getMa, 2),
-          longitude = _zoomedViewport$getMa2[0],
-          latitude = _zoomedViewport$getMa2[1];
-
-      return this._getUpdatedState({
-        zoom: zoom,
-        longitude: longitude,
-        latitude: latitude
-      });
-    }
-  }, {
-    key: "zoomEnd",
-    value: function zoomEnd() {
-      return this._getUpdatedState({
-        startZoomLngLat: null,
-        startZoom: null
-      });
-    }
-  }, {
-    key: "zoomIn",
-    value: function zoomIn() {
-      return this._zoomFromCenter(2);
-    }
-  }, {
-    key: "zoomOut",
-    value: function zoomOut() {
-      return this._zoomFromCenter(0.5);
-    }
-  }, {
-    key: "moveLeft",
-    value: function moveLeft() {
-      return this._panFromCenter([100, 0]);
-    }
-  }, {
-    key: "moveRight",
-    value: function moveRight() {
-      return this._panFromCenter([-100, 0]);
-    }
-  }, {
-    key: "moveUp",
-    value: function moveUp() {
-      return this._panFromCenter([0, 100]);
-    }
-  }, {
-    key: "moveDown",
-    value: function moveDown() {
-      return this._panFromCenter([0, -100]);
-    }
-  }, {
-    key: "rotateLeft",
-    value: function rotateLeft() {
-      return this._getUpdatedState({
-        bearing: this._viewportProps.bearing - 15
-      });
-    }
-  }, {
-    key: "rotateRight",
-    value: function rotateRight() {
-      return this._getUpdatedState({
-        bearing: this._viewportProps.bearing + 15
-      });
-    }
-  }, {
-    key: "rotateUp",
-    value: function rotateUp() {
-      return this._getUpdatedState({
-        pitch: this._viewportProps.pitch + 10
-      });
-    }
-  }, {
-    key: "rotateDown",
-    value: function rotateDown() {
-      return this._getUpdatedState({
-        pitch: this._viewportProps.pitch - 10
-      });
-    }
-  }, {
-    key: "shortestPathFrom",
-    value: function shortestPathFrom(viewState) {
-      var fromProps = viewState.getViewportProps();
-      var props = Object.assign({}, this._viewportProps);
-      var bearing = props.bearing,
-          longitude = props.longitude;
-
-      if (Math.abs(bearing - fromProps.bearing) > 180) {
-        props.bearing = bearing < 0 ? bearing + 360 : bearing - 360;
-      }
-
-      if (Math.abs(longitude - fromProps.longitude) > 180) {
-        props.longitude = longitude < 0 ? longitude + 360 : longitude - 360;
-      }
-
-      return props;
-    }
-  }, {
-    key: "_zoomFromCenter",
-    value: function _zoomFromCenter(scale) {
-      var _this$_viewportProps = this._viewportProps,
-          width = _this$_viewportProps.width,
-          height = _this$_viewportProps.height;
-      return this.zoom({
-        pos: [width / 2, height / 2],
-        scale: scale
-      });
-    }
-  }, {
-    key: "_panFromCenter",
-    value: function _panFromCenter(offset) {
-      var _this$_viewportProps2 = this._viewportProps,
-          width = _this$_viewportProps2.width,
-          height = _this$_viewportProps2.height;
-      return this.pan({
-        startPos: [width / 2, height / 2],
-        pos: [width / 2 + offset[0], height / 2 + offset[1]]
-      });
-    }
-  }, {
-    key: "_getUpdatedState",
-    value: function _getUpdatedState(newProps) {
-      return new MapState(Object.assign({}, this._viewportProps, this._interactiveState, newProps));
-    }
-  }, {
-    key: "_applyConstraints",
-    value: function _applyConstraints(props) {
-      var maxZoom = props.maxZoom,
-          minZoom = props.minZoom,
-          zoom = props.zoom;
-      props.zoom = Object(dist_esm["c" /* clamp */])(zoom, minZoom, maxZoom);
-      var maxPitch = props.maxPitch,
-          minPitch = props.minPitch,
-          pitch = props.pitch;
-      props.pitch = Object(dist_esm["c" /* clamp */])(pitch, minPitch, maxPitch);
-      Object.assign(props, Object(web_mercator_dist_esm["l" /* normalizeViewportProps */])(props));
-      return props;
-    }
-  }, {
-    key: "_unproject",
-    value: function _unproject(pos) {
-      var viewport = new web_mercator_dist_esm["c" /* default */](this._viewportProps);
-      return pos && viewport.unproject(pos);
-    }
-  }, {
-    key: "_calculateNewLngLat",
-    value: function _calculateNewLngLat(_ref8) {
-      var startPanLngLat = _ref8.startPanLngLat,
-          pos = _ref8.pos;
-      var viewport = new web_mercator_dist_esm["c" /* default */](this._viewportProps);
-      return viewport.getMapCenterByLngLatPosition({
-        lngLat: startPanLngLat,
-        pos: pos
-      });
-    }
-  }, {
-    key: "_calculateNewZoom",
-    value: function _calculateNewZoom(_ref9) {
-      var scale = _ref9.scale,
-          startZoom = _ref9.startZoom;
-      var _this$_viewportProps3 = this._viewportProps,
-          maxZoom = _this$_viewportProps3.maxZoom,
-          minZoom = _this$_viewportProps3.minZoom;
-      var zoom = startZoom + Math.log2(scale);
-      return Object(dist_esm["c" /* clamp */])(zoom, minZoom, maxZoom);
-    }
-  }, {
-    key: "_calculateNewPitchAndBearing",
-    value: function _calculateNewPitchAndBearing(_ref10) {
-      var deltaScaleX = _ref10.deltaScaleX,
-          deltaScaleY = _ref10.deltaScaleY,
-          startBearing = _ref10.startBearing,
-          startPitch = _ref10.startPitch;
-      deltaScaleY = Object(dist_esm["c" /* clamp */])(deltaScaleY, -1, 1);
-      var _this$_viewportProps4 = this._viewportProps,
-          minPitch = _this$_viewportProps4.minPitch,
-          maxPitch = _this$_viewportProps4.maxPitch;
-      var bearing = startBearing + 180 * deltaScaleX;
-      var pitch = startPitch;
-
-      if (deltaScaleY > 0) {
-        pitch = startPitch + deltaScaleY * (maxPitch - startPitch);
-      } else if (deltaScaleY < 0) {
-        pitch = startPitch - deltaScaleY * (minPitch - startPitch);
-      }
-
-      return {
-        pitch: pitch,
-        bearing: bearing
-      };
-    }
-  }]);
-
-  return MapState;
-}(view_state_ViewState);
-
-var map_controller_MapController = function (_Controller) {
-  Object(inherits["a" /* default */])(MapController, _Controller);
-
-  function MapController(props) {
-    var _this2;
-
-    Object(classCallCheck["a" /* default */])(this, MapController);
-
-    _this2 = Object(possibleConstructorReturn["a" /* default */])(this, Object(getPrototypeOf["a" /* default */])(MapController).call(this, map_controller_MapState, props));
-    _this2.invertPan = true;
-    return _this2;
-  }
-
-  Object(createClass["a" /* default */])(MapController, [{
-    key: "_getTransitionProps",
-    value: function _getTransitionProps() {
-      return LINEAR_TRANSITION_PROPS;
-    }
-  }, {
-    key: "_onPanRotate",
-    value: function _onPanRotate(event) {
-      if (!this.dragRotate) {
-        return false;
-      }
-
-      var deltaX = event.deltaX,
-          deltaY = event.deltaY;
-
-      var _this$getCenter = this.getCenter(event),
-          _this$getCenter2 = Object(slicedToArray["a" /* default */])(_this$getCenter, 2),
-          centerY = _this$getCenter2[1];
-
-      var startY = centerY - deltaY;
-
-      var _this$controllerState = this.controllerState.getViewportProps(),
-          width = _this$controllerState.width,
-          height = _this$controllerState.height;
-
-      var deltaScaleX = deltaX / width;
-      var deltaScaleY = 0;
-
-      if (deltaY > 0) {
-        if (Math.abs(height - startY) > PITCH_MOUSE_THRESHOLD) {
-          deltaScaleY = deltaY / (startY - height) * PITCH_ACCEL;
-        }
-      } else if (deltaY < 0) {
-        if (startY > PITCH_MOUSE_THRESHOLD) {
-          deltaScaleY = 1 - centerY / startY;
-        }
-      }
-
-      deltaScaleY = Math.min(1, Math.max(-1, deltaScaleY));
-      var newControllerState = this.controllerState.rotate({
-        deltaScaleX: deltaScaleX,
-        deltaScaleY: deltaScaleY
-      });
-      return this.updateViewport(newControllerState, map_controller_NO_TRANSITION_PROPS, {
-        isDragging: true,
-        isRotating: true
-      });
-    }
-  }]);
-
-  return MapController;
-}(controller_Controller);
-
-
-var testExports = {
-  MapState: map_controller_MapState
-};
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/views/map-view.js
-
-
-
-
-
-
-
-
-
-
-var map_view_MapView = function (_View) {
-  Object(inherits["a" /* default */])(MapView, _View);
-
-  function MapView(props) {
-    Object(classCallCheck["a" /* default */])(this, MapView);
-
-    return Object(possibleConstructorReturn["a" /* default */])(this, Object(getPrototypeOf["a" /* default */])(MapView).call(this, Object.assign({}, props, {
-      type: web_mercator_viewport["a" /* default */]
-    })));
-  }
-
-  Object(createClass["a" /* default */])(MapView, [{
-    key: "controller",
-    get: function get() {
-      return this._getControllerProps({
-        type: map_controller_MapController
-      });
-    }
-  }]);
-
-  return MapView;
-}(view_View);
-
-
-map_view_MapView.displayName = 'MapView';
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.array.map.js
-var es6_array_map = __webpack_require__("AqHK");
-
-// EXTERNAL MODULE: ./node_modules/@luma.gl/webgl/dist/esm/classes/texture-2d.js + 1 modules
-var texture_2d = __webpack_require__("f5Sf");
-
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/effects/lighting/ambient-light.js
-
-var DEFAULT_LIGHT_COLOR = [255, 255, 255];
-var DEFAULT_LIGHT_INTENSITY = 1.0;
-var idCount = 0;
-var ambient_light_AmbientLight = function AmbientLight() {
-  var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-  Object(classCallCheck["a" /* default */])(this, AmbientLight);
-
-  var _props$color = props.color,
-      color = _props$color === void 0 ? DEFAULT_LIGHT_COLOR : _props$color;
-  var _props$intensity = props.intensity,
-      intensity = _props$intensity === void 0 ? DEFAULT_LIGHT_INTENSITY : _props$intensity;
-  this.id = props.id || "ambient-".concat(idCount++);
-  this.color = color;
-  this.intensity = intensity;
-  this.type = 'ambient';
-};
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/effects/lighting/directional-light.js
-
-
-
-var directional_light_DEFAULT_LIGHT_COLOR = [255, 255, 255];
-var directional_light_DEFAULT_LIGHT_INTENSITY = 1.0;
-var DEFAULT_LIGHT_DIRECTION = [0.0, 0.0, -1.0];
-var directional_light_idCount = 0;
-var directional_light_DirectionalLight = function () {
-  function DirectionalLight() {
-    var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-    Object(classCallCheck["a" /* default */])(this, DirectionalLight);
-
-    var _props$color = props.color,
-        color = _props$color === void 0 ? directional_light_DEFAULT_LIGHT_COLOR : _props$color;
-    var _props$intensity = props.intensity,
-        intensity = _props$intensity === void 0 ? directional_light_DEFAULT_LIGHT_INTENSITY : _props$intensity;
-    var _props$direction = props.direction,
-        direction = _props$direction === void 0 ? DEFAULT_LIGHT_DIRECTION : _props$direction;
-
-    var _props$_shadow = props._shadow,
-        _shadow = _props$_shadow === void 0 ? false : _props$_shadow;
-
-    this.id = props.id || "directional-".concat(directional_light_idCount++);
-    this.color = color;
-    this.intensity = intensity;
-    this.type = 'directional';
-    this.direction = new dist_esm["b" /* Vector3 */](direction).normalize().toArray();
-    this.shadow = _shadow;
-  }
-
-  Object(createClass["a" /* default */])(DirectionalLight, [{
-    key: "getProjectedLight",
-    value: function getProjectedLight() {
-      return this;
-    }
-  }]);
-
-  return DirectionalLight;
-}();
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/lib/effect.js
-
-
-
-
-var effect_Effect = function () {
-  function Effect() {
-    var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-    Object(classCallCheck["a" /* default */])(this, Effect);
-
-    var _props$id = props.id,
-        id = _props$id === void 0 ? 'effect' : _props$id;
-    this.id = id;
-    this.props = {};
-    Object.assign(this.props, props);
-  }
-
-  Object(createClass["a" /* default */])(Effect, [{
-    key: "preRender",
-    value: function preRender() {}
-  }, {
-    key: "getModuleParameters",
-    value: function getModuleParameters() {}
-  }, {
-    key: "cleanup",
-    value: function cleanup() {}
-  }]);
-
-  return Effect;
-}();
-
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/get.js + 1 modules
-var esm_get = __webpack_require__("zs32");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.string.starts-with.js
-var es6_string_starts_with = __webpack_require__("TAD1");
-
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/passes/pass.js
-
-
-
-
-var pass_Pass = function () {
-  function Pass(gl) {
-    var props = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-    Object(classCallCheck["a" /* default */])(this, Pass);
-
-    var _props$id = props.id,
-        id = _props$id === void 0 ? 'pass' : _props$id;
-    this.id = id;
-    this.gl = gl;
-    this.props = {};
-    Object.assign(this.props, props);
-  }
-
-  Object(createClass["a" /* default */])(Pass, [{
-    key: "setProps",
-    value: function setProps(props) {
-      Object.assign(this.props, props);
-    }
-  }, {
-    key: "render",
-    value: function render() {}
-  }, {
-    key: "cleanup",
-    value: function cleanup() {}
-  }]);
-
-  return Pass;
-}();
-
-
-// EXTERNAL MODULE: ./node_modules/@luma.gl/gltools/dist/esm/index.js + 1 modules
-var gltools_dist_esm = __webpack_require__("iein");
-
-// EXTERNAL MODULE: ./node_modules/@luma.gl/webgl/dist/esm/classes/clear.js
-var clear = __webpack_require__("pRFE");
-
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/passes/layers-pass.js
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var layers_pass_LayersPass = function (_Pass) {
-  Object(inherits["a" /* default */])(LayersPass, _Pass);
-
-  function LayersPass() {
-    Object(classCallCheck["a" /* default */])(this, LayersPass);
-
-    return Object(possibleConstructorReturn["a" /* default */])(this, Object(getPrototypeOf["a" /* default */])(LayersPass).apply(this, arguments));
-  }
-
-  Object(createClass["a" /* default */])(LayersPass, [{
-    key: "render",
-    value: function render(props) {
-      var gl = this.gl;
-      Object(gltools_dist_esm["j" /* setParameters */])(gl, {
-        framebuffer: props.target
-      });
-      return this._drawLayers(props);
-    }
-  }, {
-    key: "_drawLayers",
-    value: function _drawLayers(props) {
-      var viewports = props.viewports,
-          views = props.views,
-          onViewportActive = props.onViewportActive,
-          _props$clearCanvas = props.clearCanvas,
-          clearCanvas = _props$clearCanvas === void 0 ? true : _props$clearCanvas;
-      var gl = this.gl;
-
-      if (clearCanvas) {
-        clearGLCanvas(gl);
-      }
-
-      var renderStats = [];
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = viewports[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var viewportOrDescriptor = _step.value;
-          var viewport = viewportOrDescriptor.viewport || viewportOrDescriptor;
-          var view = views && views[viewport.id];
-          onViewportActive(viewport);
-          props.view = view;
-          var subViewports = viewport.subViewports || [viewport];
-          var _iteratorNormalCompletion2 = true;
-          var _didIteratorError2 = false;
-          var _iteratorError2 = undefined;
-
-          try {
-            for (var _iterator2 = subViewports[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-              var subViewport = _step2.value;
-              props.viewport = subViewport;
-
-              var stats = this._drawLayersInViewport(gl, props);
-
-              renderStats.push(stats);
-            }
-          } catch (err) {
-            _didIteratorError2 = true;
-            _iteratorError2 = err;
-          } finally {
-            try {
-              if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
-                _iterator2["return"]();
-              }
-            } finally {
-              if (_didIteratorError2) {
-                throw _iteratorError2;
-              }
-            }
-          }
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
-            _iterator["return"]();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
-
-      return renderStats;
-    }
-  }, {
-    key: "_drawLayersInViewport",
-    value: function _drawLayersInViewport(gl, _ref) {
-      var layers = _ref.layers,
-          layerFilter = _ref.layerFilter,
-          onError = _ref.onError,
-          viewport = _ref.viewport,
-          view = _ref.view,
-          _ref$pass = _ref.pass,
-          pass = _ref$pass === void 0 ? 'unknown' : _ref$pass,
-          effects = _ref.effects,
-          moduleParameters = _ref.moduleParameters;
-      var glViewport = getGLViewport(gl, {
-        viewport: viewport
-      });
-
-      if (view && view.props.clear) {
-        var clearOpts = view.props.clear === true ? {
-          color: true,
-          depth: true
-        } : view.props.clear;
-        Object(gltools_dist_esm["k" /* withParameters */])(gl, {
-          scissorTest: true,
-          scissor: glViewport
-        }, function () {
-          return Object(clear["a" /* clear */])(gl, clearOpts);
-        });
-      }
-
-      var renderStatus = {
-        totalCount: layers.length,
-        visibleCount: 0,
-        compositeCount: 0,
-        pickableCount: 0
-      };
-      Object(gltools_dist_esm["j" /* setParameters */])(gl, {
-        viewport: glViewport
-      });
-      var indexResolver = layerIndexResolver();
-
-      for (var layerIndex = 0; layerIndex < layers.length; layerIndex++) {
-        var layer = layers[layerIndex];
-
-        var shouldDrawLayer = this._shouldDrawLayer(layer, viewport, pass, layerFilter);
-
-        var layerRenderIndex = indexResolver(layer, shouldDrawLayer);
-
-        if (shouldDrawLayer && layer.props.pickable) {
-          renderStatus.pickableCount++;
-        }
-
-        if (layer.isComposite) {
-          renderStatus.compositeCount++;
-        }
-
-        if (shouldDrawLayer) {
-          renderStatus.visibleCount++;
-
-          var _moduleParameters = this._getModuleParameters(layer, effects, pass, moduleParameters);
-
-          var layerParameters = this.getLayerParameters(layer, layerIndex);
-          _moduleParameters.viewport = viewport;
-
-          try {
-            layer.drawLayer({
-              moduleParameters: _moduleParameters,
-              uniforms: {
-                layerIndex: layerRenderIndex
-              },
-              parameters: layerParameters
-            });
-          } catch (err) {
-            if (onError) {
-              onError(err, layer);
-            } else {
-              log["a" /* default */].error("error during drawing of ".concat(layer), err)();
-            }
-          }
-        }
-      }
-
-      return renderStatus;
-    }
-  }, {
-    key: "shouldDrawLayer",
-    value: function shouldDrawLayer(layer) {
-      return true;
-    }
-  }, {
-    key: "getModuleParameters",
-    value: function getModuleParameters(layer, effects) {
-      return null;
-    }
-  }, {
-    key: "getLayerParameters",
-    value: function getLayerParameters(layer, layerIndex) {
-      return layer.props.parameters;
-    }
-  }, {
-    key: "_shouldDrawLayer",
-    value: function _shouldDrawLayer(layer, viewport, pass, layerFilter) {
-      var shouldDrawLayer = this.shouldDrawLayer(layer) && !layer.isComposite && layer.props.visible;
-
-      if (shouldDrawLayer && layerFilter) {
-        shouldDrawLayer = layerFilter({
-          layer: layer,
-          viewport: viewport,
-          isPicking: pass.startsWith('picking'),
-          renderPass: pass
-        });
-      }
-
-      return shouldDrawLayer;
-    }
-  }, {
-    key: "_getModuleParameters",
-    value: function _getModuleParameters(layer, effects, pass, overrides) {
-      var moduleParameters = Object.assign(Object.create(layer.props), {
-        viewport: layer.context.viewport,
-        mousePosition: layer.context.mousePosition,
-        pickingActive: 0,
-        devicePixelRatio: Object(gltools_dist_esm["c" /* cssToDeviceRatio */])(this.gl)
-      });
-
-      if (effects) {
-        var _iteratorNormalCompletion3 = true;
-        var _didIteratorError3 = false;
-        var _iteratorError3 = undefined;
-
-        try {
-          for (var _iterator3 = effects[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-            var effect = _step3.value;
-            Object.assign(moduleParameters, effect.getModuleParameters(layer));
-          }
-        } catch (err) {
-          _didIteratorError3 = true;
-          _iteratorError3 = err;
-        } finally {
-          try {
-            if (!_iteratorNormalCompletion3 && _iterator3["return"] != null) {
-              _iterator3["return"]();
-            }
-          } finally {
-            if (_didIteratorError3) {
-              throw _iteratorError3;
-            }
-          }
-        }
-      }
-
-      return Object.assign(moduleParameters, this.getModuleParameters(layer, effects), overrides);
-    }
-  }]);
-
-  return LayersPass;
-}(pass_Pass);
-
-
-function layerIndexResolver() {
-  var startIndex = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-  var layerIndices = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  var resolvers = {};
-  return function (layer, isDrawn) {
-    var indexOverride = layer.props._offset;
-    var layerId = layer.id;
-    var parentId = layer.parent && layer.parent.id;
-    var index;
-
-    if (parentId in resolvers) {
-      var resolver = resolvers[parentId] = resolvers[parentId] || layerIndexResolver(layerIndices[parentId], layerIndices);
-      index = resolver(layer, isDrawn);
-      resolvers[layerId] = resolver;
-    } else if (Number.isFinite(indexOverride)) {
-      index = indexOverride + (layerIndices[parentId] || 0);
-      resolvers[layerId] = null;
-    } else {
-      index = startIndex;
-    }
-
-    if (isDrawn && index >= startIndex) {
-      startIndex = index + 1;
-    }
-
-    layerIndices[layerId] = index;
-    return index;
-  };
-}
-
-function getGLViewport(gl, _ref2) {
-  var viewport = _ref2.viewport;
-  var height = gl.canvas ? gl.canvas.clientHeight || gl.canvas.height : 100;
-  var dimensions = viewport;
-  var pixelRatio = Object(gltools_dist_esm["c" /* cssToDeviceRatio */])(gl);
-  return [dimensions.x * pixelRatio, (height - dimensions.y - dimensions.height) * pixelRatio, dimensions.width * pixelRatio, dimensions.height * pixelRatio];
-}
-
-function clearGLCanvas(gl) {
-  var width = gl.drawingBufferWidth;
-  var height = gl.drawingBufferHeight;
-  Object(gltools_dist_esm["j" /* setParameters */])(gl, {
-    viewport: [0, 0, width, height]
-  });
-  gl.clear(16384 | 256);
-}
-// EXTERNAL MODULE: ./node_modules/@luma.gl/webgl/dist/esm/classes/renderbuffer.js + 1 modules
-var renderbuffer = __webpack_require__("n4Ve");
-
-// EXTERNAL MODULE: ./node_modules/@luma.gl/webgl/dist/esm/classes/framebuffer.js
-var framebuffer = __webpack_require__("11Ib");
-
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/passes/shadow-pass.js
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function ownKeys(object, enumerableOnly) {
-  var keys = Object.keys(object);
-
-  if (Object.getOwnPropertySymbols) {
-    var symbols = Object.getOwnPropertySymbols(object);
-    if (enumerableOnly) symbols = symbols.filter(function (sym) {
-      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-    });
-    keys.push.apply(keys, symbols);
-  }
-
-  return keys;
-}
-
-function _objectSpread(target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i] != null ? arguments[i] : {};
-
-    if (i % 2) {
-      ownKeys(Object(source), true).forEach(function (key) {
-        Object(defineProperty["a" /* default */])(target, key, source[key]);
-      });
-    } else if (Object.getOwnPropertyDescriptors) {
-      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-    } else {
-      ownKeys(Object(source)).forEach(function (key) {
-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-      });
-    }
-  }
-
-  return target;
-}
-
-
-
-
-var shadow_pass_ShadowPass = function (_LayersPass) {
-  Object(inherits["a" /* default */])(ShadowPass, _LayersPass);
-
-  function ShadowPass(gl, props) {
-    var _parameters, _attachments;
-
-    var _this;
-
-    Object(classCallCheck["a" /* default */])(this, ShadowPass);
-
-    _this = Object(possibleConstructorReturn["a" /* default */])(this, Object(getPrototypeOf["a" /* default */])(ShadowPass).call(this, gl, props));
-    _this.shadowMap = new texture_2d["a" /* default */](gl, {
-      width: 1,
-      height: 1,
-      parameters: (_parameters = {}, Object(defineProperty["a" /* default */])(_parameters, 10241, 9729), Object(defineProperty["a" /* default */])(_parameters, 10240, 9729), Object(defineProperty["a" /* default */])(_parameters, 10242, 33071), Object(defineProperty["a" /* default */])(_parameters, 10243, 33071), _parameters)
-    });
-    _this.depthBuffer = new renderbuffer["a" /* default */](gl, {
-      format: 33189,
-      width: 1,
-      height: 1
-    });
-    _this.fbo = new framebuffer["a" /* default */](gl, {
-      id: 'shadowmap',
-      width: 1,
-      height: 1,
-      attachments: (_attachments = {}, Object(defineProperty["a" /* default */])(_attachments, 36064, _this.shadowMap), Object(defineProperty["a" /* default */])(_attachments, 36096, _this.depthBuffer), _attachments)
-    });
-    return _this;
-  }
-
-  Object(createClass["a" /* default */])(ShadowPass, [{
-    key: "render",
-    value: function render(params) {
-      var _this2 = this;
-
-      var target = this.fbo;
-      Object(gltools_dist_esm["k" /* withParameters */])(this.gl, {
-        depthRange: [0, 1],
-        depthTest: true,
-        blend: false,
-        clearColor: [1, 1, 1, 1]
-      }, function () {
-        var viewport = params.viewports[0];
-        var pixelRatio = Object(gltools_dist_esm["c" /* cssToDeviceRatio */])(_this2.gl);
-        var width = viewport.width * pixelRatio;
-        var height = viewport.height * pixelRatio;
-
-        if (width !== target.width || height !== target.height) {
-          target.resize({
-            width: width,
-            height: height
-          });
-        }
-
-        Object(esm_get["a" /* default */])(Object(getPrototypeOf["a" /* default */])(ShadowPass.prototype), "render", _this2).call(_this2, _objectSpread({}, params, {
-          target: target,
-          pass: 'shadow'
-        }));
-      });
-    }
-  }, {
-    key: "shouldDrawLayer",
-    value: function shouldDrawLayer(layer) {
-      return layer.props.shadowEnabled !== false;
-    }
-  }, {
-    key: "getModuleParameters",
-    value: function getModuleParameters() {
-      return {
-        drawToShadowMap: true
-      };
-    }
-  }, {
-    key: "delete",
-    value: function _delete() {
-      if (this.fbo) {
-        this.fbo["delete"]();
-        this.fbo = null;
-      }
-
-      if (this.shadowMap) {
-        this.shadowMap["delete"]();
-        this.shadowMap = null;
-      }
-
-      if (this.depthBuffer) {
-        this.depthBuffer["delete"]();
-        this.depthBuffer = null;
-      }
-    }
-  }]);
-
-  return ShadowPass;
-}(layers_pass_LayersPass);
-
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/toConsumableArray.js + 3 modules
-var toConsumableArray = __webpack_require__("t8Zj");
-
-// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/lib/constants.js
-var lib_constants = __webpack_require__("V3d6");
-
-// EXTERNAL MODULE: ./node_modules/@deck.gl/core/dist/esm/utils/memoize.js
-var memoize = __webpack_require__("OIVS");
-
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/shaderlib/shadow/shadow.js
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var shadow_vs = "\nconst int max_lights = 2;\nuniform mat4 shadow_uViewProjectionMatrices[max_lights];\nuniform vec4 shadow_uProjectCenters[max_lights];\nuniform bool shadow_uDrawShadowMap;\nuniform bool shadow_uUseShadowMap;\nuniform int shadow_uLightId;\nuniform float shadow_uLightCount;\n\nvarying vec3 shadow_vPosition[max_lights];\n\nvec4 shadow_setVertexPosition(vec4 position_commonspace) {\n  if (shadow_uDrawShadowMap) {\n    return project_common_position_to_clipspace(position_commonspace, shadow_uViewProjectionMatrices[shadow_uLightId], shadow_uProjectCenters[shadow_uLightId]);\n  }\n  if (shadow_uUseShadowMap) {\n    for (int i = 0; i < max_lights; i++) {\n      if(i < int(shadow_uLightCount)) {\n        vec4 shadowMap_position = project_common_position_to_clipspace(position_commonspace, shadow_uViewProjectionMatrices[i], shadow_uProjectCenters[i]);\n        shadow_vPosition[i] = (shadowMap_position.xyz / shadowMap_position.w + 1.0) / 2.0;\n      }\n    }\n  }\n  return gl_Position;\n}\n";
-var shadow_fs = "\nconst int max_lights = 2;\nuniform bool shadow_uDrawShadowMap;\nuniform bool shadow_uUseShadowMap;\nuniform sampler2D shadow_uShadowMap0;\nuniform sampler2D shadow_uShadowMap1;\nuniform vec4 shadow_uColor;\nuniform float shadow_uLightCount;\n\nvarying vec3 shadow_vPosition[max_lights];\n\nconst vec4 bitPackShift = vec4(1.0, 255.0, 65025.0, 16581375.0);\nconst vec4 bitUnpackShift = 1.0 / bitPackShift;\nconst vec4 bitMask = vec4(1.0 / 255.0, 1.0 / 255.0, 1.0 / 255.0,  0.0);\n\nfloat shadow_getShadowWeight(vec3 position, sampler2D shadowMap) {\n  vec4 rgbaDepth = texture2D(shadowMap, position.xy);\n\n  float z = dot(rgbaDepth, bitUnpackShift);\n  return smoothstep(0.001, 0.01, position.z - z);\n}\n\nvec4 shadow_filterShadowColor(vec4 color) {\n  if (shadow_uDrawShadowMap) {\n    vec4 rgbaDepth = fract(gl_FragCoord.z * bitPackShift);\n    rgbaDepth -= rgbaDepth.gbaa * bitMask;\n    return rgbaDepth;\n  }\n  if (shadow_uUseShadowMap) {\n    float shadowAlpha = 0.0;\n    shadowAlpha += shadow_getShadowWeight(shadow_vPosition[0], shadow_uShadowMap0);\n    if(shadow_uLightCount > 1.0) {\n      shadowAlpha += shadow_getShadowWeight(shadow_vPosition[1], shadow_uShadowMap1);\n    }\n    shadowAlpha *= shadow_uColor.a / shadow_uLightCount;\n    float blendedAlpha = shadowAlpha + color.a * (1.0 - shadowAlpha);\n\n    return vec4(\n      mix(color.rgb, shadow_uColor.rgb, shadowAlpha / blendedAlpha),\n      blendedAlpha\n    );\n  }\n  return color;\n}\n";
-var getMemoizedViewportCenterPosition = Object(memoize["a" /* default */])(getViewportCenterPosition);
-var getMemoizedViewProjectionMatrices = Object(memoize["a" /* default */])(getViewProjectionMatrices);
-var DEFAULT_SHADOW_COLOR = [0, 0, 0, 1.0];
-var VECTOR_TO_POINT_MATRIX = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0];
-
-function screenToCommonSpace(xyz, pixelUnprojectionMatrix) {
-  var _xyz = Object(slicedToArray["a" /* default */])(xyz, 3),
-      x = _xyz[0],
-      y = _xyz[1],
-      z = _xyz[2];
-
-  var coord = Object(web_mercator_dist_esm["m" /* pixelsToWorld */])([x, y, z], pixelUnprojectionMatrix);
-
-  if (Number.isFinite(z)) {
-    return coord;
-  }
-
-  return [coord[0], coord[1], 0];
-}
-
-function getViewportCenterPosition(_ref) {
-  var viewport = _ref.viewport,
-      center = _ref.center;
-  return new dist_esm["a" /* Matrix4 */](viewport.viewProjectionMatrix).invert().transform(center);
-}
-
-function getViewProjectionMatrices(_ref2) {
-  var viewport = _ref2.viewport,
-      shadowMatrices = _ref2.shadowMatrices;
-  var projectionMatrices = [];
-  var pixelUnprojectionMatrix = viewport.pixelUnprojectionMatrix;
-  var farZ = viewport.isGeospatial ? undefined : 1;
-  var corners = [[0, 0, farZ], [viewport.width, 0, farZ], [0, viewport.height, farZ], [viewport.width, viewport.height, farZ], [0, 0, -1], [viewport.width, 0, -1], [0, viewport.height, -1], [viewport.width, viewport.height, -1]].map(function (pixel) {
-    return screenToCommonSpace(pixel, pixelUnprojectionMatrix);
-  });
-  var _iteratorNormalCompletion = true;
-  var _didIteratorError = false;
-  var _iteratorError = undefined;
-
-  try {
-    var _loop = function _loop() {
-      var shadowMatrix = _step.value;
-      var viewMatrix = shadowMatrix.clone().translate(new dist_esm["b" /* Vector3 */](viewport.center).negate());
-      var positions = corners.map(function (corner) {
-        return viewMatrix.transform(corner);
-      });
-      var projectionMatrix = new dist_esm["a" /* Matrix4 */]().ortho({
-        left: Math.min.apply(Math, Object(toConsumableArray["a" /* default */])(positions.map(function (position) {
-          return position[0];
-        }))),
-        right: Math.max.apply(Math, Object(toConsumableArray["a" /* default */])(positions.map(function (position) {
-          return position[0];
-        }))),
-        bottom: Math.min.apply(Math, Object(toConsumableArray["a" /* default */])(positions.map(function (position) {
-          return position[1];
-        }))),
-        top: Math.max.apply(Math, Object(toConsumableArray["a" /* default */])(positions.map(function (position) {
-          return position[1];
-        }))),
-        near: Math.min.apply(Math, Object(toConsumableArray["a" /* default */])(positions.map(function (position) {
-          return -position[2];
-        }))),
-        far: Math.max.apply(Math, Object(toConsumableArray["a" /* default */])(positions.map(function (position) {
-          return -position[2];
-        })))
-      });
-      projectionMatrices.push(projectionMatrix.multiplyRight(shadowMatrix));
-    };
-
-    for (var _iterator = shadowMatrices[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-      _loop();
-    }
-  } catch (err) {
-    _didIteratorError = true;
-    _iteratorError = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion && _iterator["return"] != null) {
-        _iterator["return"]();
-      }
-    } finally {
-      if (_didIteratorError) {
-        throw _iteratorError;
-      }
-    }
-  }
-
-  return projectionMatrices;
-}
-
-function createShadowUniforms() {
-  var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  var context = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  var uniforms = {
-    shadow_uDrawShadowMap: Boolean(opts.drawToShadowMap),
-    shadow_uUseShadowMap: opts.shadowMaps ? opts.shadowMaps.length > 0 : false,
-    shadow_uColor: opts.shadowColor || DEFAULT_SHADOW_COLOR,
-    shadow_uLightId: opts.shadowLightId || 0,
-    shadow_uLightCount: opts.shadowMatrices.length
-  };
-  var center = getMemoizedViewportCenterPosition({
-    viewport: opts.viewport,
-    center: context.project_uCenter
-  });
-  var projectCenters = [];
-  var viewProjectionMatrices = getMemoizedViewProjectionMatrices({
-    shadowMatrices: opts.shadowMatrices,
-    viewport: opts.viewport
-  }).slice();
-
-  for (var i = 0; i < opts.shadowMatrices.length; i++) {
-    var viewProjectionMatrix = viewProjectionMatrices[i];
-    var viewProjectionMatrixCentered = viewProjectionMatrix.clone().translate(new dist_esm["b" /* Vector3 */](opts.viewport.center).negate());
-
-    if (context.project_uCoordinateSystem === lib_constants["a" /* COORDINATE_SYSTEM */].LNGLAT && context.project_uProjectionMode === lib_constants["c" /* PROJECTION_MODE */].WEB_MERCATOR) {
-      viewProjectionMatrices[i] = viewProjectionMatrixCentered;
-      projectCenters[i] = center;
-    } else {
-      viewProjectionMatrices[i] = viewProjectionMatrix.clone().multiplyRight(VECTOR_TO_POINT_MATRIX);
-      projectCenters[i] = viewProjectionMatrixCentered.transform(center);
-    }
-  }
-
-  for (var _i = 0; _i < viewProjectionMatrices.length; _i++) {
-    uniforms["shadow_uViewProjectionMatrices[".concat(_i, "]")] = viewProjectionMatrices[_i];
-    uniforms["shadow_uProjectCenters[".concat(_i, "]")] = projectCenters[_i];
-
-    if (opts.shadowMaps && opts.shadowMaps.length > 0) {
-      uniforms["shadow_uShadowMap".concat(_i)] = opts.shadowMaps[_i];
-    } else {
-      uniforms["shadow_uShadowMap".concat(_i)] = opts.dummyShadowMap;
-    }
-  }
-
-  return uniforms;
-}
-
-/* harmony default export */ var shadow = ({
-  name: 'shadow',
-  dependencies: [project["a" /* default */]],
-  vs: shadow_vs,
-  fs: shadow_fs,
-  inject: {
-    'vs:DECKGL_FILTER_GL_POSITION': "\n    position = shadow_setVertexPosition(geometry.position);\n    ",
-    'fs:DECKGL_FILTER_COLOR': "\n    color = shadow_filterShadowColor(color);\n    "
-  },
-  getUniforms: function getUniforms() {
-    var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    var context = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-    if (opts.drawToShadowMap || opts.shadowMaps && opts.shadowMaps.length > 0) {
-      var shadowUniforms = {};
-      var _opts$shadowEnabled = opts.shadowEnabled,
-          shadowEnabled = _opts$shadowEnabled === void 0 ? true : _opts$shadowEnabled;
-
-      if (shadowEnabled && opts.shadowMatrices && opts.shadowMatrices.length > 0) {
-        Object.assign(shadowUniforms, createShadowUniforms(opts, context));
-      } else {
-        Object.assign(shadowUniforms, {
-          shadow_uDrawShadowMap: false,
-          shadow_uUseShadowMap: false
-        });
-      }
-
-      return shadowUniforms;
-    }
-
-    return {};
-  }
-});
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/effects/lighting/lighting-effect.js
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var DEFAULT_AMBIENT_LIGHT_PROPS = {
-  color: [255, 255, 255],
-  intensity: 1.0
-};
-var DEFAULT_DIRECTIONAL_LIGHT_PROPS = [{
-  color: [255, 255, 255],
-  intensity: 1.0,
-  direction: [-1, 3, -1]
-}, {
-  color: [255, 255, 255],
-  intensity: 0.9,
-  direction: [1, -8, -2.5]
-}];
-var lighting_effect_DEFAULT_SHADOW_COLOR = [0, 0, 0, 200 / 255];
-
-var lighting_effect_LightingEffect = function (_Effect) {
-  Object(inherits["a" /* default */])(LightingEffect, _Effect);
-
-  function LightingEffect(props) {
-    var _this;
-
-    Object(classCallCheck["a" /* default */])(this, LightingEffect);
-
-    _this = Object(possibleConstructorReturn["a" /* default */])(this, Object(getPrototypeOf["a" /* default */])(LightingEffect).call(this, props));
-    _this.ambientLight = null;
-    _this.directionalLights = [];
-    _this.pointLights = [];
-    _this.shadowColor = lighting_effect_DEFAULT_SHADOW_COLOR;
-    _this.shadowPasses = [];
-    _this.shadowMaps = [];
-    _this.dummyShadowMap = null;
-    _this.shadow = false;
-    _this.programManager = null;
-
-    for (var key in props) {
-      var lightSource = props[key];
-
-      switch (lightSource.type) {
-        case 'ambient':
-          _this.ambientLight = lightSource;
-          break;
-
-        case 'directional':
-          _this.directionalLights.push(lightSource);
-
-          break;
-
-        case 'point':
-          _this.pointLights.push(lightSource);
-
-          break;
-
-        default:
-      }
-    }
-
-    _this._applyDefaultLights();
-
-    _this.shadow = _this.directionalLights.some(function (light) {
-      return light.shadow;
-    });
-    return _this;
-  }
-
-  Object(createClass["a" /* default */])(LightingEffect, [{
-    key: "preRender",
-    value: function preRender(gl, _ref) {
-      var layers = _ref.layers,
-          layerFilter = _ref.layerFilter,
-          viewports = _ref.viewports,
-          onViewportActive = _ref.onViewportActive,
-          views = _ref.views;
-      if (!this.shadow) return;
-      this.shadowMatrices = this._createLightMatrix();
-
-      if (this.shadowPasses.length === 0) {
-        this._createShadowPasses(gl);
-      }
-
-      if (!this.programManager) {
-        this.programManager = program_manager["a" /* default */].getDefaultProgramManager(gl);
-
-        if (shadow) {
-          this.programManager.addDefaultModule(shadow);
-        }
-      }
-
-      if (!this.dummyShadowMap) {
-        this.dummyShadowMap = new texture_2d["a" /* default */](gl, {
-          width: 1,
-          height: 1
-        });
-      }
-
-      for (var i = 0; i < this.shadowPasses.length; i++) {
-        var shadowPass = this.shadowPasses[i];
-        shadowPass.render({
-          layers: layers,
-          layerFilter: layerFilter,
-          viewports: viewports,
-          onViewportActive: onViewportActive,
-          views: views,
-          moduleParameters: {
-            shadowLightId: i,
-            dummyShadowMap: this.dummyShadowMap,
-            shadowMatrices: this.shadowMatrices
-          }
-        });
-      }
-    }
-  }, {
-    key: "getModuleParameters",
-    value: function getModuleParameters(layer) {
-      var parameters = this.shadow ? {
-        shadowMaps: this.shadowMaps,
-        dummyShadowMap: this.dummyShadowMap,
-        shadowColor: this.shadowColor,
-        shadowMatrices: this.shadowMatrices
-      } : {};
-      parameters.lightSources = {
-        ambientLight: this.ambientLight,
-        directionalLights: this.directionalLights.map(function (directionalLight) {
-          return directionalLight.getProjectedLight({
-            layer: layer
-          });
-        }),
-        pointLights: this.pointLights.map(function (pointLight) {
-          return pointLight.getProjectedLight({
-            layer: layer
-          });
-        })
-      };
-      return parameters;
-    }
-  }, {
-    key: "cleanup",
-    value: function cleanup() {
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = this.shadowPasses[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var shadowPass = _step.value;
-          shadowPass["delete"]();
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
-            _iterator["return"]();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
-
-      this.shadowPasses.length = 0;
-      this.shadowMaps.length = 0;
-
-      if (this.dummyShadowMap) {
-        this.dummyShadowMap["delete"]();
-        this.dummyShadowMap = null;
-      }
-
-      if (this.shadow && this.programManager) {
-        this.programManager.removeDefaultModule(shadow);
-        this.programManager = null;
-      }
-    }
-  }, {
-    key: "_createLightMatrix",
-    value: function _createLightMatrix() {
-      var lightMatrices = [];
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
-
-      try {
-        for (var _iterator2 = this.directionalLights[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var light = _step2.value;
-          var viewMatrix = new dist_esm["a" /* Matrix4 */]().lookAt({
-            eye: new dist_esm["b" /* Vector3 */](light.direction).negate()
-          });
-          lightMatrices.push(viewMatrix);
-        }
-      } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
-            _iterator2["return"]();
-          }
-        } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
-          }
-        }
-      }
-
-      return lightMatrices;
-    }
-  }, {
-    key: "_createShadowPasses",
-    value: function _createShadowPasses(gl) {
-      for (var i = 0; i < this.directionalLights.length; i++) {
-        var shadowPass = new shadow_pass_ShadowPass(gl);
-        this.shadowPasses[i] = shadowPass;
-        this.shadowMaps[i] = shadowPass.shadowMap;
-      }
-    }
-  }, {
-    key: "_applyDefaultLights",
-    value: function _applyDefaultLights() {
-      var ambientLight = this.ambientLight,
-          pointLights = this.pointLights,
-          directionalLights = this.directionalLights;
-
-      if (!ambientLight && pointLights.length === 0 && directionalLights.length === 0) {
-        this.ambientLight = new ambient_light_AmbientLight(DEFAULT_AMBIENT_LIGHT_PROPS);
-        this.directionalLights.push(new directional_light_DirectionalLight(DEFAULT_DIRECTIONAL_LIGHT_PROPS[0]), new directional_light_DirectionalLight(DEFAULT_DIRECTIONAL_LIGHT_PROPS[1]));
-      }
-    }
-  }]);
-
-  return LightingEffect;
-}(effect_Effect);
-
-
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/lib/effect-manager.js
-
-
-
-
-
-
-
-
-var DEFAULT_LIGHTING_EFFECT = new lighting_effect_LightingEffect();
-
-var effect_manager_EffectManager = function () {
-  function EffectManager() {
-    Object(classCallCheck["a" /* default */])(this, EffectManager);
-
-    this.effects = [];
-    this._internalEffects = [];
-    this._needsRedraw = 'Initial render';
-    this.setEffects();
-  }
-
-  Object(createClass["a" /* default */])(EffectManager, [{
-    key: "setProps",
-    value: function setProps(props) {
-      if ('effects' in props) {
-        if (props.effects.length !== this.effects.length || !deepEqual(props.effects, this.effects)) {
-          this.setEffects(props.effects);
-          this._needsRedraw = 'effects changed';
-        }
-      }
-    }
-  }, {
-    key: "needsRedraw",
-    value: function needsRedraw() {
-      var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
-        clearRedrawFlags: false
-      };
-      var redraw = this._needsRedraw;
-
-      if (opts.clearRedrawFlags) {
-        this._needsRedraw = false;
-      }
-
-      return redraw;
-    }
-  }, {
-    key: "getEffects",
-    value: function getEffects() {
-      return this._internalEffects;
-    }
-  }, {
-    key: "finalize",
-    value: function finalize() {
-      this.cleanup();
-    }
-  }, {
-    key: "setEffects",
-    value: function setEffects() {
-      var effects = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-      this.cleanup();
-      this.effects = effects;
-
-      this._createInternalEffects();
-    }
-  }, {
-    key: "cleanup",
-    value: function cleanup() {
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = this.effects[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var effect = _step.value;
-          effect.cleanup();
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
-            _iterator["return"]();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
-
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
-
-      try {
-        for (var _iterator2 = this._internalEffects[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var _effect = _step2.value;
-
-          _effect.cleanup();
-        }
-      } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
-            _iterator2["return"]();
-          }
-        } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
-          }
-        }
-      }
-
-      this.effects.length = 0;
-      this._internalEffects.length = 0;
-    }
-  }, {
-    key: "_createInternalEffects",
-    value: function _createInternalEffects() {
-      this._internalEffects = this.effects.slice();
-
-      if (!this.effects.some(function (effect) {
-        return effect instanceof lighting_effect_LightingEffect;
-      })) {
-        this._internalEffects.push(DEFAULT_LIGHTING_EFFECT);
-      }
-    }
-  }]);
-
-  return EffectManager;
-}();
-
-
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/passes/draw-layers-pass.js
-
-
-
-
-
-
-var draw_layers_pass_DrawLayersPass = function (_LayersPass) {
-  Object(inherits["a" /* default */])(DrawLayersPass, _LayersPass);
-
-  function DrawLayersPass() {
-    Object(classCallCheck["a" /* default */])(this, DrawLayersPass);
-
-    return Object(possibleConstructorReturn["a" /* default */])(this, Object(getPrototypeOf["a" /* default */])(DrawLayersPass).apply(this, arguments));
-  }
-
-  return DrawLayersPass;
-}(layers_pass_LayersPass);
-
-
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/passes/pick-layers-pass.js
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function pick_layers_pass_ownKeys(object, enumerableOnly) {
-  var keys = Object.keys(object);
-
-  if (Object.getOwnPropertySymbols) {
-    var symbols = Object.getOwnPropertySymbols(object);
-    if (enumerableOnly) symbols = symbols.filter(function (sym) {
-      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-    });
-    keys.push.apply(keys, symbols);
-  }
-
-  return keys;
-}
-
-function pick_layers_pass_objectSpread(target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i] != null ? arguments[i] : {};
-
-    if (i % 2) {
-      pick_layers_pass_ownKeys(Object(source), true).forEach(function (key) {
-        Object(defineProperty["a" /* default */])(target, key, source[key]);
-      });
-    } else if (Object.getOwnPropertyDescriptors) {
-      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-    } else {
-      pick_layers_pass_ownKeys(Object(source)).forEach(function (key) {
-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-      });
-    }
-  }
-
-  return target;
-}
-
-
-
-var PICKING_PARAMETERS = {
-  blendFunc: [1, 0, 32771, 0],
-  blendEquation: 32774
-};
-
-var pick_layers_pass_PickLayersPass = function (_LayersPass) {
-  Object(inherits["a" /* default */])(PickLayersPass, _LayersPass);
-
-  function PickLayersPass() {
-    Object(classCallCheck["a" /* default */])(this, PickLayersPass);
-
-    return Object(possibleConstructorReturn["a" /* default */])(this, Object(getPrototypeOf["a" /* default */])(PickLayersPass).apply(this, arguments));
-  }
-
-  Object(createClass["a" /* default */])(PickLayersPass, [{
-    key: "render",
-    value: function render(props) {
-      if (props.pickingFBO) {
-        this._drawPickingBuffer(props);
-      } else {
-        Object(esm_get["a" /* default */])(Object(getPrototypeOf["a" /* default */])(PickLayersPass.prototype), "render", this).call(this, props);
-      }
-    }
-  }, {
-    key: "_drawPickingBuffer",
-    value: function _drawPickingBuffer(_ref) {
-      var _this = this;
-
-      var layers = _ref.layers,
-          layerFilter = _ref.layerFilter,
-          viewports = _ref.viewports,
-          onViewportActive = _ref.onViewportActive,
-          pickingFBO = _ref.pickingFBO,
-          _ref$deviceRect = _ref.deviceRect,
-          x = _ref$deviceRect.x,
-          y = _ref$deviceRect.y,
-          width = _ref$deviceRect.width,
-          height = _ref$deviceRect.height,
-          _ref$pass = _ref.pass,
-          pass = _ref$pass === void 0 ? 'picking' : _ref$pass,
-          redrawReason = _ref.redrawReason,
-          pickZ = _ref.pickZ;
-      var gl = this.gl;
-      this.pickZ = pickZ;
-      return Object(gltools_dist_esm["k" /* withParameters */])(gl, pick_layers_pass_objectSpread({
-        scissorTest: true,
-        scissor: [x, y, width, height],
-        clearColor: [0, 0, 0, 0],
-        depthMask: true,
-        depthTest: true,
-        depthRange: [0, 1],
-        colorMask: [true, true, true, true]
-      }, PICKING_PARAMETERS, {
-        blend: !pickZ
-      }), function () {
-        Object(esm_get["a" /* default */])(Object(getPrototypeOf["a" /* default */])(PickLayersPass.prototype), "render", _this).call(_this, {
-          target: pickingFBO,
-          layers: layers,
-          layerFilter: layerFilter,
-          viewports: viewports,
-          onViewportActive: onViewportActive,
-          pass: pass,
-          redrawReason: redrawReason
-        });
-      });
-    }
-  }, {
-    key: "shouldDrawLayer",
-    value: function shouldDrawLayer(layer) {
-      return layer.props.pickable;
-    }
-  }, {
-    key: "getModuleParameters",
-    value: function getModuleParameters() {
-      return {
-        pickingActive: 1,
-        pickingAttribute: this.pickZ,
-        lightSources: {}
-      };
-    }
-  }, {
-    key: "getLayerParameters",
-    value: function getLayerParameters(layer, layerIndex) {
-      var pickParameters = this.pickZ ? {
-        blend: false
-      } : pick_layers_pass_objectSpread({}, PICKING_PARAMETERS, {
-        blend: true,
-        blendColor: [0, 0, 0, (layerIndex + 1) / 255]
-      });
-      return Object.assign({}, layer.props.parameters, pickParameters);
-    }
-  }]);
-
-  return PickLayersPass;
-}(layers_pass_LayersPass);
-
-
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/lib/deck-renderer.js
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function deck_renderer_ownKeys(object, enumerableOnly) {
-  var keys = Object.keys(object);
-
-  if (Object.getOwnPropertySymbols) {
-    var symbols = Object.getOwnPropertySymbols(object);
-    if (enumerableOnly) symbols = symbols.filter(function (sym) {
-      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-    });
-    keys.push.apply(keys, symbols);
-  }
-
-  return keys;
-}
-
-function deck_renderer_objectSpread(target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i] != null ? arguments[i] : {};
-
-    if (i % 2) {
-      deck_renderer_ownKeys(Object(source), true).forEach(function (key) {
-        Object(defineProperty["a" /* default */])(target, key, source[key]);
-      });
-    } else if (Object.getOwnPropertyDescriptors) {
-      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-    } else {
-      deck_renderer_ownKeys(Object(source)).forEach(function (key) {
-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-      });
-    }
-  }
-
-  return target;
-}
-
-
-
-
-
-var TRACE_RENDER_LAYERS = 'deckRenderer.renderLayers';
-
-var deck_renderer_DeckRenderer = function () {
-  function DeckRenderer(gl) {
-    Object(classCallCheck["a" /* default */])(this, DeckRenderer);
-
-    this.gl = gl;
-    this.layerFilter = null;
-    this.drawPickingColors = false;
-    this.drawLayersPass = new draw_layers_pass_DrawLayersPass(gl);
-    this.pickLayersPass = new pick_layers_pass_PickLayersPass(gl);
-    this.renderCount = 0;
-    this._needsRedraw = 'Initial render';
-    this.renderBuffers = [];
-    this.lastPostProcessEffect = null;
-    this._onError = null;
-  }
-
-  Object(createClass["a" /* default */])(DeckRenderer, [{
-    key: "setProps",
-    value: function setProps(props) {
-      if ('layerFilter' in props && this.layerFilter !== props.layerFilter) {
-        this.layerFilter = props.layerFilter;
-        this._needsRedraw = 'layerFilter changed';
-      }
-
-      if ('drawPickingColors' in props && this.drawPickingColors !== props.drawPickingColors) {
-        this.drawPickingColors = props.drawPickingColors;
-        this._needsRedraw = 'drawPickingColors changed';
-      }
-
-      if ('onError' in props) {
-        this._onError = props.onError;
-      }
-    }
-  }, {
-    key: "renderLayers",
-    value: function renderLayers(opts) {
-      var layerPass = this.drawPickingColors ? this.pickLayersPass : this.drawLayersPass;
-      opts.layerFilter = this.layerFilter;
-      opts.onError = this._onError;
-      opts.effects = opts.effects || [];
-      opts.target = opts.target || framebuffer["a" /* default */].getDefaultFramebuffer(this.gl);
-
-      this._preRender(opts.effects, opts);
-
-      var outputBuffer = this.lastPostProcessEffect ? this.renderBuffers[0] : opts.target;
-      var renderStats = layerPass.render(deck_renderer_objectSpread({}, opts, {
-        target: outputBuffer
-      }));
-
-      this._postRender(opts.effects, opts);
-
-      this.renderCount++;
-      Object(esm_debug["a" /* default */])(TRACE_RENDER_LAYERS, this, renderStats, opts);
-    }
-  }, {
-    key: "needsRedraw",
-    value: function needsRedraw() {
-      var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
-        clearRedrawFlags: false
-      };
-      var redraw = this._needsRedraw;
-
-      if (opts.clearRedrawFlags) {
-        this._needsRedraw = false;
-      }
-
-      return redraw;
-    }
-  }, {
-    key: "finalize",
-    value: function finalize() {
-      var renderBuffers = this.renderBuffers;
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = renderBuffers[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var buffer = _step.value;
-          buffer["delete"]();
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
-            _iterator["return"]();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
-
-      renderBuffers.length = 0;
-    }
-  }, {
-    key: "_preRender",
-    value: function _preRender(effects, opts) {
-      var lastPostProcessEffect = null;
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
-
-      try {
-        for (var _iterator2 = effects[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var effect = _step2.value;
-          effect.preRender(this.gl, opts);
-
-          if (effect.postRender) {
-            lastPostProcessEffect = effect;
-          }
-        }
-      } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
-            _iterator2["return"]();
-          }
-        } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
-          }
-        }
-      }
-
-      if (lastPostProcessEffect) {
-        this._resizeRenderBuffers();
-      }
-
-      this.lastPostProcessEffect = lastPostProcessEffect;
-    }
-  }, {
-    key: "_resizeRenderBuffers",
-    value: function _resizeRenderBuffers() {
-      var renderBuffers = this.renderBuffers;
-
-      if (renderBuffers.length === 0) {
-        renderBuffers.push(new framebuffer["a" /* default */](this.gl), new framebuffer["a" /* default */](this.gl));
-      }
-
-      var _iteratorNormalCompletion3 = true;
-      var _didIteratorError3 = false;
-      var _iteratorError3 = undefined;
-
-      try {
-        for (var _iterator3 = renderBuffers[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-          var buffer = _step3.value;
-          buffer.resize();
-        }
-      } catch (err) {
-        _didIteratorError3 = true;
-        _iteratorError3 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion3 && _iterator3["return"] != null) {
-            _iterator3["return"]();
-          }
-        } finally {
-          if (_didIteratorError3) {
-            throw _iteratorError3;
-          }
-        }
-      }
-    }
-  }, {
-    key: "_postRender",
-    value: function _postRender(effects, opts) {
-      var renderBuffers = this.renderBuffers;
-      var params = {
-        inputBuffer: renderBuffers[0],
-        swapBuffer: renderBuffers[1],
-        target: null
-      };
-      var _iteratorNormalCompletion4 = true;
-      var _didIteratorError4 = false;
-      var _iteratorError4 = undefined;
-
-      try {
-        for (var _iterator4 = effects[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-          var effect = _step4.value;
-
-          if (effect.postRender) {
-            if (effect === this.lastPostProcessEffect) {
-              params.target = opts.target;
-              effect.postRender(this.gl, params);
-              break;
-            }
-
-            var buffer = effect.postRender(this.gl, params);
-            params.inputBuffer = buffer;
-            params.swapBuffer = buffer === renderBuffers[0] ? renderBuffers[1] : renderBuffers[0];
-          }
-        }
-      } catch (err) {
-        _didIteratorError4 = true;
-        _iteratorError4 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion4 && _iterator4["return"] != null) {
-            _iterator4["return"]();
-          }
-        } finally {
-          if (_didIteratorError4) {
-            throw _iteratorError4;
-          }
-        }
-      }
-    }
-  }]);
-
-  return DeckRenderer;
-}();
-
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.typed.uint8-array.js
-var es6_typed_uint8_array = __webpack_require__("CtJk");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.typed.float32-array.js
-var es6_typed_float32_array = __webpack_require__("5irr");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.array.from.js
-var es6_array_from = __webpack_require__("cFtU");
-
-// EXTERNAL MODULE: ./node_modules/@luma.gl/webgl/dist/esm/classes/copy-and-blit.js + 1 modules
-var copy_and_blit = __webpack_require__("p7wt");
-
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/lib/picking/query-object.js
-
-
-
-
-
-
-
-var NO_PICKED_OBJECT = {
-  pickedColor: null,
-  pickedLayer: null,
-  pickedObjectIndex: -1
-};
-function getClosestObject(_ref) {
-  var pickedColors = _ref.pickedColors,
-      layers = _ref.layers,
-      deviceX = _ref.deviceX,
-      deviceY = _ref.deviceY,
-      deviceRadius = _ref.deviceRadius,
-      deviceRect = _ref.deviceRect;
-
-  if (pickedColors) {
-    var x = deviceRect.x,
-        y = deviceRect.y,
-        width = deviceRect.width,
-        height = deviceRect.height;
-    var minSquareDistanceToCenter = deviceRadius * deviceRadius;
-    var closestPixelIndex = -1;
-    var i = 0;
-
-    for (var row = 0; row < height; row++) {
-      var dy = row + y - deviceY;
-      var dy2 = dy * dy;
-
-      if (dy2 > minSquareDistanceToCenter) {
-        i += 4 * width;
-      } else {
-        for (var col = 0; col < width; col++) {
-          var pickedLayerIndex = pickedColors[i + 3] - 1;
-
-          if (pickedLayerIndex >= 0) {
-            var dx = col + x - deviceX;
-            var d2 = dx * dx + dy2;
-
-            if (d2 <= minSquareDistanceToCenter) {
-              minSquareDistanceToCenter = d2;
-              closestPixelIndex = i;
-            }
-          }
-
-          i += 4;
-        }
-      }
-    }
-
-    if (closestPixelIndex >= 0) {
-      var _pickedLayerIndex = pickedColors[closestPixelIndex + 3] - 1;
-
-      var pickedColor = pickedColors.slice(closestPixelIndex, closestPixelIndex + 4);
-      var pickedLayer = layers[_pickedLayerIndex];
-
-      if (pickedLayer) {
-        var pickedObjectIndex = pickedLayer.decodePickingColor(pickedColor);
-
-        var _dy = Math.floor(closestPixelIndex / 4 / width);
-
-        var _dx = closestPixelIndex / 4 - _dy * width;
-
-        return {
-          pickedColor: pickedColor,
-          pickedLayer: pickedLayer,
-          pickedObjectIndex: pickedObjectIndex,
-          pickedX: x + _dx,
-          pickedY: y + _dy
-        };
-      }
-
-      log["a" /* default */].error('Picked non-existent layer. Is picking buffer corrupt?')();
-    }
-  }
-
-  return NO_PICKED_OBJECT;
-}
-function getUniqueObjects(_ref2) {
-  var pickedColors = _ref2.pickedColors,
-      layers = _ref2.layers;
-  var uniqueColors = new Map();
-
-  if (pickedColors) {
-    for (var i = 0; i < pickedColors.length; i += 4) {
-      var pickedLayerIndex = pickedColors[i + 3] - 1;
-
-      if (pickedLayerIndex >= 0) {
-        var pickedColor = pickedColors.slice(i, i + 4);
-        var colorKey = pickedColor.join(',');
-
-        if (!uniqueColors.has(colorKey)) {
-          var pickedLayer = layers[pickedLayerIndex];
-
-          if (pickedLayer) {
-            uniqueColors.set(colorKey, {
-              pickedColor: pickedColor,
-              pickedLayer: pickedLayer,
-              pickedObjectIndex: pickedLayer.decodePickingColor(pickedColor)
-            });
-          } else {
-            log["a" /* default */].error('Picked non-existent layer. Is picking buffer corrupt?')();
-          }
-        }
-      }
-    }
-  }
-
-  return Array.from(uniqueColors.values());
-}
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/lib/picking/pick-info.js
-
-
-
-
-
-
-
-
-function processPickInfo(_ref) {
-  var pickInfo = _ref.pickInfo,
-      lastPickedInfo = _ref.lastPickedInfo,
-      mode = _ref.mode,
-      layers = _ref.layers,
-      viewports = _ref.viewports,
-      x = _ref.x,
-      y = _ref.y,
-      z = _ref.z,
-      pixelRatio = _ref.pixelRatio;
-  var pickedColor = pickInfo.pickedColor,
-      pickedLayer = pickInfo.pickedLayer,
-      pickedObjectIndex = pickInfo.pickedObjectIndex;
-  var affectedLayers = pickedLayer ? [pickedLayer] : [];
-
-  if (mode === 'hover') {
-    var lastPickedObjectIndex = lastPickedInfo.index;
-    var lastPickedLayerId = lastPickedInfo.layerId;
-    var pickedLayerId = pickedLayer && pickedLayer.props.id;
-
-    if (pickedLayerId !== lastPickedLayerId || pickedObjectIndex !== lastPickedObjectIndex) {
-      if (pickedLayerId !== lastPickedLayerId) {
-        var lastPickedLayer = layers.find(function (layer) {
-          return layer.props.id === lastPickedLayerId;
-        });
-
-        if (lastPickedLayer) {
-          affectedLayers.unshift(lastPickedLayer);
-        }
-      }
-
-      lastPickedInfo.layerId = pickedLayerId;
-      lastPickedInfo.index = pickedObjectIndex;
-      lastPickedInfo.info = null;
-    }
-  }
-
-  var viewport = getViewportFromCoordinates({
-    viewports: viewports
-  });
-  var coordinate = viewport && viewport.unproject([x, y], {
-    targetZ: z
-  });
-  var baseInfo = {
-    color: null,
-    layer: null,
-    index: -1,
-    picked: false,
-    x: x,
-    y: y,
-    pixel: [x, y],
-    coordinate: coordinate,
-    lngLat: coordinate,
-    devicePixel: [pickInfo.pickedX, pickInfo.pickedY],
-    pixelRatio: pixelRatio
-  };
-  var infos = new Map();
-  infos.set(null, baseInfo);
-  affectedLayers.forEach(function (layer) {
-    var info = Object.assign({}, baseInfo);
-
-    if (layer === pickedLayer) {
-      info.color = pickedColor;
-      info.index = pickedObjectIndex;
-      info.picked = true;
-    }
-
-    info = getLayerPickingInfo({
-      layer: layer,
-      info: info,
-      mode: mode
-    });
-
-    if (layer === pickedLayer && mode === 'hover') {
-      lastPickedInfo.info = info;
-    }
-
-    if (info) {
-      infos.set(info.layer.id, info);
-    }
-
-    if (mode === 'hover' && layer.props.autoHighlight) {
-      layer.setModuleParameters({
-        pickingSelectedColor: pickedLayer === layer ? pickedColor : null
-      });
-      layer.setNeedsRedraw();
-    }
-  });
-  return infos;
-}
-function getLayerPickingInfo(_ref2) {
-  var layer = _ref2.layer,
-      info = _ref2.info,
-      mode = _ref2.mode;
-
-  while (layer && info) {
-    var sourceLayer = info.layer || layer;
-    info.layer = layer;
-    info = layer.getPickingInfo({
-      info: info,
-      mode: mode,
-      sourceLayer: sourceLayer
-    });
-    layer = layer.parent;
-  }
-
-  return info;
-}
-
-function getViewportFromCoordinates(_ref3) {
-  var viewports = _ref3.viewports;
-  var viewport = viewports[0];
-  return viewport;
-}
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/lib/deck-picker.js
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var deck_picker_DeckPicker = function () {
-  function DeckPicker(gl) {
-    Object(classCallCheck["a" /* default */])(this, DeckPicker);
-
-    this.gl = gl;
-    this.pickingFBO = null;
-    this.pickLayersPass = new pick_layers_pass_PickLayersPass(gl);
-    this.layerFilter = null;
-    this.lastPickedInfo = {
-      index: -1,
-      layerId: null,
-      info: null
-    };
-    this._onError = null;
-  }
-
-  Object(createClass["a" /* default */])(DeckPicker, [{
-    key: "setProps",
-    value: function setProps(props) {
-      if ('layerFilter' in props) {
-        this.layerFilter = props.layerFilter;
-      }
-
-      if ('onError' in props) {
-        this._onError = props.onError;
-      }
-    }
-  }, {
-    key: "finalize",
-    value: function finalize() {
-      if (this.pickingFBO) {
-        this.pickingFBO["delete"]();
-      }
-
-      if (this.depthFBO) {
-        this.depthFBO.color["delete"]();
-        this.depthFBO["delete"]();
-      }
-    }
-  }, {
-    key: "pickObject",
-    value: function pickObject(opts) {
-      return this._pickClosestObject(opts);
-    }
-  }, {
-    key: "pickObjects",
-    value: function pickObjects(opts) {
-      return this._pickVisibleObjects(opts);
-    }
-  }, {
-    key: "getLastPickedObject",
-    value: function getLastPickedObject(_ref) {
-      var x = _ref.x,
-          y = _ref.y,
-          layers = _ref.layers,
-          viewports = _ref.viewports;
-      var lastPickedInfo = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.lastPickedInfo.info;
-      var lastPickedLayerId = lastPickedInfo && lastPickedInfo.layer && lastPickedInfo.layer.id;
-      var layer = lastPickedLayerId ? layers.find(function (l) {
-        return l.id === lastPickedLayerId;
-      }) : null;
-      var coordinate = viewports[0] && viewports[0].unproject([x, y]);
-      var info = {
-        x: x,
-        y: y,
-        coordinate: coordinate,
-        lngLat: coordinate,
-        layer: layer
-      };
-
-      if (layer) {
-        return Object.assign({}, lastPickedInfo, info);
-      }
-
-      return Object.assign(info, {
-        color: null,
-        object: null,
-        index: -1
-      });
-    }
-  }, {
-    key: "_resizeBuffer",
-    value: function _resizeBuffer() {
-      var gl = this.gl;
-
-      if (!this.pickingFBO) {
-        this.pickingFBO = new framebuffer["a" /* default */](gl);
-
-        if (framebuffer["a" /* default */].isSupported(gl, {
-          colorBufferFloat: true
-        })) {
-          this.depthFBO = new framebuffer["a" /* default */](gl);
-          this.depthFBO.attach(Object(defineProperty["a" /* default */])({}, 36064, new texture_2d["a" /* default */](gl, {
-            format: Object(gltools_dist_esm["f" /* isWebGL2 */])(gl) ? 34836 : 6408,
-            type: 5126
-          })));
-        }
-      }
-
-      this.pickingFBO.resize({
-        width: gl.canvas.width,
-        height: gl.canvas.height
-      });
-      this.depthFBO.resize({
-        width: gl.canvas.width,
-        height: gl.canvas.height
-      });
-      return this.pickingFBO;
-    }
-  }, {
-    key: "_pickClosestObject",
-    value: function _pickClosestObject(_ref2) {
-      var layers = _ref2.layers,
-          viewports = _ref2.viewports,
-          x = _ref2.x,
-          y = _ref2.y,
-          _ref2$radius = _ref2.radius,
-          radius = _ref2$radius === void 0 ? 0 : _ref2$radius,
-          _ref2$depth = _ref2.depth,
-          depth = _ref2$depth === void 0 ? 1 : _ref2$depth,
-          _ref2$mode = _ref2.mode,
-          mode = _ref2$mode === void 0 ? 'query' : _ref2$mode,
-          unproject3D = _ref2.unproject3D,
-          onViewportActive = _ref2.onViewportActive;
-
-      this._resizeBuffer();
-
-      var pixelRatio = Object(gltools_dist_esm["c" /* cssToDeviceRatio */])(this.gl);
-      var devicePixelRange = Object(gltools_dist_esm["b" /* cssToDevicePixels */])(this.gl, [x, y], true);
-      var devicePixel = [devicePixelRange.x + Math.floor(devicePixelRange.width / 2), devicePixelRange.y + Math.floor(devicePixelRange.height / 2)];
-      var deviceRadius = Math.round(radius * pixelRatio);
-      var _this$pickingFBO = this.pickingFBO,
-          width = _this$pickingFBO.width,
-          height = _this$pickingFBO.height;
-
-      var deviceRect = this._getPickingRect({
-        deviceX: devicePixel[0],
-        deviceY: devicePixel[1],
-        deviceRadius: deviceRadius,
-        deviceWidth: width,
-        deviceHeight: height
-      });
-
-      var infos;
-      var result = [];
-      var affectedLayers = {};
-
-      for (var i = 0; i < depth; i++) {
-        var pickedColors = deviceRect && this._drawAndSample({
-          layers: layers,
-          viewports: viewports,
-          onViewportActive: onViewportActive,
-          deviceRect: deviceRect,
-          pass: "picking:".concat(mode),
-          redrawReason: mode
-        });
-
-        var pickInfo = getClosestObject({
-          pickedColors: pickedColors,
-          layers: layers,
-          deviceX: devicePixel[0],
-          deviceY: devicePixel[1],
-          deviceRadius: deviceRadius,
-          deviceRect: deviceRect
-        });
-        var z = void 0;
-
-        if (pickInfo.pickedLayer && unproject3D && this.depthFBO) {
-          var zValues = this._drawAndSample({
-            layers: [pickInfo.pickedLayer],
-            viewports: viewports,
-            onViewportActive: onViewportActive,
-            deviceRect: {
-              x: pickInfo.pickedX,
-              y: pickInfo.pickedY,
-              width: 1,
-              height: 1
-            },
-            pass: "picking:".concat(mode),
-            redrawReason: 'pick-z',
-            pickZ: true
-          });
-
-          z = zValues[0] * viewports[0].distanceScales.metersPerUnit[2] + viewports[0].position[2];
-        }
-
-        if (pickInfo.pickedColor && i + 1 < depth) {
-          var layerId = pickInfo.pickedColor[3] - 1;
-          affectedLayers[layerId] = true;
-          layers[layerId].clearPickingColor(pickInfo.pickedColor);
-        }
-
-        infos = processPickInfo({
-          pickInfo: pickInfo,
-          lastPickedInfo: this.lastPickedInfo,
-          mode: mode,
-          layers: layers,
-          viewports: viewports,
-          x: x,
-          y: y,
-          z: z,
-          pixelRatio: pixelRatio
-        });
-        var _iteratorNormalCompletion = true;
-        var _didIteratorError = false;
-        var _iteratorError = undefined;
-
-        try {
-          for (var _iterator = infos.values()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-            var info = _step.value;
-
-            if (info.layer) {
-              result.push(info);
-            }
-          }
-        } catch (err) {
-          _didIteratorError = true;
-          _iteratorError = err;
-        } finally {
-          try {
-            if (!_iteratorNormalCompletion && _iterator["return"] != null) {
-              _iterator["return"]();
-            }
-          } finally {
-            if (_didIteratorError) {
-              throw _iteratorError;
-            }
-          }
-        }
-
-        if (!pickInfo.pickedColor) {
-          break;
-        }
-      }
-
-      for (var _layerId in affectedLayers) {
-        layers[_layerId].restorePickingColors();
-      }
-
-      return {
-        result: result,
-        emptyInfo: infos && infos.get(null)
-      };
-    }
-  }, {
-    key: "_pickVisibleObjects",
-    value: function _pickVisibleObjects(_ref3) {
-      var layers = _ref3.layers,
-          viewports = _ref3.viewports,
-          x = _ref3.x,
-          y = _ref3.y,
-          _ref3$width = _ref3.width,
-          width = _ref3$width === void 0 ? 1 : _ref3$width,
-          _ref3$height = _ref3.height,
-          height = _ref3$height === void 0 ? 1 : _ref3$height,
-          _ref3$mode = _ref3.mode,
-          mode = _ref3$mode === void 0 ? 'query' : _ref3$mode,
-          onViewportActive = _ref3.onViewportActive;
-
-      this._resizeBuffer();
-
-      var pixelRatio = Object(gltools_dist_esm["c" /* cssToDeviceRatio */])(this.gl);
-      var leftTop = Object(gltools_dist_esm["b" /* cssToDevicePixels */])(this.gl, [x, y], true);
-      var deviceLeft = leftTop.x;
-      var deviceTop = leftTop.y + leftTop.height;
-      var rightBottom = Object(gltools_dist_esm["b" /* cssToDevicePixels */])(this.gl, [x + width, y + height], true);
-      var deviceRight = rightBottom.x + rightBottom.width;
-      var deviceBottom = rightBottom.y;
-      var deviceRect = {
-        x: deviceLeft,
-        y: deviceBottom,
-        width: deviceRight - deviceLeft,
-        height: deviceTop - deviceBottom
-      };
-
-      var pickedColors = this._drawAndSample({
-        layers: layers,
-        viewports: viewports,
-        onViewportActive: onViewportActive,
-        deviceRect: deviceRect,
-        pass: "picking:".concat(mode),
-        redrawReason: mode
-      });
-
-      var pickInfos = getUniqueObjects({
-        pickedColors: pickedColors,
-        layers: layers
-      });
-      var uniqueInfos = new Map();
-      pickInfos.forEach(function (pickInfo) {
-        var info = {
-          color: pickInfo.pickedColor,
-          layer: null,
-          index: pickInfo.pickedObjectIndex,
-          picked: true,
-          x: x,
-          y: y,
-          width: width,
-          height: height,
-          pixelRatio: pixelRatio
-        };
-        info = getLayerPickingInfo({
-          layer: pickInfo.pickedLayer,
-          info: info,
-          mode: mode
-        });
-
-        if (!uniqueInfos.has(info.object)) {
-          uniqueInfos.set(info.object, info);
-        }
-      });
-      return Array.from(uniqueInfos.values());
-    }
-  }, {
-    key: "_drawAndSample",
-    value: function _drawAndSample(_ref4) {
-      var layers = _ref4.layers,
-          viewports = _ref4.viewports,
-          onViewportActive = _ref4.onViewportActive,
-          deviceRect = _ref4.deviceRect,
-          pass = _ref4.pass,
-          redrawReason = _ref4.redrawReason,
-          pickZ = _ref4.pickZ;
-      Object(assert["a" /* default */])(deviceRect.width > 0 && deviceRect.height > 0);
-      var pickableLayers = layers.filter(function (layer) {
-        return layer.isPickable();
-      });
-
-      if (pickableLayers.length < 1) {
-        return null;
-      }
-
-      var pickingFBO = pickZ ? this.depthFBO : this.pickingFBO;
-      this.pickLayersPass.render({
-        layers: layers,
-        layerFilter: this.layerFilter,
-        onError: this._onError,
-        viewports: viewports,
-        onViewportActive: onViewportActive,
-        pickingFBO: pickingFBO,
-        deviceRect: deviceRect,
-        pass: pass,
-        redrawReason: redrawReason,
-        pickZ: pickZ
-      });
-      var x = deviceRect.x,
-          y = deviceRect.y,
-          width = deviceRect.width,
-          height = deviceRect.height;
-      var pickedColors = new (pickZ ? Float32Array : Uint8Array)(width * height * 4);
-      Object(copy_and_blit["b" /* readPixelsToArray */])(pickingFBO, {
-        sourceX: x,
-        sourceY: y,
-        sourceWidth: width,
-        sourceHeight: height,
-        target: pickedColors
-      });
-      return pickedColors;
-    }
-  }, {
-    key: "_getPickingRect",
-    value: function _getPickingRect(_ref5) {
-      var deviceX = _ref5.deviceX,
-          deviceY = _ref5.deviceY,
-          deviceRadius = _ref5.deviceRadius,
-          deviceWidth = _ref5.deviceWidth,
-          deviceHeight = _ref5.deviceHeight;
-      var x = Math.max(0, deviceX - deviceRadius);
-      var y = Math.max(0, deviceY - deviceRadius);
-      var width = Math.min(deviceWidth, deviceX + deviceRadius + 1) - x;
-      var height = Math.min(deviceHeight, deviceY + deviceRadius + 1) - y;
-
-      if (width <= 0 || height <= 0) {
-        return null;
-      }
-
-      return {
-        x: x,
-        y: y,
-        width: width,
-        height: height
-      };
-    }
-  }]);
-
-  return DeckPicker;
-}();
-
-
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/lib/tooltip.js
-
-
-
-var defaultStyle = {
-  zIndex: 1,
-  position: 'absolute',
-  pointerEvents: 'none',
-  color: '#a0a7b4',
-  backgroundColor: '#29323c',
-  padding: '10px',
-  top: 0,
-  left: 0,
-  display: 'none'
-};
-
-var tooltip_Tooltip = function () {
-  function Tooltip(canvas) {
-    Object(classCallCheck["a" /* default */])(this, Tooltip);
-
-    var canvasParent = canvas.parentElement;
-
-    if (canvasParent) {
-      this.el = document.createElement('div');
-      this.el.className = 'deck-tooltip';
-      Object.assign(this.el.style, defaultStyle);
-      canvasParent.appendChild(this.el);
-    }
-  }
-
-  Object(createClass["a" /* default */])(Tooltip, [{
-    key: "setTooltip",
-    value: function setTooltip(displayInfo, x, y) {
-      var el = this.el;
-
-      if (typeof displayInfo === 'string') {
-        el.innerText = displayInfo;
-      } else if (!displayInfo) {
-        el.style.display = 'none';
-        return;
-      } else {
-        if ('text' in displayInfo) {
-          el.innerText = displayInfo.text;
-        }
-
-        if ('html' in displayInfo) {
-          el.innerHTML = displayInfo.html;
-        }
-
-        if ('className' in displayInfo) {
-          el.className = displayInfo.className;
-        }
-
-        Object.assign(el.style, displayInfo.style);
-      }
-
-      el.style.display = 'block';
-      el.style.transform = "translate(".concat(x, "px, ").concat(y, "px)");
-    }
-  }, {
-    key: "remove",
-    value: function remove() {
-      if (this.el) {
-        this.el.remove();
-      }
-    }
-  }]);
-
-  return Tooltip;
-}();
-
-
-// EXTERNAL MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/register-loaders.js
-var register_loaders = __webpack_require__("pCSj");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.typed.data-view.js
-var es6_typed_data_view = __webpack_require__("t+I+");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/regenerator/index.js
-var regenerator = __webpack_require__("kD0k");
-var regenerator_default = /*#__PURE__*/__webpack_require__.n(regenerator);
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js
-var asyncToGenerator = __webpack_require__("/S4K");
-
-// CONCATENATED MODULE: ./node_modules/@loaders.gl/images/dist/esm/lib/utils/assert.js
-function assert_assert(condition, message) {
-  if (!condition) {
-    throw new Error(message);
-  }
-}
-// EXTERNAL MODULE: ./node_modules/@loaders.gl/images/dist/esm/lib/utils/globals.js
-var globals = __webpack_require__("d64r");
-
-// CONCATENATED MODULE: ./node_modules/@loaders.gl/images/dist/esm/lib/parsed-image-api/image-type.js
-
-var image_type_parseImageNode = globals["a" /* global */]._parseImageNode;
-var IMAGE_SUPPORTED = typeof Image !== 'undefined';
-var IMAGE_BITMAP_SUPPORTED = typeof ImageBitmap !== 'undefined';
-var NODE_IMAGE_SUPPORTED = Boolean(image_type_parseImageNode);
-function isImageTypeSupported(type) {
-  switch (type) {
-    case 'auto':
-      return IMAGE_BITMAP_SUPPORTED || IMAGE_SUPPORTED || NODE_IMAGE_SUPPORTED;
-
-    case 'imagebitmap':
-      return IMAGE_BITMAP_SUPPORTED;
-
-    case 'html':
-    case 'image':
-      return IMAGE_SUPPORTED;
-
-    case 'ndarray':
-    case 'data':
-      return globals["b" /* isBrowser */] ? true : NODE_IMAGE_SUPPORTED;
-
-    default:
-      throw new Error("@loaders.gl/images: image ".concat(type, " not supported in this environment"));
-  }
-}
-function getDefaultImageType() {
-  if (isImageTypeSupported('image')) {
-    return 'image';
-  }
-
-  if (isImageTypeSupported('imagebitmap')) {
-    return 'imagebitmap';
-  }
-
-  if (isImageTypeSupported('data')) {
-    return 'data';
-  }
-
-  throw new Error("Install '@loaders.gl/polyfills' to parse images under Node.js");
-}
-// CONCATENATED MODULE: ./node_modules/@loaders.gl/images/dist/esm/lib/parsed-image-api/parsed-image-api.js
-
-
-function isImage(image) {
-  return Boolean(getImageTypeOrNull(image));
-}
-function deleteImage(image) {
-  switch (getImageType(image)) {
-    case 'imagebitmap':
-      image.close();
-      break;
-
-    default:
-  }
-}
-function getImageType(image) {
-  var format = getImageTypeOrNull(image);
-
-  if (!format) {
-    throw new Error('Not an image');
-  }
-
-  return format;
-}
-function getImageData(image) {
-  switch (getImageType(image)) {
-    case 'data':
-      return image;
-
-    case 'image':
-    case 'imagebitmap':
-      var canvas = document.createElement('canvas');
-      var context = canvas.getContext('2d');
-      canvas.width = image.width;
-      canvas.height = image.height;
-      context.drawImage(image, 0, 0);
-      var imageData = context.getImageData(0, 0, image.width, image.height);
-      return imageData;
-
-    default:
-      return assert_assert(false);
-  }
-}
-
-
-function getImageTypeOrNull(image) {
-  if (typeof ImageBitmap !== 'undefined' && image instanceof ImageBitmap) {
-    return 'imagebitmap';
-  }
-
-  if (typeof Image !== 'undefined' && image instanceof Image) {
-    return 'image';
-  }
-
-  if (image && Object(esm_typeof["a" /* default */])(image) === 'object' && image.data && image.width && image.height) {
-    return 'data';
-  }
-
-  return null;
-}
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.promise.js
-var es6_promise = __webpack_require__("6kNP");
-
-// CONCATENATED MODULE: ./node_modules/@loaders.gl/images/dist/esm/lib/parsers/get-blob.js
-
-var SVG_DATA_URL_PATTERN = /^data:image\/svg\+xml/;
-var SVG_URL_PATTERN = /\.svg((\?|#).*)?$/;
-function getBlob(arrayBuffer, url) {
-  if (isSVG(url)) {
-    console.warn('SVG cannot be parsed to imagebitmap');
-    return new Blob([new Uint8Array(arrayBuffer)], {
-      type: 'image/svg+xml'
-    });
-  }
-
-  return new Blob([new Uint8Array(arrayBuffer)]);
-}
-function getBlobOrDataUrl(arrayBuffer, url) {
-  if (isSVG(url)) {
-    var textDecoder = new TextDecoder();
-    var xmlText = textDecoder.decode(arrayBuffer);
-    var src = "data:image/svg+xml;base64,".concat(btoa(xmlText));
-    return src;
-  }
-
-  return getBlob(arrayBuffer, url);
-}
-
-function isSVG(url) {
-  return url && (SVG_DATA_URL_PATTERN.test(url) || SVG_URL_PATTERN.test(url));
-}
-// CONCATENATED MODULE: ./node_modules/@loaders.gl/images/dist/esm/lib/parsers/parse-to-image.js
-
-
-
-
-
-function parseToImage(_x, _x2, _x3) {
-  return _parseToImage.apply(this, arguments);
-}
-
-function _parseToImage() {
-  _parseToImage = Object(asyncToGenerator["a" /* default */])(regenerator_default.a.mark(function _callee(arrayBuffer, options, url) {
-    var blobOrDataUrl, URL, objectUrl;
-    return regenerator_default.a.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            blobOrDataUrl = getBlobOrDataUrl(arrayBuffer, url);
-            URL = self.URL || self.webkitURL;
-            objectUrl = typeof blobOrDataUrl !== 'string' && URL.createObjectURL(blobOrDataUrl);
-            _context.prev = 3;
-            _context.next = 6;
-            return loadToImage(objectUrl || blobOrDataUrl, options);
-
-          case 6:
-            return _context.abrupt("return", _context.sent);
-
-          case 7:
-            _context.prev = 7;
-
-            if (objectUrl) {
-              URL.revokeObjectURL(objectUrl);
-            }
-
-            return _context.finish(7);
-
-          case 10:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee, null, [[3,, 7, 10]]);
-  }));
-  return _parseToImage.apply(this, arguments);
-}
-
-function loadToImage(_x4, _x5) {
-  return _loadToImage.apply(this, arguments);
-}
-
-function _loadToImage() {
-  _loadToImage = Object(asyncToGenerator["a" /* default */])(regenerator_default.a.mark(function _callee2(url, options) {
-    var image;
-    return regenerator_default.a.wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            image = new Image();
-            image.src = url;
-
-            if (!(options.image && options.image.decode && image.decode)) {
-              _context2.next = 6;
-              break;
-            }
-
-            _context2.next = 5;
-            return image.decode();
-
-          case 5:
-            return _context2.abrupt("return", image);
-
-          case 6:
-            _context2.next = 8;
-            return new Promise(function (resolve, reject) {
-              try {
-                image.onload = function () {
-                  return resolve(image);
-                };
-
-                image.onerror = function (err) {
-                  return reject(new Error("Could not load image ".concat(url, ": ").concat(err)));
-                };
-              } catch (error) {
-                reject(error);
-              }
-            });
-
-          case 8:
-            return _context2.abrupt("return", _context2.sent);
-
-          case 9:
-          case "end":
-            return _context2.stop();
-        }
-      }
-    }, _callee2);
-  }));
-  return _loadToImage.apply(this, arguments);
-}
-// CONCATENATED MODULE: ./node_modules/@loaders.gl/images/dist/esm/lib/parsers/parse-to-image-bitmap.js
-
-
-
-var imagebitmapOptionsSupported = true;
-function parseToImageBitmap(_x, _x2, _x3) {
-  return _parseToImageBitmap.apply(this, arguments);
-}
-
-function _parseToImageBitmap() {
-  _parseToImageBitmap = Object(asyncToGenerator["a" /* default */])(regenerator_default.a.mark(function _callee(arrayBuffer, options, url) {
-    var blob, imagebitmapOptions;
-    return regenerator_default.a.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            blob = getBlob(arrayBuffer, url);
-            imagebitmapOptions = options && options.imagebitmap;
-
-            if (isEmptyObject(imagebitmapOptions) || !imagebitmapOptionsSupported) {
-              imagebitmapOptions = null;
-            }
-
-            if (!imagebitmapOptions) {
-              _context.next = 14;
-              break;
-            }
-
-            _context.prev = 4;
-            _context.next = 7;
-            return createImageBitmap(blob, imagebitmapOptions);
-
-          case 7:
-            return _context.abrupt("return", _context.sent);
-
-          case 10:
-            _context.prev = 10;
-            _context.t0 = _context["catch"](4);
-            console.warn(_context.t0);
-            imagebitmapOptionsSupported = false;
-
-          case 14:
-            _context.next = 16;
-            return createImageBitmap(blob);
-
-          case 16:
-            return _context.abrupt("return", _context.sent);
-
-          case 17:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee, null, [[4, 10]]);
-  }));
-  return _parseToImageBitmap.apply(this, arguments);
-}
-
-var EMPTY_OBJECT = {};
-
-function isEmptyObject(object) {
-  for (var key in object || EMPTY_OBJECT) {
-    return true;
-  }
-
-  return false;
-}
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.set.js
-var es6_set = __webpack_require__("ToIb");
-
-// CONCATENATED MODULE: ./node_modules/@loaders.gl/images/dist/esm/lib/binary-image-api/binary-image-parsers.js
-
-
-
-
-
-
-var BIG_ENDIAN = false;
-var LITTLE_ENDIAN = true;
-var mimeTypeMap = new Map([['image/png', {
-  test: isPng,
-  getSize: getPngSize
-}], ['image/jpeg', {
-  test: isJpeg,
-  getSize: getJpegSize
-}], ['image/gif', {
-  test: isGif,
-  getSize: getGifSize
-}], ['image/bmp', {
-  test: isBmp,
-  getSize: getBmpSize
-}]]);
-function isPng(dataView) {
-  return dataView.byteLength >= 24 && dataView.getUint32(0, BIG_ENDIAN) === 0x89504e47;
-}
-
-function getPngSize(dataView) {
-  return {
-    width: dataView.getUint32(16, BIG_ENDIAN),
-    height: dataView.getUint32(20, BIG_ENDIAN)
-  };
-}
-
-function isGif(dataView) {
-  return dataView.byteLength >= 10 && dataView.getUint32(0, BIG_ENDIAN) === 0x47494638;
-}
-
-function getGifSize(dataView) {
-  return {
-    width: dataView.getUint16(6, LITTLE_ENDIAN),
-    height: dataView.getUint16(8, LITTLE_ENDIAN)
-  };
-}
-
-function isBmp(dataView) {
-  return dataView.byteLength >= 14 && dataView.getUint16(0, BIG_ENDIAN) === 0x424d && dataView.getUint32(2, LITTLE_ENDIAN) === dataView.byteLength;
-}
-
-function getBmpSize(dataView) {
-  return {
-    width: dataView.getUint32(18, LITTLE_ENDIAN),
-    height: dataView.getUint32(22, LITTLE_ENDIAN)
-  };
-}
-
-function isJpeg(dataView) {
-  return dataView.byteLength >= 3 && dataView.getUint16(0, BIG_ENDIAN) === 0xffd8 && dataView.getUint8(2, BIG_ENDIAN) === 0xff;
-}
-
-function getJpegSize(dataView) {
-  if (dataView.byteLength < 2 || dataView.getUint16(0, BIG_ENDIAN) !== 0xffd8) {
-    return null;
-  }
-
-  var _getJpegMarkers = getJpegMarkers(),
-      tableMarkers = _getJpegMarkers.tableMarkers,
-      sofMarkers = _getJpegMarkers.sofMarkers;
-
-  var i = 2;
-
-  while (i < dataView.byteLength) {
-    var marker = dataView.getUint16(i, BIG_ENDIAN);
-
-    if (sofMarkers.has(marker)) {
-      return {
-        height: dataView.getUint16(i + 5, BIG_ENDIAN),
-        width: dataView.getUint16(i + 7, BIG_ENDIAN)
-      };
-    }
-
-    if (!tableMarkers.has(marker)) {
-      return null;
-    }
-
-    i += 2;
-    i += dataView.getUint16(i, BIG_ENDIAN);
-  }
-
-  return null;
-}
-
-function getJpegMarkers() {
-  var tableMarkers = new Set([0xffdb, 0xffc4, 0xffcc, 0xffdd, 0xfffe]);
-
-  for (var i = 0xffe0; i < 0xfff0; ++i) {
-    tableMarkers.add(i);
-  }
-
-  var sofMarkers = new Set([0xffc0, 0xffc1, 0xffc2, 0xffc3, 0xffc5, 0xffc6, 0xffc7, 0xffc9, 0xffca, 0xffcb, 0xffcd, 0xffce, 0xffcf, 0xffde]);
-  return {
-    tableMarkers: tableMarkers,
-    sofMarkers: sofMarkers
-  };
-}
-// CONCATENATED MODULE: ./node_modules/@loaders.gl/images/dist/esm/lib/binary-image-api/binary-image-api.js
-
-
-
-
-
-
-
-
-
-
-var ERR_INVALID_MIME_TYPE = "Invalid MIME type. Supported MIME types are: ".concat(Array.from(mimeTypeMap.keys()).join(', '));
-function isBinaryImage(arrayBuffer, mimeType) {
-  if (mimeType) {
-    var _getBinaryImageTypeHa = getBinaryImageTypeHandlers(mimeType),
-        test = _getBinaryImageTypeHa.test;
-
-    var dataView = toDataView(arrayBuffer);
-    return test(dataView);
-  }
-
-  return Boolean(getBinaryImageMIMEType(arrayBuffer));
-}
-function getBinaryImageMIMEType(arrayBuffer) {
-  var dataView = toDataView(arrayBuffer);
-  var _iteratorNormalCompletion = true;
-  var _didIteratorError = false;
-  var _iteratorError = undefined;
-
-  try {
-    for (var _iterator = mimeTypeMap.entries()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-      var _step$value = Object(slicedToArray["a" /* default */])(_step.value, 2),
-          mimeType = _step$value[0],
-          test = _step$value[1].test;
-
-      if (test(dataView)) {
-        return mimeType;
-      }
-    }
-  } catch (err) {
-    _didIteratorError = true;
-    _iteratorError = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion && _iterator["return"] != null) {
-        _iterator["return"]();
-      }
-    } finally {
-      if (_didIteratorError) {
-        throw _iteratorError;
-      }
-    }
-  }
-
-  return null;
-}
-function getBinaryImageSize(arrayBuffer) {
-  var mimeType = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-  mimeType = mimeType || getBinaryImageMIMEType(arrayBuffer);
-
-  var _getBinaryImageTypeHa2 = getBinaryImageTypeHandlers(mimeType),
-      getSize = _getBinaryImageTypeHa2.getSize;
-
-  var dataView = toDataView(arrayBuffer);
-  var size = getSize(dataView);
-
-  if (!size) {
-    throw new Error("invalid image data for type: ".concat(mimeType));
-  }
-
-  return size;
-}
-
-function getBinaryImageTypeHandlers(mimeType) {
-  var handlers = mimeTypeMap.get(mimeType);
-
-  if (!handlers) {
-    throw new Error(ERR_INVALID_MIME_TYPE);
-  }
-
-  return handlers;
-}
-
-function toDataView(data) {
-  data = data.buffer || data;
-
-  if (data instanceof ArrayBuffer) {
-    return new DataView(data);
-  }
-
-  if (ArrayBuffer.isView(data)) {
-    return new DataView(data.buffer);
-  }
-
-  throw new Error('toDataView');
-}
-// CONCATENATED MODULE: ./node_modules/@loaders.gl/images/dist/esm/lib/parsers/parse-to-node-image.js
-
-
-
-function parseToNodeImage(arrayBuffer, options) {
-  var mimeType = getBinaryImageMIMEType(arrayBuffer);
-  var _parseImageNode = globals["a" /* global */]._parseImageNode;
-  assert_assert(_parseImageNode);
-  return _parseImageNode(arrayBuffer, mimeType, options);
-}
-// CONCATENATED MODULE: ./node_modules/@loaders.gl/images/dist/esm/lib/parsers/parse-image.js
-
-
-
-
-
-
-
-
-function parseImage(_x, _x2, _x3) {
-  return _parseImage.apply(this, arguments);
-}
-
-function _parseImage() {
-  _parseImage = Object(asyncToGenerator["a" /* default */])(regenerator_default.a.mark(function _callee(arrayBuffer, options, context) {
-    var imageOptions, imageType, _ref, url, loadType, image;
-
-    return regenerator_default.a.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            options = options || {};
-            imageOptions = options.image || {};
-            imageType = imageOptions.type || 'auto';
-            _ref = context || {}, url = _ref.url;
-            loadType = getLoadableImageType(imageType);
-            _context.t0 = loadType;
-            _context.next = _context.t0 === 'imagebitmap' ? 8 : _context.t0 === 'image' ? 12 : _context.t0 === 'data' ? 16 : 20;
-            break;
-
-          case 8:
-            _context.next = 10;
-            return parseToImageBitmap(arrayBuffer, options, url);
-
-          case 10:
-            image = _context.sent;
-            return _context.abrupt("break", 21);
-
-          case 12:
-            _context.next = 14;
-            return parseToImage(arrayBuffer, options, url);
-
-          case 14:
-            image = _context.sent;
-            return _context.abrupt("break", 21);
-
-          case 16:
-            _context.next = 18;
-            return parseToNodeImage(arrayBuffer, options);
-
-          case 18:
-            image = _context.sent;
-            return _context.abrupt("break", 21);
-
-          case 20:
-            assert_assert(false);
-
-          case 21:
-            if (imageType === 'data') {
-              image = getImageData(image);
-            }
-
-            return _context.abrupt("return", image);
-
-          case 23:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee);
-  }));
-  return _parseImage.apply(this, arguments);
-}
-
-function getLoadableImageType(type) {
-  switch (type) {
-    case 'auto':
-    case 'data':
-      return getDefaultImageType();
-
-    default:
-      isImageTypeSupported(type);
-      return type;
-  }
-}
-// CONCATENATED MODULE: ./node_modules/@loaders.gl/images/dist/esm/image-loader.js
-
-
-
-var VERSION =  true ? "2.1.2" : undefined;
-var EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp', 'ico', 'svg'];
-var MIME_TYPES = ['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/bmp', 'image/vndmicrosofticon', 'image/svg+xml'];
-var ImageLoader = {
-  name: 'Images',
-  version: VERSION,
-  mimeTypes: MIME_TYPES,
-  extensions: EXTENSIONS,
-  parse: parseImage,
-  test: function test(arrayBuffer) {
-    var dataView = new DataView(arrayBuffer);
-    return isJpeg(dataView) || isBmp(dataView) || isGif(dataView) || isPng(dataView);
-  },
-  options: {
-    image: {
-      format: 'auto',
-      decode: true
-    }
-  }
-};
-/* harmony default export */ var image_loader = (ImageLoader);
-// EXTERNAL MODULE: ./node_modules/probe.gl/env.js
-var env = __webpack_require__("xSaR");
-
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/utils/json-loader.js
-function isJSON(text) {
-  var firstChar = text[0];
-  var lastChar = text[text.length - 1];
-  return firstChar === '{' && lastChar === '}' || firstChar === '[' && lastChar === ']';
-}
-
-/* harmony default export */ var json_loader = ({
-  name: 'JSON',
-  extensions: ['json', 'geojson'],
-  testText: isJSON,
-  parseTextSync: JSON.parse
-});
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/lib/init.js
-
-
-
-
-
-
-
-var version =  true ? "8.1.3" : undefined;
-var existingVersion = env["global"].deck && env["global"].deck.VERSION;
-
-if (existingVersion && existingVersion !== version) {
-  throw new Error("deck.gl - multiple versions detected: ".concat(existingVersion, " vs ").concat(version));
-}
-
-if (!existingVersion) {
-  if (false) {}
-
-  env["global"].deck = Object.assign(env["global"].deck || {}, {
-    VERSION: version,
-    version: version,
-    log: log["a" /* default */],
-    _registerLoggers: esm_debug["b" /* register */]
-  });
-  Object(register_loaders["b" /* registerLoaders */])([json_loader, image_loader]);
-}
-
-/* harmony default export */ var init = (env["global"].deck);
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.date.now.js
-var es6_date_now = __webpack_require__("1dPr");
-
-// EXTERNAL MODULE: ./node_modules/@luma.gl/webgl/dist/esm/init.js
-var esm_init = __webpack_require__("rta6");
-
-// EXTERNAL MODULE: ./node_modules/@luma.gl/webgl/dist/esm/utils/assert.js
-var utils_assert = __webpack_require__("CxzY");
-
-// EXTERNAL MODULE: ./node_modules/@luma.gl/webgl/dist/esm/classes/resource.js
-var resource = __webpack_require__("L8KH");
-
-// EXTERNAL MODULE: ./node_modules/@luma.gl/webgl/dist/esm/features/features.js
-var features = __webpack_require__("d3kR");
-
-// EXTERNAL MODULE: ./node_modules/@luma.gl/webgl/dist/esm/features/webgl-features-table.js
-var webgl_features_table = __webpack_require__("tMmZ");
-
-// CONCATENATED MODULE: ./node_modules/@luma.gl/webgl/dist/esm/classes/query.js
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var GL_QUERY_RESULT = 0x8866;
-var GL_QUERY_RESULT_AVAILABLE = 0x8867;
-var GL_TIME_ELAPSED_EXT = 0x88bf;
-var GL_GPU_DISJOINT_EXT = 0x8fbb;
-var GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN = 0x8c88;
-var GL_ANY_SAMPLES_PASSED = 0x8c2f;
-var GL_ANY_SAMPLES_PASSED_CONSERVATIVE = 0x8d6a;
-
-var query_Query = function (_Resource) {
-  Object(inherits["a" /* default */])(Query, _Resource);
-
-  Object(createClass["a" /* default */])(Query, null, [{
-    key: "isSupported",
-    value: function isSupported(gl) {
-      var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-      var webgl2 = Object(gltools_dist_esm["f" /* isWebGL2 */])(gl);
-      var hasTimerQuery = Object(features["c" /* hasFeatures */])(gl, webgl_features_table["a" /* FEATURES */].TIMER_QUERY);
-      var supported = webgl2 || hasTimerQuery;
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = opts[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var key = _step.value;
-
-          switch (key) {
-            case 'queries':
-              supported = supported && webgl2;
-              break;
-
-            case 'timers':
-              supported = supported && hasTimerQuery;
-              break;
-
-            default:
-              Object(utils_assert["a" /* default */])(false);
-          }
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
-            _iterator["return"]();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
-
-      return supported;
-    }
-  }]);
-
-  function Query(gl) {
-    var _this;
-
-    var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-    Object(classCallCheck["a" /* default */])(this, Query);
-
-    _this = Object(possibleConstructorReturn["a" /* default */])(this, Object(getPrototypeOf["a" /* default */])(Query).call(this, gl, opts));
-    _this.target = null;
-    _this._queryPending = false;
-    _this._pollingPromise = null;
-    Object.seal(Object(assertThisInitialized["a" /* default */])(_this));
-    return _this;
-  }
-
-  Object(createClass["a" /* default */])(Query, [{
-    key: "beginTimeElapsedQuery",
-    value: function beginTimeElapsedQuery() {
-      return this.begin(GL_TIME_ELAPSED_EXT);
-    }
-  }, {
-    key: "beginOcclusionQuery",
-    value: function beginOcclusionQuery() {
-      var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-          _ref$conservative = _ref.conservative,
-          conservative = _ref$conservative === void 0 ? false : _ref$conservative;
-
-      return this.begin(conservative ? GL_ANY_SAMPLES_PASSED_CONSERVATIVE : GL_ANY_SAMPLES_PASSED);
-    }
-  }, {
-    key: "beginTransformFeedbackQuery",
-    value: function beginTransformFeedbackQuery() {
-      return this.begin(GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN);
-    }
-  }, {
-    key: "begin",
-    value: function begin(target) {
-      if (this._queryPending) {
-        return this;
-      }
-
-      this.target = target;
-      this.gl.beginQuery(this.target, this.handle);
-      return this;
-    }
-  }, {
-    key: "end",
-    value: function end() {
-      if (this._queryPending) {
-        return this;
-      }
-
-      if (this.target) {
-        this.gl.endQuery(this.target);
-        this.target = null;
-        this._queryPending = true;
-      }
-
-      return this;
-    }
-  }, {
-    key: "isResultAvailable",
-    value: function isResultAvailable() {
-      if (!this._queryPending) {
-        return false;
-      }
-
-      var resultAvailable = this.gl.getQueryParameter(this.handle, GL_QUERY_RESULT_AVAILABLE);
-
-      if (resultAvailable) {
-        this._queryPending = false;
-      }
-
-      return resultAvailable;
-    }
-  }, {
-    key: "isTimerDisjoint",
-    value: function isTimerDisjoint() {
-      return this.gl.getParameter(GL_GPU_DISJOINT_EXT);
-    }
-  }, {
-    key: "getResult",
-    value: function getResult() {
-      return this.gl.getQueryParameter(this.handle, GL_QUERY_RESULT);
-    }
-  }, {
-    key: "getTimerMilliseconds",
-    value: function getTimerMilliseconds() {
-      return this.getResult() / 1e6;
-    }
-  }, {
-    key: "createPoll",
-    value: function createPoll() {
-      var _this2 = this;
-
-      var limit = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : Number.POSITIVE_INFINITY;
-
-      if (this._pollingPromise) {
-        return this._pollingPromise;
-      }
-
-      var counter = 0;
-      this._pollingPromise = new Promise(function (resolve, reject) {
-        var poll = function poll() {
-          if (_this2.isResultAvailable()) {
-            resolve(_this2.getResult());
-            _this2._pollingPromise = null;
-          } else if (counter++ > limit) {
-            reject('Timed out');
-            _this2._pollingPromise = null;
-          } else {
-            requestAnimationFrame(poll);
-          }
-        };
-
-        requestAnimationFrame(poll);
-      });
-      return this._pollingPromise;
-    }
-  }, {
-    key: "_createHandle",
-    value: function _createHandle() {
-      return Query.isSupported(this.gl) ? this.gl.createQuery() : null;
-    }
-  }, {
-    key: "_deleteHandle",
-    value: function _deleteHandle() {
-      this.gl.deleteQuery(this.handle);
-    }
-  }]);
-
-  return Query;
-}(resource["a" /* default */]);
-
-
-// CONCATENATED MODULE: ./node_modules/@luma.gl/webgl/dist/esm/webgl-utils/request-animation-frame.js
-function request_animation_frame_requestAnimationFrame(callback) {
-  return typeof window !== 'undefined' && window.requestAnimationFrame ? window.requestAnimationFrame(callback) : setTimeout(callback, 1000 / 60);
-}
-function cancelAnimationFrame(timerId) {
-  return typeof window !== 'undefined' && window.cancelAnimationFrame ? window.cancelAnimationFrame(timerId) : clearTimeout(timerId);
-}
-// CONCATENATED MODULE: ./node_modules/@luma.gl/engine/dist/esm/lib/animation-loop.js
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var isPage = Object(env["isBrowser"])() && typeof document !== 'undefined';
-var statIdCounter = 0;
-
-var animation_loop_AnimationLoop = function () {
-  function AnimationLoop() {
-    var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-    Object(classCallCheck["a" /* default */])(this, AnimationLoop);
-
-    var _props$onCreateContex = props.onCreateContext,
-        onCreateContext = _props$onCreateContex === void 0 ? function (opts) {
-      return Object(gltools_dist_esm["a" /* createGLContext */])(opts);
-    } : _props$onCreateContex,
-        _props$onAddHTML = props.onAddHTML,
-        onAddHTML = _props$onAddHTML === void 0 ? null : _props$onAddHTML,
-        _props$onInitialize = props.onInitialize,
-        onInitialize = _props$onInitialize === void 0 ? function () {} : _props$onInitialize,
-        _props$onRender = props.onRender,
-        onRender = _props$onRender === void 0 ? function () {} : _props$onRender,
-        _props$onFinalize = props.onFinalize,
-        onFinalize = _props$onFinalize === void 0 ? function () {} : _props$onFinalize,
-        _props$gl = props.gl,
-        gl = _props$gl === void 0 ? null : _props$gl,
-        _props$glOptions = props.glOptions,
-        glOptions = _props$glOptions === void 0 ? {} : _props$glOptions,
-        _props$debug = props.debug,
-        debug = _props$debug === void 0 ? false : _props$debug,
-        _props$createFramebuf = props.createFramebuffer,
-        createFramebuffer = _props$createFramebuf === void 0 ? false : _props$createFramebuf,
-        _props$autoResizeView = props.autoResizeViewport,
-        autoResizeViewport = _props$autoResizeView === void 0 ? true : _props$autoResizeView,
-        _props$autoResizeDraw = props.autoResizeDrawingBuffer,
-        autoResizeDrawingBuffer = _props$autoResizeDraw === void 0 ? true : _props$autoResizeDraw,
-        _props$stats = props.stats,
-        stats = _props$stats === void 0 ? esm_init["a" /* lumaStats */].get("animation-loop-".concat(statIdCounter++)) : _props$stats;
-    var _props$useDevicePixel = props.useDevicePixels,
-        useDevicePixels = _props$useDevicePixel === void 0 ? true : _props$useDevicePixel;
-
-    if ('useDevicePixelRatio' in props) {
-      gltools_dist_esm["g" /* log */].deprecated('useDevicePixelRatio', 'useDevicePixels')();
-      useDevicePixels = props.useDevicePixelRatio;
-    }
-
-    this.props = {
-      onCreateContext: onCreateContext,
-      onAddHTML: onAddHTML,
-      onInitialize: onInitialize,
-      onRender: onRender,
-      onFinalize: onFinalize,
-      gl: gl,
-      glOptions: glOptions,
-      debug: debug,
-      createFramebuffer: createFramebuffer
-    };
-    this.gl = gl;
-    this.needsRedraw = null;
-    this.timeline = null;
-    this.stats = stats;
-    this.cpuTime = this.stats.get('CPU Time');
-    this.gpuTime = this.stats.get('GPU Time');
-    this.frameRate = this.stats.get('Frame Rate');
-    this._initialized = false;
-    this._running = false;
-    this._animationFrameId = null;
-    this._nextFramePromise = null;
-    this._resolveNextFrame = null;
-    this._cpuStartTime = 0;
-    this.setProps({
-      autoResizeViewport: autoResizeViewport,
-      autoResizeDrawingBuffer: autoResizeDrawingBuffer,
-      useDevicePixels: useDevicePixels
-    });
-    this.start = this.start.bind(this);
-    this.stop = this.stop.bind(this);
-    this._pageLoadPromise = null;
-    this._onMousemove = this._onMousemove.bind(this);
-    this._onMouseleave = this._onMouseleave.bind(this);
-  }
-
-  Object(createClass["a" /* default */])(AnimationLoop, [{
-    key: "delete",
-    value: function _delete() {
-      this.stop();
-
-      this._setDisplay(null);
-    }
-  }, {
-    key: "setNeedsRedraw",
-    value: function setNeedsRedraw(reason) {
-      Object(utils_assert["a" /* default */])(typeof reason === 'string');
-      this.needsRedraw = this.needsRedraw || reason;
-      return this;
-    }
-  }, {
-    key: "setProps",
-    value: function setProps(props) {
-      if ('autoResizeViewport' in props) {
-        this.autoResizeViewport = props.autoResizeViewport;
-      }
-
-      if ('autoResizeDrawingBuffer' in props) {
-        this.autoResizeDrawingBuffer = props.autoResizeDrawingBuffer;
-      }
-
-      if ('useDevicePixels' in props) {
-        this.useDevicePixels = props.useDevicePixels;
-      }
-
-      return this;
-    }
-  }, {
-    key: "start",
-    value: function start() {
-      var _this = this;
-
-      var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-      if (this._running) {
-        return this;
-      }
-
-      this._running = true;
-
-      this._getPageLoadPromise().then(function () {
-        if (!_this._running || _this._initialized) {
-          return null;
-        }
-
-        _this._createWebGLContext(opts);
-
-        _this._createFramebuffer();
-
-        _this._startEventHandling();
-
-        _this._initializeCallbackData();
-
-        _this._updateCallbackData();
-
-        _this._resizeCanvasDrawingBuffer();
-
-        _this._resizeViewport();
-
-        _this._gpuTimeQuery = query_Query.isSupported(_this.gl, ['timers']) ? new query_Query(_this.gl) : null;
-        _this._initialized = true;
-        return _this.onInitialize(_this.animationProps);
-      }).then(function (appContext) {
-        if (_this._running) {
-          _this._addCallbackData(appContext || {});
-
-          if (appContext !== false) {
-            _this._startLoop();
-          }
-        }
-      });
-
-      return this;
-    }
-  }, {
-    key: "redraw",
-    value: function redraw() {
-      this._beginTimers();
-
-      this._setupFrame();
-
-      this._updateCallbackData();
-
-      this._renderFrame(this.animationProps);
-
-      this._clearNeedsRedraw();
-
-      if (this.offScreen && this.gl.commit) {
-        this.gl.commit();
-      }
-
-      if (this._resolveNextFrame) {
-        this._resolveNextFrame(this);
-
-        this._nextFramePromise = null;
-        this._resolveNextFrame = null;
-      }
-
-      this._endTimers();
-
-      return this;
-    }
-  }, {
-    key: "stop",
-    value: function stop() {
-      if (this._running) {
-        this._finalizeCallbackData();
-
-        cancelAnimationFrame(this._animationFrameId);
-        this._nextFramePromise = null;
-        this._resolveNextFrame = null;
-        this._animationFrameId = null;
-        this._running = false;
-      }
-
-      return this;
-    }
-  }, {
-    key: "attachTimeline",
-    value: function attachTimeline(timeline) {
-      this.timeline = timeline;
-      return this.timeline;
-    }
-  }, {
-    key: "detachTimeline",
-    value: function detachTimeline() {
-      this.timeline = null;
-    }
-  }, {
-    key: "waitForRender",
-    value: function waitForRender() {
-      var _this2 = this;
-
-      this.setNeedsRedraw('waitForRender');
-
-      if (!this._nextFramePromise) {
-        this._nextFramePromise = new Promise(function (resolve) {
-          _this2._resolveNextFrame = resolve;
-        });
-      }
-
-      return this._nextFramePromise;
-    }
-  }, {
-    key: "toDataURL",
-    value: function () {
-      var _toDataURL = Object(asyncToGenerator["a" /* default */])(regenerator_default.a.mark(function _callee() {
-        return regenerator_default.a.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                this.setNeedsRedraw('toDataURL');
-                _context.next = 3;
-                return this.waitForRender();
-
-              case 3:
-                return _context.abrupt("return", this.gl.canvas.toDataURL());
-
-              case 4:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function toDataURL() {
-        return _toDataURL.apply(this, arguments);
-      }
-
-      return toDataURL;
-    }()
-  }, {
-    key: "onCreateContext",
-    value: function onCreateContext() {
-      var _this$props;
-
-      return (_this$props = this.props).onCreateContext.apply(_this$props, arguments);
-    }
-  }, {
-    key: "onInitialize",
-    value: function onInitialize() {
-      var _this$props2;
-
-      return (_this$props2 = this.props).onInitialize.apply(_this$props2, arguments);
-    }
-  }, {
-    key: "onRender",
-    value: function onRender() {
-      var _this$props3;
-
-      return (_this$props3 = this.props).onRender.apply(_this$props3, arguments);
-    }
-  }, {
-    key: "onFinalize",
-    value: function onFinalize() {
-      var _this$props4;
-
-      return (_this$props4 = this.props).onFinalize.apply(_this$props4, arguments);
-    }
-  }, {
-    key: "getHTMLControlValue",
-    value: function getHTMLControlValue(id) {
-      var defaultValue = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
-      var element = document.getElementById(id);
-      return element ? Number(element.value) : defaultValue;
-    }
-  }, {
-    key: "setViewParameters",
-    value: function setViewParameters() {
-      gltools_dist_esm["g" /* log */].removed('AnimationLoop.setViewParameters', 'AnimationLoop.setProps')();
-      return this;
-    }
-  }, {
-    key: "_startLoop",
-    value: function _startLoop() {
-      var _this3 = this;
-
-      var renderFrame = function renderFrame() {
-        if (!_this3._running) {
-          return;
-        }
-
-        _this3.redraw();
-
-        _this3._animationFrameId = _this3._requestAnimationFrame(renderFrame);
-      };
-
-      cancelAnimationFrame(this._animationFrameId);
-      this._animationFrameId = this._requestAnimationFrame(renderFrame);
-    }
-  }, {
-    key: "_getPageLoadPromise",
-    value: function _getPageLoadPromise() {
-      if (!this._pageLoadPromise) {
-        this._pageLoadPromise = isPage ? new Promise(function (resolve, reject) {
-          if (isPage && document.readyState === 'complete') {
-            resolve(document);
-            return;
-          }
-
-          window.addEventListener('load', function () {
-            resolve(document);
-          });
-        }) : Promise.resolve({});
-      }
-
-      return this._pageLoadPromise;
-    }
-  }, {
-    key: "_setDisplay",
-    value: function _setDisplay(display) {
-      if (this.display) {
-        this.display["delete"]();
-        this.display.animationLoop = null;
-      }
-
-      if (display) {
-        display.animationLoop = this;
-      }
-
-      this.display = display;
-    }
-  }, {
-    key: "_requestAnimationFrame",
-    value: function _requestAnimationFrame(renderFrameCallback) {
-      if (this.display && this.display.requestAnimationFrame(renderFrameCallback)) {
-        return;
-      }
-
-      request_animation_frame_requestAnimationFrame(renderFrameCallback);
-    }
-  }, {
-    key: "_renderFrame",
-    value: function _renderFrame() {
-      if (this.display) {
-        var _this$display;
-
-        (_this$display = this.display)._renderFrame.apply(_this$display, arguments);
-
-        return;
-      }
-
-      this.onRender.apply(this, arguments);
-    }
-  }, {
-    key: "_clearNeedsRedraw",
-    value: function _clearNeedsRedraw() {
-      this.needsRedraw = null;
-    }
-  }, {
-    key: "_setupFrame",
-    value: function _setupFrame() {
-      if (this._onSetupFrame) {
-        this._onSetupFrame(this.animationProps);
-      } else {
-        this._resizeCanvasDrawingBuffer();
-
-        this._resizeViewport();
-
-        this._resizeFramebuffer();
-      }
-    }
-  }, {
-    key: "_initializeCallbackData",
-    value: function _initializeCallbackData() {
-      this.animationProps = {
-        gl: this.gl,
-        stop: this.stop,
-        canvas: this.gl.canvas,
-        framebuffer: this.framebuffer,
-        useDevicePixels: this.useDevicePixels,
-        needsRedraw: null,
-        startTime: Date.now(),
-        engineTime: 0,
-        tick: 0,
-        tock: 0,
-        time: 0,
-        _timeline: this.timeline,
-        _loop: this,
-        _animationLoop: this,
-        _mousePosition: null
-      };
-    }
-  }, {
-    key: "_updateCallbackData",
-    value: function _updateCallbackData() {
-      var _this$_getSizeAndAspe = this._getSizeAndAspect(),
-          width = _this$_getSizeAndAspe.width,
-          height = _this$_getSizeAndAspe.height,
-          aspect = _this$_getSizeAndAspe.aspect;
-
-      if (width !== this.animationProps.width || height !== this.animationProps.height) {
-        this.setNeedsRedraw('drawing buffer resized');
-      }
-
-      if (aspect !== this.animationProps.aspect) {
-        this.setNeedsRedraw('drawing buffer aspect changed');
-      }
-
-      this.animationProps.width = width;
-      this.animationProps.height = height;
-      this.animationProps.aspect = aspect;
-      this.animationProps.needsRedraw = this.needsRedraw;
-      this.animationProps.engineTime = Date.now() - this.animationProps.startTime;
-
-      if (this.timeline) {
-        this.timeline.update(this.animationProps.engineTime);
-      }
-
-      this.animationProps.tick = Math.floor(this.animationProps.time / 1000 * 60);
-      this.animationProps.tock++;
-      this.animationProps.time = this.timeline ? this.timeline.getTime() : this.animationProps.engineTime;
-      this.animationProps._offScreen = this.offScreen;
-    }
-  }, {
-    key: "_finalizeCallbackData",
-    value: function _finalizeCallbackData() {
-      this.onFinalize(this.animationProps);
-    }
-  }, {
-    key: "_addCallbackData",
-    value: function _addCallbackData(appContext) {
-      if (Object(esm_typeof["a" /* default */])(appContext) === 'object' && appContext !== null) {
-        this.animationProps = Object.assign({}, this.animationProps, appContext);
-      }
-    }
-  }, {
-    key: "_createWebGLContext",
-    value: function _createWebGLContext(opts) {
-      this.offScreen = opts.canvas && typeof OffscreenCanvas !== 'undefined' && opts.canvas instanceof OffscreenCanvas;
-      opts = Object.assign({}, opts, this.props.glOptions);
-      this.gl = this.props.gl ? Object(gltools_dist_esm["d" /* instrumentGLContext */])(this.props.gl, opts) : this.onCreateContext(opts);
-
-      if (!Object(gltools_dist_esm["e" /* isWebGL */])(this.gl)) {
-        throw new Error('AnimationLoop.onCreateContext - illegal context returned');
-      }
-
-      Object(gltools_dist_esm["h" /* resetParameters */])(this.gl);
-
-      this._createInfoDiv();
-    }
-  }, {
-    key: "_createInfoDiv",
-    value: function _createInfoDiv() {
-      if (this.gl.canvas && this.props.onAddHTML) {
-        var wrapperDiv = document.createElement('div');
-        document.body.appendChild(wrapperDiv);
-        wrapperDiv.style.position = 'relative';
-        var div = document.createElement('div');
-        div.style.position = 'absolute';
-        div.style.left = '10px';
-        div.style.bottom = '10px';
-        div.style.width = '300px';
-        div.style.background = 'white';
-        wrapperDiv.appendChild(this.gl.canvas);
-        wrapperDiv.appendChild(div);
-        var html = this.props.onAddHTML(div);
-
-        if (html) {
-          div.innerHTML = html;
-        }
-      }
-    }
-  }, {
-    key: "_getSizeAndAspect",
-    value: function _getSizeAndAspect() {
-      var width = this.gl.drawingBufferWidth;
-      var height = this.gl.drawingBufferHeight;
-      var aspect = 1;
-      var canvas = this.gl.canvas;
-
-      if (canvas && canvas.clientHeight) {
-        aspect = canvas.clientWidth / canvas.clientHeight;
-      } else if (width > 0 && height > 0) {
-        aspect = width / height;
-      }
-
-      return {
-        width: width,
-        height: height,
-        aspect: aspect
-      };
-    }
-  }, {
-    key: "_resizeViewport",
-    value: function _resizeViewport() {
-      if (this.autoResizeViewport) {
-        this.gl.viewport(0, 0, this.gl.drawingBufferWidth, this.gl.drawingBufferHeight);
-      }
-    }
-  }, {
-    key: "_resizeCanvasDrawingBuffer",
-    value: function _resizeCanvasDrawingBuffer() {
-      if (this.autoResizeDrawingBuffer) {
-        Object(gltools_dist_esm["i" /* resizeGLContext */])(this.gl, {
-          useDevicePixels: this.useDevicePixels
-        });
-      }
-    }
-  }, {
-    key: "_createFramebuffer",
-    value: function _createFramebuffer() {
-      if (this.props.createFramebuffer) {
-        this.framebuffer = new framebuffer["a" /* default */](this.gl);
-      }
-    }
-  }, {
-    key: "_resizeFramebuffer",
-    value: function _resizeFramebuffer() {
-      if (this.framebuffer) {
-        this.framebuffer.resize({
-          width: this.gl.drawingBufferWidth,
-          height: this.gl.drawingBufferHeight
-        });
-      }
-    }
-  }, {
-    key: "_beginTimers",
-    value: function _beginTimers() {
-      this.frameRate.timeEnd();
-      this.frameRate.timeStart();
-
-      if (this._gpuTimeQuery && this._gpuTimeQuery.isResultAvailable() && !this._gpuTimeQuery.isTimerDisjoint()) {
-        this.stats.get('GPU Time').addTime(this._gpuTimeQuery.getTimerMilliseconds());
-      }
-
-      if (this._gpuTimeQuery) {
-        this._gpuTimeQuery.beginTimeElapsedQuery();
-      }
-
-      this.cpuTime.timeStart();
-    }
-  }, {
-    key: "_endTimers",
-    value: function _endTimers() {
-      this.cpuTime.timeEnd();
-
-      if (this._gpuTimeQuery) {
-        this._gpuTimeQuery.end();
-      }
-    }
-  }, {
-    key: "_startEventHandling",
-    value: function _startEventHandling() {
-      var canvas = this.gl.canvas;
-
-      if (canvas) {
-        canvas.addEventListener('mousemove', this._onMousemove);
-        canvas.addEventListener('mouseleave', this._onMouseleave);
-      }
-    }
-  }, {
-    key: "_onMousemove",
-    value: function _onMousemove(e) {
-      this.animationProps._mousePosition = [e.offsetX, e.offsetY];
-    }
-  }, {
-    key: "_onMouseleave",
-    value: function _onMouseleave(e) {
-      this.animationProps._mousePosition = null;
-    }
-  }]);
-
-  return AnimationLoop;
-}();
-
-
-// EXTERNAL MODULE: ./node_modules/mjolnir.js/dist/esm/index.js + 10 modules
-var mjolnir_js_dist_esm = __webpack_require__("ei+1");
-
-// CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/lib/deck.js
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function deck_ownKeys(object, enumerableOnly) {
-  var keys = Object.keys(object);
-
-  if (Object.getOwnPropertySymbols) {
-    var symbols = Object.getOwnPropertySymbols(object);
-    if (enumerableOnly) symbols = symbols.filter(function (sym) {
-      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-    });
-    keys.push.apply(keys, symbols);
-  }
-
-  return keys;
-}
-
-function deck_objectSpread(target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i] != null ? arguments[i] : {};
-
-    if (i % 2) {
-      deck_ownKeys(Object(source), true).forEach(function (key) {
-        Object(defineProperty["a" /* default */])(target, key, source[key]);
-      });
-    } else if (Object.getOwnPropertyDescriptors) {
-      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-    } else {
-      deck_ownKeys(Object(source)).forEach(function (key) {
-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-      });
-    }
-  }
-
-  return target;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function deck_noop() {}
-
-var getCursor = function getCursor(_ref) {
-  var isDragging = _ref.isDragging;
-  return isDragging ? 'grabbing' : 'grab';
-};
-
-function getPropTypes(PropTypes) {
-  return {
-    id: PropTypes.string,
-    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    layers: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
-    layerFilter: PropTypes.func,
-    views: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
-    viewState: PropTypes.object,
-    effects: PropTypes.arrayOf(PropTypes.instanceOf(effect_Effect)),
-    controller: PropTypes.oneOfType([PropTypes.func, PropTypes.bool, PropTypes.object]),
-    gl: PropTypes.object,
-    glOptions: PropTypes.object,
-    parameters: PropTypes.object,
-    pickingRadius: PropTypes.number,
-    useDevicePixels: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
-    touchAction: PropTypes.string,
-    onWebGLInitialized: PropTypes.func,
-    onResize: PropTypes.func,
-    onViewStateChange: PropTypes.func,
-    onBeforeRender: PropTypes.func,
-    onAfterRender: PropTypes.func,
-    onLoad: PropTypes.func,
-    onError: PropTypes.func,
-    debug: PropTypes.bool,
-    drawPickingColors: PropTypes.bool,
-    _framebuffer: PropTypes.object,
-    _animate: PropTypes.bool
-  };
-}
-
-var defaultProps = {
-  id: 'deckgl-overlay',
-  width: '100%',
-  height: '100%',
-  pickingRadius: 0,
-  layerFilter: null,
-  glOptions: {},
-  gl: null,
-  layers: [],
-  effects: [],
-  views: null,
-  controller: null,
-  useDevicePixels: true,
-  touchAction: 'none',
-  _framebuffer: null,
-  _animate: false,
-  onWebGLInitialized: deck_noop,
-  onResize: deck_noop,
-  onViewStateChange: deck_noop,
-  onBeforeRender: deck_noop,
-  onAfterRender: deck_noop,
-  onLoad: deck_noop,
-  onError: null,
-  _onMetrics: null,
-  getCursor: getCursor,
-  debug: false,
-  drawPickingColors: false
-};
-
-var deck_Deck = function () {
-  function Deck(props) {
-    Object(classCallCheck["a" /* default */])(this, Deck);
-
-    props = Object.assign({}, defaultProps, props);
-    this.props = {};
-    this.width = 0;
-    this.height = 0;
-    this.viewManager = null;
-    this.layerManager = null;
-    this.effectManager = null;
-    this.deckRenderer = null;
-    this.deckPicker = null;
-    this._needsRedraw = true;
-    this._pickRequest = {};
-    this._lastPointerDownInfo = null;
-    this.viewState = null;
-    this.interactiveState = {
-      isDragging: false
-    };
-    this._onEvent = this._onEvent.bind(this);
-    this._onPointerDown = this._onPointerDown.bind(this);
-    this._onPointerMove = this._onPointerMove.bind(this);
-    this._pickAndCallback = this._pickAndCallback.bind(this);
-    this._onRendererInitialized = this._onRendererInitialized.bind(this);
-    this._onRenderFrame = this._onRenderFrame.bind(this);
-    this._onViewStateChange = this._onViewStateChange.bind(this);
-    this._onInteractiveStateChange = this._onInteractiveStateChange.bind(this);
-
-    if (props.viewState && props.initialViewState) {
-      log["a" /* default */].warn('View state tracking is disabled. Use either `initialViewState` for auto update or `viewState` for manual update.')();
-    }
-
-    if (Object(env["getBrowser"])() === 'IE') {
-      log["a" /* default */].warn('IE 11 support will be deprecated in v8.0')();
-    }
-
-    if (!props.gl) {
-      if (typeof document !== 'undefined') {
-        this.canvas = this._createCanvas(props);
-      }
-    }
-
-    this.animationLoop = this._createAnimationLoop(props);
-    this.stats = new esm["b" /* Stats */]({
-      id: 'deck.gl'
-    });
-    this.metrics = {
-      fps: 0,
-      setPropsTime: 0,
-      updateAttributesTime: 0,
-      framesRedrawn: 0,
-      pickTime: 0,
-      pickCount: 0,
-      gpuTime: 0,
-      gpuTimePerFrame: 0,
-      cpuTime: 0,
-      cpuTimePerFrame: 0,
-      bufferMemory: 0,
-      textureMemory: 0,
-      renderbufferMemory: 0,
-      gpuMemory: 0
-    };
-    this._metricsCounter = 0;
-    this.setProps(props);
-    this.animationLoop.start();
-  }
-
-  Object(createClass["a" /* default */])(Deck, [{
-    key: "finalize",
-    value: function finalize() {
-      this.animationLoop.stop();
-      this.animationLoop = null;
-      this._lastPointerDownInfo = null;
-
-      if (this.layerManager) {
-        this.layerManager.finalize();
-        this.layerManager = null;
-        this.viewManager.finalize();
-        this.viewManager = null;
-        this.effectManager.finalize();
-        this.effectManager = null;
-        this.deckRenderer.finalize();
-        this.deckRenderer = null;
-        this.deckPicker.finalize();
-        this.deckPicker = null;
-        this.eventManager.destroy();
-        this.eventManager = null;
-        this.tooltip.remove();
-        this.tooltip = null;
-      }
-
-      if (!this.props.canvas && !this.props.gl && this.canvas) {
-        this.canvas.parentElement.removeChild(this.canvas);
-        this.canvas = null;
-      }
-    }
-  }, {
-    key: "setProps",
-    value: function setProps(props) {
-      this.stats.get('setProps Time').timeStart();
-
-      if ('onLayerHover' in props) {
-        log["a" /* default */].removed('onLayerHover', 'onHover')();
-      }
-
-      if ('onLayerClick' in props) {
-        log["a" /* default */].removed('onLayerClick', 'onClick')();
-      }
-
-      if (props.initialViewState && !deepEqual(this.props.initialViewState, props.initialViewState)) {
-        this.viewState = props.initialViewState;
-      }
-
-      Object.assign(this.props, props);
-
-      this._setCanvasSize(this.props);
-
-      var resolvedProps = Object.create(this.props);
-      Object.assign(resolvedProps, {
-        views: this._getViews(),
-        width: this.width,
-        height: this.height,
-        viewState: this._getViewState()
-      });
-      this.animationLoop.setProps(resolvedProps);
-
-      if (this.layerManager) {
-        this.viewManager.setProps(resolvedProps);
-        this.layerManager.setProps(resolvedProps);
-        this.effectManager.setProps(resolvedProps);
-        this.deckRenderer.setProps(resolvedProps);
-        this.deckPicker.setProps(resolvedProps);
-      }
-
-      this.stats.get('setProps Time').timeEnd();
-    }
-  }, {
-    key: "needsRedraw",
-    value: function needsRedraw() {
-      var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
-        clearRedrawFlags: false
-      };
-
-      if (this.props._animate) {
-        return 'Deck._animate';
-      }
-
-      var redraw = this._needsRedraw;
-
-      if (opts.clearRedrawFlags) {
-        this._needsRedraw = false;
-      }
-
-      var viewManagerNeedsRedraw = this.viewManager.needsRedraw(opts);
-      var layerManagerNeedsRedraw = this.layerManager.needsRedraw(opts);
-      var effectManagerNeedsRedraw = this.effectManager.needsRedraw(opts);
-      var deckRendererNeedsRedraw = this.deckRenderer.needsRedraw(opts);
-      redraw = redraw || viewManagerNeedsRedraw || layerManagerNeedsRedraw || effectManagerNeedsRedraw || deckRendererNeedsRedraw;
-      return redraw;
-    }
-  }, {
-    key: "redraw",
-    value: function redraw(force) {
-      if (!this.layerManager) {
-        return;
-      }
-
-      var redrawReason = force || this.needsRedraw({
-        clearRedrawFlags: true
-      });
-
-      if (!redrawReason) {
-        return;
-      }
-
-      this.stats.get('Redraw Count').incrementCount();
-
-      if (this.props._customRender) {
-        this.props._customRender(redrawReason);
-      } else {
-        this._drawLayers(redrawReason);
-      }
-    }
-  }, {
-    key: "getViews",
-    value: function getViews() {
-      return this.viewManager.views;
-    }
-  }, {
-    key: "getViewports",
-    value: function getViewports(rect) {
-      return this.viewManager.getViewports(rect);
-    }
-  }, {
-    key: "pickObject",
-    value: function pickObject(opts) {
-      var infos = this._pick('pickObject', 'pickObject Time', opts).result;
-
-      return infos.length ? infos[0] : null;
-    }
-  }, {
-    key: "pickMultipleObjects",
-    value: function pickMultipleObjects(opts) {
-      opts.depth = opts.depth || 10;
-      return this._pick('pickObject', 'pickMultipleObjects Time', opts).result;
-    }
-  }, {
-    key: "pickObjects",
-    value: function pickObjects(opts) {
-      return this._pick('pickObjects', 'pickObjects Time', opts);
-    }
-  }, {
-    key: "_pick",
-    value: function _pick(method, statKey, opts) {
-      var stats = this.stats;
-      stats.get('Pick Count').incrementCount();
-      stats.get(statKey).timeStart();
-      var infos = this.deckPicker[method](Object.assign({
-        layers: this.layerManager.getLayers(opts),
-        viewports: this.getViewports(opts),
-        onViewportActive: this.layerManager.activateViewport
-      }, opts));
-      stats.get(statKey).timeEnd();
-      return infos;
-    }
-  }, {
-    key: "_createCanvas",
-    value: function _createCanvas(props) {
-      var canvas = props.canvas;
-
-      if (typeof canvas === 'string') {
-        canvas = document.getElementById(canvas);
-        Object(assert["a" /* default */])(canvas);
-      }
-
-      if (!canvas) {
-        canvas = document.createElement('canvas');
-        var parent = props.parent || document.body;
-        parent.appendChild(canvas);
-      }
-
-      var id = props.id,
-          style = props.style;
-      canvas.id = id;
-      Object.assign(canvas.style, style);
-      return canvas;
-    }
-  }, {
-    key: "_setCanvasSize",
-    value: function _setCanvasSize(props) {
-      if (!this.canvas) {
-        return;
-      }
-
-      var width = props.width,
-          height = props.height;
-
-      if (width || width === 0) {
-        width = Number.isFinite(width) ? "".concat(width, "px") : width;
-        this.canvas.style.width = width;
-      }
-
-      if (height || height === 0) {
-        height = Number.isFinite(height) ? "".concat(height, "px") : height;
-        this.canvas.style.position = 'absolute';
-        this.canvas.style.height = height;
-      }
-    }
-  }, {
-    key: "_updateCanvasSize",
-    value: function _updateCanvasSize() {
-      if (this._checkForCanvasSizeChange()) {
-        var width = this.width,
-            height = this.height;
-        this.viewManager.setProps({
-          width: width,
-          height: height
-        });
-        this.props.onResize({
-          width: this.width,
-          height: this.height
-        });
-      }
-    }
-  }, {
-    key: "_checkForCanvasSizeChange",
-    value: function _checkForCanvasSizeChange() {
-      var canvas = this.canvas;
-
-      if (!canvas) {
-        return false;
-      }
-
-      var newWidth = canvas.clientWidth || canvas.width;
-      var newHeight = canvas.clientHeight || canvas.height;
-
-      if (newWidth !== this.width || newHeight !== this.height) {
-        this.width = newWidth;
-        this.height = newHeight;
-        return true;
-      }
-
-      return false;
-    }
-  }, {
-    key: "_createAnimationLoop",
-    value: function _createAnimationLoop(props) {
-      var _this = this;
-
-      var width = props.width,
-          height = props.height,
-          gl = props.gl,
-          glOptions = props.glOptions,
-          debug = props.debug,
-          useDevicePixels = props.useDevicePixels,
-          autoResizeDrawingBuffer = props.autoResizeDrawingBuffer;
-      return new animation_loop_AnimationLoop({
-        width: width,
-        height: height,
-        useDevicePixels: useDevicePixels,
-        autoResizeDrawingBuffer: autoResizeDrawingBuffer,
-        autoResizeViewport: false,
-        gl: gl,
-        onCreateContext: function onCreateContext(opts) {
-          return Object(gltools_dist_esm["a" /* createGLContext */])(Object.assign({}, glOptions, opts, {
-            canvas: _this.canvas,
-            debug: debug
-          }));
-        },
-        onInitialize: this._onRendererInitialized,
-        onRender: this._onRenderFrame,
-        onBeforeRender: props.onBeforeRender,
-        onAfterRender: props.onAfterRender
-      });
-    }
-  }, {
-    key: "_getViewState",
-    value: function _getViewState() {
-      return this.props.viewState || this.viewState;
-    }
-  }, {
-    key: "_getViews",
-    value: function _getViews() {
-      var views = this.props.views || [new map_view_MapView({
-        id: 'default-view'
-      })];
-      views = Array.isArray(views) ? views : [views];
-
-      if (views.length && this.props.controller) {
-        views[0].props.controller = this.props.controller;
-      }
-
-      return views;
-    }
-  }, {
-    key: "_onPointerMove",
-    value: function _onPointerMove(event) {
-      var _pickRequest = this._pickRequest;
-
-      if (event.type === 'pointerleave') {
-        _pickRequest.x = -1;
-        _pickRequest.y = -1;
-        _pickRequest.radius = 0;
-      } else if (event.leftButton || event.rightButton) {
-        return;
-      } else {
-        var pos = event.offsetCenter;
-
-        if (!pos) {
-          return;
-        }
-
-        _pickRequest.x = pos.x;
-        _pickRequest.y = pos.y;
-        _pickRequest.radius = this.props.pickingRadius;
-      }
-
-      if (this.layerManager) {
-        this.layerManager.context.mousePosition = {
-          x: _pickRequest.x,
-          y: _pickRequest.y
-        };
-      }
-
-      _pickRequest.event = event;
-      _pickRequest.mode = 'hover';
-    }
-  }, {
-    key: "_pickAndCallback",
-    value: function _pickAndCallback() {
-      var _pickRequest = this._pickRequest;
-
-      if (_pickRequest.event) {
-        var _this$_pick = this._pick('pickObject', 'pickObject Time', _pickRequest),
-            result = _this$_pick.result,
-            emptyInfo = _this$_pick.emptyInfo;
-
-        var pickedInfo = result[0] || emptyInfo;
-
-        if (this.props.getTooltip) {
-          var displayInfo = this.props.getTooltip(pickedInfo);
-          this.tooltip.setTooltip(displayInfo, pickedInfo.x, pickedInfo.y);
-        }
-
-        var handled = false;
-
-        if (pickedInfo.layer) {
-          handled = pickedInfo.layer.onHover(pickedInfo, _pickRequest.event);
-        }
-
-        if (!handled && this.props.onHover) {
-          this.props.onHover(pickedInfo, _pickRequest.event);
-        }
-
-        _pickRequest.event = null;
-      }
-    }
-  }, {
-    key: "_updateCursor",
-    value: function _updateCursor() {
-      var container = this.props.parent || this.canvas;
-
-      if (container) {
-        container.style.cursor = this.props.getCursor(this.interactiveState);
-      }
-    }
-  }, {
-    key: "_setGLContext",
-    value: function _setGLContext(gl) {
-      if (this.layerManager) {
-        return;
-      }
-
-      if (!this.canvas) {
-        this.canvas = gl.canvas;
-        Object(gltools_dist_esm["d" /* instrumentGLContext */])(gl, {
-          enable: true,
-          copyState: true
-        });
-      }
-
-      this.tooltip = new tooltip_Tooltip(this.canvas);
-      Object(gltools_dist_esm["j" /* setParameters */])(gl, {
-        blend: true,
-        blendFunc: [770, 771, 1, 771],
-        polygonOffsetFill: true,
-        depthTest: true,
-        depthFunc: 515
-      });
-      this.props.onWebGLInitialized(gl);
-      var timeline = new timeline_Timeline();
-      timeline.play();
-      this.animationLoop.attachTimeline(timeline);
-      this.eventManager = new mjolnir_js_dist_esm["a" /* EventManager */](this.props.parent || gl.canvas, {
-        touchAction: this.props.touchAction,
-        events: {
-          pointerdown: this._onPointerDown,
-          pointermove: this._onPointerMove,
-          pointerleave: this._onPointerMove
-        }
-      });
-
-      for (var eventType in lib_constants["b" /* EVENTS */]) {
-        this.eventManager.on(eventType, this._onEvent);
-      }
-
-      this.viewManager = new view_manager_ViewManager({
-        timeline: timeline,
-        eventManager: this.eventManager,
-        onViewStateChange: this._onViewStateChange,
-        onInteractiveStateChange: this._onInteractiveStateChange,
-        views: this._getViews(),
-        viewState: this._getViewState(),
-        width: this.width,
-        height: this.height
-      });
-      var viewport = this.viewManager.getViewports()[0];
-      this.layerManager = new layer_manager_LayerManager(gl, {
-        deck: this,
-        stats: this.stats,
-        viewport: viewport,
-        timeline: timeline
-      });
-      this.effectManager = new effect_manager_EffectManager();
-      this.deckRenderer = new deck_renderer_DeckRenderer(gl);
-      this.deckPicker = new deck_picker_DeckPicker(gl);
-      this.setProps(this.props);
-
-      this._updateCanvasSize();
-
-      this.props.onLoad();
-    }
-  }, {
-    key: "_drawLayers",
-    value: function _drawLayers(redrawReason, renderOptions) {
-      var gl = this.layerManager.context.gl;
-      Object(gltools_dist_esm["j" /* setParameters */])(gl, this.props.parameters);
-      this.props.onBeforeRender({
-        gl: gl
-      });
-      this.deckRenderer.renderLayers(Object.assign({
-        target: this.props._framebuffer,
-        layers: this.layerManager.getLayers(),
-        viewports: this.viewManager.getViewports(),
-        onViewportActive: this.layerManager.activateViewport,
-        views: this.viewManager.getViews(),
-        pass: 'screen',
-        redrawReason: redrawReason,
-        effects: this.effectManager.getEffects()
-      }, renderOptions));
-      this.props.onAfterRender({
-        gl: gl
-      });
-    }
-  }, {
-    key: "_onRendererInitialized",
-    value: function _onRendererInitialized(_ref2) {
-      var gl = _ref2.gl;
-
-      this._setGLContext(gl);
-    }
-  }, {
-    key: "_onRenderFrame",
-    value: function _onRenderFrame(animationProps) {
-      this._getFrameStats();
-
-      if (this._metricsCounter++ % 60 === 0) {
-        this._getMetrics();
-
-        this.stats.reset();
-        log["a" /* default */].table(4, this.metrics)();
-
-        if (this.props._onMetrics) {
-          this.props._onMetrics(this.metrics);
-        }
-      }
-
-      this._updateCanvasSize();
-
-      this._updateCursor();
-
-      this.layerManager.updateLayers();
-
-      this._pickAndCallback();
-
-      this.redraw(false);
-
-      if (this.viewManager) {
-        this.viewManager.updateViewStates();
-      }
-    }
-  }, {
-    key: "_onViewStateChange",
-    value: function _onViewStateChange(params) {
-      var viewState = this.props.onViewStateChange(params) || params.viewState;
-
-      if (this.viewState) {
-        this.viewState = deck_objectSpread({}, this.viewState, Object(defineProperty["a" /* default */])({}, params.viewId, viewState));
-
-        if (!this.props.viewState) {
-          this.viewManager.setProps({
-            viewState: this.viewState
-          });
-        }
-      }
-    }
-  }, {
-    key: "_onInteractiveStateChange",
-    value: function _onInteractiveStateChange(_ref3) {
-      var _ref3$isDragging = _ref3.isDragging,
-          isDragging = _ref3$isDragging === void 0 ? false : _ref3$isDragging;
-
-      if (isDragging !== this.interactiveState.isDragging) {
-        this.interactiveState.isDragging = isDragging;
-      }
-    }
-  }, {
-    key: "_onEvent",
-    value: function _onEvent(event) {
-      var eventOptions = lib_constants["b" /* EVENTS */][event.type];
-      var pos = event.offsetCenter;
-
-      if (!eventOptions || !pos) {
-        return;
-      }
-
-      var layers = this.layerManager.getLayers();
-      var info = this.deckPicker.getLastPickedObject({
-        x: pos.x,
-        y: pos.y,
-        layers: layers,
-        viewports: this.getViewports(pos)
-      }, this._lastPointerDownInfo);
-      var layer = info.layer;
-      var layerHandler = layer && (layer[eventOptions.handler] || layer.props[eventOptions.handler]);
-      var rootHandler = this.props[eventOptions.handler];
-      var handled = false;
-
-      if (layerHandler) {
-        handled = layerHandler.call(layer, info, event);
-      }
-
-      if (!handled && rootHandler) {
-        rootHandler(info, event);
-      }
-    }
-  }, {
-    key: "_onPointerDown",
-    value: function _onPointerDown(event) {
-      var pos = event.offsetCenter;
-      this._lastPointerDownInfo = this.pickObject({
-        x: pos.x,
-        y: pos.y,
-        radius: this.props.pickingRadius
-      });
-    }
-  }, {
-    key: "_getFrameStats",
-    value: function _getFrameStats() {
-      var stats = this.stats;
-      stats.get('frameRate').timeEnd();
-      stats.get('frameRate').timeStart();
-      var animationLoopStats = this.animationLoop.stats;
-      stats.get('GPU Time').addTime(animationLoopStats.get('GPU Time').lastTiming);
-      stats.get('CPU Time').addTime(animationLoopStats.get('CPU Time').lastTiming);
-    }
-  }, {
-    key: "_getMetrics",
-    value: function _getMetrics() {
-      var metrics = this.metrics,
-          stats = this.stats;
-      metrics.fps = stats.get('frameRate').getHz();
-      metrics.setPropsTime = stats.get('setProps Time').time;
-      metrics.updateAttributesTime = stats.get('Update Attributes').time;
-      metrics.framesRedrawn = stats.get('Redraw Count').count;
-      metrics.pickTime = stats.get('pickObject Time').time + stats.get('pickMultipleObjects Time').time + stats.get('pickObjects Time').time;
-      metrics.pickCount = stats.get('Pick Count').count;
-      metrics.gpuTime = stats.get('GPU Time').time;
-      metrics.cpuTime = stats.get('CPU Time').time;
-      metrics.gpuTimePerFrame = stats.get('GPU Time').getAverageTime();
-      metrics.cpuTimePerFrame = stats.get('CPU Time').getAverageTime();
-      var memoryStats = esm_init["a" /* lumaStats */].get('Memory Usage');
-      metrics.bufferMemory = memoryStats.get('Buffer Memory').count;
-      metrics.textureMemory = memoryStats.get('Texture Memory').count;
-      metrics.renderbufferMemory = memoryStats.get('Renderbuffer Memory').count;
-      metrics.gpuMemory = memoryStats.get('GPU Memory').count;
-    }
-  }]);
-
-  return Deck;
-}();
-
-
-deck_Deck.getPropTypes = getPropTypes;
-deck_Deck.defaultProps = defaultProps;
-deck_Deck.VERSION = init.VERSION;
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es7.object.values.js
-var es7_object_values = __webpack_require__("cxuS");
-
-// CONCATENATED MODULE: ./node_modules/@deck.gl/react/dist/esm/utils/inherits-from.js
-function inheritsFrom(Type, ParentType) {
-  while (Type) {
-    if (Type === ParentType) {
-      return true;
-    }
-
-    Type = Object.getPrototypeOf(Type);
-  }
-
-  return false;
-}
-// CONCATENATED MODULE: ./node_modules/@deck.gl/react/dist/esm/utils/extract-jsx-layers.js
-
-
-
-
-
-
-
-
-
-
-
-
-
-function wrapInView(node) {
-  if (!node) {
-    return node;
-  }
-
-  if (typeof node === 'function') {
-    return Object(react["createElement"])(view_View, {}, node);
-  }
-
-  if (Array.isArray(node)) {
-    return node.map(wrapInView);
-  }
-
-  if (inheritsFrom(node.type, view_View)) {
-    return node;
-  }
-
-  return node;
-}
-
-function extractJSXLayers(_ref) {
-  var children = _ref.children,
-      layers = _ref.layers,
-      views = _ref.views;
-  var reactChildren = [];
-  var jsxLayers = [];
-  var jsxViews = {};
-  react_default.a.Children.forEach(wrapInView(children), function (reactElement) {
-    if (reactElement) {
-      var ElementType = reactElement.type;
-
-      if (inheritsFrom(ElementType, lib_layer["a" /* default */])) {
-        var layer = createLayer(ElementType, reactElement.props);
-        jsxLayers.push(layer);
-      } else {
-        reactChildren.push(reactElement);
-      }
-
-      if (ElementType !== view_View && inheritsFrom(ElementType, view_View) && reactElement.props.id) {
-        var view = new ElementType(reactElement.props);
-        jsxViews[view.id] = view;
-      }
-    }
-  });
-
-  if (Object.keys(jsxViews).length > 0) {
-    if (Array.isArray(views)) {
-      views.forEach(function (view) {
-        jsxViews[view.id] = view;
-      });
-    } else if (views) {
-      jsxViews[views.id] = views;
-    }
-
-    views = Object.values(jsxViews);
-  }
-
-  layers = jsxLayers.length > 0 ? [].concat(jsxLayers, Object(toConsumableArray["a" /* default */])(layers)) : layers;
-  return {
-    layers: layers,
-    children: reactChildren,
-    views: views
-  };
-}
-
-function createLayer(LayerType, reactProps) {
-  var props = {};
-  var defaultProps = LayerType.defaultProps || {};
-
-  for (var key in reactProps) {
-    if (defaultProps[key] !== reactProps[key]) {
-      props[key] = reactProps[key];
-    }
-  }
-
-  return new LayerType(props);
-}
-// CONCATENATED MODULE: ./node_modules/@deck.gl/react/dist/esm/utils/evaluate-children.js
-
-
-
-var MAP_STYLE = {
-  position: 'absolute',
-  zIndex: -1
-};
-function evaluateChildren(children, childProps) {
-  if (!children) {
-    return children;
-  }
-
-  if (typeof children === 'function') {
-    return children(childProps);
-  }
-
-  if (Array.isArray(children)) {
-    return children.map(function (child) {
-      return evaluateChildren(child, childProps);
-    });
-  }
-
-  if (isReactMap(children)) {
-    childProps.style = MAP_STYLE;
-    return Object(react["cloneElement"])(children, childProps);
-  }
-
-  if (needsDeckGLViewProps(children)) {
-    return Object(react["cloneElement"])(children, childProps);
-  }
-
-  return children;
-}
-
-function isReactMap(child) {
-  var componentClass = child && child.type;
-  var componentProps = componentClass && componentClass.defaultProps;
-  return componentProps && componentProps.mapStyle;
-}
-
-function needsDeckGLViewProps(child) {
-  var componentClass = child && child.type;
-  return componentClass && componentClass.deckGLViewProps;
-}
-// CONCATENATED MODULE: ./node_modules/@deck.gl/react/dist/esm/utils/position-children-under-views.js
-
-
-
-
-
-
-
-
-
-
-
-
-function positionChildrenUnderViews(_ref) {
-  var children = _ref.children,
-      viewports = _ref.viewports,
-      deck = _ref.deck,
-      ContextProvider = _ref.ContextProvider;
-
-  var _ref2 = deck || {},
-      viewManager = _ref2.viewManager;
-
-  if (!viewManager || !viewManager.views.length) {
-    return [];
-  }
-
-  var views = {};
-  var defaultViewId = viewManager.views[0].id;
-  var _iteratorNormalCompletion = true;
-  var _didIteratorError = false;
-  var _iteratorError = undefined;
-
-  try {
-    for (var _iterator = children[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-      var child = _step.value;
-      var viewId = defaultViewId;
-      var viewChildren = child;
-
-      if (inheritsFrom(child.type, view_View)) {
-        viewId = child.props.id || defaultViewId;
-        viewChildren = child.props.children;
-      }
-
-      var viewport = viewManager.getViewport(viewId);
-      var viewState = viewManager.getViewState(viewId);
-
-      if (viewport) {
-        var x = viewport.x,
-            y = viewport.y,
-            width = viewport.width,
-            height = viewport.height;
-        viewChildren = evaluateChildren(viewChildren, {
-          x: x,
-          y: y,
-          width: width,
-          height: height,
-          viewport: viewport,
-          viewState: viewState
-        });
-
-        if (!views[viewId]) {
-          views[viewId] = {
-            viewport: viewport,
-            children: []
-          };
-        }
-
-        views[viewId].children.push(viewChildren);
-      }
-    }
-  } catch (err) {
-    _didIteratorError = true;
-    _iteratorError = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion && _iterator["return"] != null) {
-        _iterator["return"]();
-      }
-    } finally {
-      if (_didIteratorError) {
-        throw _iteratorError;
-      }
-    }
-  }
-
-  return Object.keys(views).map(function (viewId) {
-    var _views$viewId = views[viewId],
-        viewport = _views$viewId.viewport,
-        viewChildren = _views$viewId.children;
-    var x = viewport.x,
-        y = viewport.y,
-        width = viewport.width,
-        height = viewport.height;
-    var style = {
-      position: 'absolute',
-      left: x,
-      top: y,
-      width: width,
-      height: height
-    };
-    var key = "view-".concat(viewId);
-    var viewElement = react["createElement"].apply(void 0, ['div', {
-      key: key,
-      id: key,
-      style: style
-    }].concat(Object(toConsumableArray["a" /* default */])(viewChildren)));
-
-    if (ContextProvider) {
-      var contextValue = {
-        viewport: viewport,
-        container: deck.canvas.offsetParent,
-        eventManager: deck.eventManager,
-        onViewStateChange: function onViewStateChange(params) {
-          params.viewId = viewId;
-
-          deck._onViewStateChange(params);
-        }
-      };
-      return Object(react["createElement"])(ContextProvider, {
-        key: key,
-        value: contextValue
-      }, viewElement);
-    }
-
-    return viewElement;
-  });
-}
-// CONCATENATED MODULE: ./node_modules/@deck.gl/react/dist/esm/utils/extract-styles.js
-var CANVAS_ONLY_STYLES = {
-  mixBlendMode: null
-};
-function extractStyles(_ref) {
-  var width = _ref.width,
-      height = _ref.height,
-      style = _ref.style;
-  var containerStyle = {
-    position: 'absolute',
-    zIndex: 0,
-    left: 0,
-    top: 0,
-    width: width,
-    height: height
-  };
-  var canvasStyle = {
-    left: 0,
-    top: 0
-  };
-
-  if (style) {
-    for (var key in style) {
-      if (key in CANVAS_ONLY_STYLES) {
-        canvasStyle[key] = style[key];
-      } else {
-        containerStyle[key] = style[key];
-      }
-    }
-  }
-
-  return {
-    containerStyle: containerStyle,
-    canvasStyle: canvasStyle
-  };
-}
-// CONCATENATED MODULE: ./node_modules/@deck.gl/react/dist/esm/deckgl.js
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var propTypes = deck_Deck.getPropTypes(prop_types_default.a);
-var deckgl_defaultProps = deck_Deck.defaultProps;
-
-var deckgl_DeckGL = function (_React$Component) {
-  Object(inherits["a" /* default */])(DeckGL, _React$Component);
-
-  function DeckGL(props) {
-    var _this;
-
-    Object(classCallCheck["a" /* default */])(this, DeckGL);
-
-    _this = Object(possibleConstructorReturn["a" /* default */])(this, Object(getPrototypeOf["a" /* default */])(DeckGL).call(this, props));
-    _this.viewports = null;
-    _this.children = null;
-    _this._needsRedraw = null;
-    _this._containerRef = react_default.a.createRef();
-    _this._canvasRef = react_default.a.createRef();
-    _this.pickObject = _this.pickObject.bind(Object(assertThisInitialized["a" /* default */])(_this));
-    _this.pickMultipleObjects = _this.pickMultipleObjects.bind(Object(assertThisInitialized["a" /* default */])(_this));
-    _this.pickObjects = _this.pickObjects.bind(Object(assertThisInitialized["a" /* default */])(_this));
-    _this._extractJSXLayers = Object(memoize["a" /* default */])(extractJSXLayers);
-    _this._positionChildrenUnderViews = Object(memoize["a" /* default */])(positionChildrenUnderViews);
-    _this._extractStyles = Object(memoize["a" /* default */])(extractStyles);
-    return _this;
-  }
-
-  Object(createClass["a" /* default */])(DeckGL, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      var DeckClass = this.props.Deck || deck_Deck;
-      this.deck = this.deck || new DeckClass(Object.assign({}, this.props, {
-        parent: this._containerRef.current,
-        canvas: this._canvasRef.current,
-        style: null,
-        width: '100%',
-        height: '100%',
-        _customRender: this._customRender.bind(this)
-      }));
-
-      this._updateFromProps(this.props);
-    }
-  }, {
-    key: "shouldComponentUpdate",
-    value: function shouldComponentUpdate(nextProps) {
-      this._updateFromProps(nextProps);
-
-      var childrenChanged = this.children !== this._parseJSX(nextProps).children;
-
-      var viewsChanged = this.deck.viewManager && this.deck.viewManager.needsRedraw();
-      return childrenChanged && !viewsChanged;
-    }
-  }, {
-    key: "componentDidUpdate",
-    value: function componentDidUpdate() {
-      this._redrawDeck();
-    }
-  }, {
-    key: "componentWillUnmount",
-    value: function componentWillUnmount() {
-      this.deck.finalize();
-    }
-  }, {
-    key: "pickObject",
-    value: function pickObject(opts) {
-      return this.deck.pickObject(opts);
-    }
-  }, {
-    key: "pickMultipleObjects",
-    value: function pickMultipleObjects(opts) {
-      return this.deck.pickMultipleObjects(opts);
-    }
-  }, {
-    key: "pickObjects",
-    value: function pickObjects(opts) {
-      return this.deck.pickObjects(opts);
-    }
-  }, {
-    key: "_redrawDeck",
-    value: function _redrawDeck() {
-      if (this._needsRedraw) {
-        this.deck._drawLayers(this._needsRedraw);
-
-        this._needsRedraw = null;
-      }
-    }
-  }, {
-    key: "_customRender",
-    value: function _customRender(redrawReason) {
-      this._needsRedraw = redrawReason;
-      var viewports = this.deck.viewManager.getViewports();
-
-      if (viewports !== this.viewports) {
-        this.forceUpdate();
-      } else {
-        this._redrawDeck();
-      }
-    }
-  }, {
-    key: "_parseJSX",
-    value: function _parseJSX(props) {
-      return this._extractJSXLayers({
-        layers: props.layers,
-        views: props.views,
-        children: props.children
-      });
-    }
-  }, {
-    key: "_updateFromProps",
-    value: function _updateFromProps(props) {
-      var _this$_parseJSX = this._parseJSX(props),
-          layers = _this$_parseJSX.layers,
-          views = _this$_parseJSX.views;
-
-      var deckProps = Object.assign({}, props, {
-        style: null,
-        width: '100%',
-        height: '100%',
-        layers: layers,
-        views: views
-      });
-      this.deck.setProps(deckProps);
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this$props = this.props,
-          ContextProvider = _this$props.ContextProvider,
-          width = _this$props.width,
-          height = _this$props.height,
-          style = _this$props.style;
-
-      var _ref = this.deck || {},
-          viewManager = _ref.viewManager;
-
-      this.viewports = viewManager && viewManager.getViewports();
-      this.children = this._parseJSX(this.props).children;
-
-      var children = this._positionChildrenUnderViews({
-        children: this.children,
-        viewports: this.viewports,
-        deck: this.deck,
-        ContextProvider: ContextProvider
-      });
-
-      var _this$_extractStyles = this._extractStyles({
-        width: width,
-        height: height,
-        style: style
-      }),
-          containerStyle = _this$_extractStyles.containerStyle,
-          canvasStyle = _this$_extractStyles.canvasStyle;
-
-      var canvas = Object(react["createElement"])('canvas', {
-        key: 'canvas',
-        ref: this._canvasRef,
-        style: canvasStyle
-      });
-      return Object(react["createElement"])('div', {
-        id: 'deckgl-wrapper',
-        ref: this._containerRef,
-        style: containerStyle
-      }, [canvas, children]);
-    }
-  }]);
-
-  return DeckGL;
-}(react_default.a.Component);
-
-
-deckgl_DeckGL.propTypes = propTypes;
-deckgl_DeckGL.defaultProps = deckgl_defaultProps;
-
-/***/ }),
-
 /***/ "ykdB":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -54893,7 +54656,7 @@ var WebMercatorViewport = function (_Viewport) {
     height = height || 1;
     altitude = Math.max(0.75, altitude);
 
-    var _getProjectionParamet = Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_21__[/* getProjectionParameters */ "i"])({
+    var _getProjectionParamet = Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_21__[/* getProjectionParameters */ "f"])({
       width: width,
       height: height,
       pitch: pitch,
@@ -54907,7 +54670,7 @@ var WebMercatorViewport = function (_Viewport) {
         near = _getProjectionParamet.near,
         far = _getProjectionParamet.far;
 
-    var viewMatrixUncentered = Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_21__[/* getViewMatrix */ "j"])({
+    var viewMatrixUncentered = Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_21__[/* getViewMatrix */ "g"])({
       height: height,
       pitch: pitch,
       bearing: bearing,
@@ -54950,14 +54713,14 @@ var WebMercatorViewport = function (_Viewport) {
   Object(_babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_15__[/* default */ "a"])(WebMercatorViewport, [{
     key: "addMetersToLngLat",
     value: function addMetersToLngLat(lngLatZ, xyz) {
-      return Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_21__[/* addMetersToLngLat */ "b"])(lngLatZ, xyz);
+      return Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_21__[/* addMetersToLngLat */ "a"])(lngLatZ, xyz);
     }
   }, {
     key: "getMapCenterByLngLatPosition",
     value: function getMapCenterByLngLatPosition(_ref) {
       var lngLat = _ref.lngLat,
           pos = _ref.pos;
-      var fromLocation = Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_21__[/* pixelsToWorld */ "m"])(pos, this.pixelUnprojectionMatrix);
+      var fromLocation = Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_21__[/* pixelsToWorld */ "j"])(pos, this.pixelUnprojectionMatrix);
       var toLocation = this.projectFlat(lngLat);
       var translate = gl_matrix_vec2__WEBPACK_IMPORTED_MODULE_22__[/* add */ "a"]([], toLocation, gl_matrix_vec2__WEBPACK_IMPORTED_MODULE_22__[/* negate */ "d"]([], fromLocation));
       var newCenter = gl_matrix_vec2__WEBPACK_IMPORTED_MODULE_22__[/* add */ "a"]([], this.center, translate);
@@ -54970,7 +54733,7 @@ var WebMercatorViewport = function (_Viewport) {
       var width = this.width,
           height = this.height;
 
-      var _fitBounds2 = Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_21__[/* fitBounds */ "d"])(Object.assign({
+      var _fitBounds2 = Object(_math_gl_web_mercator__WEBPACK_IMPORTED_MODULE_21__[/* fitBounds */ "c"])(Object.assign({
         width: width,
         height: height,
         bounds: bounds
