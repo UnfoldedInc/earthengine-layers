@@ -5,8 +5,8 @@ import styled from 'styled-components';
 
 const StyledPanel = styled.div`
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 40px;
+  right: 0px;
   width: 344px;
   background: #fff;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);

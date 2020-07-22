@@ -5,10 +5,10 @@ import EarthEngineIcon from './earthengine-icon';
 
 const StyledPanel = styled.div`
   position: absolute;
-  top: 0;
+  top: 40px;
   left: 0;
   z-index: 1000;
-  padding: 24px;
+  padding: 16px;
 `;
 
 const Button = styled.div.attrs({
