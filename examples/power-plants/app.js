@@ -32,14 +32,6 @@ const FUEL_COLOR_MAPPING_VECTOR = {
 };
 
 class Tooltip extends React.Component {
-  // Lessen flashing by only updating when name changes
-  shouldComponentUpdate(nextProps, nextState) {
-    if (this.props.hoveredObject.properties.name === nextProps.hoveredObject.properties.name) {
-      return false;
-    }
-    return true;
-  }
-
   render() {
     const {hoveredObject, x, y} = this.props;
     return (
@@ -133,7 +125,7 @@ export default class App extends React.Component {
           pickingRadius={10}
           googleMapsToken={GOOGLE_MAPS_TOKEN}
         />
-        {hoveredObject && <Tooltip x={x} y={y} hoveredObject={hoveredObject} />}
+        {hoveredObject && <Tooltip x={x + 2} y={y + 2} hoveredObject={hoveredObject} />}
 
         <GoogleLoginPane loginProvider={this.loginProvider} />
         <InfoBox title="FeatureCollection">
