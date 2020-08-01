@@ -62,13 +62,11 @@ To install dependencies from the Python Package Index (PyPI):
 pip install earthengine-api pydeck pydeck-earthengine-layers
 ```
 
-`pydeck-earthengine-layers` is not yet on Conda. If you use Conda for package
-management, you may install `earthengine-api` and `pydeck` from `conda-forge`,
-then `pydeck-earthengine-layers` using `pip`:
+`pydeck-earthengine-layers` is also available on [Conda](https://anaconda.org/conda-forge/pydeck-earthengine-layers). If you use Conda for package
+management, you may install `earthengine-api`, `pydeck` and `pydeck-earthengine-layers` from `conda-forge`:
 
-```
-conda install -c conda-forge earthengine-api pydeck
-pip install pydeck-earthengine-layers
+```bash
+conda install -c conda-forge earthengine-api pydeck pydeck-earthengine-layers
 ```
 
 ### Enable with Jupyter
@@ -83,7 +81,7 @@ documentation][pydeck-enable-jupyter].
 
 To use with Jupyter Notebook, first make sure Jupyter Notebook is installed:
 
-```
+```bash
 conda install -c conda-forge jupyter notebook
 ```
 
@@ -92,14 +90,15 @@ Then to enable pydeck with Jupyter Notebook, run
 ```bash
 jupyter nbextension install --sys-prefix --symlink --overwrite --py pydeck
 jupyter nbextension enable --sys-prefix --py pydeck
-jupyter labextension install @deck.gl/jupyter-widget@$DECKGL_SEMVER
+jupyter nbextension install @deck.gl/jupyter-widget@$DECKGL_SEMVER
 ```
+
 **Jupyter Lab**
 
 To use with Jupyter Lab, first make sure that Jupyter Lab is installed:
 (`nodejs` is necessary to install Jupyter Lab extensions):
 
-```
+```bash
 conda install -c conda-forge jupyter jupyterlab nodejs
 ```
 
