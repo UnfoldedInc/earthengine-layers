@@ -44,6 +44,7 @@
     "@deck.gl/core": "^8.2.0",
     "@deck.gl/layers": "^8.2.0",
     "@deck.gl/geo-layers": "^8.2.0",
+    "@deck.gl/mesh-layers": "^8.2.0",
     "@deck.gl/test-utils": "^8.2.0",
     "@luma.gl/engine": "^8.2.0",
     "@luma.gl/test-utils": "^8.2.0",
