@@ -1,6 +1,6 @@
 {
   "name": "deck.gl-earthengine-hurricanes-demo",
-  "version": "1.1.0-alpha.1",
+  "version": "1.1.0",
   "license": "MIT",
   "private": true,
   "scripts": {
@@ -17,7 +17,7 @@
     "@deck.gl/mesh-layers": "^8.2.5",
     "@deck.gl/react": "^8.2.5",
     "@google/earthengine": "^0.1.217",
-    "@unfolded.gl/earthengine-layers": "1.1.0-alpha.1",
+    "@unfolded.gl/earthengine-layers": "1.1.0",
     "react": "^16.3.0",
     "react-dom": "^16.3.0",
     "styled-components": "^5.0.1"
