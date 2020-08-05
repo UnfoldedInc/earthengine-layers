@@ -20,6 +20,8 @@ let accessToken;
 
 const defaultProps = {
   ...TileLayer.defaultProps,
+  // Set lower default than in deck.gl TileLayer
+  maxRequests: 6,
   // data prop is unused
   data: {type: 'object', value: null},
   token: {type: 'string', value: null},
