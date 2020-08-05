@@ -1,7 +1,7 @@
 {
   "name": "@unfolded.gl/earthengine-layers",
   "description": "deck.gl layers for Google Earth Engine",
-  "version": "1.0.0",
+  "version": "1.1.0-alpha.1",
   "license": "MIT",
   "author": "Unfolded, Inc.",
   "publishConfig": {
@@ -31,8 +31,8 @@
   "peerDependencies": {
     "@deck.gl/core": "^8.2.0",
     "@deck.gl/geo-layers": "^8.2.0",
-    "@deck.gl/mesh-layers": "^8.2.0",
     "@deck.gl/layers": "^8.2.0",
+    "@deck.gl/mesh-layers": "^8.2.0",
     "@google/earthengine": "^0.1.217"
   },
   "gitHead": "73094f68451e557a8b32909cf8376f45942de021"
