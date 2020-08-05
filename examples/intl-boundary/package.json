@@ -10,16 +10,15 @@
   },
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.5.5",
-    "@deck.gl/core": "^8.2.0",
-    "@deck.gl/geo-layers": "^8.2.0",
-    "@deck.gl/layers": "^8.2.0",
-    "@deck.gl/mesh-layers": "^8.2.0",
-    "@deck.gl/react": "^8.2.0",
+    "@deck.gl/core": "^8.2.5",
+    "@deck.gl/geo-layers": "^8.2.5",
+    "@deck.gl/layers": "^8.2.5",
+    "@deck.gl/mesh-layers": "^8.2.5",
+    "@deck.gl/react": "^8.2.5",
     "@google/earthengine": "^0.1.217",
     "@unfolded.gl/earthengine-layers": "1.0.0",
     "react": "^16.3.0",
     "react-dom": "^16.3.0",
-    "react-map-gl": "^5.2.3",
     "styled-components": "^5.0.1"
   },
   "devDependencies": {
