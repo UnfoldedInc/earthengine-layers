@@ -5,6 +5,7 @@
 - New `EarthEngineTerrainLayer`
 - Updated python installation docs to reflect Conda-forge package
 - Use Google Maps as a basemap for website examples
+- Update to deck.gl 8.2
 
 ## v1.0.0 - (2020-06-08)
 
