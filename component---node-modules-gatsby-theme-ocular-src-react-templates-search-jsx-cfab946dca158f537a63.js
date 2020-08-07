@@ -1,17 +1,9 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[14],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[16],{
 
 /***/ "9/5/":
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {__webpack_require__("sC2a");
-
-__webpack_require__("q8oJ");
-
-__webpack_require__("C9fy");
-
-__webpack_require__("8npG");
-
-/**
+/* WEBPACK VAR INJECTION */(function(global) {/**
  * lodash (Custom Build) <https://lodash.com/>
  * Build: `lodash modularize exports="npm" -o ./`
  * Copyright jQuery Foundation and other contributors <https://jquery.org/>
@@ -412,14 +404,11 @@ __webpack_require__.r(__webpack_exports__);
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, "default", function() { return /* binding */ search_SearchPage; });
 
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es7.array.includes.js
-var es7_array_includes = __webpack_require__("gu/5");
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/assertThisInitialized.js
+var assertThisInitialized = __webpack_require__("JX7q");
 
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.string.includes.js
-var es6_string_includes = __webpack_require__("eoYm");
-
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.regexp.constructor.js
-var es6_regexp_constructor = __webpack_require__("klQ5");
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js
+var inheritsLoose = __webpack_require__("dI71");
 
 // EXTERNAL MODULE: ./node_modules/react/index.js
 var react = __webpack_require__("q1tI");
@@ -429,11 +418,8 @@ var react_default = /*#__PURE__*/__webpack_require__.n(react);
 var lodash_debounce = __webpack_require__("9/5/");
 var lodash_debounce_default = /*#__PURE__*/__webpack_require__.n(lodash_debounce);
 
-// EXTERNAL MODULE: ./node_modules/gatsby/node_modules/core-js/modules/es6.object.assign.js
-var es6_object_assign = __webpack_require__("E5k/");
-
 // CONCATENATED MODULE: ./node_modules/gatsby-theme-ocular/src/react/components/search.jsx
-function _inheritsLoose(subClass,superClass){subClass.prototype=Object.create(superClass.prototype);subClass.prototype.constructor=subClass;subClass.__proto__=superClass;}var search_SearchIcon=/*#__PURE__*/function(_Component){_inheritsLoose(SearchIcon,_Component);function SearchIcon(){return _Component.apply(this,arguments)||this;}var _proto=SearchIcon.prototype;_proto.render=function render(){return/*#__PURE__*/react_default.a.createElement("svg",Object.assign({viewBox:"0 0 24 24"},this.props),/*#__PURE__*/react_default.a.createElement("title",null,"Search"),/*#__PURE__*/react_default.a.createElement("path",{fillRule:"evenodd",clipRule:"evenodd",d:"M11 6C8.79086 6 7 7.79086 7 10C7 12.2091 8.79086 14 11 14C13.2091 14 15 12.2091 15 10C15 7.79086 13.2091 6 11 6ZM5 10C5 6.68629 7.68629 4 11 4C14.3137 4 17 6.68629 17 10C17 11.2958 16.5892 12.4957 15.8907 13.4765L19.7071 17.2929C20.0976 17.6834 20.0976 18.3166 19.7071 18.7071C19.3166 19.0976 18.6834 19.0976 18.2929 18.7071L14.4765 14.8907C13.4957 15.5892 12.2958 16 11 16C7.68629 16 5 13.3137 5 10Z"}));};return SearchIcon;}(react["Component"]);
+var search_SearchIcon=/*#__PURE__*/function(_Component){Object(inheritsLoose["a" /* default */])(SearchIcon,_Component);function SearchIcon(){return _Component.apply(this,arguments)||this;}var _proto=SearchIcon.prototype;_proto.render=function render(){return/*#__PURE__*/react_default.a.createElement("svg",Object.assign({viewBox:"0 0 24 24"},this.props),/*#__PURE__*/react_default.a.createElement("title",null,"Search"),/*#__PURE__*/react_default.a.createElement("path",{fillRule:"evenodd",clipRule:"evenodd",d:"M11 6C8.79086 6 7 7.79086 7 10C7 12.2091 8.79086 14 11 14C13.2091 14 15 12.2091 15 10C15 7.79086 13.2091 6 11 6ZM5 10C5 6.68629 7.68629 4 11 4C14.3137 4 17 6.68629 17 10C17 11.2958 16.5892 12.4957 15.8907 13.4765L19.7071 17.2929C20.0976 17.6834 20.0976 18.3166 19.7071 18.7071C19.3166 19.0976 18.6834 19.0976 18.2929 18.7071L14.4765 14.8907C13.4957 15.5892 12.2958 16 11 16C7.68629 16 5 13.3137 5 10Z"}));};return SearchIcon;}(react["Component"]);
 // EXTERNAL MODULE: ./node_modules/gatsby-theme-ocular/src/react/components/website-config.jsx
 var website_config = __webpack_require__("B5uF");
 
@@ -447,7 +433,7 @@ var styled_components_browser_esm = __webpack_require__("vOnD");
 // search
 var SearchContainer=styled_components_browser_esm["c" /* default */].div.withConfig({displayName:"search__SearchContainer",componentId:"kiea9v-0"})(["position:relative;height:",";margin-bottom:20px;background:",";"],function(props){return props.theme.sizing.scale1000;},function(props){return props.theme.colors.mono200;});var IconContainer=styled_components_browser_esm["c" /* default */].div.withConfig({displayName:"search__IconContainer",componentId:"kiea9v-1"})(["position:absolute;display:flex;align-items:center;justify-content:center;width:",";height:",";"],function(props){return props.theme.sizing.scale1000;},function(props){return props.theme.sizing.scale1000;});var SearchInput=styled_components_browser_esm["c" /* default */].input.withConfig({displayName:"search__SearchInput",componentId:"kiea9v-2"})(["width:100%;box-shadow:0 0px 2px hsla(0,0%,0%,0.16);border:1px solid transparent;transition:0.3s;font-size:14px;font-weight:500;line-jeight:20px;padding:10px 10px 10px 40px;&:focus{box-shadow:",";border-color:rgb(39,110,241);outline:none;}"],function(props){return props.theme.lighting.shadow600;});var MainSearch=styled_components_browser_esm["c" /* default */].main.withConfig({displayName:"search__MainSearch",componentId:"kiea9v-3"})(["font:",";width:600px;max-width:90%;margin:"," auto 0px;"],function(props){return props.theme.typography.font300;},function(props){return props.theme.sizing.scale2400;});var SearchResultItem=styled_components_browser_esm["c" /* default */].div.withConfig({displayName:"search__SearchResultItem",componentId:"kiea9v-4"})(["margin:1em 0;"]);var SearchResultLink=Object(styled_components_browser_esm["c" /* default */])(gatsby_browser_entry["a" /* Link */]).withConfig({displayName:"search__SearchResultLink",componentId:"kiea9v-5"})(["font:",";margin-bottom:0.5rem;color:",";text-decoration:none;&:visited{color:",";}&:active{color:",";}&:hover{color:",";}"],function(props){return props.theme.typography.font450;},function(props){return props.theme.colors.linkText;},function(props){return props.theme.colors.linkVisited;},function(props){return props.theme.colors.linkHover;},function(props){return props.theme.colors.linkHover;});var SearchResultContent=styled_components_browser_esm["c" /* default */].div.withConfig({displayName:"search__SearchResultContent",componentId:"kiea9v-6"})(["max-height:5rem;overflow:hidden;"]);
 // CONCATENATED MODULE: ./node_modules/gatsby-theme-ocular/src/react/templates/search.jsx
-function _assertThisInitialized(self){if(self===void 0){throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return self;}function search_inheritsLoose(subClass,superClass){subClass.prototype=Object.create(superClass.prototype);subClass.prototype.constructor=subClass;subClass.__proto__=superClass;}var search_SearchPage=/*#__PURE__*/function(_React$Component){search_inheritsLoose(SearchPage,_React$Component);function SearchPage(props){var _this;_this=_React$Component.call(this,props)||this;_this.state={currentQuery:'',lastQuery:'',results:[]};_this.findResults=lodash_debounce_default()(_this.findResults.bind(_assertThisInitialized(_this)),250);_this.handleChange=_this.handleChange.bind(_assertThisInitialized(_this));return _this;}var _proto=SearchPage.prototype;_proto.findResults=function findResults(currentQuery){var lastQuery=this.state.lastQuery;var pathContext=this.props.pathContext;this.setState({debouncing:false});if(currentQuery===lastQuery){return;}var results;if(currentQuery){var regex=new RegExp(currentQuery,'i');var headingRegex=new RegExp("^#.*"+currentQuery,'im');// Sort order:
+var search_SearchPage=/*#__PURE__*/function(_React$Component){Object(inheritsLoose["a" /* default */])(SearchPage,_React$Component);function SearchPage(props){var _this;_this=_React$Component.call(this,props)||this;_this.state={currentQuery:'',lastQuery:'',results:[]};_this.findResults=lodash_debounce_default()(_this.findResults.bind(Object(assertThisInitialized["a" /* default */])(_this)),250);_this.handleChange=_this.handleChange.bind(Object(assertThisInitialized["a" /* default */])(_this));return _this;}var _proto=SearchPage.prototype;_proto.findResults=function findResults(currentQuery){var lastQuery=this.state.lastQuery;var pathContext=this.props.pathContext;this.setState({debouncing:false});if(currentQuery===lastQuery){return;}var results;if(currentQuery){var regex=new RegExp(currentQuery,'i');var headingRegex=new RegExp("^#.*"+currentQuery,'im');// Sort order:
 // appearance in title
 results=pathContext.data.filter(function(node){return node.title&&regex.test(node.title);});// appearance in headings
 results=results.concat(pathContext.data.filter(function(node){return!results.includes(node)&&node.rawMarkdownBody&&headingRegex.test(node.rawMarkdownBody);}));// any appearance

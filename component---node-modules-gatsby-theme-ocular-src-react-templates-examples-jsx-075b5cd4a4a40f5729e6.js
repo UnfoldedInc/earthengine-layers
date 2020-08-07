@@ -1,4 +1,4 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[13],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[15],{
 
 /***/ "2flm":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -6,11 +6,12 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Examples; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("q1tI");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var gatsby__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("Wbzz");
-/* harmony import */ var _styled_example__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("NKOs");
-function _inheritsLoose(subClass,superClass){subClass.prototype=Object.create(superClass.prototype);subClass.prototype.constructor=subClass;subClass.__proto__=superClass;}var Examples=/*#__PURE__*/function(_Component){_inheritsLoose(Examples,_Component);function Examples(){return _Component.apply(this,arguments)||this;}var _proto=Examples.prototype;_proto.render=function render(){var examples=this.props.pageContext.examples;return/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_styled_example__WEBPACK_IMPORTED_MODULE_2__[/* MainExamples */ "c"],null,examples.map(function(exampleData){return/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_styled_example__WEBPACK_IMPORTED_MODULE_2__[/* ExampleCard */ "a"],{key:exampleData.title,to:"/"+exampleData.path},exampleData.imageSrc?/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img",{width:"100%",src:Object(gatsby__WEBPACK_IMPORTED_MODULE_1__[/* withPrefix */ "c"])(exampleData.imageSrc),alt:exampleData.title}):null,/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_styled_example__WEBPACK_IMPORTED_MODULE_2__[/* ExampleTitle */ "b"],null,exampleData.title));}));};return Examples;}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+/* harmony import */ var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("dI71");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("q1tI");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var gatsby__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("Wbzz");
+/* harmony import */ var _styled_example__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("NKOs");
+var Examples=/*#__PURE__*/function(_Component){Object(_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(Examples,_Component);function Examples(){return _Component.apply(this,arguments)||this;}var _proto=Examples.prototype;_proto.render=function render(){var examples=this.props.pageContext.examples;return/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_styled_example__WEBPACK_IMPORTED_MODULE_3__[/* MainExamples */ "c"],null,examples.map(function(exampleData){return/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_styled_example__WEBPACK_IMPORTED_MODULE_3__[/* ExampleCard */ "a"],{key:exampleData.title,to:"/"+exampleData.path},exampleData.imageSrc?/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("img",{width:"100%",src:Object(gatsby__WEBPACK_IMPORTED_MODULE_2__[/* withPrefix */ "d"])(exampleData.imageSrc),alt:exampleData.title}):null,/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_styled_example__WEBPACK_IMPORTED_MODULE_3__[/* ExampleTitle */ "b"],null,exampleData.title));}));};return Examples;}(react__WEBPACK_IMPORTED_MODULE_1__["Component"]);
 
 /***/ }),
 
