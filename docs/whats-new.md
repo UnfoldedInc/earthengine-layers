@@ -1,5 +1,9 @@
 # What's New
 
+## v1.1.1 - (2020-08-13)
+
+- Update `loaders.gl` to a 2.3.0 alpha release to fix a bundling issue for pydeck
+
 ## v1.1.0 - (2020-08-05)
 
 - New `EarthEngineTerrainLayer`
