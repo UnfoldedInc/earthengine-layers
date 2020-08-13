@@ -6,12 +6,14 @@ import ee
 import pydeck as pdk
 import requests
 
-EARTHENGINE_LAYER_BUNDLE_URL = 'https://unpkg.com/@unfolded.gl/earthengine-layers@1.0.0/dist/pydeck_layer_module.min.js'
+EARTHENGINE_LAYER_BUNDLE_URL = 'https://unpkg.com/@unfolded.gl/earthengine-layers@1.1.1/dist/pydeck_layer_module.min.js'
 
 
 class EarthEngineLayer(pdk.Layer):
-    """Wrapper class for using the Earth Engine custom layer with Pydeck
+    """Wrapper class for using the EarthEngineLayer with Pydeck
     """
+    layer_name = 'EarthEngineLayer'
+
     def __init__(
             self,
             ee_object,
@@ -30,7 +32,7 @@ class EarthEngineLayer(pdk.Layer):
               bundle
         """
         super(EarthEngineLayer, self).__init__(
-            'EarthEngineLayer', None, vis_params=vis_params, **kwargs)
+            self.layer_name, None, vis_params=vis_params, **kwargs)
 
         # Should we assume ee has already been initialized?
         ee.Initialize()
@@ -105,3 +107,25 @@ class EarthEngineLayer(pdk.Layer):
 
         self._refresh_token()
         return self.access_token
+
+
+class EarthEngineTerrainLayer(EarthEngineLayer):
+    """Wrapper class for using the EarthEngineTerrainLayer with Pydeck
+    """
+    layer_name = 'EarthEngineTerrainLayer'
+
+    def __init__(
+            self,
+            ee_object,
+            ee_terrain_object,
+            vis_params=None,
+            credentials=None,
+            library_url=EARTHENGINE_LAYER_BUNDLE_URL,
+            **kwargs):
+        super(EarthEngineTerrainLayer, self).__init__(
+            ee_object=ee_object,
+            ee_terrain_object=ee_terrain_object,
+            vis_params=vis_params,
+            credentials=credentials,
+            library_url=library_url,
+            **kwargs)

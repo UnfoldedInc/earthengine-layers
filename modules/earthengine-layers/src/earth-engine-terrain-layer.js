@@ -7,7 +7,7 @@ import {deepEqual, promisifyEEMethod} from './utils';
 /**
  * Decoder for Terrarium encoding
  */
-export const ELEVATION_DECODER = {
+const ELEVATION_DECODER = {
   rScaler: 256,
   gScaler: 1,
   bScaler: 1 / 256,
