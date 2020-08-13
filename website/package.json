@@ -22,7 +22,7 @@
     "@deck.gl/layers": "^8.2.5",
     "@deck.gl/mesh-layers": "^8.2.5",
     "@deck.gl/react": "^8.2.5",
-    "@loaders.gl/core": "^2.1.1",
+    "@loaders.gl/core": "^2.3.0-alpha.10",
     "@luma.gl/constants": "^8.2.0",
     "@luma.gl/core": "^8.2.0",
     "@luma.gl/experimental": "^8.2.0",

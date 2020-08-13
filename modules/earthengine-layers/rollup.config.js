@@ -25,8 +25,7 @@ const config = ({file, plugins = [], globals = {}, external = []}) => ({
     '@luma.gl/engine',
     '@luma.gl/gltools',
     '@luma.gl/webgl',
-    '@loaders.gl/core',
-    '@loaders.gl/loader-utils'
+    '@loaders.gl/core'
   ],
   plugins: [
     ...plugins,
