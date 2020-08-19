@@ -124,6 +124,17 @@ class EarthEngineTerrainLayer(EarthEngineLayer):
             credentials=None,
             library_url=EARTHENGINE_LAYER_BUNDLE_URL,
             **kwargs):
+        """EarthEngineTerrainLayer constructor
+
+        Args:
+            - ee_object: Earth Engine object used for image visualization
+            - ee_terrain_object: Earth Engine object used for terrain heights
+            - vis_params: Dict of vis_params to pass to the Earth Engine backend
+            - credentials: Google OAuth2 credentials object. Saved credentials
+              will be loaded if not passed.
+            - library_url: URL from which to load EarthEngineLayer JavaScript
+              bundle
+        """
         super(EarthEngineTerrainLayer, self).__init__(
             ee_object=ee_object,
             ee_terrain_object=ee_terrain_object,
