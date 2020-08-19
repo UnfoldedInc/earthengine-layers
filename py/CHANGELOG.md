@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.2.0 (2020-08-19)
+
+- New `EarthEngineTerrainLayer` exposed through Pydeck. Allows for visualizing EarthEngine `Image` objects over 3D terrain
+- Reduced positional arguments. For the `EarthEngineLayer`, only `ee_object` and `vis_params` may be positional arguments; all others must be keyword arguments. For the `EarthEngineTerrainLayer`, only `ee_object`, `ee_terrain_object`, and `vis_params` may be positional arguments; all others must be keyword arguments.
+- Various JavaScript-side improvements, which trickle down to Pydeck. See [What's New](/docs/whats-new) for more information.
+
+## 1.1.0
+
+Skipped to maintain identical versions as JS bundle
+
 ## 1.0.1 (2020-08-06)
 
 - Pin JS bundle used by pydeck to `1.0.0`, since `1.1.0` upgrades the TileLayer to deck.gl 8.2 and is currently broken.
