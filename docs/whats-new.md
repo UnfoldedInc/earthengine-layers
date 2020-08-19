@@ -1,5 +1,11 @@
 # What's New
 
+## v1.2.0 - (2020-08-19)
+
+- `EarthEngineTerrainLayer` available in pydeck
+- Improved tile request strategies to prevent EarthEngine tile load failures
+- Bump `earthengine-api` dependency to `^0.1.230`.
+
 ## v1.1.1 - (2020-08-13)
 
 - Update `loaders.gl` to a 2.3.0 alpha release to fix a bundling issue for pydeck
