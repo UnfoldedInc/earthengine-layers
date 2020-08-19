@@ -18,6 +18,7 @@ class EarthEngineLayer(pdk.Layer):
             self,
             ee_object,
             vis_params=None,
+            *,
             credentials=None,
             library_url=EARTHENGINE_LAYER_BUNDLE_URL,
             **kwargs):
@@ -119,6 +120,7 @@ class EarthEngineTerrainLayer(EarthEngineLayer):
             ee_object,
             ee_terrain_object,
             vis_params=None,
+            *,
             credentials=None,
             library_url=EARTHENGINE_LAYER_BUNDLE_URL,
             **kwargs):
@@ -129,3 +131,6 @@ class EarthEngineTerrainLayer(EarthEngineLayer):
             credentials=credentials,
             library_url=library_url,
             **kwargs)
+
+        self.ee_terrain_object = ee_terrain_object.serialize(
+        ) if not isinstance(ee_terrain_object, str) else ee_terrain_object
