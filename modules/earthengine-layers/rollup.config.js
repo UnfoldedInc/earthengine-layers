@@ -13,7 +13,6 @@ const config = ({file, plugins = [], globals = {}, external = []}) => ({
       ...globals,
       '@deck.gl/core': 'deck',
       '@deck.gl/layers': 'deck',
-      '@luma.gl/core': 'luma',
       '@loaders.gl/core': 'loaders'
     }
   },
@@ -21,10 +20,6 @@ const config = ({file, plugins = [], globals = {}, external = []}) => ({
     ...external,
     '@deck.gl/core',
     '@deck.gl/layers',
-    '@luma.gl/core',
-    '@luma.gl/engine',
-    '@luma.gl/gltools',
-    '@luma.gl/webgl',
     '@loaders.gl/core'
   ],
   plugins: [
