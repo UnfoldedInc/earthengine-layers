@@ -1,5 +1,5 @@
 import {CompositeLayer} from '@deck.gl/core';
-import {TileLayer, TerrainLayer} from '@deck.gl/geo-layers';
+import {TerrainLayer} from '@deck.gl/geo-layers';
 import ee from '@google/earthengine';
 import {initializeEEApi} from './ee-api'; // Promisify ee apis
 import {deepEqual, promisifyEEMethod} from './utils';
@@ -19,16 +19,18 @@ export const ELEVATION_DECODER = {
 let accessToken;
 
 const defaultProps = {
-  ...TileLayer.defaultProps,
-  // Set lower default than in deck.gl TileLayer
-  maxRequests: 6,
+  ...TerrainLayer.defaultProps,
   // data prop is unused
   data: {type: 'object', value: null},
   token: {type: 'string', value: null},
   eeObject: {type: 'object', value: null},
   eeTerrainObject: {type: 'object', value: null},
   visParams: {type: 'object', value: null, equal: deepEqual},
-  refinementStrategy: 'no-overlap'
+
+  // TileLayer props with custom defaults
+  maxRequests: 6,
+  refinementStrategy: 'no-overlap',
+  tileSize: 256
 };
 
 export default class EarthEngineTerrainLayer extends CompositeLayer {
@@ -138,6 +140,7 @@ export default class EarthEngineTerrainLayer extends CompositeLayer {
 
   renderLayers() {
     const {mapid, urlFormat, meshMapid, meshUrlFormat} = this.state;
+    const {extent, maxRequests, maxZoom, minZoom, tileSize} = this.props;
 
     return (
       mapid &&
@@ -150,7 +153,12 @@ export default class EarthEngineTerrainLayer extends CompositeLayer {
           elevationData: meshUrlFormat,
           texture: urlFormat,
           elevationDecoder: ELEVATION_DECODER,
-          meshMaxError: 10
+          meshMaxError: 10,
+          extent,
+          maxRequests,
+          maxZoom,
+          minZoom,
+          tileSize
         }
       )
     );
