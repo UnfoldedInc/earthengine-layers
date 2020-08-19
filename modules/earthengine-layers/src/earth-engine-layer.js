@@ -30,7 +30,10 @@ const defaultProps = {
   animate: false,
   // Frames per second
   animationSpeed: 12,
-  refinementStrategy: 'no-overlap'
+
+  // TileLayer props with custom defaults
+  refinementStrategy: 'no-overlap',
+  tileSize: 256
 };
 
 export default class EarthEngineLayer extends CompositeLayer {
@@ -268,14 +271,17 @@ export default class EarthEngineLayer extends CompositeLayer {
   renderLayers() {
     const {mapid, frame = 0, renderMethod} = this.state;
     const {
-      refinementStrategy,
-      onViewportLoad,
-      onTileLoad,
-      onTileError,
+      extent,
+      maxCacheByteSize,
+      maxCacheSize,
+      maxRequests,
       maxZoom,
       minZoom,
-      maxCacheSize,
-      maxCacheByteSize
+      onTileError,
+      onTileLoad,
+      onViewportLoad,
+      refinementStrategy,
+      tileSize
     } = this.props;
 
     return (
@@ -287,15 +293,18 @@ export default class EarthEngineLayer extends CompositeLayer {
               id: mapid
             }),
             {
-              refinementStrategy,
-              onViewportLoad,
-              onTileLoad,
-              onTileError,
+              extent,
+              frame,
+              maxCacheByteSize,
+              maxCacheSize,
+              maxRequests,
               maxZoom,
               minZoom,
-              maxCacheSize,
-              maxCacheByteSize,
-              frame,
+              onTileError,
+              onTileLoad,
+              onViewportLoad,
+              refinementStrategy,
+              tileSize,
 
               getTileData: options => this.getTileData(options),
 
