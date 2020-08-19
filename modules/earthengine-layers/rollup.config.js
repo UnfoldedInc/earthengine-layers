@@ -31,8 +31,13 @@ const config = ({file, plugins = [], globals = {}, external = []}) => ({
   ]
 });
 
-// TODO: What globals should we assume for the main ee bundle?
-const eeGlobals = {'@google/earthengine': 'ee'}
+const eeGlobals = {
+  '@google/earthengine': 'ee',
+  '@deck.gl/core': 'deck',
+  '@deck.gl/geo-layers': 'deck',
+  '@deck.gl/layers': 'deck',
+  '@deck.gl/mesh-layers': 'deck'
+};
 
 // deck.gl globals provided by pydeck. See:
 // https://github.com/visgl/deck.gl/blob/c8702ae134e0598b2fdca03642744f25e9de593b/modules/jupyter-widget/src/deck-bundle.js
