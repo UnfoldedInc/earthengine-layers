@@ -15,11 +15,7 @@ const config = ({file, plugins = [], globals = {}, external = []}) => ({
       '@loaders.gl/core': 'loaders'
     }
   },
-  external: [
-    ...external,
-    '@deck.gl/core',
-    '@loaders.gl/core'
-  ],
+  external: [...external, '@deck.gl/core', '@loaders.gl/core'],
   plugins: [
     ...plugins,
     resolve({
