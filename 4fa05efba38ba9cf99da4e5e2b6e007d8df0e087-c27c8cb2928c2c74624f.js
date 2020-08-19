@@ -13,13 +13,6 @@ function _classCallCheck(instance, Constructor) {
 
 /***/ }),
 
-/***/ 4:
-/***/ (function(module, exports) {
-
-/* (ignored) */
-
-/***/ }),
-
 /***/ "5ku3":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -38,6 +31,13 @@ function isBrowserMainThread() {
   return isBrowser() && typeof document !== 'undefined';
 }
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("8oxB")))
+
+/***/ }),
+
+/***/ 6:
+/***/ (function(module, exports) {
+
+/* (ignored) */
 
 /***/ }),
 
@@ -894,7 +894,7 @@ function logImageInNode(_ref3) {
   var asciify = null;
 
   try {
-    asciify = __webpack_require__(4);
+    asciify = __webpack_require__(6);
   } catch (error) {}
 
   if (asciify) {

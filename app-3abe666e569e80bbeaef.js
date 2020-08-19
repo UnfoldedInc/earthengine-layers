@@ -457,6 +457,71 @@ module.exports = _interopRequireWildcard;
 
 /***/ }),
 
+/***/ "30RF":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "d", function() { return /* binding */ setMatchPaths; });
+__webpack_require__.d(__webpack_exports__, "a", function() { return /* binding */ find_path_findMatchPath; });
+__webpack_require__.d(__webpack_exports__, "c", function() { return /* binding */ find_path_grabMatchParams; });
+__webpack_require__.d(__webpack_exports__, "b", function() { return /* binding */ findPath; });
+
+// UNUSED EXPORTS: cleanPath
+
+// EXTERNAL MODULE: ./node_modules/@reach/router/es/lib/utils.js
+var utils = __webpack_require__("LYrO");
+
+// EXTERNAL MODULE: ./.cache/strip-prefix.js
+var strip_prefix = __webpack_require__("cSJ8");
+
+// CONCATENATED MODULE: ./.cache/normalize-page-path.js
+/* harmony default export */ var normalize_page_path = (function(path){if(path===undefined){return path;}if(path==="/"){return"/";}if(path.charAt(path.length-1)==="/"){return path.slice(0,-1);}return path;});
+// CONCATENATED MODULE: ./.cache/find-path.js
+var pathCache=new Map();var matchPaths=[];var find_path_trimPathname=function trimPathname(rawPathname){var pathname=decodeURIComponent(rawPathname);// Remove the pathPrefix from the pathname.
+var trimmedPathname=Object(strip_prefix["a" /* default */])(pathname,"")// Remove any hashfragment
+.split("#")[0]// Remove search query
+.split("?")[0];return trimmedPathname;};function absolutify(path){// If it's already absolute, return as-is
+if(path.startsWith("/")||path.startsWith("https://")||path.startsWith("http://")){return path;}// Calculate path relative to current location, adding a trailing slash to
+// match behavior of @reach/router
+return new URL(path,window.location.href+(window.location.href.endsWith("/")?"":"/")).pathname;}/**
+ * Set list of matchPaths
+ *
+ * @param {Array<{path: string, matchPath: string}>} value collection of matchPaths
+ */var setMatchPaths=function setMatchPaths(value){matchPaths=value;};/**
+ * Return a matchpath url
+ * if `match-paths.json` contains `{ "/foo*": "/page1", ...}`, then
+ * `/foo?bar=far` => `/page1`
+ *
+ * @param {string} rawPathname A raw pathname
+ * @return {string|null}
+ */var find_path_findMatchPath=function findMatchPath(rawPathname){var trimmedPathname=find_path_cleanPath(rawPathname);var pickPaths=matchPaths.map(function(_ref){var path=_ref.path,matchPath=_ref.matchPath;return{path:matchPath,originalPath:path};});var path=Object(utils["pick"])(pickPaths,trimmedPathname);if(path){return normalize_page_path(path.route.originalPath);}return null;};/**
+ * Return a matchpath params from reach/router rules
+ * if `match-paths.json` contains `{ ":bar/*foo" }`, and the path is /baz/zaz/zoo
+ * then it returns
+ *  { bar: baz, foo: zaz/zoo }
+ *
+ * @param {string} rawPathname A raw pathname
+ * @return {object}
+ */var find_path_grabMatchParams=function grabMatchParams(rawPathname){var trimmedPathname=find_path_cleanPath(rawPathname);var pickPaths=matchPaths.map(function(_ref2){var path=_ref2.path,matchPath=_ref2.matchPath;return{path:matchPath,originalPath:path};});var path=Object(utils["pick"])(pickPaths,trimmedPathname);if(path){return path.params;}return{};};// Given a raw URL path, returns the cleaned version of it (trim off
+// `#` and query params), or if it matches an entry in
+// `match-paths.json`, its matched path is returned
+//
+// E.g. `/foo?bar=far` => `/foo`
+//
+// Or if `match-paths.json` contains `{ "/foo*": "/page1", ...}`, then
+// `/foo?bar=far` => `/page1`
+var findPath=function findPath(rawPathname){var trimmedPathname=find_path_trimPathname(absolutify(rawPathname));if(pathCache.has(trimmedPathname)){return pathCache.get(trimmedPathname);}var foundPath=find_path_findMatchPath(trimmedPathname);if(!foundPath){foundPath=find_path_cleanPath(rawPathname);}pathCache.set(trimmedPathname,foundPath);return foundPath;};/**
+ * Clean a url and converts /index.html => /
+ * E.g. `/foo?bar=far` => `/foo`
+ *
+ * @param {string} rawPathname A raw pathname
+ * @return {string}
+ */var find_path_cleanPath=function cleanPath(rawPathname){var trimmedPathname=find_path_trimPathname(absolutify(rawPathname));var foundPath=trimmedPathname;if(foundPath==="/index.html"){foundPath="/";}foundPath=normalize_page_path(foundPath);return foundPath;};
+
+/***/ }),
+
 /***/ "3uz+":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2149,8 +2214,9 @@ module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 /* harmony import */ var _loader__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("emEt");
 /* harmony import */ var _api_runner_browser__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("xtsi");
 /* harmony import */ var _api_runner_browser__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_api_runner_browser__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _find_path__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__("30RF");
 // Renders page
-var PageRenderer=/*#__PURE__*/function(_React$Component){Object(_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(PageRenderer,_React$Component);function PageRenderer(){return _React$Component.apply(this,arguments)||this;}var _proto=PageRenderer.prototype;_proto.render=function render(){var props=Object.assign({},this.props,{pathContext:this.props.pageContext});var _apiRunner=Object(_api_runner_browser__WEBPACK_IMPORTED_MODULE_3__["apiRunner"])("replaceComponentRenderer",{props:this.props,loader:_loader__WEBPACK_IMPORTED_MODULE_2__["publicLoader"]}),replacementElement=_apiRunner[0];var pageElement=replacementElement||/*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_1__["createElement"])(this.props.pageResources.component,Object.assign({},props,{key:this.props.path||this.props.pageResources.page.path}));var wrappedPage=Object(_api_runner_browser__WEBPACK_IMPORTED_MODULE_3__["apiRunner"])("wrapPageElement",{element:pageElement,props:props},pageElement,function(_ref){var result=_ref.result;return{element:result,props:props};}).pop();return wrappedPage;};return PageRenderer;}(react__WEBPACK_IMPORTED_MODULE_1___default.a.Component);/* harmony default export */ __webpack_exports__["a"] = (PageRenderer);
+var PageRenderer=/*#__PURE__*/function(_React$Component){Object(_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(PageRenderer,_React$Component);function PageRenderer(){return _React$Component.apply(this,arguments)||this;}var _proto=PageRenderer.prototype;_proto.render=function render(){var props=Object.assign({},this.props,{params:Object.assign({},Object(_find_path__WEBPACK_IMPORTED_MODULE_4__[/* grabMatchParams */ "c"])(this.props.location.pathname),this.props.pageResources.json.pageContext.__params),pathContext:this.props.pageContext});var _apiRunner=Object(_api_runner_browser__WEBPACK_IMPORTED_MODULE_3__["apiRunner"])("replaceComponentRenderer",{props:this.props,loader:_loader__WEBPACK_IMPORTED_MODULE_2__["publicLoader"]}),replacementElement=_apiRunner[0];var pageElement=replacementElement||/*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_1__["createElement"])(this.props.pageResources.component,Object.assign({},props,{key:this.props.path||this.props.pageResources.page.path}));var wrappedPage=Object(_api_runner_browser__WEBPACK_IMPORTED_MODULE_3__["apiRunner"])("wrapPageElement",{element:pageElement,props:props},pageElement,function(_ref){var result=_ref.result;return{element:result,props:props};}).pop();return wrappedPage;};return PageRenderer;}(react__WEBPACK_IMPORTED_MODULE_1___default.a.Component);/* harmony default export */ __webpack_exports__["a"] = (PageRenderer);
 
 /***/ }),
 
@@ -2166,6 +2232,13 @@ function _assertThisInitialized(self) {
 
   return self;
 }
+
+/***/ }),
+
+/***/ "JeVI":
+/***/ (function(module) {
+
+module.exports = JSON.parse("[]");
 
 /***/ }),
 
@@ -2689,6 +2762,14 @@ console.log("Content is now available offline!");// Post to service worker that 
 // Delay to allow time for the event listener to be added --
 // otherwise fetch is called too soon and resources aren't cached.
 Object(_api_runner_browser__WEBPACK_IMPORTED_MODULE_0__["apiRunner"])("onServiceWorkerInstalled",{serviceWorker:reg});}break;case"redundant":console.error("The installing service worker became redundant.");Object(_api_runner_browser__WEBPACK_IMPORTED_MODULE_0__["apiRunner"])("onServiceWorkerRedundant",{serviceWorker:reg});break;case"activated":Object(_api_runner_browser__WEBPACK_IMPORTED_MODULE_0__["apiRunner"])("onServiceWorkerActive",{serviceWorker:reg});break;}});});}).catch(function(e){console.error("Error during service worker registration:",e);});}
+
+/***/ }),
+
+/***/ "NsGk":
+/***/ (function(module, exports, __webpack_require__) {
+
+// prefer default export if available
+var preferDefault=function preferDefault(m){return m&&m.default||m;};exports.components={"component---examples-image-app-js":function componentExamplesImageAppJs(){return Promise.all(/* import() | component---examples-image-app-js */[__webpack_require__.e(2), __webpack_require__.e(3), __webpack_require__.e(0), __webpack_require__.e(1), __webpack_require__.e(4), __webpack_require__.e(8)]).then(__webpack_require__.bind(null, "k1r1"));},"component---examples-image-collection-app-js":function componentExamplesImageCollectionAppJs(){return Promise.all(/* import() | component---examples-image-collection-app-js */[__webpack_require__.e(2), __webpack_require__.e(3), __webpack_require__.e(0), __webpack_require__.e(1), __webpack_require__.e(4), __webpack_require__.e(9)]).then(__webpack_require__.bind(null, "ckFc"));},"component---examples-intl-boundary-app-js":function componentExamplesIntlBoundaryAppJs(){return Promise.all(/* import() | component---examples-intl-boundary-app-js */[__webpack_require__.e(2), __webpack_require__.e(3), __webpack_require__.e(0), __webpack_require__.e(1), __webpack_require__.e(4), __webpack_require__.e(10)]).then(__webpack_require__.bind(null, "Wfdd"));},"component---examples-noaa-hurricanes-app-js":function componentExamplesNoaaHurricanesAppJs(){return Promise.all(/* import() | component---examples-noaa-hurricanes-app-js */[__webpack_require__.e(2), __webpack_require__.e(3), __webpack_require__.e(0), __webpack_require__.e(1), __webpack_require__.e(4), __webpack_require__.e(11)]).then(__webpack_require__.bind(null, "8BNJ"));},"component---examples-power-plants-app-js":function componentExamplesPowerPlantsAppJs(){return Promise.all(/* import() | component---examples-power-plants-app-js */[__webpack_require__.e(2), __webpack_require__.e(3), __webpack_require__.e(0), __webpack_require__.e(1), __webpack_require__.e(4), __webpack_require__.e(12)]).then(__webpack_require__.bind(null, "SY+S"));},"component---examples-terrain-app-js":function componentExamplesTerrainAppJs(){return Promise.all(/* import() | component---examples-terrain-app-js */[__webpack_require__.e(2), __webpack_require__.e(3), __webpack_require__.e(0), __webpack_require__.e(1), __webpack_require__.e(4), __webpack_require__.e(13)]).then(__webpack_require__.bind(null, "P59B"));},"component---node-modules-gatsby-theme-ocular-src-react-templates-documentation-jsx":function componentNodeModulesGatsbyThemeOcularSrcReactTemplatesDocumentationJsx(){return Promise.all(/* import() | component---node-modules-gatsby-theme-ocular-src-react-templates-documentation-jsx */[__webpack_require__.e(0), __webpack_require__.e(5), __webpack_require__.e(14)]).then(__webpack_require__.bind(null, "bzNg"));},"component---node-modules-gatsby-theme-ocular-src-react-templates-examples-jsx":function componentNodeModulesGatsbyThemeOcularSrcReactTemplatesExamplesJsx(){return __webpack_require__.e(/* import() | component---node-modules-gatsby-theme-ocular-src-react-templates-examples-jsx */ 15).then(__webpack_require__.bind(null, "2flm"));},"component---node-modules-gatsby-theme-ocular-src-react-templates-search-jsx":function componentNodeModulesGatsbyThemeOcularSrcReactTemplatesSearchJsx(){return __webpack_require__.e(/* import() | component---node-modules-gatsby-theme-ocular-src-react-templates-search-jsx */ 16).then(__webpack_require__.bind(null, "H/ma"));},"component---templates-index-jsx":function componentTemplatesIndexJsx(){return Promise.all(/* import() | component---templates-index-jsx */[__webpack_require__.e(0), __webpack_require__.e(5), __webpack_require__.e(17)]).then(__webpack_require__.bind(null, "5462"));}};
 
 /***/ }),
 
@@ -3347,7 +3428,7 @@ var ready_default = /*#__PURE__*/__webpack_require__.n(ready);
 // EXTERNAL MODULE: ./.cache/gatsby-browser-entry.js
 var gatsby_browser_entry = __webpack_require__("Wbzz");
 
-// EXTERNAL MODULE: ./.cache/loader.js + 3 modules
+// EXTERNAL MODULE: ./.cache/loader.js + 1 modules
 var loader = __webpack_require__("emEt");
 
 // EXTERNAL MODULE: ./.cache/redirects.json
@@ -3399,8 +3480,8 @@ var navigation_RouteUpdates=/*#__PURE__*/function(_React$Component2){Object(inhe
 // EXTERNAL MODULE: ./.cache/page-renderer.js
 var page_renderer = __webpack_require__("IOVJ");
 
-// EXTERNAL MODULE: ./_this_is_virtual_fs_path_/$virtual/async-requires.js
-var async_requires = __webpack_require__("WM4P");
+// EXTERNAL MODULE: ./.cache/_this_is_virtual_fs_path_/$virtual/async-requires.js
+var async_requires = __webpack_require__("NsGk");
 var async_requires_default = /*#__PURE__*/__webpack_require__.n(async_requires);
 
 // CONCATENATED MODULE: ./node_modules/shallow-compare/es/index.js
@@ -3426,8 +3507,8 @@ if(this.state.location.key!==nextState.location.key&&nextState.pageResources.pag
 // EXTERNAL MODULE: ./.cache/strip-prefix.js
 var strip_prefix = __webpack_require__("cSJ8");
 
-// EXTERNAL MODULE: ./_this_is_virtual_fs_path_/$virtual/match-paths.json
-var match_paths = __webpack_require__("Vd8h");
+// EXTERNAL MODULE: ./.cache/_this_is_virtual_fs_path_/$virtual/match-paths.json
+var match_paths = __webpack_require__("JeVI");
 
 // CONCATENATED MODULE: ./.cache/production-app.js
 // Generated during bootstrap
@@ -3465,21 +3546,6 @@ module.exports = _inheritsLoose;
 
 /***/ }),
 
-/***/ "Vd8h":
-/***/ (function(module) {
-
-module.exports = JSON.parse("[]");
-
-/***/ }),
-
-/***/ "WM4P":
-/***/ (function(module, exports, __webpack_require__) {
-
-// prefer default export if available
-var preferDefault=function preferDefault(m){return m&&m.default||m;};exports.components={"component---examples-image-app-js":function componentExamplesImageAppJs(){return Promise.all(/* import() | component---examples-image-app-js */[__webpack_require__.e(2), __webpack_require__.e(3), __webpack_require__.e(0), __webpack_require__.e(1), __webpack_require__.e(4), __webpack_require__.e(8)]).then(__webpack_require__.bind(null, "k1r1"));},"component---examples-image-collection-app-js":function componentExamplesImageCollectionAppJs(){return Promise.all(/* import() | component---examples-image-collection-app-js */[__webpack_require__.e(2), __webpack_require__.e(3), __webpack_require__.e(0), __webpack_require__.e(1), __webpack_require__.e(4), __webpack_require__.e(9)]).then(__webpack_require__.bind(null, "ckFc"));},"component---examples-intl-boundary-app-js":function componentExamplesIntlBoundaryAppJs(){return Promise.all(/* import() | component---examples-intl-boundary-app-js */[__webpack_require__.e(2), __webpack_require__.e(3), __webpack_require__.e(0), __webpack_require__.e(1), __webpack_require__.e(4), __webpack_require__.e(10)]).then(__webpack_require__.bind(null, "Wfdd"));},"component---examples-noaa-hurricanes-app-js":function componentExamplesNoaaHurricanesAppJs(){return Promise.all(/* import() | component---examples-noaa-hurricanes-app-js */[__webpack_require__.e(2), __webpack_require__.e(3), __webpack_require__.e(0), __webpack_require__.e(1), __webpack_require__.e(4), __webpack_require__.e(11)]).then(__webpack_require__.bind(null, "8BNJ"));},"component---examples-power-plants-app-js":function componentExamplesPowerPlantsAppJs(){return Promise.all(/* import() | component---examples-power-plants-app-js */[__webpack_require__.e(2), __webpack_require__.e(3), __webpack_require__.e(0), __webpack_require__.e(1), __webpack_require__.e(4), __webpack_require__.e(12)]).then(__webpack_require__.bind(null, "SY+S"));},"component---examples-terrain-app-js":function componentExamplesTerrainAppJs(){return Promise.all(/* import() | component---examples-terrain-app-js */[__webpack_require__.e(2), __webpack_require__.e(3), __webpack_require__.e(0), __webpack_require__.e(1), __webpack_require__.e(4), __webpack_require__.e(13)]).then(__webpack_require__.bind(null, "P59B"));},"component---node-modules-gatsby-theme-ocular-src-react-templates-documentation-jsx":function componentNodeModulesGatsbyThemeOcularSrcReactTemplatesDocumentationJsx(){return Promise.all(/* import() | component---node-modules-gatsby-theme-ocular-src-react-templates-documentation-jsx */[__webpack_require__.e(0), __webpack_require__.e(5), __webpack_require__.e(14)]).then(__webpack_require__.bind(null, "bzNg"));},"component---node-modules-gatsby-theme-ocular-src-react-templates-examples-jsx":function componentNodeModulesGatsbyThemeOcularSrcReactTemplatesExamplesJsx(){return __webpack_require__.e(/* import() | component---node-modules-gatsby-theme-ocular-src-react-templates-examples-jsx */ 15).then(__webpack_require__.bind(null, "2flm"));},"component---node-modules-gatsby-theme-ocular-src-react-templates-search-jsx":function componentNodeModulesGatsbyThemeOcularSrcReactTemplatesSearchJsx(){return __webpack_require__.e(/* import() | component---node-modules-gatsby-theme-ocular-src-react-templates-search-jsx */ 16).then(__webpack_require__.bind(null, "H/ma"));},"component---templates-index-jsx":function componentTemplatesIndexJsx(){return Promise.all(/* import() | component---templates-index-jsx */[__webpack_require__.e(0), __webpack_require__.e(5), __webpack_require__.e(17)]).then(__webpack_require__.bind(null, "5462"));}};
-
-/***/ }),
-
 /***/ "Wbzz":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -3489,6 +3555,7 @@ var preferDefault=function preferDefault(m){return m&&m.default||m;};exports.com
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return StaticQuery; });
 /* unused harmony export useStaticQuery */
 /* unused harmony export prefetchPathname */
+/* unused harmony export unstable_collectionGraphql */
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("q1tI");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var gatsby_link__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("+ZDr");
@@ -3504,7 +3571,8 @@ var preferDefault=function preferDefault(m){return m&&m.default||m;};exports.com
 var prefetchPathname=_loader__WEBPACK_IMPORTED_MODULE_4__["default"].enqueue;var StaticQueryContext=/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createContext({});function StaticQueryDataRenderer(_ref){var staticQueryData=_ref.staticQueryData,data=_ref.data,query=_ref.query,render=_ref.render;var finalData=data?data.data:staticQueryData[query]&&staticQueryData[query].data;return/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment,null,finalData&&render(finalData),!finalData&&/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div",null,"Loading (StaticQuery)"));}var StaticQuery=function StaticQuery(props){var data=props.data,query=props.query,render=props.render,children=props.children;return/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(StaticQueryContext.Consumer,null,function(staticQueryData){return/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(StaticQueryDataRenderer,{data:data,query:query,render:render||children,staticQueryData:staticQueryData});});};var useStaticQuery=function useStaticQuery(query){var _context$query;if(typeof react__WEBPACK_IMPORTED_MODULE_0___default.a.useContext!=="function"&&"production"==="development"){throw new Error("You're likely using a version of React that doesn't support Hooks\n"+"Please update React and ReactDOM to 16.8.0 or later to use the useStaticQuery hook.");}var context=react__WEBPACK_IMPORTED_MODULE_0___default.a.useContext(StaticQueryContext);// query is a stringified number like `3303882` when wrapped with graphql, If a user forgets
 // to wrap the query in a grqphql, then casting it to a Number results in `NaN` allowing us to
 // catch the misuse of the API and give proper direction
-if(isNaN(Number(query))){throw new Error("useStaticQuery was called with a string but expects to be called using `graphql`. Try this:\n\nimport { useStaticQuery, graphql } from 'gatsby';\n\nuseStaticQuery(graphql`"+query+"`);\n");}if(context===null||context===void 0?void 0:(_context$query=context[query])===null||_context$query===void 0?void 0:_context$query.data){return context[query].data;}else{throw new Error("The result of this StaticQuery could not be fetched.\n\n"+"This is likely a bug in Gatsby and if refreshing the page does not fix it, "+"please open an issue in https://github.com/gatsbyjs/gatsby/issues");}};function graphql(){throw new Error("It appears like Gatsby is misconfigured. Gatsby related `graphql` calls "+"are supposed to only be evaluated at compile time, and then compiled away. "+"Unfortunately, something went wrong and the query was left in the compiled code.\n\n"+"Unless your site has a complex or custom babel/Gatsby configuration this is likely a bug in Gatsby.");}
+if(isNaN(Number(query))){throw new Error("useStaticQuery was called with a string but expects to be called using `graphql`. Try this:\n\nimport { useStaticQuery, graphql } from 'gatsby';\n\nuseStaticQuery(graphql`"+query+"`);\n");}if(context===null||context===void 0?void 0:(_context$query=context[query])===null||_context$query===void 0?void 0:_context$query.data){return context[query].data;}else{throw new Error("The result of this StaticQuery could not be fetched.\n\n"+"This is likely a bug in Gatsby and if refreshing the page does not fix it, "+"please open an issue in https://github.com/gatsbyjs/gatsby/issues");}};function graphql(){throw new Error("It appears like Gatsby is misconfigured. Gatsby related `graphql` calls "+"are supposed to only be evaluated at compile time, and then compiled away. "+"Unfortunately, something went wrong and the query was left in the compiled code.\n\n"+"Unless your site has a complex or custom babel/Gatsby configuration this is likely a bug in Gatsby.");}function unstable_collectionGraphql(){// TODO: Strip this out of the component and throw error if it gets called
+return null;}
 
 /***/ }),
 
@@ -5515,47 +5583,9 @@ var support=function support(feature){if(typeof document==="undefined"){return f
 // EXTERNAL MODULE: ./.cache/emitter.js + 1 modules
 var emitter = __webpack_require__("5yr3");
 
-// EXTERNAL MODULE: ./node_modules/@reach/router/es/lib/utils.js
-var utils = __webpack_require__("LYrO");
+// EXTERNAL MODULE: ./.cache/find-path.js + 1 modules
+var find_path = __webpack_require__("30RF");
 
-// EXTERNAL MODULE: ./.cache/strip-prefix.js
-var strip_prefix = __webpack_require__("cSJ8");
-
-// CONCATENATED MODULE: ./.cache/normalize-page-path.js
-/* harmony default export */ var normalize_page_path = (function(path){if(path===undefined){return path;}if(path==="/"){return"/";}if(path.charAt(path.length-1)==="/"){return path.slice(0,-1);}return path;});
-// CONCATENATED MODULE: ./.cache/find-path.js
-function _createForOfIteratorHelperLoose(o,allowArrayLike){var it;if(typeof Symbol==="undefined"||o[Symbol.iterator]==null){if(Array.isArray(o)||(it=_unsupportedIterableToArray(o))||allowArrayLike&&o&&typeof o.length==="number"){if(it)o=it;var i=0;return function(){if(i>=o.length)return{done:true};return{done:false,value:o[i++]};};}throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}it=o[Symbol.iterator]();return it.next.bind(it);}function _unsupportedIterableToArray(o,minLen){if(!o)return;if(typeof o==="string")return _arrayLikeToArray(o,minLen);var n=Object.prototype.toString.call(o).slice(8,-1);if(n==="Object"&&o.constructor)n=o.constructor.name;if(n==="Map"||n==="Set")return Array.from(o);if(n==="Arguments"||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))return _arrayLikeToArray(o,minLen);}function _arrayLikeToArray(arr,len){if(len==null||len>arr.length)len=arr.length;for(var i=0,arr2=new Array(len);i<len;i++){arr2[i]=arr[i];}return arr2;}var pathCache=new Map();var find_path_matchPaths=[];var find_path_trimPathname=function trimPathname(rawPathname){var pathname=decodeURIComponent(rawPathname);// Remove the pathPrefix from the pathname.
-var trimmedPathname=Object(strip_prefix["a" /* default */])(pathname,"")// Remove any hashfragment
-.split("#")[0]// Remove search query
-.split("?")[0];return trimmedPathname;};function absolutify(path){// If it's already absolute, return as-is
-if(path.startsWith("/")||path.startsWith("https://")||path.startsWith("http://")){return path;}// Calculate path relative to current location, adding a trailing slash to
-// match behavior of @reach/router
-return new URL(path,window.location.href+(window.location.href.endsWith("/")?"":"/")).pathname;}/**
- * Set list of matchPaths
- *
- * @param {Array<{path: string, matchPath: string}>} value collection of matchPaths
- */var setMatchPaths=function setMatchPaths(value){find_path_matchPaths=value;};/**
- * Return a matchpath url
- * if `match-paths.json` contains `{ "/foo*": "/page1", ...}`, then
- * `/foo?bar=far` => `/page1`
- *
- * @param {string} rawPathname A raw pathname
- * @return {string|null}
- */var find_path_findMatchPath=function findMatchPath(rawPathname){var trimmedPathname=find_path_cleanPath(rawPathname);for(var _iterator=_createForOfIteratorHelperLoose(find_path_matchPaths),_step;!(_step=_iterator()).done;){var _step$value=_step.value,matchPath=_step$value.matchPath,path=_step$value.path;if(Object(utils["match"])(matchPath,trimmedPathname)){return normalize_page_path(path);}}return null;};// Given a raw URL path, returns the cleaned version of it (trim off
-// `#` and query params), or if it matches an entry in
-// `match-paths.json`, its matched path is returned
-//
-// E.g. `/foo?bar=far` => `/foo`
-//
-// Or if `match-paths.json` contains `{ "/foo*": "/page1", ...}`, then
-// `/foo?bar=far` => `/page1`
-var findPath=function findPath(rawPathname){var trimmedPathname=find_path_trimPathname(absolutify(rawPathname));if(pathCache.has(trimmedPathname)){return pathCache.get(trimmedPathname);}var foundPath=find_path_findMatchPath(trimmedPathname);if(!foundPath){foundPath=find_path_cleanPath(rawPathname);}pathCache.set(trimmedPathname,foundPath);return foundPath;};/**
- * Clean a url and converts /index.html => /
- * E.g. `/foo?bar=far` => `/foo`
- *
- * @param {string} rawPathname A raw pathname
- * @return {string}
- */var find_path_cleanPath=function cleanPath(rawPathname){var trimmedPathname=find_path_trimPathname(absolutify(rawPathname));var foundPath=trimmedPathname;if(foundPath==="/index.html"){foundPath="/";}foundPath=normalize_page_path(foundPath);return foundPath;};
 // CONCATENATED MODULE: ./.cache/loader.js
 /**
  * Available resource loading statuses
@@ -5578,7 +5608,7 @@ var findPath=function findPath(rawPathname){var trimmedPathname=find_path_trimPa
 //   },
 //   staticQueryResults
 // }
-this.pageDb=new Map();this.inFlightDb=new Map();this.staticQueryDb={};this.pageDataDb=new Map();this.prefetchTriggered=new Set();this.prefetchCompleted=new Set();this.loadComponent=loadComponent;setMatchPaths(matchPaths);}var _proto=BaseLoader.prototype;_proto.memoizedGet=function memoizedGet(url){var _this=this;var inFlightPromise=this.inFlightNetworkRequests.get(url);if(!inFlightPromise){inFlightPromise=doFetch(url,"GET");this.inFlightNetworkRequests.set(url,inFlightPromise);}// Prefer duplication with then + catch over .finally to prevent problems in ie11 + firefox
+this.pageDb=new Map();this.inFlightDb=new Map();this.staticQueryDb={};this.pageDataDb=new Map();this.prefetchTriggered=new Set();this.prefetchCompleted=new Set();this.loadComponent=loadComponent;Object(find_path["d" /* setMatchPaths */])(matchPaths);}var _proto=BaseLoader.prototype;_proto.memoizedGet=function memoizedGet(url){var _this=this;var inFlightPromise=this.inFlightNetworkRequests.get(url);if(!inFlightPromise){inFlightPromise=doFetch(url,"GET");this.inFlightNetworkRequests.set(url,inFlightPromise);}// Prefer duplication with then + catch over .finally to prevent problems in ie11 + firefox
 return inFlightPromise.then(function(response){_this.inFlightNetworkRequests.delete(url);return response;}).catch(function(err){_this.inFlightNetworkRequests.delete(url);throw err;});};_proto.setApiRunner=function setApiRunner(apiRunner){this.apiRunner=apiRunner;this.prefetchDisabled=apiRunner("disableCorePrefetching").some(function(a){return a;});};_proto.fetchPageDataJson=function fetchPageDataJson(loadObj){var _this2=this;var pagePath=loadObj.pagePath,_loadObj$retries=loadObj.retries,retries=_loadObj$retries===void 0?0:_loadObj$retries;var url=createPageDataUrl(pagePath);return this.memoizedGet(url).then(function(req){var status=req.status,responseText=req.responseText;// Handle 200
 if(status===200){try{var jsonPayload=JSON.parse(responseText);if(jsonPayload.path===undefined){throw new Error("not a valid pageData response");}return Object.assign(loadObj,{status:PageResourceStatus.Success,payload:jsonPayload});}catch(err){// continue regardless of error
 }}// Handle 404
@@ -5588,18 +5618,18 @@ if(pagePath==="/404.html"){return Object.assign(loadObj,{status:PageResourceStat
 return _this2.fetchPageDataJson(Object.assign(loadObj,{pagePath:"/404.html",notFound:true}));}// handle 500 response (Unrecoverable)
 if(status===500){return Object.assign(loadObj,{status:PageResourceStatus.Error});}// Handle everything else, including status === 0, and 503s. Should retry
 if(retries<3){return _this2.fetchPageDataJson(Object.assign(loadObj,{retries:retries+1}));}// Retried 3 times already, result is an error.
-return Object.assign(loadObj,{status:PageResourceStatus.Error});});};_proto.loadPageDataJson=function loadPageDataJson(rawPath){var _this3=this;var pagePath=findPath(rawPath);if(this.pageDataDb.has(pagePath)){return Promise.resolve(this.pageDataDb.get(pagePath));}return this.fetchPageDataJson({pagePath:pagePath}).then(function(pageData){_this3.pageDataDb.set(pagePath,pageData);return pageData;});};_proto.findMatchPath=function findMatchPath(rawPath){return find_path_findMatchPath(rawPath);}// TODO check all uses of this and whether they use undefined for page resources not exist
-;_proto.loadPage=function loadPage(rawPath){var _this4=this;var pagePath=findPath(rawPath);if(this.pageDb.has(pagePath)){var page=this.pageDb.get(pagePath);return Promise.resolve(page.payload);}if(this.inFlightDb.has(pagePath)){return this.inFlightDb.get(pagePath);}var inFlightPromise=Promise.all([this.loadAppData(),this.loadPageDataJson(pagePath)]).then(function(allData){var result=allData[1];if(result.status===PageResourceStatus.Error){return{status:PageResourceStatus.Error};}var pageData=result.payload;var _pageData=pageData,componentChunkName=_pageData.componentChunkName,_pageData$staticQuery=_pageData.staticQueryHashes,staticQueryHashes=_pageData$staticQuery===void 0?[]:_pageData$staticQuery;var finalResult={};var componentChunkPromise=_this4.loadComponent(componentChunkName).then(function(component){finalResult.createdAt=new Date();var pageResources;if(!component){finalResult.status=PageResourceStatus.Error;}else{finalResult.status=PageResourceStatus.Success;if(result.notFound===true){finalResult.notFound=true;}pageData=Object.assign(pageData,{webpackCompilationHash:allData[0]?allData[0].webpackCompilationHash:""});pageResources=toPageResources(pageData,component);}// undefined if final result is an error
+return Object.assign(loadObj,{status:PageResourceStatus.Error});});};_proto.loadPageDataJson=function loadPageDataJson(rawPath){var _this3=this;var pagePath=Object(find_path["b" /* findPath */])(rawPath);if(this.pageDataDb.has(pagePath)){return Promise.resolve(this.pageDataDb.get(pagePath));}return this.fetchPageDataJson({pagePath:pagePath}).then(function(pageData){_this3.pageDataDb.set(pagePath,pageData);return pageData;});};_proto.findMatchPath=function findMatchPath(rawPath){return Object(find_path["a" /* findMatchPath */])(rawPath);}// TODO check all uses of this and whether they use undefined for page resources not exist
+;_proto.loadPage=function loadPage(rawPath){var _this4=this;var pagePath=Object(find_path["b" /* findPath */])(rawPath);if(this.pageDb.has(pagePath)){var page=this.pageDb.get(pagePath);return Promise.resolve(page.payload);}if(this.inFlightDb.has(pagePath)){return this.inFlightDb.get(pagePath);}var inFlightPromise=Promise.all([this.loadAppData(),this.loadPageDataJson(pagePath)]).then(function(allData){var result=allData[1];if(result.status===PageResourceStatus.Error){return{status:PageResourceStatus.Error};}var pageData=result.payload;var _pageData=pageData,componentChunkName=_pageData.componentChunkName,_pageData$staticQuery=_pageData.staticQueryHashes,staticQueryHashes=_pageData$staticQuery===void 0?[]:_pageData$staticQuery;var finalResult={};var componentChunkPromise=_this4.loadComponent(componentChunkName).then(function(component){finalResult.createdAt=new Date();var pageResources;if(!component){finalResult.status=PageResourceStatus.Error;}else{finalResult.status=PageResourceStatus.Success;if(result.notFound===true){finalResult.notFound=true;}pageData=Object.assign(pageData,{webpackCompilationHash:allData[0]?allData[0].webpackCompilationHash:""});pageResources=toPageResources(pageData,component);}// undefined if final result is an error
 return pageResources;});var staticQueryBatchPromise=Promise.all(staticQueryHashes.map(function(staticQueryHash){// Check for cache in case this static query result has already been loaded
-if(_this4.staticQueryDb[staticQueryHash]){var jsonPayload=_this4.staticQueryDb[staticQueryHash];return{staticQueryHash:staticQueryHash,jsonPayload:jsonPayload};}return _this4.memoizedGet(""+"/static/d/"+staticQueryHash+".json").then(function(req){var jsonPayload=JSON.parse(req.responseText);return{staticQueryHash:staticQueryHash,jsonPayload:jsonPayload};});})).then(function(staticQueryResults){var staticQueryResultsMap={};staticQueryResults.forEach(function(_ref){var staticQueryHash=_ref.staticQueryHash,jsonPayload=_ref.jsonPayload;staticQueryResultsMap[staticQueryHash]=jsonPayload;_this4.staticQueryDb[staticQueryHash]=jsonPayload;});return staticQueryResultsMap;});return Promise.all([componentChunkPromise,staticQueryBatchPromise]).then(function(_ref2){var pageResources=_ref2[0],staticQueryResults=_ref2[1];var payload;if(pageResources){payload=Object.assign({},pageResources,{staticQueryResults:staticQueryResults});finalResult.payload=payload;emitter["a" /* default */].emit("onPostLoadPageResources",{page:payload,pageResources:payload});}_this4.pageDb.set(pagePath,finalResult);return payload;});});inFlightPromise.then(function(response){_this4.inFlightDb.delete(pagePath);}).catch(function(error){_this4.inFlightDb.delete(pagePath);throw error;});this.inFlightDb.set(pagePath,inFlightPromise);return inFlightPromise;}// returns undefined if loading page ran into errors
-;_proto.loadPageSync=function loadPageSync(rawPath){var pagePath=findPath(rawPath);if(this.pageDb.has(pagePath)){var pageData=this.pageDb.get(pagePath).payload;return pageData;}return undefined;};_proto.shouldPrefetch=function shouldPrefetch(pagePath){// Skip prefetching if we know user is on slow or constrained connection
+if(_this4.staticQueryDb[staticQueryHash]){var jsonPayload=_this4.staticQueryDb[staticQueryHash];return{staticQueryHash:staticQueryHash,jsonPayload:jsonPayload};}return _this4.memoizedGet(""+"/page-data/sq/d/"+staticQueryHash+".json").then(function(req){var jsonPayload=JSON.parse(req.responseText);return{staticQueryHash:staticQueryHash,jsonPayload:jsonPayload};});})).then(function(staticQueryResults){var staticQueryResultsMap={};staticQueryResults.forEach(function(_ref){var staticQueryHash=_ref.staticQueryHash,jsonPayload=_ref.jsonPayload;staticQueryResultsMap[staticQueryHash]=jsonPayload;_this4.staticQueryDb[staticQueryHash]=jsonPayload;});return staticQueryResultsMap;});return Promise.all([componentChunkPromise,staticQueryBatchPromise]).then(function(_ref2){var pageResources=_ref2[0],staticQueryResults=_ref2[1];var payload;if(pageResources){payload=Object.assign({},pageResources,{staticQueryResults:staticQueryResults});finalResult.payload=payload;emitter["a" /* default */].emit("onPostLoadPageResources",{page:payload,pageResources:payload});}_this4.pageDb.set(pagePath,finalResult);return payload;});});inFlightPromise.then(function(response){_this4.inFlightDb.delete(pagePath);}).catch(function(error){_this4.inFlightDb.delete(pagePath);throw error;});this.inFlightDb.set(pagePath,inFlightPromise);return inFlightPromise;}// returns undefined if loading page ran into errors
+;_proto.loadPageSync=function loadPageSync(rawPath){var pagePath=Object(find_path["b" /* findPath */])(rawPath);if(this.pageDb.has(pagePath)){var pageData=this.pageDb.get(pagePath).payload;return pageData;}return undefined;};_proto.shouldPrefetch=function shouldPrefetch(pagePath){// Skip prefetching if we know user is on slow or constrained connection
 if(!doesConnectionSupportPrefetch()){return false;}// Check if the page exists.
 if(this.pageDb.has(pagePath)){return false;}return true;};_proto.prefetch=function prefetch(pagePath){var _this5=this;if(!this.shouldPrefetch(pagePath)){return false;}// Tell plugins with custom prefetching logic that they should start
 // prefetching this path.
 if(!this.prefetchTriggered.has(pagePath)){this.apiRunner("onPrefetchPathname",{pathname:pagePath});this.prefetchTriggered.add(pagePath);}// If a plugin has disabled core prefetching, stop now.
-if(this.prefetchDisabled){return false;}var realPath=findPath(pagePath);// Todo make doPrefetch logic cacheable
+if(this.prefetchDisabled){return false;}var realPath=Object(find_path["b" /* findPath */])(pagePath);// Todo make doPrefetch logic cacheable
 // eslint-disable-next-line consistent-return
-this.doPrefetch(realPath).then(function(){if(!_this5.prefetchCompleted.has(pagePath)){_this5.apiRunner("onPostPrefetchPathname",{pathname:pagePath});_this5.prefetchCompleted.add(pagePath);}});return true;};_proto.doPrefetch=function doPrefetch(pagePath){throw new Error("doPrefetch not implemented");};_proto.hovering=function hovering(rawPath){this.loadPage(rawPath);};_proto.getResourceURLsForPathname=function getResourceURLsForPathname(rawPath){var pagePath=findPath(rawPath);var page=this.pageDataDb.get(pagePath);if(page){var pageResources=toPageResources(page.payload);return[].concat(Object(toConsumableArray["a" /* default */])(createComponentUrls(pageResources.page.componentChunkName)),[createPageDataUrl(pagePath)]);}else{return null;}};_proto.isPageNotFound=function isPageNotFound(rawPath){var pagePath=findPath(rawPath);var page=this.pageDb.get(pagePath);return page&&page.notFound===true;};_proto.loadAppData=function loadAppData(retries){var _this6=this;if(retries===void 0){retries=0;}return this.memoizedGet(""+"/page-data/app-data.json").then(function(req){var status=req.status,responseText=req.responseText;var appData;if(status!==200&&retries<3){// Retry 3 times incase of non-200 responses
+this.doPrefetch(realPath).then(function(){if(!_this5.prefetchCompleted.has(pagePath)){_this5.apiRunner("onPostPrefetchPathname",{pathname:pagePath});_this5.prefetchCompleted.add(pagePath);}});return true;};_proto.doPrefetch=function doPrefetch(pagePath){throw new Error("doPrefetch not implemented");};_proto.hovering=function hovering(rawPath){this.loadPage(rawPath);};_proto.getResourceURLsForPathname=function getResourceURLsForPathname(rawPath){var pagePath=Object(find_path["b" /* findPath */])(rawPath);var page=this.pageDataDb.get(pagePath);if(page){var pageResources=toPageResources(page.payload);return[].concat(Object(toConsumableArray["a" /* default */])(createComponentUrls(pageResources.page.componentChunkName)),[createPageDataUrl(pagePath)]);}else{return null;}};_proto.isPageNotFound=function isPageNotFound(rawPath){var pagePath=Object(find_path["b" /* findPath */])(rawPath);var page=this.pageDb.get(pagePath);return page&&page.notFound===true;};_proto.loadAppData=function loadAppData(retries){var _this6=this;if(retries===void 0){retries=0;}return this.memoizedGet(""+"/page-data/app-data.json").then(function(req){var status=req.status,responseText=req.responseText;var appData;if(status!==200&&retries<3){// Retry 3 times incase of non-200 responses
 return _this6.loadAppData(retries+1);}// Handle 200
 if(status===200){try{var jsonPayload=JSON.parse(responseText);if(jsonPayload.webpackCompilationHash===undefined){throw new Error("not a valid app-data response");}appData=jsonPayload;}catch(err){// continue regardless of error
 }}return appData;});};return BaseLoader;}();var createComponentUrls=function createComponentUrls(componentChunkName){return(window.___chunkMapping[componentChunkName]||[]).map(function(chunk){return ""+chunk;});};var loader_ProdLoader=/*#__PURE__*/function(_BaseLoader){Object(inheritsLoose["a" /* default */])(ProdLoader,_BaseLoader);function ProdLoader(asyncRequires,matchPaths){var loadComponent=function loadComponent(chunkName){return asyncRequires.components[chunkName]?asyncRequires.components[chunkName]().then(preferDefault)// loader will handle the case when component is null

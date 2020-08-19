@@ -987,6 +987,88 @@ function _awaitAsyncGenerator(value) {
 
 /***/ }),
 
+/***/ "1zMu":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return isObject; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return isPureObject; });
+/* unused harmony export isPromise */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return isIterable; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return isAsyncIterable; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return isIterator; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return isResponse; });
+/* unused harmony export isFile */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return isBlob; });
+/* unused harmony export isWritableDOMStream */
+/* unused harmony export isReadableDOMStream */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return isBuffer; });
+/* unused harmony export isWritableNodeStream */
+/* unused harmony export isReadableNodeStream */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return isReadableStream; });
+/* unused harmony export isWritableStream */
+/* harmony import */ var _babel_runtime_helpers_esm_typeof__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("U8pU");
+
+
+var isBoolean = function isBoolean(x) {
+  return typeof x === 'boolean';
+};
+
+var isFunction = function isFunction(x) {
+  return typeof x === 'function';
+};
+
+var isObject = function isObject(x) {
+  return x !== null && Object(_babel_runtime_helpers_esm_typeof__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(x) === 'object';
+};
+var isPureObject = function isPureObject(x) {
+  return isObject(x) && x.constructor === {}.constructor;
+};
+var isPromise = function isPromise(x) {
+  return isObject(x) && isFunction(x.then);
+};
+var isIterable = function isIterable(x) {
+  return x && typeof x[Symbol.iterator] === 'function';
+};
+var isAsyncIterable = function isAsyncIterable(x) {
+  return x && typeof x[Symbol.asyncIterator] === 'function';
+};
+var isIterator = function isIterator(x) {
+  return x && isFunction(x.next);
+};
+var isResponse = function isResponse(x) {
+  return typeof Response !== 'undefined' && x instanceof Response || x && x.arrayBuffer && x.text && x.json;
+};
+var isFile = function isFile(x) {
+  return typeof File !== 'undefined' && x instanceof File;
+};
+var isBlob = function isBlob(x) {
+  return typeof Blob !== 'undefined' && x instanceof Blob;
+};
+var isWritableDOMStream = function isWritableDOMStream(x) {
+  return isObject(x) && isFunction(x.abort) && isFunction(x.getWriter);
+};
+var isReadableDOMStream = function isReadableDOMStream(x) {
+  return typeof ReadableStream !== 'undefined' && x instanceof ReadableStream || isObject(x) && isFunction(x.tee) && isFunction(x.cancel) && isFunction(x.getReader);
+};
+var isBuffer = function isBuffer(x) {
+  return x && Object(_babel_runtime_helpers_esm_typeof__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(x) === 'object' && x.isBuffer;
+};
+var isWritableNodeStream = function isWritableNodeStream(x) {
+  return isObject(x) && isFunction(x.end) && isFunction(x.write) && isBoolean(x.writable);
+};
+var isReadableNodeStream = function isReadableNodeStream(x) {
+  return isObject(x) && isFunction(x.read) && isFunction(x.pipe) && isBoolean(x.readable);
+};
+var isReadableStream = function isReadableStream(x) {
+  return isReadableDOMStream(x) || isReadableNodeStream(x);
+};
+var isWritableStream = function isWritableStream(x) {
+  return isWritableDOMStream(x) || isWritableNodeStream(x);
+};
+
+/***/ }),
+
 /***/ "41X0":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1382,7 +1464,111 @@ var math_array_MathArray = function (_Array) {
 
 /***/ }),
 
-/***/ 5:
+/***/ "6u5O":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "b", function() { return /* binding */ getResourceUrlAndType; });
+__webpack_require__.d(__webpack_exports__, "a", function() { return /* binding */ getResourceContentLength; });
+
+// EXTERNAL MODULE: ./node_modules/@loaders.gl/core/dist/esm/javascript-utils/is-type.js
+var is_type = __webpack_require__("1zMu");
+
+// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/utils/mime-type-utils.js
+var DATA_URL_PATTERN = /^data:([-\w.]+\/[-\w.+]+)(;|,)/;
+var MIME_TYPE_PATTERN = /^([-\w.]+\/[-\w.+]+)/;
+function parseMIMEType(mimeString) {
+  if (typeof mimeString !== 'string') {
+    return '';
+  }
+
+  var matches = mimeString.match(MIME_TYPE_PATTERN);
+
+  if (matches) {
+    return matches[1];
+  }
+
+  return mimeString;
+}
+function parseMIMETypeFromURL(dataUrl) {
+  if (typeof dataUrl !== 'string') {
+    return '';
+  }
+
+  var matches = dataUrl.match(DATA_URL_PATTERN);
+
+  if (matches) {
+    return matches[1];
+  }
+
+  return '';
+}
+// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/utils/resource-utils.js
+
+
+var QUERY_STRING_PATTERN = /\?.*/;
+function getResourceUrlAndType(resource) {
+  if (Object(is_type["i" /* isResponse */])(resource)) {
+    var contentType = parseMIMEType(resource.headers.get('content-type'));
+    var urlType = parseMIMETypeFromURL(resource.url);
+    return {
+      url: stripQueryString(resource.url || ''),
+      type: contentType || urlType || null
+    };
+  }
+
+  if (Object(is_type["b" /* isBlob */])(resource)) {
+    return {
+      url: stripQueryString(resource.name || ''),
+      type: resource.type || ''
+    };
+  }
+
+  if (typeof resource === 'string') {
+    return {
+      url: stripQueryString(resource),
+      type: parseMIMETypeFromURL(resource)
+    };
+  }
+
+  return {
+    url: '',
+    type: ''
+  };
+}
+function getResourceContentLength(resource) {
+  if (Object(is_type["i" /* isResponse */])(resource)) {
+    return resource.headers['content-length'] || -1;
+  }
+
+  if (Object(is_type["b" /* isBlob */])(resource)) {
+    return resource.size;
+  }
+
+  if (typeof resource === 'string') {
+    return resource.length;
+  }
+
+  if (resource instanceof ArrayBuffer) {
+    return resource.byteLength;
+  }
+
+  if (ArrayBuffer.isView(resource)) {
+    return resource.byteLength;
+  }
+
+  return -1;
+}
+
+function stripQueryString(url) {
+  return url.replace(QUERY_STRING_PATTERN, '');
+}
+
+/***/ }),
+
+/***/ 7:
 /***/ (function(module, exports) {
 
 /* (ignored) */
@@ -1787,263 +1973,6 @@ function popContextState(gl) {
 
 /***/ }),
 
-/***/ "AhZ3":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// EXPORTS
-__webpack_require__.d(__webpack_exports__, "a", function() { return /* binding */ merge_options_getGlobalLoaderState; });
-__webpack_require__.d(__webpack_exports__, "b", function() { return /* binding */ mergeOptions; });
-
-// UNUSED EXPORTS: setGlobalOptions
-
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/defineProperty.js
-var defineProperty = __webpack_require__("rePB");
-
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/typeof.js
-var esm_typeof = __webpack_require__("U8pU");
-
-// EXTERNAL MODULE: ./node_modules/@loaders.gl/loader-utils/dist/esm/lib/env-utils/globals.js
-var globals = __webpack_require__("ItzM");
-
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/classCallCheck.js
-var classCallCheck = __webpack_require__("1OyB");
-
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/createClass.js
-var createClass = __webpack_require__("vuIU");
-
-// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/loader-utils/loggers.js
-
-
-var loggers_NullLog = function () {
-  function NullLog() {
-    Object(classCallCheck["a" /* default */])(this, NullLog);
-  }
-
-  Object(createClass["a" /* default */])(NullLog, [{
-    key: "log",
-    value: function log() {
-      return function (_) {};
-    }
-  }, {
-    key: "info",
-    value: function info() {
-      return function (_) {};
-    }
-  }, {
-    key: "warn",
-    value: function warn() {
-      return function (_) {};
-    }
-  }, {
-    key: "error",
-    value: function error() {
-      return function (_) {};
-    }
-  }]);
-
-  return NullLog;
-}();
-var loggers_ConsoleLog = function () {
-  function ConsoleLog() {
-    Object(classCallCheck["a" /* default */])(this, ConsoleLog);
-
-    this.console = console;
-  }
-
-  Object(createClass["a" /* default */])(ConsoleLog, [{
-    key: "log",
-    value: function log() {
-      var _this$console$log;
-
-      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
-
-      return (_this$console$log = this.console.log).bind.apply(_this$console$log, [this.console].concat(args));
-    }
-  }, {
-    key: "info",
-    value: function info() {
-      var _this$console$info;
-
-      for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-        args[_key2] = arguments[_key2];
-      }
-
-      return (_this$console$info = this.console.info).bind.apply(_this$console$info, [this.console].concat(args));
-    }
-  }, {
-    key: "warn",
-    value: function warn() {
-      var _this$console$warn;
-
-      for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-        args[_key3] = arguments[_key3];
-      }
-
-      return (_this$console$warn = this.console.warn).bind.apply(_this$console$warn, [this.console].concat(args));
-    }
-  }, {
-    key: "error",
-    value: function error() {
-      var _this$console$error;
-
-      for (var _len4 = arguments.length, args = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
-        args[_key4] = arguments[_key4];
-      }
-
-      return (_this$console$error = this.console.error).bind.apply(_this$console$error, [this.console].concat(args));
-    }
-  }]);
-
-  return ConsoleLog;
-}();
-// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/constants.js
-
-var DEFAULT_LOADER_OPTIONS = {
-  CDN: 'https://unpkg.com/@loaders.gl',
-  worker: true,
-  log: new loggers_ConsoleLog(),
-  dataType: 'arraybuffer',
-  metadata: false
-};
-// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/loader-utils/merge-options.js
-
-
-
-function ownKeys(object, enumerableOnly) {
-  var keys = Object.keys(object);
-
-  if (Object.getOwnPropertySymbols) {
-    var symbols = Object.getOwnPropertySymbols(object);
-    if (enumerableOnly) symbols = symbols.filter(function (sym) {
-      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-    });
-    keys.push.apply(keys, symbols);
-  }
-
-  return keys;
-}
-
-function _objectSpread(target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i] != null ? arguments[i] : {};
-
-    if (i % 2) {
-      ownKeys(Object(source), true).forEach(function (key) {
-        Object(defineProperty["a" /* default */])(target, key, source[key]);
-      });
-    } else if (Object.getOwnPropertyDescriptors) {
-      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-    } else {
-      ownKeys(Object(source)).forEach(function (key) {
-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-      });
-    }
-  }
-
-  return target;
-}
-
-
-
-
-
-var merge_options_isPureObject = function isPureObject(value) {
-  return value && Object(esm_typeof["a" /* default */])(value) === 'object' && value.constructor === {}.constructor;
-};
-
-var merge_options_getGlobalLoaderState = function getGlobalLoaderState() {
-  globals["a" /* global */].loaders = globals["a" /* global */].loaders || {};
-  var loaders = globals["a" /* global */].loaders;
-  loaders._state = loaders._state || {};
-  return loaders._state;
-};
-
-var merge_options_getGlobalLoaderOptions = function getGlobalLoaderOptions() {
-  var state = merge_options_getGlobalLoaderState();
-  state.globalOptions = state.globalOptions || _objectSpread({}, DEFAULT_LOADER_OPTIONS);
-  return state.globalOptions;
-};
-
-function setGlobalOptions(options) {
-  var state = merge_options_getGlobalLoaderState();
-  var globalOptions = merge_options_getGlobalLoaderOptions();
-  state.globalOptions = mergeOptionsInternal(globalOptions, options);
-}
-function mergeOptions(loader, options, url) {
-  var topOptions = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
-  validateLoaderOptions(loader, options, topOptions);
-  return mergeOptionsInternal(loader, options, url);
-}
-
-function validateLoaderOptions(loader, options) {
-  var topOptions = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : DEFAULT_LOADER_OPTIONS;
-  var log = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : console;
-
-  if (topOptions) {
-    for (var key in options) {
-      if (Object(esm_typeof["a" /* default */])(options[key]) !== 'object' && !topOptions[key]) {
-        log.warn("Top-level loader option ".concat(key, " not recognized"));
-      }
-    }
-  }
-
-  var idOptions = options && options[loader.id] || {};
-  var loaderOptions = loader.options && loader.options[loader.id] || {};
-  var deprecatedOptions = loader.defaultOptions && loader.defaultOptions[loader.id] || {};
-
-  for (var _key in idOptions) {
-    if (!(_key in loaderOptions)) {
-      if (_key in deprecatedOptions) {
-        log.warn("".concat(loader.name, " loader option ").concat(loader.id, ".").concat(_key, " deprecated, use ").concat(deprecatedOptions[_key]));
-      } else {
-        log.warn("".concat(loader.name, " loader option ").concat(loader.id, ".").concat(_key, " not recognized"));
-      }
-    }
-  }
-}
-
-function mergeOptionsInternal(loader, options, url) {
-  var loaderDefaultOptions = loader.options || {};
-
-  var mergedOptions = _objectSpread({}, loaderDefaultOptions);
-
-  addUrlOptions(mergedOptions, url);
-
-  if (mergedOptions.log === null) {
-    mergedOptions.log = new loggers_NullLog();
-  }
-
-  mergeNestedFields(mergedOptions, merge_options_getGlobalLoaderOptions());
-  mergeNestedFields(mergedOptions, options);
-  return mergedOptions;
-}
-
-function mergeNestedFields(mergedOptions, options) {
-  for (var key in options) {
-    if (key in options) {
-      var value = options[key];
-
-      if (merge_options_isPureObject(value) && merge_options_isPureObject(mergedOptions[key])) {
-        mergedOptions[key] = _objectSpread(_objectSpread({}, mergedOptions[key]), options[key]);
-      } else {
-        mergedOptions[key] = options[key];
-      }
-    }
-  }
-}
-
-function addUrlOptions(options, url) {
-  if (url && !('baseUri' in options)) {
-    options.baseUri = url;
-  }
-}
-
-/***/ }),
-
 /***/ "B9+J":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2380,19 +2309,6 @@ function toDoublePrecisionArray(typedArray, _ref3) {
   }
 
   return scratchArray.subarray(0, count * size * 2);
-}
-
-/***/ }),
-
-/***/ "FR20":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return assert; });
-function assert(condition, message) {
-  if (!condition) {
-    throw new Error(message || 'loader assertion failed.');
-  }
 }
 
 /***/ }),
@@ -3459,7 +3375,7 @@ var matrix3_Matrix3 = function (_Matrix) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getRegisteredLoaders; });
 /* unused harmony export _unregisterLoaders */
 /* harmony import */ var _loader_utils_normalize_loader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("kGlb");
-/* harmony import */ var _loader_utils_merge_options__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("AhZ3");
+/* harmony import */ var _loader_utils_option_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("cYKX");
 function _createForOfIteratorHelper(o, allowArrayLike) {
   var it;
 
@@ -3540,7 +3456,7 @@ function _arrayLikeToArray(arr, len) {
 
 
 var getGlobalLoaderRegistry = function getGlobalLoaderRegistry() {
-  var state = Object(_loader_utils_merge_options__WEBPACK_IMPORTED_MODULE_1__[/* getGlobalLoaderState */ "a"])();
+  var state = Object(_loader_utils_option_utils__WEBPACK_IMPORTED_MODULE_1__[/* getGlobalLoaderState */ "b"])();
   state.loaderRegistry = state.loaderRegistry || [];
   return state.loaderRegistry;
 };
@@ -3577,7 +3493,7 @@ function getRegisteredLoaders() {
   return getGlobalLoaderRegistry();
 }
 function _unregisterLoaders() {
-  var state = Object(_loader_utils_merge_options__WEBPACK_IMPORTED_MODULE_1__[/* getGlobalLoaderState */ "a"])();
+  var state = Object(_loader_utils_option_utils__WEBPACK_IMPORTED_MODULE_1__[/* getGlobalLoaderState */ "b"])();
   state.loaderRegistry = [];
 }
 
@@ -3856,38 +3772,6 @@ function getBrowser(mockUserAgent) {
 
 /***/ }),
 
-/***/ "ItzM":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global, process) {/* unused harmony export self */
-/* unused harmony export window */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return global_; });
-/* unused harmony export document */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return isBrowser; });
-/* unused harmony export isWorker */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return nodeVersion; });
-/* harmony import */ var _babel_runtime_helpers_esm_typeof__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("U8pU");
-
-var globals = {
-  self: typeof self !== 'undefined' && self,
-  window: typeof window !== 'undefined' && window,
-  global: typeof global !== 'undefined' && global,
-  document: typeof document !== 'undefined' && document
-};
-var self_ = globals.self || globals.window || globals.global;
-var window_ = globals.window || globals.self || globals.global;
-var global_ = globals.global || globals.self || globals.window;
-var document_ = globals.document || {};
-
-var isBrowser = (typeof process === "undefined" ? "undefined" : Object(_babel_runtime_helpers_esm_typeof__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(process)) !== 'object' || String(process) !== '[object process]' || process.browser;
-var isWorker = typeof importScripts === 'function';
-var matches = typeof process !== 'undefined' && process.version && process.version.match(/v([0-9]*)/);
-var nodeVersion = matches && parseFloat(matches[1]) || 0;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("yLpj"), __webpack_require__("8oxB")))
-
-/***/ }),
-
 /***/ "JBga":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -3903,387 +3787,21 @@ var regenerator_default = /*#__PURE__*/__webpack_require__.n(regenerator);
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js
 var asyncToGenerator = __webpack_require__("HaE+");
 
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/typeof.js
-var esm_typeof = __webpack_require__("U8pU");
+// EXTERNAL MODULE: ./node_modules/@loaders.gl/core/dist/esm/javascript-utils/is-type.js
+var is_type = __webpack_require__("1zMu");
 
-// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/dist/esm/javascript-utils/is-type.js
-
-
-var isBoolean = function isBoolean(x) {
-  return typeof x === 'boolean';
-};
-
-var isFunction = function isFunction(x) {
-  return typeof x === 'function';
-};
-
-var is_type_isObject = function isObject(x) {
-  return x !== null && Object(esm_typeof["a" /* default */])(x) === 'object';
-};
-var isPromise = function isPromise(x) {
-  return is_type_isObject(x) && isFunction(x.then);
-};
-var isIterable = function isIterable(x) {
-  return x && typeof x[Symbol.iterator] === 'function';
-};
-var isAsyncIterable = function isAsyncIterable(x) {
-  return x && typeof x[Symbol.asyncIterator] === 'function';
-};
-var isIterator = function isIterator(x) {
-  return x && isFunction(x.next);
-};
-var isResponse = function isResponse(x) {
-  return typeof Response !== 'undefined' && x instanceof Response || x && x.arrayBuffer && x.text && x.json;
-};
-var isFile = function isFile(x) {
-  return typeof File !== 'undefined' && x instanceof File;
-};
-var isBlob = function isBlob(x) {
-  return typeof Blob !== 'undefined' && x instanceof Blob;
-};
-var isWritableDOMStream = function isWritableDOMStream(x) {
-  return is_type_isObject(x) && isFunction(x.abort) && isFunction(x.getWriter);
-};
-var isReadableDOMStream = function isReadableDOMStream(x) {
-  return typeof ReadableStream !== 'undefined' && x instanceof ReadableStream || is_type_isObject(x) && isFunction(x.tee) && isFunction(x.cancel) && isFunction(x.getReader);
-};
-var is_type_isBuffer = function isBuffer(x) {
-  return x && Object(esm_typeof["a" /* default */])(x) === 'object' && x.isBuffer;
-};
-var isWritableNodeStream = function isWritableNodeStream(x) {
-  return is_type_isObject(x) && isFunction(x.end) && isFunction(x.write) && isBoolean(x.writable);
-};
-var isReadableNodeStream = function isReadableNodeStream(x) {
-  return is_type_isObject(x) && isFunction(x.read) && isFunction(x.pipe) && isBoolean(x.readable);
-};
-var isReadableStream = function isReadableStream(x) {
-  return isReadableDOMStream(x) || isReadableNodeStream(x);
-};
-var isWritableStream = function isWritableStream(x) {
-  return isWritableDOMStream(x) || isWritableNodeStream(x);
-};
-// CONCATENATED MODULE: ./node_modules/@loaders.gl/loader-utils/dist/esm/lib/path-utils/file-aliases.js
-var pathPrefix = '';
-var fileAliases = {};
-function setPathPrefix(prefix) {
-  pathPrefix = prefix;
-}
-function getPathPrefix() {
-  return pathPrefix;
-}
-function addAliases(aliases) {
-  Object.assign(fileAliases, aliases);
-}
-function resolvePath(filename) {
-  for (var alias in fileAliases) {
-    if (filename.startsWith(alias)) {
-      var replacement = fileAliases[alias];
-      filename = filename.replace(alias, replacement);
-    }
-  }
-
-  if (!filename.startsWith('http://') && !filename.startsWith('https://')) {
-    filename = "".concat(pathPrefix).concat(filename);
-  }
-
-  return filename;
-}
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/classCallCheck.js
-var classCallCheck = __webpack_require__("1OyB");
-
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/createClass.js
-var createClass = __webpack_require__("vuIU");
-
-// EXTERNAL MODULE: ./node_modules/@loaders.gl/loader-utils/dist/esm/lib/env-utils/assert.js
-var assert = __webpack_require__("FR20");
-
-// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/fetch/fetch-file.browser.js
-
-
-
-
-
-
-var fetch_file_browser_FileReadableResponse = function () {
-  function FileReadableResponse(fileOrBlob, options) {
-    Object(classCallCheck["a" /* default */])(this, FileReadableResponse);
-
-    this._fileOrBlob = fileOrBlob;
-    this.bodyUsed = false;
-  }
-
-  Object(createClass["a" /* default */])(FileReadableResponse, [{
-    key: "arrayBuffer",
-    value: function () {
-      var _arrayBuffer = Object(asyncToGenerator["a" /* default */])(regenerator_default.a.mark(function _callee() {
-        var _this$_getFileReader, reader, promise;
-
-        return regenerator_default.a.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                _this$_getFileReader = this._getFileReader(), reader = _this$_getFileReader.reader, promise = _this$_getFileReader.promise;
-                reader.readAsArrayBuffer(this._fileOrBlob);
-                return _context.abrupt("return", promise);
-
-              case 3:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function arrayBuffer() {
-        return _arrayBuffer.apply(this, arguments);
-      }
-
-      return arrayBuffer;
-    }()
-  }, {
-    key: "text",
-    value: function () {
-      var _text = Object(asyncToGenerator["a" /* default */])(regenerator_default.a.mark(function _callee2() {
-        var _this$_getFileReader2, reader, promise;
-
-        return regenerator_default.a.wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                _this$_getFileReader2 = this._getFileReader(), reader = _this$_getFileReader2.reader, promise = _this$_getFileReader2.promise;
-                reader.readAsText(this._fileOrBlob);
-                return _context2.abrupt("return", promise);
-
-              case 3:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2, this);
-      }));
-
-      function text() {
-        return _text.apply(this, arguments);
-      }
-
-      return text;
-    }()
-  }, {
-    key: "json",
-    value: function () {
-      var _json = Object(asyncToGenerator["a" /* default */])(regenerator_default.a.mark(function _callee3() {
-        var text;
-        return regenerator_default.a.wrap(function _callee3$(_context3) {
-          while (1) {
-            switch (_context3.prev = _context3.next) {
-              case 0:
-                _context3.next = 2;
-                return this.text();
-
-              case 2:
-                text = _context3.sent;
-                return _context3.abrupt("return", JSON.parse(text));
-
-              case 4:
-              case "end":
-                return _context3.stop();
-            }
-          }
-        }, _callee3, this);
-      }));
-
-      function json() {
-        return _json.apply(this, arguments);
-      }
-
-      return json;
-    }()
-  }, {
-    key: "_getFileReader",
-    value: function _getFileReader() {
-      Object(assert["a" /* default */])(!this.bodyUsed);
-      this.bodyUsed = true;
-      var reader = new FileReader();
-      var promise = new Promise(function (resolve, reject) {
-        try {
-          reader.onerror = function (_) {
-            return reject(new Error('Read error'));
-          };
-
-          reader.onabort = function () {
-            return reject(new Error('Read aborted.'));
-          };
-
-          reader.onload = function () {
-            return resolve(reader.result);
-          };
-        } catch (error) {
-          reject(error);
-        }
-      });
-      return {
-        reader: reader,
-        promise: promise
-      };
-    }
-  }, {
-    key: "headers",
-    get: function get() {
-      return new Headers({
-        'Content-Length': this._fileOrBlob.size,
-        'Content-Type': this._fileOrBlob.type
-      });
-    }
-  }, {
-    key: "ok",
-    get: function get() {
-      return true;
-    }
-  }, {
-    key: "status",
-    get: function get() {
-      return 200;
-    }
-  }, {
-    key: "url",
-    get: function get() {
-      return this._fileOrBlob.name || '';
-    }
-  }]);
-
-  return FileReadableResponse;
-}();
-
-function fetchFileReadable(fileOrBlob, options) {
-  return Promise.resolve(new fetch_file_browser_FileReadableResponse(fileOrBlob, options));
-}
-// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/fetch/fetch-error-message.js
-
-
-function getErrorMessageFromResponseSync(response) {
-  return "Failed to fetch resource ".concat(response.url, "(").concat(response.status, "): ").concat(response.statusText, " ");
-}
-function getErrorMessageFromResponse(_x) {
-  return _getErrorMessageFromResponse.apply(this, arguments);
-}
-
-function _getErrorMessageFromResponse() {
-  _getErrorMessageFromResponse = Object(asyncToGenerator["a" /* default */])(regenerator_default.a.mark(function _callee(response) {
-    var message, contentType;
-    return regenerator_default.a.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            message = "Failed to fetch resource ".concat(response.url, " (").concat(response.status, "): ");
-            _context.prev = 1;
-            contentType = response.headers.get('Content-Type');
-
-            if (!contentType.includes('application/json')) {
-              _context.next = 10;
-              break;
-            }
-
-            _context.t0 = message;
-            _context.next = 7;
-            return response.text();
-
-          case 7:
-            message = _context.t0 += _context.sent;
-            _context.next = 11;
-            break;
-
-          case 10:
-            message += response.statusText;
-
-          case 11:
-            _context.next = 16;
-            break;
-
-          case 13:
-            _context.prev = 13;
-            _context.t1 = _context["catch"](1);
-            return _context.abrupt("return", message);
-
-          case 16:
-            return _context.abrupt("return", message);
-
-          case 17:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee, null, [[1, 13]]);
-  }));
-  return _getErrorMessageFromResponse.apply(this, arguments);
-}
-// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/fetch/fetch-file.js
-
-
-
-
-
-
-function fetchFile(_x) {
-  return _fetchFile.apply(this, arguments);
-}
-
-function _fetchFile() {
-  _fetchFile = Object(asyncToGenerator["a" /* default */])(regenerator_default.a.mark(function _callee(url) {
-    var options,
-        response,
-        _args = arguments;
-    return regenerator_default.a.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            options = _args.length > 1 && _args[1] !== undefined ? _args[1] : {};
-
-            if (!isBlob(url)) {
-              _context.next = 3;
-              break;
-            }
-
-            return _context.abrupt("return", fetchFileReadable(url, options));
-
-          case 3:
-            url = resolvePath(url);
-            _context.next = 6;
-            return fetch(url, options);
-
-          case 6:
-            response = _context.sent;
-
-            if (!(!response.ok && options["throws"])) {
-              _context.next = 13;
-              break;
-            }
-
-            _context.t0 = Error;
-            _context.next = 11;
-            return getErrorMessageFromResponse(response);
-
-          case 11:
-            _context.t1 = _context.sent;
-            throw new _context.t0(_context.t1);
-
-          case 13:
-            return _context.abrupt("return", response);
-
-          case 14:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee);
-  }));
-  return _fetchFile.apply(this, arguments);
-}
 // EXTERNAL MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/loader-utils/normalize-loader.js
 var normalize_loader = __webpack_require__("kGlb");
 
-// CONCATENATED MODULE: ./node_modules/@loaders.gl/loader-utils/dist/esm/lib/validate-loader-version.js
+// EXTERNAL MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/loader-utils/option-utils.js + 4 modules
+var option_utils = __webpack_require__("cYKX");
 
-var VERSION =  true ? "2.2.8" : undefined;
+// EXTERNAL MODULE: ./node_modules/@loaders.gl/core/node_modules/@loaders.gl/loader-utils/dist/esm/lib/env-utils/assert.js
+var assert = __webpack_require__("v/Bq");
+
+// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/node_modules/@loaders.gl/loader-utils/dist/esm/lib/worker-loader-utils/validate-loader-version.js
+
+var VERSION =  true ? "2.3.0-alpha.10" : undefined;
 function validateLoaderVersion(loader) {
   var coreVersion = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : VERSION;
   Object(assert["a" /* default */])(loader, 'no loader provided');
@@ -4304,9 +3822,305 @@ function parseVersion(version) {
     minor: parts[1]
   };
 }
-// EXTERNAL MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/loader-utils/merge-options.js + 2 modules
-var merge_options = __webpack_require__("AhZ3");
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/asyncIterator.js
+var esm_asyncIterator = __webpack_require__("Zova");
 
+// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/node_modules/@loaders.gl/loader-utils/dist/esm/lib/binary-utils/memory-copy-utils.js
+function _createForOfIteratorHelper(o, allowArrayLike) {
+  var it;
+
+  if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {
+    if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
+      if (it) o = it;
+      var i = 0;
+
+      var F = function F() {};
+
+      return {
+        s: F,
+        n: function n() {
+          if (i >= o.length) return {
+            done: true
+          };
+          return {
+            done: false,
+            value: o[i++]
+          };
+        },
+        e: function e(_e) {
+          throw _e;
+        },
+        f: F
+      };
+    }
+
+    throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+  }
+
+  var normalCompletion = true,
+      didErr = false,
+      err;
+  return {
+    s: function s() {
+      it = o[Symbol.iterator]();
+    },
+    n: function n() {
+      var step = it.next();
+      normalCompletion = step.done;
+      return step;
+    },
+    e: function e(_e2) {
+      didErr = true;
+      err = _e2;
+    },
+    f: function f() {
+      try {
+        if (!normalCompletion && it["return"] != null) it["return"]();
+      } finally {
+        if (didErr) throw err;
+      }
+    }
+  };
+}
+
+function _unsupportedIterableToArray(o, minLen) {
+  if (!o) return;
+  if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor) n = o.constructor.name;
+  if (n === "Map" || n === "Set") return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+}
+
+function _arrayLikeToArray(arr, len) {
+  if (len == null || len > arr.length) len = arr.length;
+
+  for (var i = 0, arr2 = new Array(len); i < len; i++) {
+    arr2[i] = arr[i];
+  }
+
+  return arr2;
+}
+
+function padTo4Bytes(byteLength) {
+  return byteLength + 3 & ~3;
+}
+function getZeroOffsetArrayBuffer(arrayBuffer, byteOffset, byteLength) {
+  var subArray = byteLength ? new Uint8Array(arrayBuffer).subarray(byteOffset, byteOffset + byteLength) : new Uint8Array(arrayBuffer).subarray(byteOffset);
+  var arrayCopy = new Uint8Array(subArray);
+  return arrayCopy.buffer;
+}
+function concatenateArrayBuffers() {
+  for (var _len = arguments.length, sources = new Array(_len), _key = 0; _key < _len; _key++) {
+    sources[_key] = arguments[_key];
+  }
+
+  var sourceArrays = sources.map(function (source2) {
+    return source2 instanceof ArrayBuffer ? new Uint8Array(source2) : source2;
+  });
+  var byteLength = sourceArrays.reduce(function (length, typedArray) {
+    return length + typedArray.byteLength;
+  }, 0);
+  var result = new Uint8Array(byteLength);
+  var offset = 0;
+
+  var _iterator = _createForOfIteratorHelper(sourceArrays),
+      _step;
+
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var sourceArray = _step.value;
+      result.set(sourceArray, offset);
+      offset += sourceArray.byteLength;
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+
+  return result.buffer;
+}
+function copyArrayBuffer(targetBuffer, sourceBuffer, byteOffset) {
+  var byteLength = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : sourceBuffer.byteLength;
+  var targetArray = new Uint8Array(targetBuffer, byteOffset, byteLength);
+  var sourceArray = new Uint8Array(sourceBuffer);
+  targetArray.set(sourceArray);
+  return targetBuffer;
+}
+function copyToArray(source, target, targetOffset) {
+  var sourceArray;
+
+  if (source instanceof ArrayBuffer) {
+    sourceArray = new Uint8Array(source);
+  } else {
+    var srcByteOffset = source.byteOffset;
+    var srcByteLength = source.byteLength;
+    sourceArray = new Uint8Array(source.buffer, srcByteOffset, srcByteLength);
+  }
+
+  target.set(sourceArray, targetOffset);
+  return targetOffset + padTo4Bytes(sourceArray.byteLength);
+}
+// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/node_modules/@loaders.gl/loader-utils/dist/esm/lib/iterator-utils/async-iteration.js
+
+
+
+
+function forEach(_x, _x2) {
+  return _forEach.apply(this, arguments);
+}
+
+function _forEach() {
+  _forEach = Object(asyncToGenerator["a" /* default */])(regenerator_default.a.mark(function _callee(iterator, visitor) {
+    var _yield$iterator$next, done, value, cancel;
+
+    return regenerator_default.a.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            if (false) {}
+
+            _context.next = 3;
+            return iterator.next();
+
+          case 3:
+            _yield$iterator$next = _context.sent;
+            done = _yield$iterator$next.done;
+            value = _yield$iterator$next.value;
+
+            if (!done) {
+              _context.next = 9;
+              break;
+            }
+
+            iterator["return"]();
+            return _context.abrupt("return");
+
+          case 9:
+            cancel = visitor(value);
+
+            if (!cancel) {
+              _context.next = 12;
+              break;
+            }
+
+            return _context.abrupt("return");
+
+          case 12:
+            _context.next = 0;
+            break;
+
+          case 14:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _forEach.apply(this, arguments);
+}
+
+function concatenateChunksAsync(_x3) {
+  return _concatenateChunksAsync.apply(this, arguments);
+}
+
+function _concatenateChunksAsync() {
+  _concatenateChunksAsync = Object(asyncToGenerator["a" /* default */])(regenerator_default.a.mark(function _callee2(asyncIterator) {
+    var arrayBuffer, string, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, _value, chunk;
+
+    return regenerator_default.a.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            arrayBuffer = new ArrayBuffer(0);
+            string = '';
+            _iteratorNormalCompletion = true;
+            _didIteratorError = false;
+            _context2.prev = 4;
+            _iterator = Object(esm_asyncIterator["a" /* default */])(asyncIterator);
+
+          case 6:
+            _context2.next = 8;
+            return _iterator.next();
+
+          case 8:
+            _step = _context2.sent;
+            _iteratorNormalCompletion = _step.done;
+            _context2.next = 12;
+            return _step.value;
+
+          case 12:
+            _value = _context2.sent;
+
+            if (_iteratorNormalCompletion) {
+              _context2.next = 19;
+              break;
+            }
+
+            chunk = _value;
+
+            if (typeof chunk === 'string') {
+              string += chunk;
+            } else {
+              arrayBuffer = concatenateArrayBuffers(arrayBuffer, chunk);
+            }
+
+          case 16:
+            _iteratorNormalCompletion = true;
+            _context2.next = 6;
+            break;
+
+          case 19:
+            _context2.next = 25;
+            break;
+
+          case 21:
+            _context2.prev = 21;
+            _context2.t0 = _context2["catch"](4);
+            _didIteratorError = true;
+            _iteratorError = _context2.t0;
+
+          case 25:
+            _context2.prev = 25;
+            _context2.prev = 26;
+
+            if (!(!_iteratorNormalCompletion && _iterator["return"] != null)) {
+              _context2.next = 30;
+              break;
+            }
+
+            _context2.next = 30;
+            return _iterator["return"]();
+
+          case 30:
+            _context2.prev = 30;
+
+            if (!_didIteratorError) {
+              _context2.next = 33;
+              break;
+            }
+
+            throw _iteratorError;
+
+          case 33:
+            return _context2.finish(30);
+
+          case 34:
+            return _context2.finish(25);
+
+          case 35:
+            return _context2.abrupt("return", string || arrayBuffer);
+
+          case 36:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2, null, [[4, 21, 25, 35], [26,, 30, 34]]);
+  }));
+  return _concatenateChunksAsync.apply(this, arguments);
+}
 // CONCATENATED MODULE: ./node_modules/@loaders.gl/core/dist/esm/iterator-utils/make-iterator/string-iterator.js
 
 
@@ -4426,7 +4240,6 @@ function _makeBlobIterator() {
         chunkSize,
         offset,
         end,
-        slice,
         chunk,
         _args = arguments;
     return regenerator_default.a.wrap(function _callee$(_context) {
@@ -4439,26 +4252,25 @@ function _makeBlobIterator() {
 
           case 3:
             if (!(offset < file.size)) {
-              _context.next = 14;
+              _context.next = 13;
               break;
             }
 
             end = offset + chunkSize;
-            slice = file.slice(offset, end);
-            _context.next = 8;
-            return Object(awaitAsyncGenerator["a" /* default */])(readFileSlice(slice));
+            _context.next = 7;
+            return Object(awaitAsyncGenerator["a" /* default */])(readFileSlice(file, offset, end));
 
-          case 8:
+          case 7:
             chunk = _context.sent;
             offset = end;
-            _context.next = 12;
+            _context.next = 11;
             return chunk;
 
-          case 12:
+          case 11:
             _context.next = 3;
             break;
 
-          case 14:
+          case 13:
           case "end":
             return _context.stop();
         }
@@ -4468,22 +4280,23 @@ function _makeBlobIterator() {
   return _makeBlobIterator.apply(this, arguments);
 }
 
-function readFileSlice(_x2) {
+function readFileSlice(_x2, _x3, _x4) {
   return _readFileSlice.apply(this, arguments);
 }
 
 function _readFileSlice() {
-  _readFileSlice = Object(asyncToGenerator["a" /* default */])(regenerator_default.a.mark(function _callee2(slice) {
+  _readFileSlice = Object(asyncToGenerator["a" /* default */])(regenerator_default.a.mark(function _callee2(file, offset, end) {
     return regenerator_default.a.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
             _context2.next = 2;
             return new Promise(function (resolve, reject) {
+              var slice = file.slice(offset, end);
               var fileReader = new FileReader();
 
               fileReader.onloadend = function (event) {
-                return resolve(event.target.result);
+                return resolve(event.target && event.target.result);
               };
 
               fileReader.onerror = function (error) {
@@ -4505,8 +4318,8 @@ function _readFileSlice() {
   }));
   return _readFileSlice.apply(this, arguments);
 }
-// EXTERNAL MODULE: ./node_modules/@loaders.gl/loader-utils/dist/esm/lib/env-utils/globals.js
-var globals = __webpack_require__("ItzM");
+// EXTERNAL MODULE: ./node_modules/@loaders.gl/core/node_modules/@loaders.gl/loader-utils/dist/esm/lib/env-utils/globals.js
+var globals = __webpack_require__("wF1J");
 
 // CONCATENATED MODULE: ./node_modules/@loaders.gl/core/dist/esm/iterator-utils/make-iterator/stream-iterator.js
 
@@ -4688,243 +4501,23 @@ function makeIterator(data) {
     return makeArrayBufferIterator(data, options);
   }
 
-  if (isBlob(data)) {
+  if (Object(is_type["b" /* isBlob */])(data)) {
     return makeBlobIterator(data, options);
   }
 
-  if (isReadableStream(data)) {
+  if (Object(is_type["h" /* isReadableStream */])(data)) {
     return makeStreamIterator(data);
   }
 
-  if (isResponse(data)) {
+  if (Object(is_type["i" /* isResponse */])(data)) {
     return makeStreamIterator(data.body);
   }
 
   return Object(assert["a" /* default */])(false);
 }
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/asyncIterator.js
-var esm_asyncIterator = __webpack_require__("Zova");
+// EXTERNAL MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/utils/response-utils.js
+var response_utils = __webpack_require__("Ksu5");
 
-// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/dist/esm/javascript-utils/memory-copy-utils.js
-function concatenateArrayBuffers(source1, source2) {
-  var sourceArray1 = source1 instanceof ArrayBuffer ? new Uint8Array(source1) : source1;
-  var sourceArray2 = source2 instanceof ArrayBuffer ? new Uint8Array(source2) : source2;
-  var temp = new Uint8Array(sourceArray1.byteLength + sourceArray2.byteLength);
-  temp.set(sourceArray1, 0);
-  temp.set(sourceArray2, sourceArray1.byteLength);
-  return temp;
-}
-// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/dist/esm/iterator-utils/async-iteration.js
-
-
-
-
-function forEach(_x, _x2) {
-  return _forEach.apply(this, arguments);
-}
-
-function _forEach() {
-  _forEach = Object(asyncToGenerator["a" /* default */])(regenerator_default.a.mark(function _callee(iterator, visitor) {
-    var _yield$iterator$next, done, value, cancel;
-
-    return regenerator_default.a.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            if (false) {}
-
-            _context.next = 3;
-            return iterator.next();
-
-          case 3:
-            _yield$iterator$next = _context.sent;
-            done = _yield$iterator$next.done;
-            value = _yield$iterator$next.value;
-
-            if (!done) {
-              _context.next = 9;
-              break;
-            }
-
-            iterator["return"]();
-            return _context.abrupt("return");
-
-          case 9:
-            cancel = visitor(value);
-
-            if (!cancel) {
-              _context.next = 12;
-              break;
-            }
-
-            return _context.abrupt("return");
-
-          case 12:
-            _context.next = 0;
-            break;
-
-          case 14:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee);
-  }));
-  return _forEach.apply(this, arguments);
-}
-
-function concatenateChunksAsync(_x3) {
-  return _concatenateChunksAsync.apply(this, arguments);
-}
-
-function _concatenateChunksAsync() {
-  _concatenateChunksAsync = Object(asyncToGenerator["a" /* default */])(regenerator_default.a.mark(function _callee2(asyncIterator) {
-    var arrayBuffer, string, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, _value, chunk;
-
-    return regenerator_default.a.wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            arrayBuffer = new ArrayBuffer(0);
-            string = '';
-            _iteratorNormalCompletion = true;
-            _didIteratorError = false;
-            _context2.prev = 4;
-            _iterator = Object(esm_asyncIterator["a" /* default */])(asyncIterator);
-
-          case 6:
-            _context2.next = 8;
-            return _iterator.next();
-
-          case 8:
-            _step = _context2.sent;
-            _iteratorNormalCompletion = _step.done;
-            _context2.next = 12;
-            return _step.value;
-
-          case 12:
-            _value = _context2.sent;
-
-            if (_iteratorNormalCompletion) {
-              _context2.next = 19;
-              break;
-            }
-
-            chunk = _value;
-
-            if (typeof chunk === 'string') {
-              string += chunk;
-            } else {
-              arrayBuffer = concatenateArrayBuffers(arrayBuffer, chunk);
-            }
-
-          case 16:
-            _iteratorNormalCompletion = true;
-            _context2.next = 6;
-            break;
-
-          case 19:
-            _context2.next = 25;
-            break;
-
-          case 21:
-            _context2.prev = 21;
-            _context2.t0 = _context2["catch"](4);
-            _didIteratorError = true;
-            _iteratorError = _context2.t0;
-
-          case 25:
-            _context2.prev = 25;
-            _context2.prev = 26;
-
-            if (!(!_iteratorNormalCompletion && _iterator["return"] != null)) {
-              _context2.next = 30;
-              break;
-            }
-
-            _context2.next = 30;
-            return _iterator["return"]();
-
-          case 30:
-            _context2.prev = 30;
-
-            if (!_didIteratorError) {
-              _context2.next = 33;
-              break;
-            }
-
-            throw _iteratorError;
-
-          case 33:
-            return _context2.finish(30);
-
-          case 34:
-            return _context2.finish(25);
-
-          case 35:
-            return _context2.abrupt("return", string || arrayBuffer);
-
-          case 36:
-          case "end":
-            return _context2.stop();
-        }
-      }
-    }, _callee2, null, [[4, 21, 25, 35], [26,, 30, 34]]);
-  }));
-  return _concatenateChunksAsync.apply(this, arguments);
-}
-// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/loader-utils/check-errors.js
-
-
-function checkFetchResponseStatus(_x) {
-  return _checkFetchResponseStatus.apply(this, arguments);
-}
-
-function _checkFetchResponseStatus() {
-  _checkFetchResponseStatus = Object(asyncToGenerator["a" /* default */])(regenerator_default.a.mark(function _callee(response) {
-    var errorMessage, text;
-    return regenerator_default.a.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            if (response.ok) {
-              _context.next = 12;
-              break;
-            }
-
-            errorMessage = "fetch failed ".concat(response.status, " ").concat(response.statusText);
-            _context.prev = 2;
-            _context.next = 5;
-            return response.text().slice(10);
-
-          case 5:
-            text = _context.sent;
-            errorMessage += text;
-            _context.next = 11;
-            break;
-
-          case 9:
-            _context.prev = 9;
-            _context.t0 = _context["catch"](2);
-
-          case 11:
-            throw new Error(errorMessage);
-
-          case 12:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee, null, [[2, 9]]);
-  }));
-  return _checkFetchResponseStatus.apply(this, arguments);
-}
-
-function checkFetchResponseStatusSync(response) {
-  if (!response.ok) {
-    throw new Error("fetch failed ".concat(response.status));
-  }
-}
 // CONCATENATED MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/loader-utils/get-data.js
 
 
@@ -4932,17 +4525,7 @@ function checkFetchResponseStatusSync(response) {
 
 
 
-
 var ERR_DATA = 'Cannot convert supplied data type';
-function getUrlFromData(data, url) {
-  if (isResponse(data)) {
-    url = url || data.url;
-  } else if (isBlob(url)) {
-    url = url.name;
-  }
-
-  return typeof url === 'string' ? url.replace(/\?.*/, '') : url;
-}
 function getArrayBufferOrStringFromDataSync(data, loader) {
   if (loader.text && typeof data === 'string') {
     return data;
@@ -4959,7 +4542,7 @@ function getArrayBufferOrStringFromDataSync(data, loader) {
     return arrayBuffer;
   }
 
-  if (ArrayBuffer.isView(data) || is_type_isBuffer(data)) {
+  if (ArrayBuffer.isView(data) || Object(is_type["c" /* isBuffer */])(data)) {
     if (loader.text && !loader.binary) {
       var _textDecoder = new TextDecoder('utf8');
 
@@ -4989,82 +4572,77 @@ function _getArrayBufferOrStringFromData() {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            _context3.next = 2;
-            return data;
-
-          case 2:
-            data = _context3.sent;
             isArrayBuffer = data instanceof ArrayBuffer || ArrayBuffer.isView(data);
 
             if (!(typeof data === 'string' || isArrayBuffer)) {
-              _context3.next = 6;
+              _context3.next = 3;
               break;
             }
 
             return _context3.abrupt("return", getArrayBufferOrStringFromDataSync(data, loader));
 
-          case 6:
-            if (!isBlob(data)) {
-              _context3.next = 10;
+          case 3:
+            if (!Object(is_type["b" /* isBlob */])(data)) {
+              _context3.next = 7;
               break;
             }
 
-            _context3.next = 9;
-            return fetchFileReadable(data);
+            _context3.next = 6;
+            return Object(response_utils["b" /* makeResponse */])(data);
 
-          case 9:
+          case 6:
             data = _context3.sent;
 
-          case 10:
-            if (!isResponse(data)) {
-              _context3.next = 24;
+          case 7:
+            if (!Object(is_type["i" /* isResponse */])(data)) {
+              _context3.next = 21;
               break;
             }
 
             response = data;
-            _context3.next = 14;
-            return checkFetchResponseStatus(response);
+            _context3.next = 11;
+            return Object(response_utils["a" /* checkResponse */])(response);
 
-          case 14:
+          case 11:
             if (!loader.binary) {
-              _context3.next = 20;
+              _context3.next = 17;
               break;
             }
 
-            _context3.next = 17;
+            _context3.next = 14;
             return response.arrayBuffer();
 
-          case 17:
+          case 14:
             _context3.t0 = _context3.sent;
-            _context3.next = 23;
+            _context3.next = 20;
             break;
 
-          case 20:
-            _context3.next = 22;
+          case 17:
+            _context3.next = 19;
             return response.text();
 
-          case 22:
+          case 19:
             _context3.t0 = _context3.sent;
 
-          case 23:
+          case 20:
             return _context3.abrupt("return", _context3.t0);
 
-          case 24:
-            if (isReadableStream(data)) {
+          case 21:
+            if (Object(is_type["h" /* isReadableStream */])(data)) {
               data = makeIterator(data);
             }
 
-            if (!(isIterable(data) || isAsyncIterable(data))) {
-              _context3.next = 27;
+            if (!(Object(is_type["d" /* isIterable */])(data) || Object(is_type["a" /* isAsyncIterable */])(data))) {
+              _context3.next = 24;
               break;
             }
 
             return _context3.abrupt("return", concatenateChunksAsync(data));
 
-          case 27:
+          case 24:
             throw new Error(ERR_DATA);
 
-          case 28:
+          case 25:
           case "end":
             return _context3.stop();
         }
@@ -5084,7 +4662,7 @@ function _getAsyncIteratorFromData() {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            if (!isIterator(data)) {
+            if (!Object(is_type["e" /* isIterator */])(data)) {
               _context4.next = 2;
               break;
             }
@@ -5092,19 +4670,19 @@ function _getAsyncIteratorFromData() {
             return _context4.abrupt("return", data);
 
           case 2:
-            if (!isResponse(data)) {
+            if (!Object(is_type["i" /* isResponse */])(data)) {
               _context4.next = 6;
               break;
             }
 
             _context4.next = 5;
-            return checkFetchResponseStatus(data);
+            return Object(response_utils["a" /* checkResponse */])(data);
 
           case 5:
             return _context4.abrupt("return", makeIterator(data.body));
 
           case 6:
-            if (!(isBlob(data) || isReadableStream(data))) {
+            if (!(Object(is_type["b" /* isBlob */])(data) || Object(is_type["h" /* isReadableStream */])(data))) {
               _context4.next = 8;
               break;
             }
@@ -5112,7 +4690,7 @@ function _getAsyncIteratorFromData() {
             return _context4.abrupt("return", makeIterator(data));
 
           case 8:
-            if (!isAsyncIterable(data)) {
+            if (!Object(is_type["a" /* isAsyncIterable */])(data)) {
               _context4.next = 10;
               break;
             }
@@ -5169,15 +4747,59 @@ function getIteratorFromData(data) {
     })();
   }
 
-  if (isIterator(data)) {
+  if (Object(is_type["e" /* isIterator */])(data)) {
     return data;
   }
 
-  if (isIterable(data)) {
+  if (Object(is_type["d" /* isIterable */])(data)) {
     return data[Symbol.iterator]();
   }
 
   throw new Error(ERR_DATA);
+}
+
+function getReadableStream(_x4) {
+  return _getReadableStream.apply(this, arguments);
+}
+
+function _getReadableStream() {
+  _getReadableStream = Object(asyncToGenerator["a" /* default */])(regenerator_default.a.mark(function _callee3(data) {
+    var response;
+    return regenerator_default.a.wrap(function _callee3$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            if (!Object(is_type["h" /* isReadableStream */])(data)) {
+              _context5.next = 2;
+              break;
+            }
+
+            return _context5.abrupt("return", data);
+
+          case 2:
+            if (!Object(is_type["i" /* isResponse */])(data)) {
+              _context5.next = 4;
+              break;
+            }
+
+            return _context5.abrupt("return", data.body);
+
+          case 4:
+            _context5.next = 6;
+            return Object(response_utils["b" /* makeResponse */])(data);
+
+          case 6:
+            response = _context5.sent;
+            return _context5.abrupt("return", response.body);
+
+          case 8:
+          case "end":
+            return _context5.stop();
+        }
+      }
+    }, _callee3);
+  }));
+  return _getReadableStream.apply(this, arguments);
 }
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/toConsumableArray.js + 3 modules
 var toConsumableArray = __webpack_require__("KQm4");
@@ -5185,7 +4807,7 @@ var toConsumableArray = __webpack_require__("KQm4");
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/defineProperty.js
 var defineProperty = __webpack_require__("rePB");
 
-// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/loader-utils/get-loader-context.js
+// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/loader-utils/context-utils.js
 
 
 
@@ -5232,7 +4854,7 @@ function getLoaderContext(context, options) {
   }
 
   context = _objectSpread({
-    fetch: context.fetch || fetchFile
+    fetch: Object(option_utils["a" /* getFetchFunction */])(options || {}, context)
   }, context);
 
   if (!Array.isArray(context.loaders)) {
@@ -5242,7 +4864,7 @@ function getLoaderContext(context, options) {
   return context;
 }
 function getLoaders(loaders, context) {
-  if (!context && !Array.isArray(loaders)) {
+  if (!context && loaders && !Array.isArray(loaders)) {
     return loaders;
   }
 
@@ -5259,7 +4881,13 @@ function getLoaders(loaders, context) {
 
   return candidateLoaders && candidateLoaders.length ? candidateLoaders : null;
 }
-// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/dist/esm/worker-utils/get-worker-url.js
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/classCallCheck.js
+var classCallCheck = __webpack_require__("1OyB");
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/createClass.js
+var createClass = __webpack_require__("vuIU");
+
+// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/node_modules/@loaders.gl/loader-utils/dist/esm/lib/worker-utils/get-worker-url.js
 
 var workerURLCache = new Map();
 function getWorkerURL(workerSource) {
@@ -5292,7 +4920,10 @@ function getWorkerURL(workerSource) {
 function buildScript(workerUrl) {
   return "try {\n  importScripts('".concat(workerUrl, "');\n} catch (error) {\n  console.error(error);\n}");
 }
-// CONCATENATED MODULE: ./node_modules/@loaders.gl/loader-utils/dist/esm/lib/worker-utils/get-transfer-list.js
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/typeof.js
+var esm_typeof = __webpack_require__("U8pU");
+
+// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/node_modules/@loaders.gl/loader-utils/dist/esm/lib/worker-utils/get-transfer-list.js
 
 function getTransferList(object) {
   var recursive = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
@@ -5309,7 +4940,7 @@ function getTransferList(object) {
     }
   }
 
-  return transfers === undefined ? Array.from(transfersSet) : null;
+  return transfers === undefined ? Array.from(transfersSet) : [];
 }
 
 function isTransferable(object) {
@@ -5335,7 +4966,7 @@ function isTransferable(object) {
 
   return false;
 }
-// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/dist/esm/worker-utils/worker-thread.js
+// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/node_modules/@loaders.gl/loader-utils/dist/esm/lib/worker-utils/worker-thread.js
 
 
 
@@ -5379,7 +5010,7 @@ var worker_thread_WorkerThread = function () {
               case 0:
                 return _context.abrupt("return", new Promise(function (resolve, reject) {
                   _this.worker.onmessage = function (event) {
-                    return _this.onMessage({
+                    _this.onMessage({
                       worker: _this.worker,
                       data: event.data,
                       resolve: resolve,
@@ -5430,7 +5061,7 @@ var worker_thread_WorkerThread = function () {
 }();
 
 
-// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/dist/esm/worker-utils/worker-pool.js
+// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/node_modules/@loaders.gl/loader-utils/dist/esm/lib/worker-utils/worker-pool.js
 
 
 
@@ -5471,69 +5102,93 @@ var worker_pool_WorkerPool = function () {
     }
   }, {
     key: "process",
-    value: function () {
-      var _process = Object(asyncToGenerator["a" /* default */])(regenerator_default.a.mark(function _callee(data, jobName) {
-        var _this = this;
+    value: function process(data, jobName) {
+      var _this = this;
 
+      return new Promise(function (resolve, reject) {
+        _this.jobQueue.push({
+          data: data,
+          jobName: jobName,
+          resolve: resolve,
+          reject: reject
+        });
+
+        _this._startQueuedJob();
+      });
+    }
+  }, {
+    key: "_startQueuedJob",
+    value: function () {
+      var _startQueuedJob2 = Object(asyncToGenerator["a" /* default */])(regenerator_default.a.mark(function _callee() {
+        var worker, job;
         return regenerator_default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                return _context.abrupt("return", new Promise(function (resolve, reject) {
-                  _this.jobQueue.push({
-                    data: data,
-                    jobName: jobName,
-                    resolve: resolve,
-                    reject: reject
-                  });
+                if (this.jobQueue.length) {
+                  _context.next = 2;
+                  break;
+                }
 
-                  _this._startQueuedJob();
-                }));
+                return _context.abrupt("return");
 
-              case 1:
+              case 2:
+                worker = this._getAvailableWorker();
+
+                if (worker) {
+                  _context.next = 5;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 5:
+                job = this.jobQueue.shift();
+                this.onDebug({
+                  message: 'processing',
+                  worker: worker.name,
+                  job: job.jobName,
+                  backlog: this.jobQueue.length
+                });
+                _context.prev = 7;
+                _context.t0 = job;
+                _context.next = 11;
+                return worker.process(job.data);
+
+              case 11:
+                _context.t1 = _context.sent;
+
+                _context.t0.resolve.call(_context.t0, _context.t1);
+
+                _context.next = 18;
+                break;
+
+              case 15:
+                _context.prev = 15;
+                _context.t2 = _context["catch"](7);
+                job.reject(_context.t2);
+
+              case 18:
+                _context.prev = 18;
+
+                this._onWorkerDone(worker);
+
+                return _context.finish(18);
+
+              case 21:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee);
+        }, _callee, this, [[7, 15, 18, 21]]);
       }));
 
-      function process(_x, _x2) {
-        return _process.apply(this, arguments);
+      function _startQueuedJob() {
+        return _startQueuedJob2.apply(this, arguments);
       }
 
-      return process;
+      return _startQueuedJob;
     }()
-  }, {
-    key: "_startQueuedJob",
-    value: function _startQueuedJob() {
-      var _this2 = this;
-
-      if (!this.jobQueue.length) {
-        return;
-      }
-
-      var worker = this._getAvailableWorker();
-
-      if (!worker) {
-        return;
-      }
-
-      var job = this.jobQueue.shift();
-      this.onDebug({
-        message: 'processing',
-        worker: worker.name,
-        job: job.jobName,
-        backlog: this.jobQueue.length
-      });
-      worker.process(job.data).then(function (result) {
-        return job.resolve(result);
-      })["catch"](function (error) {
-        return job.reject(error);
-      }).then(function () {
-        return _this2._onWorkerDone(worker);
-      });
-    }
   }, {
     key: "_onWorkerDone",
     value: function _onWorkerDone(worker) {
@@ -5570,7 +5225,7 @@ var worker_pool_WorkerPool = function () {
 }();
 
 
-// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/dist/esm/worker-utils/worker-farm.js
+// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/node_modules/@loaders.gl/loader-utils/dist/esm/lib/worker-utils/worker-farm.js
 
 
 
@@ -5589,7 +5244,8 @@ var worker_farm_WorkerFarm = function () {
   function WorkerFarm(_ref) {
     var _ref$maxConcurrency = _ref.maxConcurrency,
         maxConcurrency = _ref$maxConcurrency === void 0 ? DEFAULT_MAX_CONCURRENCY : _ref$maxConcurrency,
-        onMessage = _ref.onMessage,
+        _ref$onMessage = _ref.onMessage,
+        onMessage = _ref$onMessage === void 0 ? null : _ref$onMessage,
         _ref$onDebug = _ref.onDebug,
         onDebug = _ref$onDebug === void 0 ? function () {} : _ref$onDebug;
 
@@ -5654,7 +5310,7 @@ var worker_farm_WorkerFarm = function () {
         workerPool = new worker_pool_WorkerPool({
           source: workerSource,
           name: workerName,
-          onMessage: this.onMessage,
+          onMessage: onWorkerMessage.bind(null, this.onMessage),
           maxConcurrency: this.maxConcurrency,
           onDebug: this.onDebug
         });
@@ -5669,15 +5325,44 @@ var worker_farm_WorkerFarm = function () {
 }();
 
 
-// EXTERNAL MODULE: ../node/utils/to-array-buffer.node (ignored)
-var to_array_buffer_ignored_ = __webpack_require__(5);
 
-// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/dist/esm/javascript-utils/binary-utils.js
+function onWorkerMessage(onMessage, _ref2) {
+  var worker = _ref2.worker,
+      data = _ref2.data,
+      resolve = _ref2.resolve,
+      reject = _ref2.reject;
+
+  if (onMessage) {
+    onMessage({
+      worker: worker,
+      data: data,
+      resolve: resolve,
+      reject: reject
+    });
+    return;
+  }
+
+  switch (data.type) {
+    case 'done':
+      resolve(data.result);
+      break;
+
+    case 'error':
+      reject(data.message);
+      break;
+
+    default:
+  }
+}
+// EXTERNAL MODULE: ../node/buffer-utils.node (ignored)
+var buffer_utils_ignored_ = __webpack_require__(7);
+
+// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/node_modules/@loaders.gl/loader-utils/dist/esm/lib/binary-utils/binary-utils.js
 
 
 function toArrayBuffer(data) {
-  if (to_array_buffer_ignored_["toArrayBuffer"]) {
-    data = Object(to_array_buffer_ignored_["toArrayBuffer"])(data);
+  if (buffer_utils_ignored_["toArrayBuffer"]) {
+    data = buffer_utils_ignored_["toArrayBuffer"](data);
   }
 
   if (data instanceof ArrayBuffer) {
@@ -5696,14 +5381,15 @@ function toArrayBuffer(data) {
 
   return Object(assert["a" /* default */])(false);
 }
+function toBuffer(data) {
+  return buffer_utils_ignored_["toBuffer"] ? buffer_utils_ignored_["toBuffer"](data) : data;
+}
 // CONCATENATED MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/loader-utils/parse-with-worker.js
 
 
 
 
-
-
-var parse_with_worker_VERSION =  true ? "2.2.8" : undefined;
+var parse_with_worker_VERSION =  true ? "2.3.0-alpha.10" : undefined;
 function canParseWithWorker(loader, data, options, context) {
   if (!worker_farm_WorkerFarm.isSupported()) {
     return false;
@@ -5751,7 +5437,7 @@ function getWorkerFarm() {
 
   if (!_workerFarm) {
     _workerFarm = new worker_farm_WorkerFarm({
-      onMessage: onWorkerMessage
+      onMessage: parse_with_worker_onWorkerMessage
     });
   }
 
@@ -5760,7 +5446,7 @@ function getWorkerFarm() {
   return _workerFarm;
 }
 
-function onWorkerMessage(_x) {
+function parse_with_worker_onWorkerMessage(_x) {
   return _onWorkerMessage.apply(this, arguments);
 }
 
@@ -5820,95 +5506,9 @@ function _onWorkerMessage() {
   }));
   return _onWorkerMessage.apply(this, arguments);
 }
-// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/utils/mime-type-utils.js
-var DATA_URL_PATTERN = /^data:([-\w.]+\/[-\w.+]+)(;|,)/;
-var MIME_TYPE_PATTERN = /^([-\w.]+\/[-\w.+]+)/;
-function parseMIMEType(mimeString) {
-  if (typeof mimeString !== 'string') {
-    return '';
-  }
+// EXTERNAL MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/utils/resource-utils.js + 1 modules
+var resource_utils = __webpack_require__("6u5O");
 
-  var matches = mimeString.match(MIME_TYPE_PATTERN);
-
-  if (matches) {
-    return matches[1];
-  }
-
-  return mimeString;
-}
-function parseMIMETypeFromURL(dataUrl) {
-  if (typeof dataUrl !== 'string') {
-    return '';
-  }
-
-  var matches = dataUrl.match(DATA_URL_PATTERN);
-
-  if (matches) {
-    return matches[1];
-  }
-
-  return '';
-}
-// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/utils/resource-utils.js
-
-
-var QUERY_STRING_PATTERN = /\?.*/;
-function getResourceUrlAndType(resource) {
-  if (isResponse(resource)) {
-    var contentType = parseMIMEType(resource.headers.get('content-type'));
-    var urlType = parseMIMETypeFromURL(resource.url);
-    return {
-      url: stripQueryString(resource.url || ''),
-      type: contentType || urlType || null
-    };
-  }
-
-  if (isBlob(resource)) {
-    return {
-      url: stripQueryString(resource.url || ''),
-      type: resource.type || ''
-    };
-  }
-
-  if (typeof resource === 'string') {
-    return {
-      url: stripQueryString(resource),
-      type: parseMIMETypeFromURL(resource)
-    };
-  }
-
-  return {
-    url: '',
-    type: ''
-  };
-}
-function getResourceContentLength(resource) {
-  if (isResponse(resource)) {
-    return resource.headers['content-length'] || -1;
-  }
-
-  if (isBlob(resource)) {
-    return resource.size;
-  }
-
-  if (typeof resource === 'string') {
-    return resource.length;
-  }
-
-  if (resource instanceof ArrayBuffer) {
-    return resource.byteLength;
-  }
-
-  if (ArrayBuffer.isView(resource)) {
-    return resource.byteLength;
-  }
-
-  return -1;
-}
-
-function stripQueryString(url) {
-  return url.replace(QUERY_STRING_PATTERN, '');
-}
 // EXTERNAL MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/api/register-loaders.js
 var register_loaders = __webpack_require__("H352");
 
@@ -5916,11 +5516,48 @@ var register_loaders = __webpack_require__("H352");
 
 
 
-function _createForOfIteratorHelper(o, allowArrayLike) {
+
+
+
+function select_loader_ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    if (enumerableOnly) symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    });
+    keys.push.apply(keys, symbols);
+  }
+
+  return keys;
+}
+
+function select_loader_objectSpread(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
+    if (i % 2) {
+      select_loader_ownKeys(Object(source), true).forEach(function (key) {
+        Object(defineProperty["a" /* default */])(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      select_loader_ownKeys(Object(source)).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+
+  return target;
+}
+
+function select_loader_createForOfIteratorHelper(o, allowArrayLike) {
   var it;
 
   if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {
-    if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
+    if (Array.isArray(o) || (it = select_loader_unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
       if (it) o = it;
       var i = 0;
 
@@ -5973,16 +5610,16 @@ function _createForOfIteratorHelper(o, allowArrayLike) {
   };
 }
 
-function _unsupportedIterableToArray(o, minLen) {
+function select_loader_unsupportedIterableToArray(o, minLen) {
   if (!o) return;
-  if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+  if (typeof o === "string") return select_loader_arrayLikeToArray(o, minLen);
   var n = Object.prototype.toString.call(o).slice(8, -1);
   if (n === "Object" && o.constructor) n = o.constructor.name;
   if (n === "Map" || n === "Set") return Array.from(o);
-  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return select_loader_arrayLikeToArray(o, minLen);
 }
 
-function _arrayLikeToArray(arr, len) {
+function select_loader_arrayLikeToArray(arr, len) {
   if (len == null || len > arr.length) len = arr.length;
 
   for (var i = 0, arr2 = new Array(len); i < len; i++) {
@@ -5995,8 +5632,73 @@ function _arrayLikeToArray(arr, len) {
 
 
 
+
+
 var EXT_PATTERN = /\.([^.]+)$/;
-function selectLoader(data) {
+function selectLoader(_x) {
+  return _selectLoader.apply(this, arguments);
+}
+
+function _selectLoader() {
+  _selectLoader = Object(asyncToGenerator["a" /* default */])(regenerator_default.a.mark(function _callee(data) {
+    var loaders,
+        options,
+        context,
+        loader,
+        _args = arguments;
+    return regenerator_default.a.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            loaders = _args.length > 1 && _args[1] !== undefined ? _args[1] : [];
+            options = _args.length > 2 && _args[2] !== undefined ? _args[2] : {};
+            context = _args.length > 3 && _args[3] !== undefined ? _args[3] : {};
+            loader = selectLoaderSync(data, loaders, select_loader_objectSpread(select_loader_objectSpread({}, options), {}, {
+              nothrow: true
+            }), context);
+
+            if (!loader) {
+              _context.next = 6;
+              break;
+            }
+
+            return _context.abrupt("return", loader);
+
+          case 6:
+            if (!Object(is_type["b" /* isBlob */])(data)) {
+              _context.next = 11;
+              break;
+            }
+
+            _context.next = 9;
+            return readFileSlice(data, 0, 10);
+
+          case 9:
+            data = _context.sent;
+            loader = selectLoaderSync(data, loaders, options, context);
+
+          case 11:
+            if (!(!loader && !options.nothrow)) {
+              _context.next = 13;
+              break;
+            }
+
+            throw new Error(getNoValidLoaderMessage(data));
+
+          case 13:
+            return _context.abrupt("return", loader);
+
+          case 14:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _selectLoader.apply(this, arguments);
+}
+
+function selectLoaderSync(data) {
   var loaders = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
   var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
   var context = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
@@ -6008,7 +5710,7 @@ function selectLoader(data) {
   loaders = [].concat(Object(toConsumableArray["a" /* default */])(loaders || []), Object(toConsumableArray["a" /* default */])(Object(register_loaders["a" /* getRegisteredLoaders */])()));
   normalizeLoaders(loaders);
 
-  var _getResourceUrlAndTyp = getResourceUrlAndType(data),
+  var _getResourceUrlAndTyp = Object(resource_utils["b" /* getResourceUrlAndType */])(data),
       url = _getResourceUrlAndTyp.url,
       type = _getResourceUrlAndTyp.type;
 
@@ -6017,28 +5719,32 @@ function selectLoader(data) {
   loader = loader || findLoaderByExamingInitialData(loaders, data);
 
   if (!loader && !options.nothrow) {
-    throw new Error(getNoValidLoaderMessage(data, url, type));
+    throw new Error(getNoValidLoaderMessage(data));
   }
 
   return loader;
 }
 
-function getNoValidLoaderMessage(data, url, contentType) {
+function getNoValidLoaderMessage(data) {
+  var _getResourceUrlAndTyp2 = Object(resource_utils["b" /* getResourceUrlAndType */])(data),
+      url = _getResourceUrlAndTyp2.url,
+      type = _getResourceUrlAndTyp2.type;
+
   var message = 'No valid loader found';
 
   if (data) {
-    message += " data: \"".concat(getFirstCharacters(data), "\"");
+    message += " data: \"".concat(getFirstCharacters(data), "\", contentType: \"").concat(type, "\"");
   }
 
   if (url) {
-    message += " for ".concat(url);
+    message += " url: ".concat(url);
   }
 
   return message;
 }
 
 function normalizeLoaders(loaders) {
-  var _iterator = _createForOfIteratorHelper(loaders),
+  var _iterator = select_loader_createForOfIteratorHelper(loaders),
       _step;
 
   try {
@@ -6062,14 +5768,14 @@ function findLoaderByUrl(loaders, url) {
 function findLoaderByExtension(loaders, extension) {
   extension = extension.toLowerCase();
 
-  var _iterator2 = _createForOfIteratorHelper(loaders),
+  var _iterator2 = select_loader_createForOfIteratorHelper(loaders),
       _step2;
 
   try {
     for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
       var loader = _step2.value;
 
-      var _iterator3 = _createForOfIteratorHelper(loader.extensions),
+      var _iterator3 = select_loader_createForOfIteratorHelper(loader.extensions),
           _step3;
 
       try {
@@ -6096,7 +5802,7 @@ function findLoaderByExtension(loaders, extension) {
 }
 
 function findLoaderByContentType(loaders, mimeType) {
-  var _iterator4 = _createForOfIteratorHelper(loaders),
+  var _iterator4 = select_loader_createForOfIteratorHelper(loaders),
       _step4;
 
   try {
@@ -6125,7 +5831,7 @@ function findLoaderByExamingInitialData(loaders, data) {
     return null;
   }
 
-  var _iterator5 = _createForOfIteratorHelper(loaders),
+  var _iterator5 = select_loader_createForOfIteratorHelper(loaders),
       _step5;
 
   try {
@@ -6197,7 +5903,7 @@ function getFirstCharacters(data) {
 }
 
 function getMagicString(arrayBuffer, byteOffset, length) {
-  if (arrayBuffer.byteLength <= byteOffset + length) {
+  if (arrayBuffer.byteLength < byteOffset + length) {
     return '';
   }
 
@@ -6227,52 +5933,55 @@ function parse(_x, _x2, _x3, _x4) {
 
 function _parse() {
   _parse = Object(asyncToGenerator["a" /* default */])(regenerator_default.a.mark(function _callee(data, loaders, options, context) {
-    var url, autoUrl, candidateLoaders, loader;
+    var _getResourceUrlAndTyp, url, candidateLoaders, loader;
+
     return regenerator_default.a.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
+            Object(assert["a" /* default */])(!context || typeof context !== 'string', 'parse no longer accepts final url');
+
             if (loaders && !Array.isArray(loaders) && !Object(normalize_loader["a" /* isLoaderObject */])(loaders)) {
               context = options;
               options = loaders;
               loaders = null;
             }
 
-            url = '';
+            _context.next = 4;
+            return data;
 
-            if (typeof context === 'string') {
-              url = context;
-              context = null;
-            }
-
+          case 4:
+            data = _context.sent;
             options = options || {};
-            autoUrl = getUrlFromData(data, url);
+            _getResourceUrlAndTyp = Object(resource_utils["b" /* getResourceUrlAndType */])(data), url = _getResourceUrlAndTyp.url;
             candidateLoaders = getLoaders(loaders, context);
-            loader = selectLoader(data, candidateLoaders, options, {
-              url: autoUrl
-            });
+            _context.next = 10;
+            return selectLoader(data, candidateLoaders, options);
+
+          case 10:
+            loader = _context.sent;
 
             if (loader) {
-              _context.next = 9;
+              _context.next = 13;
               break;
             }
 
             return _context.abrupt("return", null);
 
-          case 9:
-            options = Object(merge_options["b" /* mergeOptions */])(loader, options, autoUrl);
+          case 13:
+            options = Object(option_utils["c" /* normalizeOptions */])(options, loader, candidateLoaders, url);
             context = getLoaderContext({
-              url: autoUrl,
+              url: url,
               parse: parse,
               loaders: candidateLoaders
             }, options, context);
-            _context.next = 13;
+            _context.next = 17;
             return parseWithLoader(loader, data, options, context);
 
-          case 13:
+          case 17:
             return _context.abrupt("return", _context.sent);
 
-          case 14:
+          case 18:
           case "end":
             return _context.stop();
         }
@@ -6320,22 +6029,34 @@ function _parseWithLoader() {
             return _context2.abrupt("return", _context2.sent);
 
           case 11:
-            if (!loader.parse) {
+            if (!(loader.parseText && typeof data === 'string')) {
               _context2.next = 15;
               break;
             }
 
             _context2.next = 14;
-            return loader.parse(data, options, context, loader);
+            return loader.parseText(data, options, context, loader);
 
           case 14:
             return _context2.abrupt("return", _context2.sent);
 
           case 15:
+            if (!loader.parse) {
+              _context2.next = 19;
+              break;
+            }
+
+            _context2.next = 18;
+            return loader.parse(data, options, context, loader);
+
+          case 18:
+            return _context2.abrupt("return", _context2.sent);
+
+          case 19:
             Object(assert["a" /* default */])(!loader.parseSync);
             return _context2.abrupt("return", Object(assert["a" /* default */])(false));
 
-          case 17:
+          case 21:
           case "end":
             return _context2.stop();
         }
@@ -6357,7 +6078,7 @@ function load(_x, _x2, _x3) {
 
 function _load() {
   _load = Object(asyncToGenerator["a" /* default */])(regenerator_default.a.mark(function _callee(url, loaders, options) {
-    var data;
+    var fetch, data;
     return regenerator_default.a.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -6367,45 +6088,46 @@ function _load() {
               loaders = null;
             }
 
+            fetch = Object(option_utils["a" /* getFetchFunction */])(options || {});
             data = url;
 
             if (!(typeof url === 'string')) {
-              _context.next = 8;
+              _context.next = 9;
               break;
             }
 
-            _context.next = 5;
-            return fetchFile(url, options);
+            _context.next = 6;
+            return fetch(url);
 
-          case 5:
+          case 6:
             data = _context.sent;
-            _context.next = 9;
+            _context.next = 10;
             break;
 
-          case 8:
+          case 9:
             url = null;
 
-          case 9:
-            if (!isBlob(url)) {
-              _context.next = 14;
+          case 10:
+            if (!Object(is_type["b" /* isBlob */])(url)) {
+              _context.next = 15;
               break;
             }
 
-            _context.next = 12;
-            return fetchFile(url, options);
+            _context.next = 13;
+            return fetch(url);
 
-          case 12:
+          case 13:
             data = _context.sent;
             url = null;
 
-          case 14:
-            _context.next = 16;
-            return parse(data, loaders, options, url);
-
-          case 16:
-            return _context.abrupt("return", _context.sent);
+          case 15:
+            _context.next = 17;
+            return parse(data, loaders, options);
 
           case 17:
+            return _context.abrupt("return", _context.sent);
+
+          case 18:
           case "end":
             return _context.stop();
         }
@@ -12083,7 +11805,7 @@ var layer_state_LayerState = function (_ComponentState) {
 }(component_state_ComponentState);
 
 
-// EXTERNAL MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/api/load.js + 27 modules
+// EXTERNAL MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/api/load.js + 19 modules
 var load = __webpack_require__("JBga");
 
 // CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/lib/layer.js
@@ -13234,6 +12956,258 @@ var layer_Layer = function (_Component) {
 
 layer_Layer.layerName = 'Layer';
 layer_Layer.defaultProps = layer_defaultProps;
+
+/***/ }),
+
+/***/ "Ksu5":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return makeResponse; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return checkResponse; });
+/* unused harmony export checkResponseSync */
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("o0o1");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("HaE+");
+/* harmony import */ var _javascript_utils_is_type__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("1zMu");
+/* harmony import */ var _resource_utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("6u5O");
+
+
+
+
+function makeResponse(_x) {
+  return _makeResponse.apply(this, arguments);
+}
+
+function _makeResponse() {
+  _makeResponse = Object(_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"])(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(resource) {
+    var headers, contentLength, _getResourceUrlAndTyp, url, type, initialDataUrl, response;
+
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            if (!Object(_javascript_utils_is_type__WEBPACK_IMPORTED_MODULE_2__[/* isResponse */ "i"])(resource)) {
+              _context.next = 2;
+              break;
+            }
+
+            return _context.abrupt("return", resource);
+
+          case 2:
+            headers = {};
+            contentLength = Object(_resource_utils__WEBPACK_IMPORTED_MODULE_3__[/* getResourceContentLength */ "a"])(resource);
+
+            if (contentLength >= 0) {
+              headers['content-length'] = String(contentLength);
+            }
+
+            _getResourceUrlAndTyp = Object(_resource_utils__WEBPACK_IMPORTED_MODULE_3__[/* getResourceUrlAndType */ "b"])(resource), url = _getResourceUrlAndTyp.url, type = _getResourceUrlAndTyp.type;
+
+            if (type) {
+              headers['content-type'] = type;
+            }
+
+            _context.next = 9;
+            return getInitialDataUrl(resource);
+
+          case 9:
+            initialDataUrl = _context.sent;
+
+            if (initialDataUrl) {
+              headers['x-first-bytes'] = initialDataUrl;
+            }
+
+            if (typeof resource === 'string') {
+              resource = new TextEncoder().encode(resource);
+            }
+
+            response = new Response(resource, {
+              headers: headers
+            });
+            Object.defineProperty(response, 'url', {
+              value: url
+            });
+            return _context.abrupt("return", response);
+
+          case 15:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _makeResponse.apply(this, arguments);
+}
+
+function checkResponse(_x2) {
+  return _checkResponse.apply(this, arguments);
+}
+
+function _checkResponse() {
+  _checkResponse = Object(_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"])(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(response) {
+    var message;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            if (response.ok) {
+              _context2.next = 5;
+              break;
+            }
+
+            _context2.next = 3;
+            return getResponseError(response);
+
+          case 3:
+            message = _context2.sent;
+            throw new Error(message);
+
+          case 5:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+  return _checkResponse.apply(this, arguments);
+}
+
+function checkResponseSync(response) {
+  if (!response.ok) {
+    var message = "".concat(response.status, " ").concat(response.statusText);
+    message = message.length > 60 ? "".concat(message.slice(60), "...") : message;
+    throw new Error(message);
+  }
+}
+
+function getResponseError(_x3) {
+  return _getResponseError.apply(this, arguments);
+}
+
+function _getResponseError() {
+  _getResponseError = Object(_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"])(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(response) {
+    var message, contentType, text;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            message = "Failed to fetch resource ".concat(response.url, " (").concat(response.status, "): ");
+            _context3.prev = 1;
+            contentType = response.headers.get('Content-Type');
+            text = response.statusText;
+
+            if (!contentType.includes('application/json')) {
+              _context3.next = 11;
+              break;
+            }
+
+            _context3.t0 = text;
+            _context3.t1 = " ";
+            _context3.next = 9;
+            return response.text();
+
+          case 9:
+            _context3.t2 = _context3.sent;
+            text = _context3.t0 += _context3.t1.concat.call(_context3.t1, _context3.t2);
+
+          case 11:
+            message += text;
+            message = message.length > 60 ? "".concat(message.slice(60), "...") : message;
+            _context3.next = 17;
+            break;
+
+          case 15:
+            _context3.prev = 15;
+            _context3.t3 = _context3["catch"](1);
+
+          case 17:
+            return _context3.abrupt("return", message);
+
+          case 18:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, null, [[1, 15]]);
+  }));
+  return _getResponseError.apply(this, arguments);
+}
+
+function getInitialDataUrl(_x4) {
+  return _getInitialDataUrl.apply(this, arguments);
+}
+
+function _getInitialDataUrl() {
+  _getInitialDataUrl = Object(_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"])(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4(resource) {
+    var INITIAL_DATA_LENGTH, blobSlice, slice, base64;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            INITIAL_DATA_LENGTH = 5;
+
+            if (!(typeof resource === 'string')) {
+              _context4.next = 3;
+              break;
+            }
+
+            return _context4.abrupt("return", "data:,".concat(resource.slice(0, INITIAL_DATA_LENGTH)));
+
+          case 3:
+            if (!(resource instanceof Blob)) {
+              _context4.next = 8;
+              break;
+            }
+
+            blobSlice = resource.slice(0, 5);
+            _context4.next = 7;
+            return new Promise(function (resolve) {
+              var reader = new FileReader();
+
+              reader.onload = function (event) {
+                return resolve(event.target && event.target.result);
+              };
+
+              reader.readAsDataURL(blobSlice);
+            });
+
+          case 7:
+            return _context4.abrupt("return", _context4.sent);
+
+          case 8:
+            if (!(resource instanceof ArrayBuffer)) {
+              _context4.next = 12;
+              break;
+            }
+
+            slice = resource.slice(0, INITIAL_DATA_LENGTH);
+            base64 = arrayBufferToBase64(slice);
+            return _context4.abrupt("return", "data:base64,".concat(base64));
+
+          case 12:
+            return _context4.abrupt("return", null);
+
+          case 13:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4);
+  }));
+  return _getInitialDataUrl.apply(this, arguments);
+}
+
+function arrayBufferToBase64(buffer) {
+  var binary = '';
+  var bytes = new Uint8Array(buffer);
+
+  for (var i = 0; i < bytes.byteLength; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+
+  return btoa(binary);
+}
 
 /***/ }),
 
@@ -21055,7 +21029,7 @@ browser_default.a.data.authenticateViaPopup(resolve,reject);});});case 3:return 
 function _initialize(_x4,_x5){return _initialize2.apply(this,arguments);}function _initialize2(){_initialize2=Object(asyncToGenerator["a" /* default */])(/*#__PURE__*/regenerator_default.a.mark(function _callee3(baseurl,tileurl){return regenerator_default.a.wrap(function _callee3$(_context3){while(1){switch(_context3.prev=_context3.next){case 0:if(baseurl===void 0){baseurl=null;}if(tileurl===void 0){tileurl=null;}// TODO initialize seems to need ee to be set on global window object
 // We may be importing in non-standard way...?
 /* global window */window.ee=browser_default.a;_context3.next=5;return new Promise(function(resolve,reject){browser_default.a.initialize(baseurl,tileurl,function(value){return resolve(value);},function(error){return reject(error);});});case 5:return _context3.abrupt("return",_context3.sent);case 6:case"end":return _context3.stop();}}},_callee3);}));return _initialize2.apply(this,arguments);}
-// EXTERNAL MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/api/load.js + 27 modules
+// EXTERNAL MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/api/load.js + 19 modules
 var load = __webpack_require__("JBga");
 
 // CONCATENATED MODULE: ../node_modules/@loaders.gl/images/dist/esm/lib/utils/assert.js
@@ -21149,11 +21123,13 @@ function getImageData(image) {
     case 'imagebitmap':
       var canvas = document.createElement('canvas');
       var context = canvas.getContext('2d');
-      canvas.width = image.width;
-      canvas.height = image.height;
-      context.drawImage(image, 0, 0);
-      var imageData = context.getImageData(0, 0, image.width, image.height);
-      return imageData;
+
+      if (context) {
+        canvas.width = image.width;
+        canvas.height = image.height;
+        context.drawImage(image, 0, 0);
+        return context.getImageData(0, 0, image.width, image.height);
+      }
 
     default:
       return assert_assert(false);
@@ -21627,9 +21603,9 @@ function getLoadableImageType(type) {
 // CONCATENATED MODULE: ../node_modules/@loaders.gl/images/dist/esm/image-loader.js
 
 
-var VERSION =  true ? "2.2.8" : undefined;
+var VERSION =  true ? "2.3.0-alpha.10" : undefined;
 var EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp', 'ico', 'svg'];
-var MIME_TYPES = ['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/bmp', 'image/vndmicrosofticon', 'image/svg+xml'];
+var MIME_TYPES = ['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/bmp', 'image/vnd.microsoft.icon', 'image/svg+xml'];
 var ImageLoader = {
   id: 'image',
   name: 'Images',
@@ -23912,7 +23888,7 @@ function json_loader_objectSpread(target) {
 
 
 
-var json_loader_VERSION =  true ? "2.2.8" : undefined;
+var json_loader_VERSION =  true ? "2.3.0-alpha.10" : undefined;
 var JSONLoaderOptions = {
   json: {
     TableBatch: row_table_batch_RowTableBatch,
@@ -23927,9 +23903,8 @@ var JSONLoader = {
   name: 'JSON',
   version: json_loader_VERSION,
   extensions: ['json', 'geojson'],
-  mimeTypes: ['text/json'],
+  mimeTypes: ['application/json'],
   category: 'table',
-  testText: null,
   text: true,
   parse: parse,
   parseTextSync: parseTextSync,
@@ -24003,7 +23978,8 @@ asVector:false,// When rendered as vector, selectors that should be used to dete
 // attributes will be downloaded
 selectors:{type:'array',value:[],equal:deepEqual},// Force animation; animation is on by default when ImageCollection passed
 animate:false,// Frames per second
-animationSpeed:12,refinementStrategy:'no-overlap'});var earth_engine_layer_EarthEngineLayer=/*#__PURE__*/function(_CompositeLayer){Object(inheritsLoose["a" /* default */])(EarthEngineLayer,_CompositeLayer);function EarthEngineLayer(){return _CompositeLayer.apply(this,arguments)||this;}// helper function to initialize EE API
+animationSpeed:12,// TileLayer props with custom defaults
+refinementStrategy:'no-overlap',tileSize:256});var earth_engine_layer_EarthEngineLayer=/*#__PURE__*/function(_CompositeLayer){Object(inheritsLoose["a" /* default */])(EarthEngineLayer,_CompositeLayer);function EarthEngineLayer(){return _CompositeLayer.apply(this,arguments)||this;}// helper function to initialize EE API
 EarthEngineLayer.initializeEEApi=/*#__PURE__*/function(){var _initializeEEApi2=Object(asyncToGenerator["a" /* default */])(/*#__PURE__*/regenerator_default.a.mark(function _callee(_ref){var clientId,token;return regenerator_default.a.wrap(function _callee$(_context){while(1){switch(_context.prev=_context.next){case 0:clientId=_ref.clientId,token=_ref.token;_context.next=3;return ee_api_initializeEEApi({clientId:clientId,token:token});case 3:case"end":return _context.stop();}}},_callee);}));function initializeEEApi(_x){return _initializeEEApi2.apply(this,arguments);}return initializeEEApi;}();var _proto=EarthEngineLayer.prototype;_proto.initializeState=function initializeState(){this.state={};}// Note - Layer.updateState is not async. But it lets us `await` the initialization below
 ;_proto.updateState=/*#__PURE__*/function(){var _updateState=Object(asyncToGenerator["a" /* default */])(/*#__PURE__*/regenerator_default.a.mark(function _callee2(_ref2){var props,oldProps,changeFlags;return regenerator_default.a.wrap(function _callee2$(_context2){while(1){switch(_context2.prev=_context2.next){case 0:props=_ref2.props,oldProps=_ref2.oldProps,changeFlags=_ref2.changeFlags;_context2.next=3;return this._updateToken(props,oldProps,changeFlags);case 3:this._updateEEObject(props,oldProps,changeFlags);_context2.next=6;return this._updateEEVisParams(props,oldProps,changeFlags);case 6:this._animate();case 7:case"end":return _context2.stop();}}},_callee2,this);}));function updateState(_x2){return _updateState.apply(this,arguments);}return updateState;}();_proto._updateToken=/*#__PURE__*/function(){var _updateToken2=Object(asyncToGenerator["a" /* default */])(/*#__PURE__*/regenerator_default.a.mark(function _callee3(props,oldProps,changeFlags){var token;return regenerator_default.a.wrap(function _callee3$(_context3){while(1){switch(_context3.prev=_context3.next){case 0:if(!(!props.token||props.token===accessToken)){_context3.next=2;break;}return _context3.abrupt("return");case 2:token=props.token;_context3.next=5;return ee_api_initializeEEApi({token:token});case 5:accessToken=token;case 6:case"end":return _context3.stop();}}},_callee3);}));function _updateToken(_x3,_x4,_x5){return _updateToken2.apply(this,arguments);}return _updateToken;}();_proto._animate=function _animate(){// unit corresponds to the timestamp in source data
 var nFrames=this.state.nFrames;if(!nFrames){return;}// unit time per second
@@ -24014,7 +23990,7 @@ eeObject=browser_default.a.ImageCollection(eeObject);}// TODO - what case is thi
 if(Array.isArray(props.eeObject)&&props.eeObject.length===0){eeObject=null;}this.setState({eeObject:eeObject});};_proto._updateEEVisParams=/*#__PURE__*/function(){var _updateEEVisParams2=Object(asyncToGenerator["a" /* default */])(/*#__PURE__*/regenerator_default.a.mark(function _callee4(props,oldProps,changeFlags){var animate,asVector,selectors,eeObject,renderMethod,geojsonUrl,geojsonData,_yield$promisifyEEMet,mapid,urlFormat;return regenerator_default.a.wrap(function _callee4$(_context4){while(1){switch(_context4.prev=_context4.next){case 0:if(!(props.visParams===oldProps.visParams&&props.eeObject===oldProps.eeObject)){_context4.next=2;break;}return _context4.abrupt("return");case 2:animate=props.animate,asVector=props.asVector,selectors=props.selectors;eeObject=this.state.eeObject;if(eeObject){_context4.next=6;break;}return _context4.abrupt("return");case 6:if(eeObject.getMap){_context4.next=8;break;}throw new Error('eeObject must have a getMap() method');case 8:if(!animate){_context4.next=14;break;}renderMethod='filmstrip';if(eeObject.getFilmstripThumbURL){_context4.next=12;break;}throw new Error('eeObject must have a getFilmstripThumbURL method to animate.');case 12:_context4.next=26;break;case 14:if(!asVector){_context4.next=25;break;}renderMethod='vector';// Must pass a filename argument ('') so that the callback is correctly
 // called
 _context4.next=18;return promisifyEEMethod(eeObject,'getDownloadURL','json',['.geo'].concat(Object(toConsumableArray["a" /* default */])(selectors)),'');case 18:geojsonUrl=_context4.sent;_context4.next=21;return Object(load["a" /* load */])(geojsonUrl,JSONLoader);case 21:geojsonData=_context4.sent;this.setState({geojsonData:geojsonData});_context4.next=26;break;case 25:renderMethod='imageTiles';case 26:_context4.next=28;return promisifyEEMethod(eeObject,'getMap',props.visParams);case 28:_yield$promisifyEEMet=_context4.sent;mapid=_yield$promisifyEEMet.mapid;urlFormat=_yield$promisifyEEMet.urlFormat;this.setState({mapid:mapid,urlFormat:urlFormat,renderMethod:renderMethod});case 32:case"end":return _context4.stop();}}},_callee4,this);}));function _updateEEVisParams(_x6,_x7,_x8){return _updateEEVisParams2.apply(this,arguments);}return _updateEEVisParams;}();_proto.getTileData=function getTileData(options){var renderMethod=this.state.renderMethod;if(renderMethod==='filmstrip'){return this.getFilmstripTileData(options);}return this.getImageTileData(options);};_proto.getImageTileData=/*#__PURE__*/function(){var _getImageTileData=Object(asyncToGenerator["a" /* default */])(/*#__PURE__*/regenerator_default.a.mark(function _callee5(_ref3){var x,y,z,urlFormat,imageUrl,image;return regenerator_default.a.wrap(function _callee5$(_context5){while(1){switch(_context5.prev=_context5.next){case 0:x=_ref3.x,y=_ref3.y,z=_ref3.z;urlFormat=this.state.urlFormat;if(urlFormat){_context5.next=4;break;}return _context5.abrupt("return",null);case 4:imageUrl=urlFormat.replace('{x}',x).replace('{y}',y).replace('{z}',z);_context5.next=7;return Object(load["a" /* load */])(imageUrl,image_loader);case 7:image=_context5.sent;return _context5.abrupt("return",Promise.all([image]));case 9:case"end":return _context5.stop();}}},_callee5,this);}));function getImageTileData(_x9){return _getImageTileData.apply(this,arguments);}return getImageTileData;}();_proto.getFilmstripTileData=/*#__PURE__*/function(){var _getFilmstripTileData=Object(asyncToGenerator["a" /* default */])(/*#__PURE__*/regenerator_default.a.mark(function _callee6(_ref4){var bbox,eeObject,visParams,west,north,east,south,TILE_SIZE,region,filmArgs,imageUrl,imageOptions,image,nFrames,slices,i,imageBounds;return regenerator_default.a.wrap(function _callee6$(_context6){while(1){switch(_context6.prev=_context6.next){case 0:bbox=_ref4.bbox;eeObject=this.state.eeObject;visParams=this.props.visParams;west=bbox.west,north=bbox.north,east=bbox.east,south=bbox.south;TILE_SIZE=256;// Set geodesic=false to prevent horizontal lines from projection issues
-region=browser_default.a.Geometry.Rectangle([west,south,east,north],'EPSG:4326',false);filmArgs=Object.assign({},visParams,{dimensions:[TILE_SIZE,TILE_SIZE],region:region,crs:'EPSG:3857'});_context6.next=9;return promisifyEEMethod(eeObject,'getFilmstripThumbURL',filmArgs);case 9:imageUrl=_context6.sent;imageOptions={image:{type:'imagebitmap'}};_context6.next=13;return Object(load["a" /* load */])(imageUrl,image_loader,imageOptions);case 13:image=_context6.sent;nFrames=image.height/TILE_SIZE;slices=[];for(i=0;i<nFrames;i++){imageBounds=[0,i*TILE_SIZE,TILE_SIZE,TILE_SIZE];slices.push(createImageBitmap.apply(void 0,[image].concat(imageBounds)));}this.setState({nFrames:nFrames});return _context6.abrupt("return",Promise.all(slices));case 19:case"end":return _context6.stop();}}},_callee6,this);}));function getFilmstripTileData(_x10){return _getFilmstripTileData.apply(this,arguments);}return getFilmstripTileData;}();_proto._renderGeoJsonLayer=function _renderGeoJsonLayer(){var _this$state=this.state,mapid=_this$state.mapid,geojsonData=_this$state.geojsonData;var _this$props=this.props,stroked=_this$props.stroked,filled=_this$props.filled,extruded=_this$props.extruded,wireframe=_this$props.wireframe,lineWidthUnits=_this$props.lineWidthUnits,lineWidthScale=_this$props.lineWidthScale,lineWidthMinPixels=_this$props.lineWidthMinPixels,lineWidthMaxPixels=_this$props.lineWidthMaxPixels,lineJointRounded=_this$props.lineJointRounded,lineMiterLimit=_this$props.lineMiterLimit,elevationScale=_this$props.elevationScale,pointRadiusScale=_this$props.pointRadiusScale,pointRadiusMinPixels=_this$props.pointRadiusMinPixels,pointRadiusMaxPixels=_this$props.pointRadiusMaxPixels,getLineColor=_this$props.getLineColor,getFillColor=_this$props.getFillColor,getRadius=_this$props.getRadius,getLineWidth=_this$props.getLineWidth,getElevation=_this$props.getElevation,material=_this$props.material;if(!geojsonData){return null;}return new geojson_layer_GeoJsonLayer(this.getSubLayerProps({id:mapid}),{data:geojsonData,stroked:stroked,filled:filled,extruded:extruded,wireframe:wireframe,lineWidthUnits:lineWidthUnits,lineWidthScale:lineWidthScale,lineWidthMinPixels:lineWidthMinPixels,lineWidthMaxPixels:lineWidthMaxPixels,lineJointRounded:lineJointRounded,lineMiterLimit:lineMiterLimit,elevationScale:elevationScale,pointRadiusScale:pointRadiusScale,pointRadiusMinPixels:pointRadiusMinPixels,pointRadiusMaxPixels:pointRadiusMaxPixels,getLineColor:getLineColor,getFillColor:getFillColor,getRadius:getRadius,getLineWidth:getLineWidth,getElevation:getElevation,material:material});};_proto.renderLayers=function renderLayers(){var _this=this;var _this$state2=this.state,mapid=_this$state2.mapid,_this$state2$frame=_this$state2.frame,frame=_this$state2$frame===void 0?0:_this$state2$frame,renderMethod=_this$state2.renderMethod;var _this$props2=this.props,refinementStrategy=_this$props2.refinementStrategy,onViewportLoad=_this$props2.onViewportLoad,onTileLoad=_this$props2.onTileLoad,onTileError=_this$props2.onTileError,maxZoom=_this$props2.maxZoom,minZoom=_this$props2.minZoom,maxCacheSize=_this$props2.maxCacheSize,maxCacheByteSize=_this$props2.maxCacheByteSize;return mapid&&(renderMethod==='vector'?this._renderGeoJsonLayer():new tile_layer_TileLayer(this.getSubLayerProps({id:mapid}),{refinementStrategy:refinementStrategy,onViewportLoad:onViewportLoad,onTileLoad:onTileLoad,onTileError:onTileError,maxZoom:maxZoom,minZoom:minZoom,maxCacheSize:maxCacheSize,maxCacheByteSize:maxCacheByteSize,frame:frame,getTileData:function getTileData(options){return _this.getTileData(options);},renderSubLayers:function renderSubLayers(props){var data=props.data,tile=props.tile;var _tile$bbox=tile.bbox,west=_tile$bbox.west,south=_tile$bbox.south,east=_tile$bbox.east,north=_tile$bbox.north;var bounds=[west,south,east,north];if(!data){return null;}var image;if(Array.isArray(data)){image=data[frame];}else if(data){image=data.then(function(result){return result&&result[frame];});}return image&&new bitmap_layer_BitmapLayer(Object.assign({},props,{image:image,bounds:bounds}));}}));};return EarthEngineLayer;}(composite_layer_CompositeLayer);earth_engine_layer_EarthEngineLayer.layerName='EarthEngineLayer';earth_engine_layer_EarthEngineLayer.defaultProps=earth_engine_layer_defaultProps;
+region=browser_default.a.Geometry.Rectangle([west,south,east,north],'EPSG:4326',false);filmArgs=Object.assign({},visParams,{dimensions:[TILE_SIZE,TILE_SIZE],region:region,crs:'EPSG:3857'});_context6.next=9;return promisifyEEMethod(eeObject,'getFilmstripThumbURL',filmArgs);case 9:imageUrl=_context6.sent;imageOptions={image:{type:'imagebitmap'}};_context6.next=13;return Object(load["a" /* load */])(imageUrl,image_loader,imageOptions);case 13:image=_context6.sent;nFrames=image.height/TILE_SIZE;slices=[];for(i=0;i<nFrames;i++){imageBounds=[0,i*TILE_SIZE,TILE_SIZE,TILE_SIZE];slices.push(createImageBitmap.apply(void 0,[image].concat(imageBounds)));}this.setState({nFrames:nFrames});return _context6.abrupt("return",Promise.all(slices));case 19:case"end":return _context6.stop();}}},_callee6,this);}));function getFilmstripTileData(_x10){return _getFilmstripTileData.apply(this,arguments);}return getFilmstripTileData;}();_proto._renderGeoJsonLayer=function _renderGeoJsonLayer(){var _this$state=this.state,mapid=_this$state.mapid,geojsonData=_this$state.geojsonData;var _this$props=this.props,stroked=_this$props.stroked,filled=_this$props.filled,extruded=_this$props.extruded,wireframe=_this$props.wireframe,lineWidthUnits=_this$props.lineWidthUnits,lineWidthScale=_this$props.lineWidthScale,lineWidthMinPixels=_this$props.lineWidthMinPixels,lineWidthMaxPixels=_this$props.lineWidthMaxPixels,lineJointRounded=_this$props.lineJointRounded,lineMiterLimit=_this$props.lineMiterLimit,elevationScale=_this$props.elevationScale,pointRadiusScale=_this$props.pointRadiusScale,pointRadiusMinPixels=_this$props.pointRadiusMinPixels,pointRadiusMaxPixels=_this$props.pointRadiusMaxPixels,getLineColor=_this$props.getLineColor,getFillColor=_this$props.getFillColor,getRadius=_this$props.getRadius,getLineWidth=_this$props.getLineWidth,getElevation=_this$props.getElevation,material=_this$props.material;if(!geojsonData){return null;}return new geojson_layer_GeoJsonLayer(this.getSubLayerProps({id:mapid}),{data:geojsonData,stroked:stroked,filled:filled,extruded:extruded,wireframe:wireframe,lineWidthUnits:lineWidthUnits,lineWidthScale:lineWidthScale,lineWidthMinPixels:lineWidthMinPixels,lineWidthMaxPixels:lineWidthMaxPixels,lineJointRounded:lineJointRounded,lineMiterLimit:lineMiterLimit,elevationScale:elevationScale,pointRadiusScale:pointRadiusScale,pointRadiusMinPixels:pointRadiusMinPixels,pointRadiusMaxPixels:pointRadiusMaxPixels,getLineColor:getLineColor,getFillColor:getFillColor,getRadius:getRadius,getLineWidth:getLineWidth,getElevation:getElevation,material:material});};_proto.renderLayers=function renderLayers(){var _this=this;var _this$state2=this.state,mapid=_this$state2.mapid,_this$state2$frame=_this$state2.frame,frame=_this$state2$frame===void 0?0:_this$state2$frame,renderMethod=_this$state2.renderMethod;var _this$props2=this.props,extent=_this$props2.extent,maxCacheByteSize=_this$props2.maxCacheByteSize,maxCacheSize=_this$props2.maxCacheSize,maxRequests=_this$props2.maxRequests,maxZoom=_this$props2.maxZoom,minZoom=_this$props2.minZoom,onTileError=_this$props2.onTileError,onTileLoad=_this$props2.onTileLoad,onViewportLoad=_this$props2.onViewportLoad,refinementStrategy=_this$props2.refinementStrategy,tileSize=_this$props2.tileSize;return mapid&&(renderMethod==='vector'?this._renderGeoJsonLayer():new tile_layer_TileLayer(this.getSubLayerProps({id:mapid}),{extent:extent,frame:frame,maxCacheByteSize:maxCacheByteSize,maxCacheSize:maxCacheSize,maxRequests:maxRequests,maxZoom:maxZoom,minZoom:minZoom,onTileError:onTileError,onTileLoad:onTileLoad,onViewportLoad:onViewportLoad,refinementStrategy:refinementStrategy,tileSize:tileSize,getTileData:function getTileData(options){return _this.getTileData(options);},renderSubLayers:function renderSubLayers(props){var data=props.data,tile=props.tile;var _tile$bbox=tile.bbox,west=_tile$bbox.west,south=_tile$bbox.south,east=_tile$bbox.east,north=_tile$bbox.north;var bounds=[west,south,east,north];if(!data){return null;}var image;if(Array.isArray(data)){image=data[frame];}else if(data){image=data.then(function(result){return result&&result[frame];});}return image&&new bitmap_layer_BitmapLayer(Object.assign({},props,{image:image,bounds:bounds}));}}));};return EarthEngineLayer;}(composite_layer_CompositeLayer);earth_engine_layer_EarthEngineLayer.layerName='EarthEngineLayer';earth_engine_layer_EarthEngineLayer.defaultProps=earth_engine_layer_defaultProps;
 // EXTERNAL MODULE: ./node_modules/@luma.gl/gltools/dist/esm/index.js + 1 modules
 var gltools_dist_esm = __webpack_require__("iein");
 
@@ -25236,14 +25212,14 @@ terrain_layer_TerrainLayer.defaultProps = terrain_layer_defaultProps;
  * Decoder for Terrarium encoding
  */var ELEVATION_DECODER={rScaler:256,gScaler:1,bScaler:1/256,offset:-32768};// Global access token, to allow single EE API initialization if using multiple
 // layers
-var earth_engine_terrain_layer_accessToken;var earth_engine_terrain_layer_defaultProps=Object.assign({},tile_layer_TileLayer.defaultProps,{// Set lower default than in deck.gl TileLayer
-maxRequests:6,// data prop is unused
-data:{type:'object',value:null},token:{type:'string',value:null},eeObject:{type:'object',value:null},eeTerrainObject:{type:'object',value:null},visParams:{type:'object',value:null,equal:deepEqual},refinementStrategy:'no-overlap'});var earth_engine_terrain_layer_EarthEngineTerrainLayer=/*#__PURE__*/function(_CompositeLayer){Object(inheritsLoose["a" /* default */])(EarthEngineTerrainLayer,_CompositeLayer);function EarthEngineTerrainLayer(){return _CompositeLayer.apply(this,arguments)||this;}// helper function to initialize EE API
+var earth_engine_terrain_layer_accessToken;var earth_engine_terrain_layer_defaultProps=Object.assign({},terrain_layer_TerrainLayer.defaultProps,{// data prop is unused
+data:{type:'object',value:null},token:{type:'string',value:null},eeObject:{type:'object',value:null},eeTerrainObject:{type:'object',value:null},visParams:{type:'object',value:null,equal:deepEqual},// TileLayer props with custom defaults
+maxRequests:6,refinementStrategy:'no-overlap',tileSize:256});var earth_engine_terrain_layer_EarthEngineTerrainLayer=/*#__PURE__*/function(_CompositeLayer){Object(inheritsLoose["a" /* default */])(EarthEngineTerrainLayer,_CompositeLayer);function EarthEngineTerrainLayer(){return _CompositeLayer.apply(this,arguments)||this;}// helper function to initialize EE API
 EarthEngineTerrainLayer.initializeEEApi=/*#__PURE__*/function(){var _initializeEEApi2=Object(asyncToGenerator["a" /* default */])(/*#__PURE__*/regenerator_default.a.mark(function _callee(_ref){var clientId,token;return regenerator_default.a.wrap(function _callee$(_context){while(1){switch(_context.prev=_context.next){case 0:clientId=_ref.clientId,token=_ref.token;_context.next=3;return ee_api_initializeEEApi({clientId:clientId,token:token});case 3:case"end":return _context.stop();}}},_callee);}));function initializeEEApi(_x){return _initializeEEApi2.apply(this,arguments);}return initializeEEApi;}();var _proto=EarthEngineTerrainLayer.prototype;_proto.initializeState=function initializeState(){this.state={};}// Note - Layer.updateState is not async. But it lets us `await` the initialization below
 ;_proto.updateState=/*#__PURE__*/function(){var _updateState=Object(asyncToGenerator["a" /* default */])(/*#__PURE__*/regenerator_default.a.mark(function _callee2(_ref2){var props,oldProps,changeFlags;return regenerator_default.a.wrap(function _callee2$(_context2){while(1){switch(_context2.prev=_context2.next){case 0:props=_ref2.props,oldProps=_ref2.oldProps,changeFlags=_ref2.changeFlags;_context2.next=3;return this._updateToken(props,oldProps,changeFlags);case 3:this._updateEEObject(props,oldProps,changeFlags);_context2.next=6;return this._updateEEVisParams(props,oldProps,changeFlags);case 6:case"end":return _context2.stop();}}},_callee2,this);}));function updateState(_x2){return _updateState.apply(this,arguments);}return updateState;}();_proto._updateToken=/*#__PURE__*/function(){var _updateToken2=Object(asyncToGenerator["a" /* default */])(/*#__PURE__*/regenerator_default.a.mark(function _callee3(props,oldProps,changeFlags){var token;return regenerator_default.a.wrap(function _callee3$(_context3){while(1){switch(_context3.prev=_context3.next){case 0:if(!(!props.token||props.token===earth_engine_terrain_layer_accessToken)){_context3.next=2;break;}return _context3.abrupt("return");case 2:token=props.token;_context3.next=5;return ee_api_initializeEEApi({token:token});case 5:earth_engine_terrain_layer_accessToken=token;case 6:case"end":return _context3.stop();}}},_callee3);}));function _updateToken(_x3,_x4,_x5){return _updateToken2.apply(this,arguments);}return _updateToken;}();_proto._updateEEObject=function _updateEEObject(props,oldProps,changeFlags){if(props.eeObject===oldProps.eeObject&&props.eeTerrainObject===oldProps.eeTerrainObject){return;}var eeObject;var eeTerrainObject;// If a string, assume a JSON-serialized EE object.
 if(typeof props.eeObject==='string'){eeObject=browser_default.a.Deserializer.fromJSON(props.eeObject);}else{eeObject=props.eeObject;}if(typeof props.eeTerrainObject==='string'){eeTerrainObject=browser_default.a.Deserializer.fromJSON(props.eeTerrainObject);}else{eeTerrainObject=props.eeTerrainObject;}if(eeTerrainObject){// Quantize eeTerrainObject
 var added=eeTerrainObject.add(32768);var red=added.divide(256).floor();var green=added.mod(256).floor();var blue=added.subtract(added.floor()).multiply(255).floor();eeTerrainObject=browser_default.a.Image.rgb(red,green,blue);}// TODO - what case is this handling
-if(Array.isArray(props.eeObject)&&props.eeObject.length===0){eeObject=null;}this.setState({eeObject:eeObject,eeTerrainObject:eeTerrainObject});};_proto._updateEEVisParams=/*#__PURE__*/function(){var _updateEEVisParams2=Object(asyncToGenerator["a" /* default */])(/*#__PURE__*/regenerator_default.a.mark(function _callee4(props,oldProps,changeFlags){var _this$state,eeObject,eeTerrainObject,_yield$promisifyEEMet,mapid,urlFormat,_yield$promisifyEEMet2,meshMapid,meshUrlFormat;return regenerator_default.a.wrap(function _callee4$(_context4){while(1){switch(_context4.prev=_context4.next){case 0:if(!(props.visParams===oldProps.visParams&&props.eeObject===oldProps.eeObject&&props.eeTerrainObject===oldProps.eeTerrainObject)){_context4.next=2;break;}return _context4.abrupt("return");case 2:_this$state=this.state,eeObject=_this$state.eeObject,eeTerrainObject=_this$state.eeTerrainObject;if(eeObject){_context4.next=5;break;}return _context4.abrupt("return");case 5:if(eeObject.getMap){_context4.next=7;break;}throw new Error('eeObject must have a getMap() method');case 7:_context4.next=9;return promisifyEEMethod(eeObject,'getMap',props.visParams);case 9:_yield$promisifyEEMet=_context4.sent;mapid=_yield$promisifyEEMet.mapid;urlFormat=_yield$promisifyEEMet.urlFormat;_context4.next=14;return promisifyEEMethod(eeTerrainObject,'getMap',{min:0,max:255,format:'png'});case 14:_yield$promisifyEEMet2=_context4.sent;meshMapid=_yield$promisifyEEMet2.mapid;meshUrlFormat=_yield$promisifyEEMet2.urlFormat;this.setState({mapid:mapid,urlFormat:urlFormat,meshMapid:meshMapid,meshUrlFormat:meshUrlFormat});case 18:case"end":return _context4.stop();}}},_callee4,this);}));function _updateEEVisParams(_x6,_x7,_x8){return _updateEEVisParams2.apply(this,arguments);}return _updateEEVisParams;}();_proto.renderLayers=function renderLayers(){var _this$state2=this.state,mapid=_this$state2.mapid,urlFormat=_this$state2.urlFormat,meshMapid=_this$state2.meshMapid,meshUrlFormat=_this$state2.meshUrlFormat;return mapid&&meshMapid&&new terrain_layer_TerrainLayer(this.getSubLayerProps({id:mapid}),{elevationData:meshUrlFormat,texture:urlFormat,elevationDecoder:ELEVATION_DECODER,meshMaxError:10});};return EarthEngineTerrainLayer;}(composite_layer_CompositeLayer);earth_engine_terrain_layer_EarthEngineTerrainLayer.layerName='EarthEngineTerrainLayer';earth_engine_terrain_layer_EarthEngineTerrainLayer.defaultProps=earth_engine_terrain_layer_defaultProps;
+if(Array.isArray(props.eeObject)&&props.eeObject.length===0){eeObject=null;}this.setState({eeObject:eeObject,eeTerrainObject:eeTerrainObject});};_proto._updateEEVisParams=/*#__PURE__*/function(){var _updateEEVisParams2=Object(asyncToGenerator["a" /* default */])(/*#__PURE__*/regenerator_default.a.mark(function _callee4(props,oldProps,changeFlags){var _this$state,eeObject,eeTerrainObject,_yield$promisifyEEMet,mapid,urlFormat,_yield$promisifyEEMet2,meshMapid,meshUrlFormat;return regenerator_default.a.wrap(function _callee4$(_context4){while(1){switch(_context4.prev=_context4.next){case 0:if(!(props.visParams===oldProps.visParams&&props.eeObject===oldProps.eeObject&&props.eeTerrainObject===oldProps.eeTerrainObject)){_context4.next=2;break;}return _context4.abrupt("return");case 2:_this$state=this.state,eeObject=_this$state.eeObject,eeTerrainObject=_this$state.eeTerrainObject;if(eeObject){_context4.next=5;break;}return _context4.abrupt("return");case 5:if(eeObject.getMap){_context4.next=7;break;}throw new Error('eeObject must have a getMap() method');case 7:_context4.next=9;return promisifyEEMethod(eeObject,'getMap',props.visParams);case 9:_yield$promisifyEEMet=_context4.sent;mapid=_yield$promisifyEEMet.mapid;urlFormat=_yield$promisifyEEMet.urlFormat;_context4.next=14;return promisifyEEMethod(eeTerrainObject,'getMap',{min:0,max:255,format:'png'});case 14:_yield$promisifyEEMet2=_context4.sent;meshMapid=_yield$promisifyEEMet2.mapid;meshUrlFormat=_yield$promisifyEEMet2.urlFormat;this.setState({mapid:mapid,urlFormat:urlFormat,meshMapid:meshMapid,meshUrlFormat:meshUrlFormat});case 18:case"end":return _context4.stop();}}},_callee4,this);}));function _updateEEVisParams(_x6,_x7,_x8){return _updateEEVisParams2.apply(this,arguments);}return _updateEEVisParams;}();_proto.renderLayers=function renderLayers(){var _this$state2=this.state,mapid=_this$state2.mapid,urlFormat=_this$state2.urlFormat,meshMapid=_this$state2.meshMapid,meshUrlFormat=_this$state2.meshUrlFormat;var _this$props=this.props,extent=_this$props.extent,maxRequests=_this$props.maxRequests,maxZoom=_this$props.maxZoom,minZoom=_this$props.minZoom,tileSize=_this$props.tileSize;return mapid&&meshMapid&&new terrain_layer_TerrainLayer(this.getSubLayerProps({id:mapid}),{elevationData:meshUrlFormat,texture:urlFormat,elevationDecoder:ELEVATION_DECODER,meshMaxError:10,extent:extent,maxRequests:maxRequests,maxZoom:maxZoom,minZoom:minZoom,tileSize:tileSize});};return EarthEngineTerrainLayer;}(composite_layer_CompositeLayer);earth_engine_terrain_layer_EarthEngineTerrainLayer.layerName='EarthEngineTerrainLayer';earth_engine_terrain_layer_EarthEngineTerrainLayer.defaultProps=earth_engine_terrain_layer_defaultProps;
 // CONCATENATED MODULE: ../modules/earthengine-layers/src/index.js
 // Layers
 
@@ -32662,6 +32638,579 @@ var TransformFeedback = function (_Resource) {
 
 /***/ }),
 
+/***/ "cYKX":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "b", function() { return /* binding */ option_utils_getGlobalLoaderState; });
+__webpack_require__.d(__webpack_exports__, "c", function() { return /* binding */ normalizeOptions; });
+__webpack_require__.d(__webpack_exports__, "a", function() { return /* binding */ getFetchFunction; });
+
+// UNUSED EXPORTS: setGlobalOptions
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/defineProperty.js
+var defineProperty = __webpack_require__("rePB");
+
+// EXTERNAL MODULE: ./node_modules/@loaders.gl/core/node_modules/@loaders.gl/loader-utils/dist/esm/lib/env-utils/globals.js
+var globals = __webpack_require__("wF1J");
+
+// EXTERNAL MODULE: ./node_modules/@loaders.gl/core/dist/esm/javascript-utils/is-type.js
+var is_type = __webpack_require__("1zMu");
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/regenerator/index.js
+var regenerator = __webpack_require__("o0o1");
+var regenerator_default = /*#__PURE__*/__webpack_require__.n(regenerator);
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js
+var asyncToGenerator = __webpack_require__("HaE+");
+
+// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/node_modules/@loaders.gl/loader-utils/dist/esm/lib/path-utils/file-aliases.js
+var pathPrefix = '';
+var fileAliases = {};
+function setPathPrefix(prefix) {
+  pathPrefix = prefix;
+}
+function getPathPrefix() {
+  return pathPrefix;
+}
+function addAliases(aliases) {
+  Object.assign(fileAliases, aliases);
+}
+function resolvePath(filename) {
+  for (var alias in fileAliases) {
+    if (filename.startsWith(alias)) {
+      var replacement = fileAliases[alias];
+      filename = filename.replace(alias, replacement);
+    }
+  }
+
+  if (!filename.startsWith('http://') && !filename.startsWith('https://')) {
+    filename = "".concat(pathPrefix).concat(filename);
+  }
+
+  return filename;
+}
+// EXTERNAL MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/utils/response-utils.js
+var response_utils = __webpack_require__("Ksu5");
+
+// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/fetch/fetch-error-message.js
+
+
+function getErrorMessageFromResponseSync(response) {
+  return "Failed to fetch resource ".concat(response.url, "(").concat(response.status, "): ").concat(response.statusText, " ");
+}
+function getErrorMessageFromResponse(_x) {
+  return _getErrorMessageFromResponse.apply(this, arguments);
+}
+
+function _getErrorMessageFromResponse() {
+  _getErrorMessageFromResponse = Object(asyncToGenerator["a" /* default */])(regenerator_default.a.mark(function _callee(response) {
+    var message, contentType;
+    return regenerator_default.a.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            message = "Failed to fetch resource ".concat(response.url, " (").concat(response.status, "): ");
+            _context.prev = 1;
+            contentType = response.headers.get('Content-Type');
+
+            if (!contentType.includes('application/json')) {
+              _context.next = 10;
+              break;
+            }
+
+            _context.t0 = message;
+            _context.next = 7;
+            return response.text();
+
+          case 7:
+            message = _context.t0 += _context.sent;
+            _context.next = 11;
+            break;
+
+          case 10:
+            message += response.statusText;
+
+          case 11:
+            _context.next = 16;
+            break;
+
+          case 13:
+            _context.prev = 13;
+            _context.t1 = _context["catch"](1);
+            return _context.abrupt("return", message);
+
+          case 16:
+            return _context.abrupt("return", message);
+
+          case 17:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, null, [[1, 13]]);
+  }));
+  return _getErrorMessageFromResponse.apply(this, arguments);
+}
+// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/fetch/fetch-file.js
+
+
+
+
+
+function fetchFile(_x) {
+  return _fetchFile.apply(this, arguments);
+}
+
+function _fetchFile() {
+  _fetchFile = Object(asyncToGenerator["a" /* default */])(regenerator_default.a.mark(function _callee(url) {
+    var options,
+        response,
+        _args = arguments;
+    return regenerator_default.a.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            options = _args.length > 1 && _args[1] !== undefined ? _args[1] : {};
+
+            if (!(typeof url !== 'string')) {
+              _context.next = 5;
+              break;
+            }
+
+            _context.next = 4;
+            return Object(response_utils["b" /* makeResponse */])(url);
+
+          case 4:
+            return _context.abrupt("return", _context.sent);
+
+          case 5:
+            url = resolvePath(url);
+            _context.next = 8;
+            return fetch(url, options);
+
+          case 8:
+            response = _context.sent;
+
+            if (!(!response.ok && options["throws"])) {
+              _context.next = 15;
+              break;
+            }
+
+            _context.t0 = Error;
+            _context.next = 13;
+            return getErrorMessageFromResponse(response);
+
+          case 13:
+            _context.t1 = _context.sent;
+            throw new _context.t0(_context.t1);
+
+          case 15:
+            return _context.abrupt("return", response);
+
+          case 16:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _fetchFile.apply(this, arguments);
+}
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/classCallCheck.js
+var classCallCheck = __webpack_require__("1OyB");
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/createClass.js
+var createClass = __webpack_require__("vuIU");
+
+// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/loader-utils/loggers.js
+
+
+var loggers_NullLog = function () {
+  function NullLog() {
+    Object(classCallCheck["a" /* default */])(this, NullLog);
+  }
+
+  Object(createClass["a" /* default */])(NullLog, [{
+    key: "log",
+    value: function log() {
+      return function (_) {};
+    }
+  }, {
+    key: "info",
+    value: function info() {
+      return function (_) {};
+    }
+  }, {
+    key: "warn",
+    value: function warn() {
+      return function (_) {};
+    }
+  }, {
+    key: "error",
+    value: function error() {
+      return function (_) {};
+    }
+  }]);
+
+  return NullLog;
+}();
+var loggers_ConsoleLog = function () {
+  function ConsoleLog() {
+    Object(classCallCheck["a" /* default */])(this, ConsoleLog);
+
+    this.console = console;
+  }
+
+  Object(createClass["a" /* default */])(ConsoleLog, [{
+    key: "log",
+    value: function log() {
+      var _this$console$log;
+
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      return (_this$console$log = this.console.log).bind.apply(_this$console$log, [this.console].concat(args));
+    }
+  }, {
+    key: "info",
+    value: function info() {
+      var _this$console$info;
+
+      for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        args[_key2] = arguments[_key2];
+      }
+
+      return (_this$console$info = this.console.info).bind.apply(_this$console$info, [this.console].concat(args));
+    }
+  }, {
+    key: "warn",
+    value: function warn() {
+      var _this$console$warn;
+
+      for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+        args[_key3] = arguments[_key3];
+      }
+
+      return (_this$console$warn = this.console.warn).bind.apply(_this$console$warn, [this.console].concat(args));
+    }
+  }, {
+    key: "error",
+    value: function error() {
+      var _this$console$error;
+
+      for (var _len4 = arguments.length, args = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+        args[_key4] = arguments[_key4];
+      }
+
+      return (_this$console$error = this.console.error).bind.apply(_this$console$error, [this.console].concat(args));
+    }
+  }]);
+
+  return ConsoleLog;
+}();
+// CONCATENATED MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/loader-utils/option-utils.js
+
+
+function _createForOfIteratorHelper(o, allowArrayLike) {
+  var it;
+
+  if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {
+    if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
+      if (it) o = it;
+      var i = 0;
+
+      var F = function F() {};
+
+      return {
+        s: F,
+        n: function n() {
+          if (i >= o.length) return {
+            done: true
+          };
+          return {
+            done: false,
+            value: o[i++]
+          };
+        },
+        e: function e(_e) {
+          throw _e;
+        },
+        f: F
+      };
+    }
+
+    throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+  }
+
+  var normalCompletion = true,
+      didErr = false,
+      err;
+  return {
+    s: function s() {
+      it = o[Symbol.iterator]();
+    },
+    n: function n() {
+      var step = it.next();
+      normalCompletion = step.done;
+      return step;
+    },
+    e: function e(_e2) {
+      didErr = true;
+      err = _e2;
+    },
+    f: function f() {
+      try {
+        if (!normalCompletion && it["return"] != null) it["return"]();
+      } finally {
+        if (didErr) throw err;
+      }
+    }
+  };
+}
+
+function _unsupportedIterableToArray(o, minLen) {
+  if (!o) return;
+  if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor) n = o.constructor.name;
+  if (n === "Map" || n === "Set") return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+}
+
+function _arrayLikeToArray(arr, len) {
+  if (len == null || len > arr.length) len = arr.length;
+
+  for (var i = 0, arr2 = new Array(len); i < len; i++) {
+    arr2[i] = arr[i];
+  }
+
+  return arr2;
+}
+
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    if (enumerableOnly) symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    });
+    keys.push.apply(keys, symbols);
+  }
+
+  return keys;
+}
+
+function _objectSpread(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
+    if (i % 2) {
+      ownKeys(Object(source), true).forEach(function (key) {
+        Object(defineProperty["a" /* default */])(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      ownKeys(Object(source)).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+
+  return target;
+}
+
+
+
+
+
+var DEFAULT_LOADER_OPTIONS = {
+  fetch: null,
+  CDN: 'https://unpkg.com/@loaders.gl',
+  worker: true,
+  log: new loggers_ConsoleLog(),
+  metadata: false,
+  transforms: []
+};
+var DEPRECATED_LOADER_OPTIONS = {
+  dataType: '(no longer used)',
+  uri: 'baseUri',
+  method: 'fetch.method',
+  headers: 'fetch.headers',
+  body: 'fetch.body',
+  mode: 'fetch.mode',
+  credentials: 'fetch.credentials',
+  cache: 'fetch.cache',
+  redirect: 'fetch.redirect',
+  referrer: 'fetch.referrer',
+  referrerPolicy: 'fetch.referrerPolicy',
+  integrity: 'fetch.integrity',
+  keepalive: 'fetch.keepalive',
+  signal: 'fetch.signal'
+};
+var option_utils_getGlobalLoaderState = function getGlobalLoaderState() {
+  globals["a" /* global */].loaders = globals["a" /* global */].loaders || {};
+  var loaders = globals["a" /* global */].loaders;
+  loaders._state = loaders._state || {};
+  return loaders._state;
+};
+
+var getGlobalLoaderOptions = function getGlobalLoaderOptions() {
+  var state = option_utils_getGlobalLoaderState();
+  state.globalOptions = state.globalOptions || _objectSpread({}, DEFAULT_LOADER_OPTIONS);
+  return state.globalOptions;
+};
+
+function setGlobalOptions(options) {
+  var state = option_utils_getGlobalLoaderState();
+  var globalOptions = getGlobalLoaderOptions();
+  state.globalOptions = normalizeOptionsInternal(globalOptions, options);
+}
+function normalizeOptions(options, loader, loaders, url) {
+  loaders = loaders || [];
+  loaders = Array.isArray(loaders) ? loaders : [loaders];
+  validateOptions(options, loaders);
+  return normalizeOptionsInternal(loader, options, url);
+}
+function getFetchFunction(options, context) {
+  var globalOptions = getGlobalLoaderOptions();
+  var fetch = options.fetch || globalOptions.fetch;
+
+  if (typeof fetch === 'function') {
+    return fetch;
+  }
+
+  if (Object(is_type["f" /* isObject */])(fetch)) {
+    return function (url) {
+      return fetchFile(url, fetch);
+    };
+  }
+
+  if (context && context.fetch) {
+    return context.fetch;
+  }
+
+  return function (url) {
+    return fetchFile(url, options);
+  };
+}
+
+function validateOptions(options, loaders) {
+  var log = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : console;
+  validateOptionsObject(options, null, log, DEFAULT_LOADER_OPTIONS, DEPRECATED_LOADER_OPTIONS, loaders);
+
+  var _iterator = _createForOfIteratorHelper(loaders),
+      _step;
+
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var loader = _step.value;
+      var idOptions = options && options[loader.id] || {};
+      var loaderOptions = loader.options && loader.options[loader.id] || {};
+      var deprecatedOptions = loader.defaultOptions && loader.defaultOptions[loader.id] || {};
+      validateOptionsObject(idOptions, loader.id, log, loaderOptions, deprecatedOptions, loaders);
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+}
+
+function validateOptionsObject(options, id, log, defaultOptions, deprecatedOptions, loaders) {
+  var loaderName = id || 'Top level';
+  var prefix = id ? "".concat(id, ".") : '';
+
+  for (var key in options) {
+    var isSubOptions = !id && Object(is_type["f" /* isObject */])(options[key]);
+
+    if (!(key in defaultOptions)) {
+      if (key in deprecatedOptions) {
+        log.warn("".concat(loaderName, " loader option '").concat(prefix).concat(key, "' deprecated, use '").concat(deprecatedOptions[key], "'"));
+      } else if (!isSubOptions) {
+        var suggestion = findSimilarOption(key, loaders);
+        log.warn("".concat(loaderName, " loader option '").concat(prefix).concat(key, "' not recognized. ").concat(suggestion));
+      }
+    }
+  }
+}
+
+function findSimilarOption(optionKey, loaders) {
+  var lowerCaseOptionKey = optionKey.toLowerCase();
+  var bestSuggestion = '';
+
+  var _iterator2 = _createForOfIteratorHelper(loaders),
+      _step2;
+
+  try {
+    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+      var loader = _step2.value;
+
+      for (var key in loader.options) {
+        if (optionKey === key) {
+          return "Did you mean '".concat(loader.id, ".").concat(key, "'?");
+        }
+
+        var lowerCaseKey = key.toLowerCase();
+        var isPartialMatch = lowerCaseOptionKey.startsWith(lowerCaseKey) || lowerCaseKey.startsWith(lowerCaseOptionKey);
+
+        if (isPartialMatch) {
+          bestSuggestion = bestSuggestion || "Did you mean '".concat(loader.id, ".").concat(key, "'?");
+        }
+      }
+    }
+  } catch (err) {
+    _iterator2.e(err);
+  } finally {
+    _iterator2.f();
+  }
+
+  return bestSuggestion;
+}
+
+function normalizeOptionsInternal(loader, options, url) {
+  var loaderDefaultOptions = loader.options || {};
+
+  var mergedOptions = _objectSpread({}, loaderDefaultOptions);
+
+  addUrlOptions(mergedOptions, url);
+
+  if (mergedOptions.log === null) {
+    mergedOptions.log = new loggers_NullLog();
+  }
+
+  mergeNestedFields(mergedOptions, getGlobalLoaderOptions());
+  mergeNestedFields(mergedOptions, options);
+  return mergedOptions;
+}
+
+function mergeNestedFields(mergedOptions, options) {
+  for (var key in options) {
+    if (key in options) {
+      var value = options[key];
+
+      if (Object(is_type["g" /* isPureObject */])(value) && Object(is_type["g" /* isPureObject */])(mergedOptions[key])) {
+        mergedOptions[key] = _objectSpread(_objectSpread({}, mergedOptions[key]), options[key]);
+      } else {
+        mergedOptions[key] = options[key];
+      }
+    }
+  }
+}
+
+function addUrlOptions(options, url) {
+  if (url && !('baseUri' in options)) {
+    options.baseUri = url;
+  }
+}
+
+/***/ }),
+
 /***/ "d3kR":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -35412,7 +35961,7 @@ exports.console = console_;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return isLoaderObject; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return normalizeLoader; });
 /* harmony import */ var _babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("rePB");
-/* harmony import */ var _loaders_gl_loader_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("FR20");
+/* harmony import */ var _loaders_gl_loader_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("v/Bq");
 
 
 function ownKeys(object, enumerableOnly) {
@@ -35488,7 +36037,7 @@ function normalizeLoader(loader) {
 
   Object(_loaders_gl_loader_utils__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"])(loader.extensions && loader.extensions.length > 0 && loader.extensions[0]);
 
-  if (loader.parseTextSync) {
+  if (loader.parseTextSync || loader.parseText) {
     loader.text = true;
   }
 
@@ -37284,7 +37833,7 @@ var flatten = __webpack_require__("Zk56");
 // EXTERNAL MODULE: ./node_modules/@probe.gl/stats/dist/esm/index.js + 2 modules
 var esm = __webpack_require__("laie");
 
-// EXTERNAL MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/api/load.js + 27 modules
+// EXTERNAL MODULE: ./node_modules/@loaders.gl/core/dist/esm/lib/api/load.js + 19 modules
 var load = __webpack_require__("JBga");
 
 // CONCATENATED MODULE: ./node_modules/@deck.gl/core/dist/esm/lib/resource/resource.js
@@ -49561,6 +50110,19 @@ function assert(condition, message) {
 
 /***/ }),
 
+/***/ "v/Bq":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return assert; });
+function assert(condition, message) {
+  if (!condition) {
+    throw new Error(message || 'loader assertion failed.');
+  }
+}
+
+/***/ }),
+
 /***/ "v5MB":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -50896,6 +51458,38 @@ function _objectSpread(target) {
 
   return target;
 }
+
+/***/ }),
+
+/***/ "wF1J":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global, process) {/* unused harmony export self */
+/* unused harmony export window */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return global_; });
+/* unused harmony export document */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return isBrowser; });
+/* unused harmony export isWorker */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return nodeVersion; });
+/* harmony import */ var _babel_runtime_helpers_esm_typeof__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("U8pU");
+
+var globals = {
+  self: typeof self !== 'undefined' && self,
+  window: typeof window !== 'undefined' && window,
+  global: typeof global !== 'undefined' && global,
+  document: typeof document !== 'undefined' && document
+};
+var self_ = globals.self || globals.window || globals.global;
+var window_ = globals.window || globals.self || globals.global;
+var global_ = globals.global || globals.self || globals.window;
+var document_ = globals.document || {};
+
+var isBrowser = (typeof process === "undefined" ? "undefined" : Object(_babel_runtime_helpers_esm_typeof__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(process)) !== 'object' || String(process) !== '[object process]' || process.browser;
+var isWorker = typeof importScripts === 'function';
+var matches = typeof process !== 'undefined' && process.version && process.version.match(/v([0-9]*)/);
+var nodeVersion = matches && parseFloat(matches[1]) || 0;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("yLpj"), __webpack_require__("8oxB")))
 
 /***/ }),
 
