@@ -4,4 +4,5 @@ __author__ = """Kyle Barron"""
 __email__ = 'kyle@unfolded.ai'
 __version__ = '1.0.1'
 
-from .pydeck_earthengine_layers import EarthEngineLayer
+from .pydeck_earthengine_layers import (
+    EarthEngineLayer, EarthEngineTerrainLayer)

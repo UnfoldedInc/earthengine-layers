@@ -12,19 +12,12 @@ const config = ({file, plugins = [], globals = {}, external = []}) => ({
     globals: {
       ...globals,
       '@deck.gl/core': 'deck',
-      '@deck.gl/layers': 'deck',
-      '@luma.gl/core': 'luma',
       '@loaders.gl/core': 'loaders'
     }
   },
   external: [
     ...external,
     '@deck.gl/core',
-    '@deck.gl/layers',
-    '@luma.gl/core',
-    '@luma.gl/engine',
-    '@luma.gl/gltools',
-    '@luma.gl/webgl',
     '@loaders.gl/core'
   ],
   plugins: [
@@ -38,23 +31,47 @@ const config = ({file, plugins = [], globals = {}, external = []}) => ({
   ]
 });
 
+const eeGlobals = {
+  '@google/earthengine': 'ee',
+  '@deck.gl/core': 'deck',
+  '@deck.gl/geo-layers': 'deck',
+  '@deck.gl/layers': 'deck',
+  '@deck.gl/mesh-layers': 'deck'
+};
+
+// deck.gl globals provided by pydeck. See:
+// https://github.com/visgl/deck.gl/blob/c8702ae134e0598b2fdca03642744f25e9de593b/modules/jupyter-widget/src/deck-bundle.js
+const pydeckGlobals = {
+  '@deck.gl/aggregation-layers': 'deck',
+  '@deck.gl/core': 'deck',
+  '@deck.gl/geo-layers': 'deck',
+  '@deck.gl/google-maps': 'deck',
+  '@deck.gl/json': 'deck',
+  '@deck.gl/layers': 'deck',
+  '@deck.gl/mesh-layers': 'deck'
+};
+
 export default [
   config({
     file: 'dist/dist.js',
-    globals: {'@google/earthengine': 'ee'},
-    external: ['@google/earthengine']
+    globals: eeGlobals,
+    external: Object.keys(eeGlobals)
   }),
   config({
     file: 'dist/dist.min.js',
     plugins: [terser()],
-    globals: {'@google/earthengine': 'ee'},
-    external: ['@google/earthengine']
+    globals: eeGlobals,
+    external: Object.keys(eeGlobals)
   }),
   config({
-    file: 'dist/pydeck_layer_module.js'
+    file: 'dist/pydeck_layer_module.js',
+    globals: pydeckGlobals,
+    external: Object.keys(pydeckGlobals)
   }),
   config({
     file: 'dist/pydeck_layer_module.min.js',
+    globals: pydeckGlobals,
+    external: Object.keys(pydeckGlobals),
     plugins: [terser()]
   })
 ];
