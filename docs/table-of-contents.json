@@ -26,7 +26,8 @@
       "entries": [
         {"entry": "modules/earthengine-layers/docs/api-reference/earthengine-layer"},
         {"entry": "modules/earthengine-layers/docs/api-reference/earthengine-terrain-layer"},
-        {"entry": "py/docs/pydeck-earthengine-layer"}
+        {"entry": "py/docs/pydeck-earthengine-layer"},
+        {"entry": "py/docs/pydeck-earthengine-terrain-layer"}
       ]
     }
   ]
