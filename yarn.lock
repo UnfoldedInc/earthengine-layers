@@ -1104,10 +1104,10 @@
     unique-filename "^1.1.1"
     which "^1.3.1"
 
-"@google/earthengine@^0.1.217":
-  version "0.1.229"
-  resolved "https://registry.yarnpkg.com/@google/earthengine/-/earthengine-0.1.229.tgz#3eca6053299b80957021201c3b3ce247ca7b3747"
-  integrity sha512-MSWJTBmYs9h/1ygbY4jN8OdAFC1299OjGr4MIpe2lPon6GUCDE+zfR4osU6HeMD38nSDT4B7E6T0sEqhyItRmw==
+"@google/earthengine@^0.1.230":
+  version "0.1.230"
+  resolved "https://registry.yarnpkg.com/@google/earthengine/-/earthengine-0.1.230.tgz#16faa72bb4aea6dfc51daf198aa8f65e66eb092b"
+  integrity sha512-qN4LhTixOL8WEIlr33fbEdUCkW3Pz9AUG+QT1lmfVmiRUXwnT/WsolQcFCSNSn/S0SJNaBm/inMZcacwHqPbCw==
   dependencies:
     googleapis "^42.0.0"
     xmlhttprequest "^1.8.0"

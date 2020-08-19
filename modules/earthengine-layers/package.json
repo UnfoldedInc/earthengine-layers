@@ -33,7 +33,7 @@
     "@deck.gl/geo-layers": "^8.2.0",
     "@deck.gl/layers": "^8.2.0",
     "@deck.gl/mesh-layers": "^8.2.0",
-    "@google/earthengine": "^0.1.217"
+    "@google/earthengine": "^0.1.230"
   },
   "gitHead": "73094f68451e557a8b32909cf8376f45942de021"
 }
