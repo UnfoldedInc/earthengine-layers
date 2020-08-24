@@ -8,8 +8,9 @@
   ],
   "main": "gatsby-config.js",
   "scripts": {
+    "check-env-var": "if [[ -z $GoogleMapsAPIKey ]]; then exit 1; fi; if [[ -z $EE_CLIENT_ID ]]; then exit 1; fi;",
     "start": "yarn clean && yarn develop",
-    "build": "yarn clean-examples && yarn clean && gatsby build --no-uglify",
+    "build": "yarn check-env-var && yarn clean-examples && yarn clean && gatsby build --no-uglify",
     "clean": "rm -rf ./.cache ./public",
     "clean-examples": "find ../examples -name node_modules -exec rm -rf {} \\; || true",
     "develop": "yarn clean-examples && gatsby develop --port 8080",
