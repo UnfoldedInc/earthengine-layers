@@ -32,6 +32,8 @@ class EarthEngineLayer(pdk.Layer):
             - library_url: URL from which to load EarthEngineLayer JavaScript
               bundle
         """
+        # Workaround for keyword arguments that Pydeck 0.4.0 can't handle
+        kwargs = self._handle_kwargs(remove_keys=('selectors', ), **kwargs)
         super(EarthEngineLayer, self).__init__(
             self.layer_name, None, vis_params=vis_params, **kwargs)
 
@@ -57,6 +59,32 @@ class EarthEngineLayer(pdk.Layer):
         # keys
         pdk.bindings.json_tools.IGNORE_KEYS.extend([
             'credentials', 'access_token', 'token_expiration'])
+
+    def _handle_kwargs(self, remove_keys=('selectors', ), **kwargs):
+        """Remove selected keys from kwargs and bind to object directly
+
+        As of Pydeck v0.4.0, Pydeck does "magic" on inputs. String input is
+        almost always considered a function, and a list of strings is always
+        considered a function. This means it's currently impossible in pure
+        Pydeck to pass the `selectors` prop, which represents a list of
+        properties that should be downloaded as a vector GeoJSON
+
+        For more info/discussion, see https://github.com/visgl/deck.gl/pull/4897
+
+        Args:
+            - remove_keys: iterable of keys to remove from kwargs and bind to
+              self
+            - kwargs: kwargs to handle
+
+        Returns:
+            - `dict` with input kwargs modified and remove_keys bound to self
+        """
+        for key, value in kwargs.copy().items():
+            if key in remove_keys:
+                setattr(self, key, value)
+                del kwargs[key]
+
+        return kwargs
 
     def _set_custom_library(
             self,
