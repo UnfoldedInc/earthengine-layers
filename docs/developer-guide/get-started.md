@@ -48,7 +48,10 @@ cd earthengine-layers
 
 You will need a Google client id which has been approved for use with Earth
 Engine. You also need to make sure you log in with a Google user account which
-has been approved for use with earth engine.
+has been approved for use with earth engine. [Go
+here](https://console.cloud.google.com/apis/credentials/oauthclient) to create a
+client ID, and add appropriate urls (such as `http://localhost:8080` for
+examples) in the "Authorized JavaScript origins" section.
 
 ```sh
 cd examples/image
