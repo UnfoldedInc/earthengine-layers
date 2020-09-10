@@ -78,15 +78,15 @@ To use pre-bundled scripts:
 
 ```html
 <script src="https://unpkg.com/deck.gl@^8.2.0/dist.min.js"></script>
-<script src="https://unpkg.com/@google/earthengine@^0.1.221/build/ee_api_js.js"></script>
-<script src="https://unpkg.com/@unfolded.gl/earthengine-layers@^1.1.0/dist.min.js"></script>
+<script src="https://unpkg.com/@google/earthengine@^0.1.234/build/ee_api_js.js"></script>
+<script src="https://unpkg.com/@unfolded.gl/earthengine-layers@^1.2.1/dist.min.js"></script>
 <!-- or -->
 <script src="https://unpkg.com/@deck.gl/core@^8.2.0/dist.min.js"></script>
 <script src="https://unpkg.com/@deck.gl/layers@^8.2.0/dist.min.js"></script>
 <script src="https://unpkg.com/@deck.gl/geo-layers@^8.2.0/dist.min.js"></script>
 <script src="https://unpkg.com/@deck.gl/mesh-layers@^8.2.0/dist.min.js"></script>
-<script src="https://unpkg.com/@google/earthengine@^0.1.221/build/ee_api_js.js"></script>
-<script src="https://unpkg.com/@unfolded.gl/earthengine-layers@^1.1.0/dist.min.js"></script>
+<script src="https://unpkg.com/@google/earthengine@^0.1.234/build/ee_api_js.js"></script>
+<script src="https://unpkg.com/@unfolded.gl/earthengine-layers@^1.2.1/dist.min.js"></script>
 ```
 
 ```js
