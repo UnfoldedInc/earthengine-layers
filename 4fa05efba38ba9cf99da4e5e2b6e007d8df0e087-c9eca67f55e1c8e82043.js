@@ -34,7 +34,7 @@ function isBrowserMainThread() {
 
 /***/ }),
 
-/***/ 6:
+/***/ 7:
 /***/ (function(module, exports) {
 
 /* (ignored) */
@@ -894,7 +894,7 @@ function logImageInNode(_ref3) {
   var asciify = null;
 
   try {
-    asciify = __webpack_require__(6);
+    asciify = __webpack_require__(7);
   } catch (error) {}
 
   if (asciify) {

@@ -1568,7 +1568,7 @@ function stripQueryString(url) {
 
 /***/ }),
 
-/***/ 7:
+/***/ 8:
 /***/ (function(module, exports) {
 
 /* (ignored) */
@@ -5355,7 +5355,7 @@ function onWorkerMessage(onMessage, _ref2) {
   }
 }
 // EXTERNAL MODULE: ../node/buffer-utils.node (ignored)
-var buffer_utils_ignored_ = __webpack_require__(7);
+var buffer_utils_ignored_ = __webpack_require__(8);
 
 // CONCATENATED MODULE: ./node_modules/@loaders.gl/core/node_modules/@loaders.gl/loader-utils/dist/esm/lib/binary-utils/binary-utils.js
 
@@ -21603,7 +21603,7 @@ function getLoadableImageType(type) {
 // CONCATENATED MODULE: ../node_modules/@loaders.gl/images/dist/esm/image-loader.js
 
 
-var VERSION =  true ? "2.3.0-alpha.10" : undefined;
+var VERSION =  true ? "2.3.0-alpha.12" : undefined;
 var EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp', 'ico', 'svg'];
 var MIME_TYPES = ['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/bmp', 'image/vnd.microsoft.icon', 'image/svg+xml'];
 var ImageLoader = {
@@ -21613,9 +21613,9 @@ var ImageLoader = {
   mimeTypes: MIME_TYPES,
   extensions: EXTENSIONS,
   parse: parseImage,
-  test: function test(arrayBuffer) {
+  tests: [function (arrayBuffer) {
     return Boolean(getBinaryImageMetadata(new DataView(arrayBuffer)));
-  },
+  }],
   options: {
     image: {
       type: 'auto',
@@ -23888,7 +23888,7 @@ function json_loader_objectSpread(target) {
 
 
 
-var json_loader_VERSION =  true ? "2.3.0-alpha.10" : undefined;
+var json_loader_VERSION =  true ? "2.3.0-alpha.12" : undefined;
 var JSONLoaderOptions = {
   json: {
     TableBatch: row_table_batch_RowTableBatch,
