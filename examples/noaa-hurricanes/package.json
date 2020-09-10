@@ -16,7 +16,7 @@
     "@deck.gl/layers": "^8.2.5",
     "@deck.gl/mesh-layers": "^8.2.5",
     "@deck.gl/react": "^8.2.5",
-    "@google/earthengine": "^0.1.230",
+    "@google/earthengine": "^0.1.234",
     "@unfolded.gl/earthengine-layers": "1.2.0",
     "react": "^16.3.0",
     "react-dom": "^16.3.0",
