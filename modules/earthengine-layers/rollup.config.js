@@ -3,11 +3,11 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 
-const config = ({file, plugins = [], globals = {}, external = []}) => ({
+const config = ({file, plugins = [], globals = {}, external = [], outputFormat}) => ({
   input: 'src/bundle.js',
   output: {
     file,
-    format: 'iife',
+    format: outputFormat,
     name: 'EarthEngineLayerLibrary',
     globals: {
       ...globals,
@@ -51,23 +51,40 @@ export default [
   config({
     file: 'dist/dist.js',
     globals: eeGlobals,
-    external: Object.keys(eeGlobals)
+    external: Object.keys(eeGlobals),
+    outputFormat: 'iife'
   }),
   config({
     file: 'dist/dist.min.js',
     plugins: [terser()],
     globals: eeGlobals,
-    external: Object.keys(eeGlobals)
+    external: Object.keys(eeGlobals),
+    outputFormat: 'iife'
+  }),
+  config({
+    file: 'dist/dist.esm.js',
+    globals: eeGlobals,
+    external: Object.keys(eeGlobals),
+    outputFormat: 'es'
+  }),
+  config({
+    file: 'dist/dist.esm.min.js',
+    plugins: [terser()],
+    globals: eeGlobals,
+    external: Object.keys(eeGlobals),
+    outputFormat: 'es'
   }),
   config({
     file: 'dist/pydeck_layer_module.js',
     globals: pydeckGlobals,
-    external: Object.keys(pydeckGlobals)
+    external: Object.keys(pydeckGlobals),
+    outputFormat: 'iife'
   }),
   config({
     file: 'dist/pydeck_layer_module.min.js',
     globals: pydeckGlobals,
     external: Object.keys(pydeckGlobals),
-    plugins: [terser()]
+    plugins: [terser()],
+    outputFormat: 'iife'
   })
 ];
