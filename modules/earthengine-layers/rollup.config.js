@@ -3,7 +3,7 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 
-const config = ({file, plugins = [], globals = {}, external = [], outputFormat}) => ({
+const config = ({file, plugins = [], globals = {}, external = [], outputFormat = 'iife'}) => ({
   input: 'src/bundle.js',
   output: {
     file,
