@@ -3,19 +3,22 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 
-const config = ({file, plugins = [], globals = {}, external = [], outputFormat = 'iife'}) => ({
-  input: 'src/bundle.js',
+const config = ({
+  file,
+  plugins = [],
+  globals = {},
+  external = [],
+  outputFormat = 'iife',
+  input = 'src/bundle.js'
+}) => ({
+  input,
   output: {
     file,
     format: outputFormat,
     name: 'EarthEngineLayerLibrary',
-    globals: {
-      ...globals,
-      '@deck.gl/core': 'deck',
-      '@loaders.gl/core': 'loaders'
-    }
+    globals
   },
-  external: [...external, '@deck.gl/core', '@loaders.gl/core'],
+  external,
   plugins: [
     ...plugins,
     resolve({
@@ -32,7 +35,8 @@ const eeGlobals = {
   '@deck.gl/core': 'deck',
   '@deck.gl/geo-layers': 'deck',
   '@deck.gl/layers': 'deck',
-  '@deck.gl/mesh-layers': 'deck'
+  '@deck.gl/mesh-layers': 'deck',
+  '@loaders.gl/core': 'loaders'
 };
 
 // deck.gl globals provided by pydeck. See:
@@ -44,7 +48,8 @@ const pydeckGlobals = {
   '@deck.gl/google-maps': 'deck',
   '@deck.gl/json': 'deck',
   '@deck.gl/layers': 'deck',
-  '@deck.gl/mesh-layers': 'deck'
+  '@deck.gl/mesh-layers': 'deck',
+  '@loaders.gl/core': 'loaders'
 };
 
 export default [
@@ -62,16 +67,14 @@ export default [
     outputFormat: 'iife'
   }),
   config({
-    file: 'dist/dist.esm.js',
-    globals: eeGlobals,
-    external: Object.keys(eeGlobals),
+    input: 'src/bundle-ee.js',
+    file: 'dist/ee.mjs',
     outputFormat: 'es'
   }),
   config({
-    file: 'dist/dist.esm.min.js',
+    input: 'src/bundle-ee.js',
+    file: 'dist/ee.min.mjs',
     plugins: [terser()],
-    globals: eeGlobals,
-    external: Object.keys(eeGlobals),
     outputFormat: 'es'
   }),
   config({
