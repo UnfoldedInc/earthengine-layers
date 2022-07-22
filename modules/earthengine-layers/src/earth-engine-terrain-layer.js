@@ -2,7 +2,8 @@ import {CompositeLayer} from '@deck.gl/core';
 import {TerrainLayer} from '@deck.gl/geo-layers';
 import ee from '@google/earthengine';
 import {initializeEEApi} from './ee-api'; // Promisify ee apis
-import {deepEqual, promisifyEEMethod} from './utils';
+import {promisifyEEMethod} from './utils';
+import isDeepEqual from 'lodash.isequal';
 
 /**
  * Decoder for Terrarium encoding
@@ -25,7 +26,7 @@ const defaultProps = {
   token: {type: 'string', value: null},
   eeObject: {type: 'object', value: null},
   eeTerrainObject: {type: 'object', value: null},
-  visParams: {type: 'object', value: null, equal: deepEqual},
+  visParams: {type: 'object', value: null, equal: isDeepEqual},
 
   // TileLayer props with custom defaults
   maxRequests: 6,
@@ -62,8 +63,8 @@ export default class EarthEngineTerrainLayer extends CompositeLayer {
 
   _updateEEObject(props, oldProps, changeFlags) {
     if (
-      props.eeObject === oldProps.eeObject &&
-      props.eeTerrainObject === oldProps.eeTerrainObject
+      isDeepEqual(props.eeObject, oldProps.eeObject) &&
+      isDeepEqual(props.eeTerrainObject, oldProps.eeTerrainObject)
     ) {
       return;
     }
@@ -104,9 +105,9 @@ export default class EarthEngineTerrainLayer extends CompositeLayer {
 
   async _updateEEVisParams(props, oldProps, changeFlags) {
     if (
-      props.visParams === oldProps.visParams &&
-      props.eeObject === oldProps.eeObject &&
-      props.eeTerrainObject === oldProps.eeTerrainObject
+      isDeepEqual(props.visParams, oldProps.visParams) &&
+      isDeepEqual(props.eeObject, oldProps.eeObject) &&
+      isDeepEqual(props.eeTerrainObject, oldProps.eeTerrainObject)
     ) {
       return;
     }

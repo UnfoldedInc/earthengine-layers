@@ -6,8 +6,9 @@ import {initializeEEApi} from './ee-api'; // Promisify ee apis
 import ee from '@google/earthengine';
 import {load} from '@loaders.gl/core';
 import {ImageLoader} from '@loaders.gl/images';
-import {deepEqual, promisifyEEMethod} from './utils';
+import {promisifyEEMethod} from './utils';
 import {JSONLoader} from '@loaders.gl/json';
+import isDeepEqual from 'lodash.isequal';
 
 // Global access token, to allow single EE API initialization if using multiple
 // layers
@@ -20,12 +21,12 @@ const defaultProps = {
   data: {type: 'object', value: null},
   token: {type: 'string', value: null},
   eeObject: {type: 'object', value: null},
-  visParams: {type: 'object', value: null, equal: deepEqual},
+  visParams: {type: 'object', value: null, equal: isDeepEqual},
   // Force rendering as vector
   asVector: false,
   // When rendered as vector, selectors that should be used to determine which
   // attributes will be downloaded
-  selectors: {type: 'array', value: [], equal: deepEqual},
+  selectors: {type: 'array', value: [], equal: isDeepEqual},
   // Force animation; animation is on by default when ImageCollection passed
   animate: false,
   // Frames per second
@@ -82,7 +83,7 @@ export default class EarthEngineLayer extends CompositeLayer {
   }
 
   _updateEEObject(props, oldProps, changeFlags) {
-    if (props.eeObject === oldProps.eeObject) {
+    if (isDeepEqual(props.eeObject, oldProps.eeObject)) {
       return;
     }
 
@@ -109,7 +110,10 @@ export default class EarthEngineLayer extends CompositeLayer {
   }
 
   async _updateEEVisParams(props, oldProps, changeFlags) {
-    if (props.visParams === oldProps.visParams && props.eeObject === oldProps.eeObject) {
+    if (
+      isDeepEqual(props.visParams, oldProps.visParams) &&
+      isDeepEqual(props.eeObject, oldProps.eeObject)
+    ) {
       return;
     }
     const {animate, asVector, selectors} = props;
